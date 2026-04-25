@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout | FitBrand</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<button class="back-button-global" onclick="history.back()">← Back</button>
+
+<header class="nav">
+  <a href="index.html" class="brand"><img class="logo-img" src="assets/fitbrand-logo-real.png" alt="FitBrand logo"><span class="brand-word">FITBRAND</span></a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="programs.html">Programs</a>
+    <a href="recommended.html">Recommended Products</a>
+    <a href="about.html">About us</a>
+    <a href="policies.html">Policies</a>
+  </nav>
+  <a href="cart.html" class="cart-icon-btn">
+    <span class="cart-svg">🛒</span>
+    <span class="cart-count" id="cart-count-btn">0</span>
+  </a>
+</header>
+
+<main class="checkout">
+  <div class="checkout-card">
+    <div class="checkout-left">
+      <p class="eyebrow">Checkout</p>
+      <h1>Complete your FitBrand order.</h1>
+      <p>You can now start the order directly on FitBrand. When your Stripe/Gumroad/Shopify payment links are ready, replace the placeholder links in this file and the buttons will become live.</p>
+    </div>
+    <div class="checkout-right">
+      <h2 id="product-title">FitBrand Checkout</h2>
+
+      <div class="checkout-summary">
+        <h3>Order Summary</h3>
+        <div id="checkout-items"></div>
+        <div class="summary-line"><span>Subtotal</span><strong id="subtotal-value">€0.00</strong></div>
+        <div class="summary-line"><span>Discount</span><strong id="discount-value">€0.00</strong></div>
+        <div class="summary-line"><span>Shipping estimate</span><strong id="shipping-value">€0.00</strong></div>
+        <div class="summary-line summary-total"><span>Total</span><strong id="product-price">€0.00</strong></div>
+      </div>
+
+      <div class="shipping-box">
+        <label>Shipping region</label>
+        <select id="shipping-region">
+          <option value="digital">Digital only / No shipping</option>
+          <option value="dk">Denmark - €4.99</option>
+          <option value="eu">Europe - €7.99</option>
+        </select>
+      </div>
+
+      <div class="checkout-discount">
+        <input id="checkout-discount-code" placeholder="Discount code">
+        <button onclick="applyCheckoutDiscount()">Apply</button>
+      </div>
+      <div id="checkout-discount-message" class="discount-message">Try code FIT10 for 10% off.</div>
+
+      <input type="email" placeholder="Email for order confirmation">
+
+      <label class="policy-check">
+        <input type="checkbox" id="accept-policies">
+        <span>I have read and accept FitBrand's <a href="policies.html" target="_blank">policies</a>, including the no-refund policy for digital products.</span>
+      </label>
+
+      <div class="checkout-methods">
+        <div class="payment-pill"><span>Accepted payment methods</span><strong>Stripe / Card</strong></div>
+        <div class="payment-pill"><span>Secure checkout</span><strong>Ready to connect</strong></div>
+      </div>
+
+      <a id="stripe-link" style="margin-top:10px;" class="btn-dark btn-disabled" href="#">Continue to payment</a>
+      
+      <div class="checkout-trust">
+        <div class="checkout-benefit"><strong>Secure checkout</strong><span>Your order flow is prepared for secure Stripe/Card payment.</span></div>
+        <div class="checkout-benefit"><strong>Instant access</strong><span>Digital programs are delivered instantly after real payment setup.</span></div>
+        <div class="checkout-benefit"><strong>Protected order</strong><span>Clear policies and order details before purchase.</span></div>
+        <div class="trust-payment-grid">
+          <div class="payment-badge">VISA</div>
+          <div class="payment-badge">MC</div>
+          <div class="payment-badge">Apple Pay</div>
+          <div class="payment-badge">PayPal</div>
+        </div>
+      </div>
+
+      <div class="order-note">This checkout is ready for Stripe Payment Links. Replace the placeholder links to accept real payments.</div>
+    </div>
+  </div>
+</main>
+
+<script>
+const productData = {
+  aesthetic: {name:"Aesthetic Program", price:4.99, type:"digital"},
+  shred: {name:"Shred Program", price:6.99, type:"digital"},
+  strength: {name:"Strength Program", price:6.99, type:"digital"},
+  bundle: {name:"Complete Bundle", price:14.99, type:"digital"},
+  shaker: {name:"Premium Shaker", price:9.99, type:"physical"},
+  belt: {name:"Lifting Belt", price:24.99, type:"physical"},
+  straps: {name:"Lifting Straps", price:12.99, type:"physical"},
+};
+let checkoutDiscount = localStorage.getItem("fitbrandDiscount") === "FIT10" ? 0.10 : 0;
+
+function money(n){
+  return "€" + n.toFixed(2);
+}
+
+function getCart(){
+  return JSON.parse(localStorage.getItem("fitbrandCart") || "[]");
+}
+
+function groupedCart(cart){
+  const groups = {};
+  cart.forEach(item => groups[item] = (groups[item] || 0) + 1);
+  return groups;
+}
+
+function getCheckoutItems(){
+  const params = new URLSearchParams(location.search);
+  if(params.get("cart") === "true"){
+    const cart = getCart();
+    if(cart.length > 0) return cart;
+  }
+  return [params.get("product") || "bundle"];
+}
+
+function hasPhysical(items){
+  return items.some(key => (productData[key] || productData.bundle).type === "physical");
+}
+
+function renderCheckout(){
+  const items = getCheckoutItems();
+  const groups = groupedCart(items);
+  const keys = Object.keys(groups);
+  const list = document.getElementById("checkout-items");
+
+  let subtotal = 0;
+  list.innerHTML = keys.map(key => {
+    const p = productData[key] || productData.bundle;
+    const qty = groups[key];
+    subtotal += p.price * qty;
+    return `<div class="summary-line"><span>${qty} × ${p.name}</span><strong>€${(p.price * qty).toFixed(2)}</strong></div>`;
+  }).join("");
+
+  const physical = hasPhysical(items);
+  const region = document.getElementById("shipping-region");
+  if(!physical){
+    region.value = "digital";
+    region.disabled = true;
+  } else {
+    region.disabled = false;
+    if(region.value === "digital") region.value = "dk";
+  }
+
+  let shipping = 0;
+  if(physical){
+    if(region.value === "dk") shipping = 4.99;
+    if(region.value === "eu") shipping = 7.99;
+  }
+
+  const discountAmount = subtotal * checkoutDiscount;
+  const total = Math.max(0, subtotal - discountAmount + shipping);
+
+  document.getElementById("product-title").textContent = keys.length > 1 || groups[keys[0]] > 1 ? "FitBrand Cart Checkout" : (productData[keys[0]] || productData.bundle).name;
+  document.getElementById("subtotal-value").textContent = money(subtotal);
+  document.getElementById("discount-value").textContent = "- " + money(discountAmount);
+  document.getElementById("shipping-value").textContent = money(shipping);
+  document.getElementById("product-price").textContent = money(total);
+  
+}
+
+function applyCheckoutDiscount(){
+  const code = (document.getElementById("checkout-discount-code")?.value || "").trim().toUpperCase();
+  const msg = document.getElementById("checkout-discount-message");
+  if(code === "FIT10"){
+    checkoutDiscount = 0.10;
+    localStorage.setItem("fitbrandDiscount", "FIT10");
+    msg.textContent = "Discount applied: 10% off.";
+  } else {
+    checkoutDiscount = 0;
+    localStorage.removeItem("fitbrandDiscount");
+    msg.textContent = "Invalid code. Try FIT10.";
+  }
+  renderCheckout();
+}
+
+document.getElementById("shipping-region").addEventListener("change", renderCheckout);
+renderCheckout();
+
+const acceptPolicies = document.getElementById("accept-policies");
+const payButton = document.getElementById("stripe-link");
+acceptPolicies.addEventListener("change", function(){
+  if(this.checked){
+    payButton.classList.remove("btn-disabled");
+    payButton.href = "confirmation.html";
+  } else {
+    payButton.classList.add("btn-disabled");
+    payButton.href = "#";
+  }
+});
+</script>
+
+<script>
+function updateCartCount(){
+  const cart = JSON.parse(localStorage.getItem("fitbrandCart") || "[]");
+  document.querySelectorAll("#cart-count-btn").forEach(el => {
+    el.textContent = cart.length;
+    el.style.display = cart.length > 0 ? "inline-flex" : "none";
+  });
+}
+function addToCart(product){
+  const cart = JSON.parse(localStorage.getItem("fitbrandCart") || "[]");
+  cart.push(product);
+  localStorage.setItem("fitbrandCart", JSON.stringify(cart));
+  updateCartCount();
+  showMiniCartPopup();
+  const toast = document.getElementById("cart-toast");
+  if(toast){
+    toast.classList.add("show");
+    setTimeout(()=>toast.classList.remove("show"), 2500);
+  }
+}
+document.addEventListener("DOMContentLoaded", updateCartCount);
+</script>
+
+
+<div id="drawer-overlay" class="cart-drawer-overlay" onclick="closeCartDrawer()"></div>
+<aside id="cart-drawer" class="cart-drawer">
+  <div class="drawer-head">
+    <h2>Your cart</h2>
+    <button class="drawer-close" onclick="closeCartDrawer()">×</button>
+  </div>
+  <div class="drawer-body">
+    <div id="drawer-items"></div>
+    <div class="upsell-section">
+      <h3>Recommended add-ons</h3>
+      <div class="upsell-card"><span>Premium Shaker</span><button class="remove-item-btn" onclick="addToCart('shaker')">Add</button></div>
+    </div>
+  </div>
+  <div class="drawer-footer">
+    <div class="discount-box">
+      <input id="drawer-discount" placeholder="Discount code">
+      <button onclick="applyDrawerDiscount()">Apply</button>
+    </div>
+    <div id="drawer-discount-message" class="discount-message">Try code FIT10 for 10% off.</div>
+    <div class="cart-total"><span>Total</span><span id="drawer-total">€0.00</span></div>
+    <a class="btn-dark" style="width:100%;" href="checkout.html?cart=true">Continue to checkout</a>
+    <a class="btn-outline" style="width:100%;margin-top:10px;" href="programs.html">Continue shopping</a>
+  </div>
+</aside>
+
+<script>
+const fitbrandProductData = {
+  aesthetic: {name:"Aesthetic Program", price:4.99},
+  shred: {name:"Shred Program", price:6.99},
+  strength: {name:"Strength Program", price:6.99},
+  bundle: {name:"Complete Bundle", price:14.99},
+  shaker: {name:"Premium Shaker", price:9.99},
+  belt: {name:"Lifting Belt", price:24.99},
+  straps: {name:"Lifting Straps", price:12.99},
+};
+let fitbrandDiscount = 0;
+function getCart(){
+  return JSON.parse(localStorage.getItem("fitbrandCart") || "[]");
+}
+function saveCart(cart){
+  localStorage.setItem("fitbrandCart", JSON.stringify(cart));
+}
+function updateCartCount(){
+  const cart = getCart();
+  document.querySelectorAll("#cart-count, #cart-count-btn").forEach(el => {
+    el.textContent = cart.length;
+    el.style.display = cart.length > 0 ? "inline-flex" : "none";
+  });
+  renderCartDrawer();
+}
+function addToCart(product){
+  const cart = getCart();
+  cart.push(product);
+  saveCart(cart);
+  updateCartCount();
+  showMiniCartPopup();
+  const toast = document.getElementById("cart-toast");
+  if(toast){
+    toast.classList.add("show");
+    setTimeout(()=>toast.classList.remove("show"), 2200);
+  }
+}
+function removeDrawerItem(index){
+  const cart = getCart();
+  cart.splice(index, 1);
+  saveCart(cart);
+  updateCartCount();
+}
+function renderCartDrawer(){
+  const drawerItems = document.getElementById("drawer-items");
+  const totalEl = document.getElementById("drawer-total");
+  if(!drawerItems || !totalEl) return;
+  const cart = getCart();
+  if(cart.length === 0){
+    drawerItems.innerHTML = "<p>Your cart is empty.</p>";
+    totalEl.textContent = "€0.00";
+    return;
+  }
+  let total = 0;
+  drawerItems.innerHTML = cart.map((item, index) => {
+    const p = fitbrandProductData[item] || fitbrandProductData.bundle;
+    total += p.price;
+    return `<div class="drawer-item"><div><strong>${p.name}</strong><span>FitBrand product</span></div><div><strong>€${p.price.toFixed(2)}</strong><br><button class="remove-item-btn" onclick="removeDrawerItem(${index})">Remove</button></div></div>`;
+  }).join("");
+  const discounted = total * (1 - fitbrandDiscount);
+  totalEl.textContent = "€" + discounted.toFixed(2);
+}
+function openCartDrawer(){
+  document.getElementById("cart-drawer")?.classList.add("show");
+  document.getElementById("drawer-overlay")?.classList.add("show");
+  renderCartDrawer();
+}
+function closeCartDrawer(){
+  document.getElementById("cart-drawer")?.classList.remove("show");
+  document.getElementById("drawer-overlay")?.classList.remove("show");
+}
+function applyDrawerDiscount(){
+  const code = (document.getElementById("drawer-discount")?.value || "").trim().toUpperCase();
+  const msg = document.getElementById("drawer-discount-message");
+  if(code === "FIT10"){
+    fitbrandDiscount = 0.10;
+    if(msg) msg.textContent = "Discount applied: 10% off.";
+  } else {
+    fitbrandDiscount = 0;
+    if(msg) msg.textContent = "Invalid code. Try FIT10.";
+  }
+  renderCartDrawer();
+}
+document.addEventListener("DOMContentLoaded", () => {
+  updateCartCount();
+  document.querySelectorAll(".cart-icon-btn").forEach(btn => {
+    btn.addEventListener("click", function(e){
+      e.preventDefault();
+      openCartDrawer();
+    });
+  });
+});
+</script>
+
+
+<div id="mini-cart-popup" class="mini-cart-popup">
+  <h3>Added to cart</h3>
+  <p>Your product has been added to your FitBrand cart.</p>
+  <div class="mini-cart-actions">
+    <a class="btn-outline" href="programs.html">Keep shopping</a>
+    <a class="btn-dark" href="cart.html">View cart</a>
+  </div>
+</div>
+
+<script>
+function showMiniCartPopup(){
+  const popup = document.getElementById("mini-cart-popup");
+  if(!popup) return;
+  popup.classList.add("show");
+  setTimeout(()=>popup.classList.remove("show"), 3000);
+}
+</script>
+
+</body>
+</html>
