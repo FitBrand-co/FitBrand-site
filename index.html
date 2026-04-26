@@ -9,6 +9,141 @@
 <meta name="twitter:card" content="summary_large_image">
 
 </head>
+  <section id="fitbrand-program-finder" style="padding:40px 20px; background:#0b0b0b; color:white; font-family:Arial, sans-serif;">
+  <div style="max-width:900px; margin:auto;">
+    <h2 style="font-size:32px; margin-bottom:10px;">Find The Best Program For You</h2>
+    <p style="color:#ccc;">Unlock your personal program recommendation after purchase.</p>
+
+    <div id="accessBox" style="margin-top:25px; padding:25px; background:#151515; border-radius:18px;">
+      <h3>Enter Access Code</h3>
+      <input id="accessCode" type="text" placeholder="Enter your code"
+        style="width:100%; padding:14px; border-radius:10px; border:none; margin:10px 0;">
+      <button onclick="unlockFinder()"
+        style="padding:14px 22px; border:none; border-radius:10px; background:white; color:black; font-weight:bold; cursor:pointer;">
+        Unlock Program Finder
+      </button>
+      <p id="accessMessage" style="color:#ff6b6b;"></p>
+    </div>
+
+    <div id="finderBox" style="display:none; margin-top:25px; padding:25px; background:#151515; border-radius:18px;">
+      <h3>Your Information</h3>
+
+      <label>Age</label>
+      <input id="age" type="number" placeholder="Example: 18" style="width:100%; padding:14px; border-radius:10px; border:none; margin:8px 0 15px;">
+
+      <label>Weight / kg</label>
+      <input id="weight" type="number" placeholder="Example: 75" style="width:100%; padding:14px; border-radius:10px; border:none; margin:8px 0 15px;">
+
+      <label>Height / cm</label>
+      <input id="height" type="number" placeholder="Example: 180" style="width:100%; padding:14px; border-radius:10px; border:none; margin:8px 0 15px;">
+
+      <label>Gender</label>
+      <select id="gender" style="width:100%; padding:14px; border-radius:10px; border:none; margin:8px 0 15px;">
+        <option value="">Choose</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+
+      <label>Main Goal</label>
+      <select id="goal" style="width:100%; padding:14px; border-radius:10px; border:none; margin:8px 0 15px;">
+        <option value="">Choose</option>
+        <option value="fatloss">Fat Loss</option>
+        <option value="muscle">Build Muscle</option>
+        <option value="strength">Strength</option>
+      </select>
+
+      <label>Training Place</label>
+      <select id="place" style="width:100%; padding:14px; border-radius:10px; border:none; margin:8px 0 15px;">
+        <option value="">Choose</option>
+        <option value="gym">Gym</option>
+        <option value="home">Home</option>
+      </select>
+
+      <label>Training Days Per Week</label>
+      <select id="days" style="width:100%; padding:14px; border-radius:10px; border:none; margin:8px 0 15px;">
+        <option value="">Choose</option>
+        <option value="3">3 days</option>
+        <option value="4">4 days</option>
+        <option value="5">5 days</option>
+        <option value="6">6 days</option>
+      </select>
+
+      <button onclick="recommendProgram()"
+        style="padding:14px 22px; border:none; border-radius:10px; background:white; color:black; font-weight:bold; cursor:pointer;">
+        Find My Best Program
+      </button>
+
+      <div id="resultBox" style="display:none; margin-top:25px; padding:25px; background:#000; border:2px solid white; border-radius:18px;">
+        <h2 id="programTitle"></h2>
+        <p id="programText" style="color:#ccc;"></p>
+        <a id="programLink" href="#" style="display:inline-block; margin-top:15px; padding:14px 22px; background:white; color:black; border-radius:10px; text-decoration:none; font-weight:bold;">
+          Go To Program
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+function unlockFinder() {
+  const code = document.getElementById("accessCode").value.trim();
+  const message = document.getElementById("accessMessage");
+
+  if (code === "FITBRAND29") {
+    document.getElementById("accessBox").style.display = "none";
+    document.getElementById("finderBox").style.display = "block";
+  } else {
+    message.innerText = "Wrong code. Please enter the code you received after purchase.";
+  }
+}
+
+function recommendProgram() {
+  const age = document.getElementById("age").value;
+  const weight = document.getElementById("weight").value;
+  const height = document.getElementById("height").value;
+  const gender = document.getElementById("gender").value;
+  const goal = document.getElementById("goal").value;
+  const place = document.getElementById("place").value;
+  const days = document.getElementById("days").value;
+
+  if (!age || !weight || !height || !gender || !goal || !place || !days) {
+    alert("Please fill in all information.");
+    return;
+  }
+
+  let title = "";
+  let text = "";
+  let link = "";
+
+  if (goal === "fatloss") {
+    title = "Best Match: Shred Program";
+    text = "Based on your goal, the Shred Program is best for you. It is built for fat loss while keeping muscle.";
+    link = "#shred-program";
+  } else if (goal === "muscle") {
+    title = "Best Match: Aesthetic Program";
+    text = "Based on your goal, the Aesthetic Program is best for you. It focuses on building muscle, shape and a balanced physique.";
+    link = "#aesthetic-program";
+  } else if (goal === "strength") {
+    title = "Best Match: Strength Program";
+    text = "Based on your goal, the Strength Program is best for you. It focuses on getting stronger with progressive overload.";
+    link = "#strength-program";
+  }
+
+  if (place === "home") {
+    text += " Since you train at home, choose the Home Workout version inside the program.";
+  } else {
+    text += " Since you train in a gym, choose the Gym Workout version inside the program.";
+  }
+
+  text += " Recommended training frequency: " + days + " days per week.";
+
+  document.getElementById("programTitle").innerText = title;
+  document.getElementById("programText").innerText = text;
+  document.getElementById("programLink").href = link;
+  document.getElementById("resultBox").style.display = "block";
+}
+</script>
 <body>
 
 <header class="nav">
