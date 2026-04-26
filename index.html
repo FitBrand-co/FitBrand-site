@@ -992,6 +992,77 @@
       .bundle-features{grid-template-columns:1fr;}
     }
 
+
+    .mealplan-output{
+      display:none;
+      margin-top:26px;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255,255,255,.10), transparent 30%),
+        linear-gradient(145deg,#0b0c0f,#050506);
+      color:white;
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:26px;
+      padding:24px;
+      box-shadow:0 24px 80px rgba(0,0,0,.35);
+    }
+    .mealplan-output.show{display:block;}
+    .mealplan-head{
+      display:flex;
+      justify-content:space-between;
+      gap:20px;
+      border-bottom:1px solid rgba(255,255,255,.12);
+      padding-bottom:18px;
+      margin-bottom:18px;
+    }
+    .mealplan-head h3{
+      margin:0 0 8px;
+      font-size:32px;
+      line-height:1;
+    }
+    .mealplan-head p{
+      color:#d0d0d0;
+      margin:0;
+      line-height:1.55;
+    }
+    .mealplan-pill{
+      background:white;
+      color:#070707;
+      border-radius:999px;
+      padding:10px 14px;
+      font-weight:1000;
+      height:max-content;
+      white-space:nowrap;
+    }
+    .mealplan-days{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:14px;
+    }
+    .mealplan-card{
+      background:rgba(255,255,255,.055);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:20px;
+      padding:18px;
+    }
+    .mealplan-card h4{
+      margin:0 0 10px;
+      font-size:20px;
+    }
+    .mealplan-card ul{
+      margin:0;
+      padding-left:18px;
+    }
+    .mealplan-card li{
+      color:#e5e5e5;
+      margin:7px 0;
+      line-height:1.45;
+      font-size:14px;
+    }
+    @media(max-width:900px){
+      .mealplan-days{grid-template-columns:1fr;}
+      .mealplan-head{flex-direction:column;}
+    }
+
   </style>
 </head>
 <body>
@@ -1358,6 +1429,7 @@
               <option value="shred">Shred Program</option>
               <option value="strength">Strength Program</option>
               <option value="bundle">Complete Bundle</option>
+              <option value="mealplan">Meal Plan Guide</option>
             </select>
           </div>
         </div>
@@ -1465,6 +1537,44 @@
               <option value="shoulders">Shoulder discomfort</option>
               <option value="time">Short workouts</option>
             </select>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="fb-divider">Meal plan preferences</div>
+
+      <div class="fb-form-grid">
+        <div class="fb-form-field">
+          <label>Diet preference</label>
+          <div class="fb-input-wrap">
+            <span class="fb-input-icon">◌</span>
+            <select id="modalDiet">
+              <option value="normal">No preference</option>
+              <option value="vegetarian">Vegetarian</option>
+              <option value="highprotein">High protein</option>
+              <option value="budget">Budget friendly</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fb-form-field">
+          <label>Meals per day</label>
+          <div class="fb-input-wrap">
+            <span class="fb-input-icon">□</span>
+            <select id="modalMeals">
+              <option value="3">3 meals</option>
+              <option value="4">4 meals</option>
+              <option value="5">5 meals</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fb-form-field fb-wide">
+          <label>Foods you dislike / allergies</label>
+          <div class="fb-input-wrap">
+            <span class="fb-input-icon">!</span>
+            <input id="modalAvoid" type="text" placeholder="Example: nuts, milk, fish">
           </div>
         </div>
       </div>
@@ -1735,7 +1845,7 @@
 function detectPurchaseAndShowGenerator(){
     const params = new URLSearchParams(window.location.search);
     const purchasedFromUrl = params.get("purchased");
-    const valid = ["aesthetic", "shred", "strength", "bundle"];
+    const valid = ["aesthetic", "shred", "strength", "bundle", "mealplan"];
 
     if(!valid.includes(purchasedFromUrl)){
       return;
@@ -1754,7 +1864,7 @@ function detectPurchaseAndShowGenerator(){
 
   function openGeneratorModal(){
     const stored = localStorage.getItem("fitbrandPurchasedPackage");
-    const valid = ["aesthetic", "shred", "strength", "bundle"];
+    const valid = ["aesthetic", "shred", "strength", "bundle", "mealplan"];
 
     if(!valid.includes(stored)){
       alert("This generator is only available after purchasing a program.");
@@ -1790,7 +1900,7 @@ function detectPurchaseAndShowGenerator(){
       return;
     }
 
-    const actualPackageType = packageType === "bundle" ? "aesthetic" : packageType;
+    const actualPackageType = packageType === "bundle" || packageType === "mealplan" ? "aesthetic" : packageType;
 
     if(!planLibrary[actualPackageType] || !planLibrary[actualPackageType][place]){
       alert("Something went wrong. Please try again.");
@@ -1820,7 +1930,68 @@ function detectPurchaseAndShowGenerator(){
     `).join("");
 
     document.getElementById("modalPlanOutput").classList.add("show");
+
+    generateMealPlan(packageType, goal, weight, modalMeals.value, modalDiet.value, modalAvoid.value);
     document.getElementById("modalPlanOutput").scrollIntoView({behavior:"smooth", block:"nearest"});
+  }
+
+
+
+  function generateMealPlan(packageType, goal, weight, meals, diet, avoid){
+    const mealOutput = document.getElementById("mealPlanOutput");
+    if(!mealOutput) return;
+
+    const goalText = packageType === "shred" || goal === "fatloss" ? "fat loss" :
+      packageType === "strength" || goal === "strength" ? "strength performance" :
+      "muscle building";
+
+    let breakfast = ["Oats with Greek yogurt", "Berries", "Protein source", "Water"];
+    let lunch = ["Chicken or tofu rice bowl", "Vegetables", "Olive oil / avocado", "Fruit"];
+    let dinner = ["Lean protein", "Potatoes or rice", "Green vegetables", "Low calorie sauce"];
+    let snack = ["Skyr / protein yogurt", "Banana", "Rice cakes"];
+
+    if(diet === "vegetarian"){
+      breakfast = ["Oats with Greek yogurt", "Berries", "Peanut butter", "Water"];
+      lunch = ["Tofu rice bowl", "Beans", "Vegetables", "Olive oil"];
+      dinner = ["Eggs or tofu", "Potatoes", "Salad", "Cottage cheese"];
+      snack = ["Skyr", "Fruit", "Protein shake"];
+    }
+
+    if(diet === "budget"){
+      breakfast = ["Oats", "Banana", "Milk or yogurt", "Water"];
+      lunch = ["Rice", "Chicken or eggs", "Frozen vegetables", "Simple sauce"];
+      dinner = ["Potatoes", "Tuna/eggs/chicken", "Vegetables", "Fruit"];
+      snack = ["Yogurt", "Rice cakes", "Apple"];
+    }
+
+    if(diet === "highprotein"){
+      breakfast = ["Eggs or skyr", "Oats", "Berries", "Protein shake"];
+      lunch = ["Chicken rice bowl", "Extra chicken", "Vegetables", "Greek yogurt"];
+      dinner = ["Lean beef/chicken/salmon", "Rice or potatoes", "Vegetables", "Cottage cheese"];
+      snack = ["Protein yogurt", "Protein bar", "Fruit"];
+    }
+
+    const allMeals = [
+      ["Breakfast", breakfast],
+      ["Lunch", lunch],
+      ["Dinner", dinner],
+      ["Snack", snack],
+      ["Extra Meal", ["Lean protein", "Carb source", "Vegetables", "Water"]]
+    ].slice(0, parseInt(meals, 10));
+
+    document.getElementById("mealPlanTitle").textContent = "Your FitBrand Meal Plan";
+    document.getElementById("mealPlanSubtitle").textContent =
+      "A simple " + meals + "-meal structure for " + goalText + ". Adjust portions based on progress. Avoid: " + (avoid || "none selected") + ".";
+    document.getElementById("mealPlanPill").textContent = meals + " MEALS / " + diet.toUpperCase();
+
+    document.getElementById("mealPlanDays").innerHTML = allMeals.map(meal => `
+      <div class="mealplan-card">
+        <h4>${meal[0]}</h4>
+        <ul>${meal[1].map(item => `<li>${item}</li>`).join("")}</ul>
+      </div>
+    `).join("");
+
+    mealOutput.classList.add("show");
   }
 
 
@@ -1828,6 +1999,7 @@ function detectPurchaseAndShowGenerator(){
     aesthetic: {name:"Aesthetic Program", price:4.99},
     shred: {name:"Shred Program", price:6.99},
     strength: {name:"Strength Program", price:6.99},
+  mealplan: {name:"Meal Plan Guide", price:5.99},
     bundle: {name:"Complete Bundle", price:18.97},
     belt: {name:"Lifting Belt", price:24.99},
     straps: {name:"Lifting Straps", price:12.99},
