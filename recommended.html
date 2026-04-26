@@ -545,6 +545,179 @@
   .meal-week-meals{grid-template-columns:1fr;}
 }
 
+
+/* FINAL Meal AI card and generator polish */
+.meal-ai-card-clean{
+  background:linear-gradient(180deg,#ffffff,#f3f3f3)!important;
+  color:#080808!important;
+  border:1px solid rgba(0,0,0,.08)!important;
+  box-shadow:0 25px 70px rgba(0,0,0,.10)!important;
+  overflow:hidden;
+}
+.meal-ai-card-clean .body{
+  padding:34px!important;
+  min-height:100%;
+}
+.meal-inline-badge{
+  position:static!important;
+  display:inline-block!important;
+  margin-bottom:18px!important;
+  background:#080808!important;
+  color:#fff!important;
+}
+.meal-ai-card-clean h3{
+  font-size:32px!important;
+  line-height:1!important;
+  letter-spacing:-.8px!important;
+}
+.meal-ai-card-clean p{
+  color:#505050!important;
+  font-size:17px!important;
+  line-height:1.65!important;
+}
+.meal-ai-card-clean .price{
+  color:#080808!important;
+}
+.meal-ai-card-clean .btn-outline{
+  display:inline-flex;
+  width:100%;
+  justify-content:center;
+  align-items:center;
+  text-decoration:none;
+}
+
+/* hide locked generator until real purchase unlock */
+#meal-plan-ai{
+  display:none!important;
+}
+#meal-plan-ai.unlocked{
+  display:block!important;
+}
+#mealLockedPreview{
+  display:none!important;
+}
+
+/* better premium generator */
+.meal-ai-lock{
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255,255,255,.16), transparent 30%),
+    linear-gradient(145deg,#070707,#121212 60%,#050505)!important;
+  border-radius:36px!important;
+  padding:46px!important;
+}
+.meal-ai-lock-head{
+  max-width:850px!important;
+  margin:0 auto 34px!important;
+}
+.meal-ai-lock h2{
+  font-size:clamp(36px,6vw,68px)!important;
+  letter-spacing:-1.8px!important;
+}
+.meal-ai-lock-head p{
+  color:#d8d8d8!important;
+  font-size:18px!important;
+}
+.meal-generator{
+  display:block!important;
+}
+.meal-grid{
+  display:grid!important;
+  grid-template-columns:repeat(12,1fr)!important;
+  gap:18px!important;
+  align-items:end!important;
+}
+.meal-field{
+  grid-column:span 3;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:9px!important;
+}
+.meal-field.wide{
+  grid-column:span 6!important;
+}
+.meal-field label{
+  color:#f5f5f5!important;
+  font-size:12px!important;
+  font-weight:1000!important;
+  text-transform:uppercase!important;
+  letter-spacing:1.7px!important;
+}
+.meal-field input,
+.meal-field select{
+  width:100%!important;
+  height:60px!important;
+  border-radius:16px!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.105),rgba(255,255,255,.045))!important;
+  color:white!important;
+  font-size:15px!important;
+  padding:0 16px!important;
+  outline:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06)!important;
+}
+.meal-field input:focus,
+.meal-field select:focus{
+  border-color:rgba(255,255,255,.55)!important;
+  box-shadow:0 0 0 4px rgba(255,255,255,.07)!important;
+}
+.meal-field option{
+  background:white!important;
+  color:#111!important;
+}
+.meal-generate-btn{
+  height:72px!important;
+  border-radius:18px!important;
+  background:linear-gradient(135deg,#fff,#bdbdbd)!important;
+  color:#050505!important;
+  font-size:15px!important;
+  font-weight:1000!important;
+  letter-spacing:2px!important;
+  box-shadow:0 22px 55px rgba(255,255,255,.10)!important;
+}
+.meal-output{
+  background:
+    radial-gradient(circle at 15% 0%, rgba(255,255,255,.12), transparent 28%),
+    linear-gradient(145deg,#0c0c0e,#050505)!important;
+  border-radius:30px!important;
+}
+.meal-output-head h3{
+  font-size:clamp(30px,4vw,44px)!important;
+}
+.macro-grid{
+  grid-template-columns:repeat(4,1fr)!important;
+}
+.macro-box{
+  border-radius:22px!important;
+  padding:18px!important;
+}
+.meal-days{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+.meal-day-card,
+.meal-week-day{
+  border-radius:24px!important;
+}
+.meal-notes{
+  font-size:15px!important;
+}
+.meal-action-row{
+  justify-content:flex-start!important;
+}
+.meal-action-row button{
+  min-width:220px!important;
+}
+
+@media(max-width:1050px){
+  .meal-field{grid-column:span 6;}
+  .meal-field.wide{grid-column:span 12!important;}
+  .macro-grid,.meal-days{grid-template-columns:repeat(2,1fr)!important;}
+}
+@media(max-width:700px){
+  .meal-grid{grid-template-columns:1fr!important;}
+  .meal-field,.meal-field.wide{grid-column:span 1!important;}
+  .macro-grid,.meal-days{grid-template-columns:1fr!important;}
+}
+
 </style>
 </head>
 <body>
@@ -568,15 +741,11 @@
 
 <section class="section">
   <div class="rec-grid three-products">
-    <article class="rec-card meal-ai-card">
-      <a href="#meal-plan-details">
-        <div class="rec-img own-photo meal-guide-photo" style="background-image:url('assets/meal-plan-guide.png')">
-          <span class="product-badge">AI Powered</span>
-        </div>
-      </a>
+    <article class="rec-card meal-ai-card meal-ai-card-clean">
       <div class="body">
+        <span class="product-badge meal-inline-badge">AI Powered</span>
         <h3>Meal Plan Guide AI</h3>
-        <p>Premium nutrition guide with a personal meal plan generator unlocked after purchase.</p>
+        <p>A premium nutrition guide with a locked AI meal plan generator that creates a 7-day plan based on goal, body stats, preferences and lifestyle.</p>
         <div class="price">€5.99</div>
         <a class="btn-dark" href="checkout.html?product=mealplan">Buy now</a>
         <button class="btn-outline" onclick="addToCart('mealplan')">Add to cart</button>
@@ -636,7 +805,7 @@
   
   <div id="mealLockedPreview" class="meal-locked-preview">
     <p class="meal-details-kicker">Locked after purchase</p>
-    <h2>Meal Plan AI Generator</h2>
+    <h2>Personal Meal Plan AI</h2>
     <p>
       Buy the Meal Plan Guide AI to unlock a personal 7-day meal plan generator with calories,
       macros, meals, grocery guidance and PDF download.
@@ -648,8 +817,8 @@
   <div id="meal-plan-ai" class="meal-ai-lock">
     <div class="meal-ai-lock-head">
       <div class="meal-ai-kicker">After purchase</div>
-      <h2>Meal Plan AI Generator</h2>
-      <p>This generator unlocks automatically after purchase and creates a complete 7-day meal plan.</p>
+      <h2>Personal Meal Plan AI</h2>
+      <p>Create a detailed 7-day nutrition plan with calories, macros, meal timing, simple food choices and progress adjustments.</p>
     </div>
 
     <div id="mealAccessBox">
@@ -744,6 +913,25 @@
             <option value="prep">Meal prep friendly</option>
           </select>
         </div>
+      
+        <div class="meal-field">
+          <label>Daily activity</label>
+          <select id="mealActivity">
+            <option value="normal">Normal day</option>
+            <option value="low">Mostly sitting</option>
+            <option value="high">Active job / many steps</option>
+          </select>
+        </div>
+
+        <div class="meal-field">
+          <label>Plan difficulty</label>
+          <select id="mealDifficulty">
+            <option value="easy">Easy to follow</option>
+            <option value="strict">Strict / precise</option>
+            <option value="flexible">Flexible lifestyle</option>
+          </select>
+        </div>
+
       </div>
 
       <button class="meal-generate-btn" onclick="generateMealPlan()">Generate world-class meal plan</button>
@@ -968,13 +1156,17 @@ function generateMealPlan(){
   const style = document.getElementById("mealStyle").value;
   const avoid = document.getElementById("mealAvoid").value;
   const time = document.getElementById("mealTime").value;
+  const activityLevel = document.getElementById("mealActivity") ? document.getElementById("mealActivity").value : "normal";
+  const difficulty = document.getElementById("mealDifficulty") ? document.getElementById("mealDifficulty").value : "easy";
 
   if(!goal || !gender || !age || !weight || !height || document.getElementById("mealTrainingDays").value === ""){
     alert("Please fill in goal, gender, age, weight, height and training days.");
     return;
   }
 
-  const calories = estimateCalories(weight, height, age, gender, goal, trainingDays);
+  let calories = estimateCalories(weight, height, age, gender, goal, trainingDays);
+  if(activityLevel === "high") calories += 150;
+  if(activityLevel === "low") calories -= 100;
   const protein = Math.round(weight * (goal === "fatloss" ? 2.1 : 1.8));
   const fat = Math.round((calories * 0.25) / 9);
   const carbs = Math.max(80, Math.round((calories - protein * 4 - fat * 9) / 4));
@@ -1067,6 +1259,8 @@ function generateMealPlan(){
   if(goal === "muscle") notes += "If weight is not increasing slowly, add 150-250 calories. ";
   if(goal === "maintenance") notes += "If energy or performance drops, add 100-150 calories from carbs. ";
   if(avoid) notes += "Avoid these foods: " + avoid + ". Replace them with similar foods you tolerate. ";
+  if(difficulty === "flexible") notes += "Use the plan as a structure and swap similar protein, carb and vegetable sources when needed. ";
+  if(difficulty === "strict") notes += "For best precision, weigh main carb and protein sources for the first 1-2 weeks. ";
   notes += "This is general fitness guidance, not medical nutrition advice.";
 
   document.getElementById("mealNotes").textContent = notes;
@@ -1096,7 +1290,180 @@ function downloadMealPlanPDF(){
           h1{font-size:34px;margin-bottom:8px;}
           pre{white-space:pre-wrap;font-family:Arial,sans-serif;font-size:14px;}
           .brand{letter-spacing:2px;text-transform:uppercase;font-weight:900;color:#555;}
-        </style>
+        
+/* FINAL Meal AI card and generator polish */
+.meal-ai-card-clean{
+  background:linear-gradient(180deg,#ffffff,#f3f3f3)!important;
+  color:#080808!important;
+  border:1px solid rgba(0,0,0,.08)!important;
+  box-shadow:0 25px 70px rgba(0,0,0,.10)!important;
+  overflow:hidden;
+}
+.meal-ai-card-clean .body{
+  padding:34px!important;
+  min-height:100%;
+}
+.meal-inline-badge{
+  position:static!important;
+  display:inline-block!important;
+  margin-bottom:18px!important;
+  background:#080808!important;
+  color:#fff!important;
+}
+.meal-ai-card-clean h3{
+  font-size:32px!important;
+  line-height:1!important;
+  letter-spacing:-.8px!important;
+}
+.meal-ai-card-clean p{
+  color:#505050!important;
+  font-size:17px!important;
+  line-height:1.65!important;
+}
+.meal-ai-card-clean .price{
+  color:#080808!important;
+}
+.meal-ai-card-clean .btn-outline{
+  display:inline-flex;
+  width:100%;
+  justify-content:center;
+  align-items:center;
+  text-decoration:none;
+}
+
+/* hide locked generator until real purchase unlock */
+#meal-plan-ai{
+  display:none!important;
+}
+#meal-plan-ai.unlocked{
+  display:block!important;
+}
+#mealLockedPreview{
+  display:none!important;
+}
+
+/* better premium generator */
+.meal-ai-lock{
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255,255,255,.16), transparent 30%),
+    linear-gradient(145deg,#070707,#121212 60%,#050505)!important;
+  border-radius:36px!important;
+  padding:46px!important;
+}
+.meal-ai-lock-head{
+  max-width:850px!important;
+  margin:0 auto 34px!important;
+}
+.meal-ai-lock h2{
+  font-size:clamp(36px,6vw,68px)!important;
+  letter-spacing:-1.8px!important;
+}
+.meal-ai-lock-head p{
+  color:#d8d8d8!important;
+  font-size:18px!important;
+}
+.meal-generator{
+  display:block!important;
+}
+.meal-grid{
+  display:grid!important;
+  grid-template-columns:repeat(12,1fr)!important;
+  gap:18px!important;
+  align-items:end!important;
+}
+.meal-field{
+  grid-column:span 3;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:9px!important;
+}
+.meal-field.wide{
+  grid-column:span 6!important;
+}
+.meal-field label{
+  color:#f5f5f5!important;
+  font-size:12px!important;
+  font-weight:1000!important;
+  text-transform:uppercase!important;
+  letter-spacing:1.7px!important;
+}
+.meal-field input,
+.meal-field select{
+  width:100%!important;
+  height:60px!important;
+  border-radius:16px!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.105),rgba(255,255,255,.045))!important;
+  color:white!important;
+  font-size:15px!important;
+  padding:0 16px!important;
+  outline:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06)!important;
+}
+.meal-field input:focus,
+.meal-field select:focus{
+  border-color:rgba(255,255,255,.55)!important;
+  box-shadow:0 0 0 4px rgba(255,255,255,.07)!important;
+}
+.meal-field option{
+  background:white!important;
+  color:#111!important;
+}
+.meal-generate-btn{
+  height:72px!important;
+  border-radius:18px!important;
+  background:linear-gradient(135deg,#fff,#bdbdbd)!important;
+  color:#050505!important;
+  font-size:15px!important;
+  font-weight:1000!important;
+  letter-spacing:2px!important;
+  box-shadow:0 22px 55px rgba(255,255,255,.10)!important;
+}
+.meal-output{
+  background:
+    radial-gradient(circle at 15% 0%, rgba(255,255,255,.12), transparent 28%),
+    linear-gradient(145deg,#0c0c0e,#050505)!important;
+  border-radius:30px!important;
+}
+.meal-output-head h3{
+  font-size:clamp(30px,4vw,44px)!important;
+}
+.macro-grid{
+  grid-template-columns:repeat(4,1fr)!important;
+}
+.macro-box{
+  border-radius:22px!important;
+  padding:18px!important;
+}
+.meal-days{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+.meal-day-card,
+.meal-week-day{
+  border-radius:24px!important;
+}
+.meal-notes{
+  font-size:15px!important;
+}
+.meal-action-row{
+  justify-content:flex-start!important;
+}
+.meal-action-row button{
+  min-width:220px!important;
+}
+
+@media(max-width:1050px){
+  .meal-field{grid-column:span 6;}
+  .meal-field.wide{grid-column:span 12!important;}
+  .macro-grid,.meal-days{grid-template-columns:repeat(2,1fr)!important;}
+}
+@media(max-width:700px){
+  .meal-grid{grid-template-columns:1fr!important;}
+  .meal-field,.meal-field.wide{grid-column:span 1!important;}
+  .macro-grid,.meal-days{grid-template-columns:1fr!important;}
+}
+
+</style>
       </head>
       <body>
         <div class="brand">FitBrand</div>
