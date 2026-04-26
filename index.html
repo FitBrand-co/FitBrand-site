@@ -1094,7 +1094,15 @@
     </div>
   </section>
 
-  <section class="split">
+  
+<div class="fitbrand-bundle-offer" style="margin:34px auto 0; max-width:900px; padding:30px; border-radius:28px; background:linear-gradient(135deg,#080808,#191919); color:white; text-align:center; box-shadow:0 25px 70px rgba(0,0,0,.22);">
+  <p style="letter-spacing:2px; text-transform:uppercase; color:#bdbdbd; font-size:12px; font-weight:800; margin:0 0 10px;">Best value</p>
+  <h2 style="font-size:34px; margin:0 0 10px;">Get All 3 Programs</h2>
+  <p style="color:#d0d0d0; max-width:650px; margin:0 auto 20px;">Aesthetic, Shred and Strength in one bundle. Perfect for customers who want the full FitBrand system.</p>
+  <a class="btn-silver" href="https://buy.stripe.com/test_14A14h1AX1lZ3kHc033F604" target="_blank" rel="noreferrer" style="display:inline-block; text-decoration:none;">Buy Bundle €18.97</a>
+</div>
+
+<section class="split">
     <div class="split-photo"></div>
     <div class="split-content">
       <p class="eyebrow">Why FitBrand</p>
@@ -1227,6 +1235,7 @@
               <option value="aesthetic">Aesthetic Program</option>
               <option value="shred">Shred Program</option>
               <option value="strength">Strength Program</option>
+              <option value="bundle">Complete Bundle</option>
             </select>
           </div>
         </div>
@@ -1534,10 +1543,11 @@
     const titleMap = {
       aesthetic: "Aesthetic Program",
       shred: "Shred Program",
-      strength: "Strength Program"
+      strength: "Strength Program",
+      bundle: "Complete Bundle"
     };
 
-    const selectedDays = planLibrary[packageType][place].slice(0, days);
+    const selectedDays = planLibrary[actualPackageType][place].slice(0, days);
 
     document.getElementById("planTitle").textContent = "Your " + titleMap[packageType] + " Plan";
     document.getElementById("planSubtitle").textContent =
@@ -1603,7 +1613,7 @@
 function detectPurchaseAndShowGenerator(){
     const params = new URLSearchParams(window.location.search);
     const purchasedFromUrl = params.get("purchased");
-    const valid = ["aesthetic", "shred", "strength"];
+    const valid = ["aesthetic", "shred", "strength", "bundle"];
 
     if(!valid.includes(purchasedFromUrl)){
       return;
@@ -1622,7 +1632,7 @@ function detectPurchaseAndShowGenerator(){
 
   function openGeneratorModal(){
     const stored = localStorage.getItem("fitbrandPurchasedPackage");
-    const valid = ["aesthetic", "shred", "strength"];
+    const valid = ["aesthetic", "shred", "strength", "bundle"];
 
     if(!valid.includes(stored)){
       alert("This generator is only available after purchasing a program.");
@@ -1658,7 +1668,9 @@ function detectPurchaseAndShowGenerator(){
       return;
     }
 
-    if(!planLibrary[packageType] || !planLibrary[packageType][place]){
+    const actualPackageType = packageType === "bundle" ? "aesthetic" : packageType;
+
+    if(!planLibrary[actualPackageType] || !planLibrary[actualPackageType][place]){
       alert("Something went wrong. Please try again.");
       return;
     }
@@ -1694,7 +1706,7 @@ function detectPurchaseAndShowGenerator(){
     aesthetic: {name:"Aesthetic Program", price:4.99},
     shred: {name:"Shred Program", price:6.99},
     strength: {name:"Strength Program", price:6.99},
-    bundle: {name:"Complete Bundle", price:14.99},
+    bundle: {name:"Complete Bundle", price:18.97},
     shaker: {name:"Premium Shaker", price:9.99},
     belt: {name:"Lifting Belt", price:24.99},
     straps: {name:"Lifting Straps", price:12.99},
