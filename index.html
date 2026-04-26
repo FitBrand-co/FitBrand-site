@@ -499,6 +499,303 @@
         flex-direction:column;
       }
     }
+
+    .fb-modal-overlay{
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(14px);
+    }
+    .fb-modal-overlay.show{ display:flex; }
+
+    .fb-generator-modal{
+      width: min(1160px, 100%);
+      max-height: 92vh;
+      overflow: auto;
+      background:
+        radial-gradient(circle at 50% -10%, rgba(255,255,255,.13), transparent 30%),
+        linear-gradient(145deg, #08090b 0%, #111216 50%, #050506 100%);
+      color: white;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 30px;
+      box-shadow: 0 40px 120px rgba(0,0,0,.65);
+      position: relative;
+    }
+    .fb-modal-close{
+      position:absolute;
+      top:20px;
+      right:20px;
+      width:46px;
+      height:46px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.08);
+      color:white;
+      font-size:28px;
+      line-height:1;
+      cursor:pointer;
+    }
+    .fb-modal-header{
+      text-align:center;
+      padding: 46px 34px 30px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+    .fb-logo-mark{
+      font-size:36px;
+      font-weight:1000;
+      letter-spacing:-3px;
+      margin-bottom:20px;
+      background: linear-gradient(180deg,#fff,#8f8f8f);
+      -webkit-background-clip:text;
+      color:transparent;
+      text-shadow: 0 14px 35px rgba(255,255,255,.12);
+    }
+    .fb-modal-kicker{
+      text-transform:uppercase;
+      letter-spacing:4px;
+      color:#cfcfcf;
+      font-size:13px;
+      font-weight:800;
+      margin-bottom:14px;
+    }
+    .fb-modal-header h2{
+      font-size: clamp(30px, 5vw, 54px);
+      line-height:1;
+      margin:0 0 14px;
+      letter-spacing:-1.4px;
+    }
+    .fb-modal-header p{
+      color:#cfcfcf;
+      font-size:17px;
+      max-width:680px;
+      margin:0 auto;
+      line-height:1.6;
+    }
+    .fb-modal-body{
+      padding: 30px 34px 34px;
+    }
+    .fb-form-grid{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px 20px;
+      align-items:end;
+    }
+    .fb-form-field{
+      display:flex;
+      flex-direction:column;
+      gap:9px;
+      min-width:0;
+    }
+    .fb-form-field.fb-wide{ grid-column: span 2; }
+    .fb-form-field label{
+      text-transform:uppercase;
+      letter-spacing:1.6px;
+      color:#f0f0f0;
+      font-weight:900;
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .fb-input-wrap{
+      position:relative;
+    }
+    .fb-input-icon{
+      position:absolute;
+      left:16px;
+      top:50%;
+      transform:translateY(-50%);
+      color:#e8e8e8;
+      opacity:.88;
+      font-size:18px;
+      pointer-events:none;
+    }
+    .fb-form-field input,
+    .fb-form-field select{
+      width:100%;
+      height:58px;
+      box-sizing:border-box;
+      border-radius:13px;
+      border:1px solid rgba(255,255,255,.16);
+      background: linear-gradient(180deg, rgba(255,255,255,.095), rgba(255,255,255,.045));
+      color:white;
+      font-size:15px;
+      outline:none;
+      padding: 0 16px 0 48px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+    }
+    .fb-form-field select{
+      appearance:auto;
+      color:white;
+    }
+    .fb-form-field option{
+      color:#111;
+      background:white;
+    }
+    .fb-form-field input::placeholder{ color:#a9a9a9; }
+    .fb-form-field input:focus,
+    .fb-form-field select:focus{
+      border-color:rgba(255,255,255,.55);
+      box-shadow:0 0 0 4px rgba(255,255,255,.06);
+    }
+    .fb-divider{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      margin:30px 0 24px;
+      color:#fff;
+      text-transform:uppercase;
+      letter-spacing:1.6px;
+      font-size:13px;
+      font-weight:900;
+    }
+    .fb-divider::before,
+    .fb-divider::after{
+      content:"";
+      height:1px;
+      background:rgba(255,255,255,.14);
+      flex:1;
+    }
+    .fb-generate-btn{
+      width:100%;
+      height:70px;
+      border:none;
+      border-radius:15px;
+      margin-top:28px;
+      cursor:pointer;
+      font-weight:1000;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      font-size:16px;
+      color:#070707;
+      background: linear-gradient(135deg, #fff, #c9c9c9);
+      box-shadow: 0 20px 45px rgba(255,255,255,.10);
+    }
+    .fb-trust-row{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:16px;
+      margin-top:28px;
+    }
+    .fb-trust-item{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:14px;
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .fb-trust-icon{
+      font-size:26px;
+      opacity:.85;
+    }
+    .fb-trust-item strong{
+      display:block;
+      font-size:14px;
+      margin-bottom:4px;
+    }
+    .fb-trust-item span{
+      display:block;
+      color:#bdbdbd;
+      font-size:12px;
+      line-height:1.35;
+    }
+    .fb-plan-output{
+      display:none;
+      margin-top:28px;
+      border-radius:24px;
+      background:#050505;
+      border:1px solid rgba(255,255,255,.12);
+      padding:24px;
+    }
+    .fb-plan-output.show{ display:block; }
+    .fb-plan-head{
+      display:flex;
+      justify-content:space-between;
+      gap:20px;
+      padding-bottom:18px;
+      border-bottom:1px solid rgba(255,255,255,.12);
+      margin-bottom:20px;
+    }
+    .fb-plan-head h3{
+      margin:0 0 8px;
+      font-size:32px;
+      line-height:1;
+    }
+    .fb-plan-head p{
+      margin:0;
+      color:#cfcfcf;
+      line-height:1.55;
+    }
+    .fb-plan-pill{
+      background:white;
+      color:#080808;
+      border-radius:999px;
+      padding:10px 14px;
+      font-weight:1000;
+      white-space:nowrap;
+      height:max-content;
+    }
+    .fb-plan-days{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:14px;
+    }
+    .fb-plan-day{
+      background:rgba(255,255,255,.045);
+      border:1px solid rgba(255,255,255,.09);
+      border-radius:18px;
+      padding:16px;
+    }
+    .fb-plan-day h4{
+      margin:0 0 10px;
+      font-size:18px;
+    }
+    .fb-plan-day ul{
+      margin:0;
+      padding-left:18px;
+    }
+    .fb-plan-day li{
+      margin:7px 0;
+      color:#dfdfdf;
+      line-height:1.4;
+    }
+
+    .fb-after-purchase-trigger{
+      position:fixed;
+      right:22px;
+      bottom:22px;
+      z-index:9990;
+      display:none;
+      border:none;
+      border-radius:999px;
+      padding:15px 18px;
+      background:#080808;
+      color:white;
+      font-weight:900;
+      box-shadow:0 18px 50px rgba(0,0,0,.28);
+      cursor:pointer;
+    }
+    .fb-after-purchase-trigger.show{ display:block; }
+
+    @media(max-width:900px){
+      .fb-form-grid{ grid-template-columns:1fr 1fr; }
+      .fb-form-field.fb-wide{ grid-column:span 2; }
+      .fb-trust-row{ grid-template-columns:1fr; }
+      .fb-plan-days{ grid-template-columns:1fr; }
+      .fb-plan-head{ flex-direction:column; }
+    }
+    @media(max-width:560px){
+      .fb-form-grid{ grid-template-columns:1fr; }
+      .fb-form-field.fb-wide{ grid-column:span 1; }
+      .fb-modal-body{ padding:24px 18px 22px; }
+      .fb-modal-header{ padding:42px 18px 26px; }
+    }
+
   </style>
 </head>
 <body>
@@ -689,7 +986,7 @@
           <h3>Aesthetic Program</h3>
           <p>Build a balanced and aesthetic physique with a clear weekly structure.</p>
           <div class="price">€4.99</div>
-          <a class="btn-dark" href="checkout.html?product=aesthetic">Buy now</a>
+          <a class="btn-dark" href="checkout.html?product=aesthetic" onclick="savePurchasedPackage('aesthetic')">Buy now</a>
           <button class="btn-outline" onclick="addToCart('aesthetic')">Add to cart</button>
         </div>
       </article>
@@ -712,7 +1009,7 @@
           <h3>Shred Program</h3>
           <p>Lose fat, reveal definition and build discipline with a simple system.</p>
           <div class="price">€6.99</div>
-          <a class="btn-dark" href="checkout.html?product=shred">Buy now</a>
+          <a class="btn-dark" href="checkout.html?product=shred" onclick="savePurchasedPackage('shred')">Buy now</a>
           <button class="btn-outline" onclick="addToCart('shred')">Add to cart</button>
         </div>
       </article>
@@ -734,130 +1031,10 @@
           <h3>Strength Program</h3>
           <p>Build power, size and confidence with progressive training.</p>
           <div class="price">€6.99</div>
-          <a class="btn-dark" href="checkout.html?product=strength">Buy now</a>
+          <a class="btn-dark" href="checkout.html?product=strength" onclick="savePurchasedPackage('strength')">Buy now</a>
           <button class="btn-outline" onclick="addToCart('strength')">Add to cart</button>
         </div>
       </article>
-    </div>
-  </section>
-
-  <section id="fitbrand-generator" class="program-generator">
-    <div class="program-generator-container">
-      <div class="generator-card">
-        <div class="generator-top">
-          <div class="generator-note">After purchase experience</div>
-          <h2>Generate a personal training plan</h2>
-          <p>
-            This section is for customers who already bought a FitBrand package.
-            They choose the package they bought, fill in personal details,
-            and the site generates a program adapted to their goal, training place and weekly schedule.
-          </p>
-        </div>
-
-        <div class="generator-grid">
-          <div class="generator-field">
-            <label>Package bought</label>
-            <select id="genPackage">
-              <option value="">Choose package</option>
-              <option value="aesthetic">Aesthetic Program</option>
-              <option value="shred">Shred Program</option>
-              <option value="strength">Strength Program</option>
-            </select>
-          </div>
-          <div class="generator-field">
-            <label>Age</label>
-            <input id="genAge" type="number" placeholder="Example: 18">
-          </div>
-
-          <div class="generator-field">
-            <label>Gender</label>
-            <select id="genGender">
-              <option value="">Choose</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <div class="generator-field">
-            <label>Weight (kg)</label>
-            <input id="genWeight" type="number" placeholder="Example: 75">
-          </div>
-
-          <div class="generator-field">
-            <label>Height (cm)</label>
-            <input id="genHeight" type="number" placeholder="Example: 180">
-          </div>
-          <div class="generator-field">
-            <label>Training place</label>
-            <select id="genPlace">
-              <option value="">Choose</option>
-              <option value="gym">Gym</option>
-              <option value="home">Home</option>
-            </select>
-          </div>
-
-          <div class="generator-field">
-            <label>Training days per week</label>
-            <select id="genDays">
-              <option value="">Choose</option>
-              <option value="3">3 days</option>
-              <option value="4">4 days</option>
-              <option value="5">5 days</option>
-              <option value="6">6 days</option>
-            </select>
-          </div>
-          <div class="generator-field">
-            <label>Experience level</label>
-            <select id="genLevel">
-              <option value="">Choose</option>
-              <option value="beginner">Beginner</option>
-              <option value="intermediate">Intermediate</option>
-              <option value="advanced">Advanced</option>
-            </select>
-          </div>
-
-          <div class="generator-field">
-            <label>Main limitation</label>
-            <select id="genLimit">
-              <option value="">Choose</option>
-              <option value="none">No limitation</option>
-              <option value="knees">Knee discomfort</option>
-              <option value="shoulders">Shoulder discomfort</option>
-              <option value="time">Short workouts / little time</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="generator-button-row">
-          <button class="generator-main-btn" onclick="generatePlan()">Generate my program</button>
-          <button class="generator-alt-btn" onclick="resetGenerator()">Reset</button>
-        </div>
-
-        <div class="generator-plan" id="generatorPlan">
-          <div class="generator-plan-head">
-            <div>
-              <h3 id="planTitle">Your Aesthetic Plan</h3>
-              <p id="planSubtitle"></p>
-            </div>
-            <div class="plan-pill" id="planPill">4 DAYS / GYM</div>
-          </div>
-
-          <div class="plan-summary-grid" id="planSummaryGrid"></div>
-
-          <div class="plan-days" id="planDays"></div>
-
-          <div class="plan-footer">
-            <div class="plan-footer-box">
-              <h5>FitBrand Rules</h5>
-              <p id="planRules"></p>
-            </div>
-            <div class="plan-footer-box">
-              <h5>Notes</h5>
-              <p id="planNotes"></p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -898,18 +1075,6 @@
     </div>
   </section>
 
-  <section class="email-signup">
-    <div class="email-signup-wrap">
-      <div class="premium-badge">Free guide</div>
-      <h2>Join the FitBrand list.</h2>
-      <p>Get training tips, product drops and exclusive discounts, so visitors can become future customers.</p>
-      <form id="fitbrand-signup-form" class="signup-form">
-        <input id="fitbrand-email" type="email" placeholder="Enter your email" required>
-        <button type="submit">Join now</button>
-      </form>
-      <div id="signup-message" class="signup-message">Connect this form to Mailchimp, Klaviyo or Formspree when you are ready.</div>
-    </div>
-  </section>
 </main>
 
 <footer>
@@ -981,6 +1146,164 @@
     <a class="btn-dark" href="cart.html">View cart</a>
   </div>
 </div>
+
+<button id="openGeneratorBtn" class="fb-after-purchase-trigger" onclick="openGeneratorModal()">Generate your plan</button>
+
+<div id="fitbrandGeneratorModal" class="fb-modal-overlay">
+  <div class="fb-generator-modal">
+    <button class="fb-modal-close" onclick="closeGeneratorModal()">×</button>
+
+    <div class="fb-modal-header">
+      <div class="fb-logo-mark">FB</div>
+      <div class="fb-modal-kicker">After purchase</div>
+      <h2>Generate Your Personal Training Plan</h2>
+      <p>Enter your details below and FitBrand will create a training plan based on the package you purchased.</p>
+    </div>
+
+    <div class="fb-modal-body">
+      <div class="fb-form-grid">
+        <div class="fb-form-field fb-wide">
+          <label>Package you purchased</label>
+          <div class="fb-input-wrap">
+            <span class="fb-input-icon">▣</span>
+            <select id="modalPackage">
+              <option value="">Select your package</option>
+              <option value="aesthetic">Aesthetic Program</option>
+              <option value="shred">Shred Program</option>
+              <option value="strength">Strength Program</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fb-form-field fb-wide">
+          <label>Training goal</label>
+          <div class="fb-input-wrap">
+            <span class="fb-input-icon">◎</span>
+            <select id="modalGoal">
+              <option value="">Select goal</option>
+              <option value="muscle">Build muscle</option>
+              <option value="fatloss">Lose fat</option>
+              <option value="strength">Get stronger</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="fb-divider">Your information</div>
+
+      <div class="fb-form-grid">
+        <div class="fb-form-field">
+          <label>Age</label>
+          <div class="fb-input-wrap">
+            <span class="fb-input-icon">□</span>
+            <input id="modalAge" type="number" placeholder="Enter age">
+          </div>
+        </div>
+
+        <div class="fb-form-field">
+          <label>Gender</label>
+          <div class="fb-input-wrap">
+            <span class="fb-input-icon">○</span>
+            <select id="modalGender">
+              <option value="">Select</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fb-form-field">
+          <label>Weight (kg)</label>
+          <div class="fb-input-wrap">
+            <span class="fb-input-icon">◈</span>
+            <input id="modalWeight" type="number" placeholder="Weight">
+          </div>
+        </div>
+
+        <div class="fb-form-field">
+          <label>Height (cm)</label>
+          <div class="fb-input-wrap">
+            <span class="fb-input-icon">↕</span>
+            <input id="modalHeight" type="number" placeholder="Height">
+          </div>
+        </div>
+
+        <div class="fb-form-field">
+          <label>Training location</label>
+          <div class="fb-input-wrap">
+            <span class="fb-input-icon">⌂</span>
+            <select id="modalPlace">
+              <option value="">Gym or Home</option>
+              <option value="gym">Gym</option>
+              <option value="home">Home</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fb-form-field">
+          <label>Days per week</label>
+          <div class="fb-input-wrap">
+            <span class="fb-input-icon">◷</span>
+            <select id="modalDays">
+              <option value="">Select days</option>
+              <option value="3">3 days</option>
+              <option value="4">4 days</option>
+              <option value="5">5 days</option>
+              <option value="6">6 days</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fb-form-field">
+          <label>Experience level</label>
+          <div class="fb-input-wrap">
+            <span class="fb-input-icon">▥</span>
+            <select id="modalLevel">
+              <option value="">Select level</option>
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fb-form-field">
+          <label>Limitation</label>
+          <div class="fb-input-wrap">
+            <span class="fb-input-icon">♡</span>
+            <select id="modalLimit">
+              <option value="none">No limitation</option>
+              <option value="knees">Knee discomfort</option>
+              <option value="shoulders">Shoulder discomfort</option>
+              <option value="time">Short workouts</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <button class="fb-generate-btn" onclick="generateModalPlan()">Generate my plan</button>
+
+      <div class="fb-trust-row">
+        <div class="fb-trust-item"><div class="fb-trust-icon">◇</div><div><strong>After Purchase</strong><span>Only shown when a customer has bought a package.</span></div></div>
+        <div class="fb-trust-item"><div class="fb-trust-icon">↯</div><div><strong>Instant Generation</strong><span>Creates a plan in seconds.</span></div></div>
+        <div class="fb-trust-item"><div class="fb-trust-icon">◎</div><div><strong>Personalized</strong><span>Built around package, goals and location.</span></div></div>
+      </div>
+
+      <div id="modalPlanOutput" class="fb-plan-output">
+        <div class="fb-plan-head">
+          <div>
+            <h3 id="modalPlanTitle">Your plan</h3>
+            <p id="modalPlanSubtitle"></p>
+          </div>
+          <div id="modalPlanPill" class="fb-plan-pill">4 DAYS / GYM</div>
+        </div>
+        <div id="modalPlanDays" class="fb-plan-days"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script>
   const finderAnswers = {
@@ -1222,6 +1545,102 @@
     document.getElementById("generatorPlan").classList.remove("show");
   }
 
+
+  function savePurchasedPackage(packageName){
+    localStorage.setItem("fitbrandPurchasedPackage", packageName);
+  }
+
+  function detectPurchaseAndShowGenerator(){
+    const params = new URLSearchParams(window.location.search);
+    const purchasedFromUrl = params.get("purchased") || params.get("product");
+    const stored = localStorage.getItem("fitbrandPurchasedPackage");
+    const valid = ["aesthetic", "shred", "strength"];
+
+    let packageName = "";
+    if(valid.includes(purchasedFromUrl)){
+      packageName = purchasedFromUrl;
+      localStorage.setItem("fitbrandPurchasedPackage", packageName);
+    } else if(valid.includes(stored)){
+      packageName = stored;
+    }
+
+    if(packageName){
+      const trigger = document.getElementById("openGeneratorBtn");
+      if(trigger) trigger.classList.add("show");
+
+      const packageSelect = document.getElementById("modalPackage");
+      if(packageSelect) packageSelect.value = packageName;
+
+      if(params.get("purchased")){
+        setTimeout(openGeneratorModal, 600);
+      }
+    }
+  }
+
+  function openGeneratorModal(){
+    const modal = document.getElementById("fitbrandGeneratorModal");
+    if(modal) modal.classList.add("show");
+
+    const stored = localStorage.getItem("fitbrandPurchasedPackage");
+    if(stored && document.getElementById("modalPackage")){
+      document.getElementById("modalPackage").value = stored;
+    }
+  }
+
+  function closeGeneratorModal(){
+    const modal = document.getElementById("fitbrandGeneratorModal");
+    if(modal) modal.classList.remove("show");
+  }
+
+  function generateModalPlan(){
+    const packageType = document.getElementById("modalPackage").value;
+    const goal = document.getElementById("modalGoal").value;
+    const age = document.getElementById("modalAge").value;
+    const gender = document.getElementById("modalGender").value;
+    const weight = document.getElementById("modalWeight").value;
+    const height = document.getElementById("modalHeight").value;
+    const place = document.getElementById("modalPlace").value;
+    const days = parseInt(document.getElementById("modalDays").value || "0", 10);
+    const level = document.getElementById("modalLevel").value;
+    const limit = document.getElementById("modalLimit").value;
+
+    if(!packageType || !goal || !age || !gender || !weight || !height || !place || !days || !level || !limit){
+      alert("Please fill in all fields first.");
+      return;
+    }
+
+    if(!planLibrary[packageType] || !planLibrary[packageType][place]){
+      alert("Something went wrong. Please try again.");
+      return;
+    }
+
+    const titleMap = {
+      aesthetic: "Aesthetic Program",
+      shred: "Shred Program",
+      strength: "Strength Program"
+    };
+
+    const selectedDays = planLibrary[packageType][place].slice(0, days);
+
+    document.getElementById("modalPlanTitle").textContent = "Your " + titleMap[packageType] + " Plan";
+    document.getElementById("modalPlanSubtitle").textContent =
+      "Built for a " + age + "-year-old " + gender + ", " + weight + "kg, " + height + "cm, " +
+      level + " level, training " + days + " days per week at " + place + ".";
+
+    document.getElementById("modalPlanPill").textContent = days + " DAYS / " + place.toUpperCase();
+
+    document.getElementById("modalPlanDays").innerHTML = selectedDays.map(day => `
+      <div class="fb-plan-day">
+        <h4>${day[0]}</h4>
+        <ul>${day[1].map(ex => `<li>${ex}</li>`).join("")}</ul>
+      </div>
+    `).join("");
+
+    document.getElementById("modalPlanOutput").classList.add("show");
+    document.getElementById("modalPlanOutput").scrollIntoView({behavior:"smooth", block:"nearest"});
+  }
+
+
   const fitbrandProductData = {
     aesthetic: {name:"Aesthetic Program", price:4.99},
     shred: {name:"Shred Program", price:6.99},
@@ -1328,6 +1747,7 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     updateCartCount();
+    detectPurchaseAndShowGenerator();
     document.querySelectorAll(".cart-icon-btn").forEach(btn => {
       btn.addEventListener("click", function(e){
         e.preventDefault();
