@@ -1174,3 +1174,27 @@ footer a,footer p{display:block;color:rgba(255,255,255,.65);line-height:1.9}
   font-size:13px;
   line-height:1.45;
 }
+
+/* v55 growth-ready upgrades */
+body{opacity:0;animation:pageFadeIn .65s ease forwards}
+@keyframes pageFadeIn{from{opacity:0}to{opacity:1}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.hero-content{animation:heroRise .8s ease both}
+@keyframes heroRise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+.product-accordion{margin-top:28px;display:grid;gap:12px}
+.product-accordion details{background:#f6f6f6;border:1px solid rgba(0,0,0,.08);border-radius:16px;padding:18px}
+.product-accordion summary{cursor:pointer;font-weight:950;text-transform:uppercase;letter-spacing:.08em;font-size:13px}
+.product-accordion p{margin-top:12px;margin-bottom:0;font-size:14px}
+.email-signup{background:linear-gradient(135deg,#08090b,#17191f);color:#fff;padding:88px 30px}
+.email-signup-wrap{max-width:980px;margin:0 auto;text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:30px;padding:52px;box-shadow:0 28px 90px rgba(0,0,0,.35)}
+.email-signup h2{font-size:clamp(34px,5vw,64px);text-transform:uppercase;line-height:1;letter-spacing:.05em}
+.email-signup p{color:rgba(255,255,255,.72);line-height:1.7;margin:16px auto 26px;max-width:660px}
+.signup-form{display:grid;grid-template-columns:1fr auto;gap:12px;max-width:620px;margin:0 auto}
+.signup-form input{margin:0;background:#fff}
+.signup-form button{border:0;background:linear-gradient(115deg,#fff,#d7d7d7,#999);color:#050505;border-radius:10px;padding:0 24px;text-transform:uppercase;font-size:12px;font-weight:950;letter-spacing:.1em;cursor:pointer}
+.signup-message{margin-top:14px;color:rgba(255,255,255,.72);font-size:14px}
+.stripe-note{margin-top:14px;padding:14px;border-radius:14px;background:#f5f5f5;color:rgba(0,0,0,.62);font-size:13px;line-height:1.55}
+.card:hover,.rec-card:hover,.review-card:hover,.trust-card:hover{transform:translateY(-6px)}
+.card,.rec-card,.review-card,.trust-card{transition:transform .28s ease,box-shadow .28s ease}
+@media(max-width:700px){.signup-form{grid-template-columns:1fr}.email-signup-wrap{padding:34px 22px}}

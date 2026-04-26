@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Checkout | FitBrand</title>
 <link rel="stylesheet" href="style.css">
+
+<meta name="description" content="Complete your FitBrand order through a clean and secure checkout flow.">
+<meta name="keywords" content="FitBrand, fitness programs, gym accessories, workout plans, lifting belt, lifting straps, shaker bottle">
+<meta name="author" content="FitBrand">
+<meta property="og:title" content="Checkout | FitBrand">
+<meta property="og:description" content="Complete your FitBrand order through a clean and secure checkout flow.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/fitbrand-logo-real.png">
+<meta name="twitter:card" content="summary_large_image">
+
 </head>
 <body>
 <button class="back-button-global" onclick="history.back()">← Back</button>
@@ -84,6 +94,7 @@
         </div>
       </div>
 
+      <div class="stripe-note">Stripe-ready: replace links in <strong>stripe-config.js</strong> with real Stripe Payment Links.</div>
       <div class="order-note">This checkout is ready for Stripe Payment Links. Replace the placeholder links to accept real payments.</div>
     </div>
   </div>
@@ -192,7 +203,11 @@ const payButton = document.getElementById("stripe-link");
 acceptPolicies.addEventListener("change", function(){
   if(this.checked){
     payButton.classList.remove("btn-disabled");
-    payButton.href = "confirmation.html";
+    const params = new URLSearchParams(location.search);
+    const cartMode = params.get("cart") === "true";
+    const singleProduct = params.get("product") || "bundle";
+    const stripeUrl = cartMode ? FITBRAND_STRIPE_LINKS.cart : (FITBRAND_STRIPE_LINKS[singleProduct] || FITBRAND_STRIPE_LINKS.bundle);
+    payButton.href = stripeUrl && !stripeUrl.startsWith("#") ? stripeUrl : "confirmation.html";
   } else {
     payButton.classList.add("btn-disabled");
     payButton.href = "#";
@@ -362,5 +377,7 @@ function showMiniCartPopup(){
 }
 </script>
 
+<script src="fitbrand.js"></script>
+<script src="stripe-config.js"></script>
 </body>
 </html>
