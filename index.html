@@ -7,6 +7,203 @@
 <meta property="og:type" content="website">
 <meta property="og:image" content="assets/fitbrand-logo-real.png">
 <meta name="twitter:card" content="summary_large_image">
+
+<style>
+.fitbrand-tool-wrap{
+  padding:70px 20px;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.12), transparent 30%),
+    linear-gradient(135deg,#050505,#111,#050505);
+  color:white;
+  font-family:Arial,sans-serif;
+}
+.fitbrand-tool-container{max-width:1100px;margin:auto;}
+.fitbrand-tool-header{text-align:center;margin-bottom:35px;}
+.fitbrand-tool-header .kicker{
+  color:#bdbdbd;
+  text-transform:uppercase;
+  letter-spacing:3px;
+  font-size:12px;
+  font-weight:700;
+}
+.fitbrand-tool-header h2{
+  font-size:clamp(32px,5vw,58px);
+  margin:10px 0;
+  line-height:1;
+}
+.fitbrand-tool-header p{
+  color:#cfcfcf;
+  max-width:720px;
+  margin:auto;
+  font-size:17px;
+}
+.fitbrand-tool-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+}
+.fitbrand-premium-panel{
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:28px;
+  padding:28px;
+  box-shadow:0 25px 80px rgba(0,0,0,.35);
+  backdrop-filter:blur(12px);
+}
+.fitbrand-premium-panel h3{
+  font-size:25px;
+  margin:0 0 10px;
+}
+.fitbrand-premium-panel p{color:#cfcfcf;line-height:1.55;}
+.fitbrand-form-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.fitbrand-field{margin-bottom:14px;}
+.fitbrand-field label{
+  display:block;
+  font-size:13px;
+  color:#d7d7d7;
+  margin-bottom:7px;
+  font-weight:700;
+}
+.fitbrand-field input,.fitbrand-field select{
+  width:100%;
+  box-sizing:border-box;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.18);
+  background:#080808;
+  color:white;
+  outline:none;
+}
+.fitbrand-field input:focus,.fitbrand-field select:focus{
+  border-color:white;
+}
+.fitbrand-action{
+  width:100%;
+  border:none;
+  border-radius:16px;
+  padding:16px 20px;
+  font-weight:900;
+  cursor:pointer;
+  background:linear-gradient(135deg,#fff,#bcbcbc);
+  color:#050505;
+  margin-top:8px;
+}
+.fitbrand-secondary-action{
+  display:inline-block;
+  border-radius:14px;
+  padding:14px 20px;
+  background:white;
+  color:black;
+  text-decoration:none;
+  font-weight:900;
+  margin-top:10px;
+}
+.fitbrand-result{
+  display:none;
+  margin-top:22px;
+  background:#050505;
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:22px;
+  padding:22px;
+}
+.fitbrand-result h3{
+  font-size:28px;
+  margin:0 0 8px;
+}
+.fitbrand-reason-list{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:16px;
+}
+.fitbrand-reason{
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:16px;
+  padding:14px;
+  background:rgba(255,255,255,.05);
+}
+.fitbrand-reason strong{display:block;margin-bottom:4px;}
+.fitbrand-reason span{color:#bbb;font-size:13px;}
+.fitbrand-generator-section{
+  padding:70px 20px;
+  background:#f4f4f4;
+  color:#080808;
+  font-family:Arial,sans-serif;
+}
+.fitbrand-generator-container{max-width:1100px;margin:auto;}
+.fitbrand-generator-card{
+  background:white;
+  border-radius:30px;
+  padding:32px;
+  box-shadow:0 20px 70px rgba(0,0,0,.12);
+}
+.fitbrand-generator-card h2{
+  font-size:clamp(32px,5vw,52px);
+  margin:0 0 8px;
+}
+.fitbrand-generator-card p{color:#555;}
+.fitbrand-generator-card .fitbrand-field label{color:#111;}
+.fitbrand-generator-card .fitbrand-field input,
+.fitbrand-generator-card .fitbrand-field select{
+  background:#f7f7f7;
+  color:#111;
+  border:1px solid #ddd;
+}
+.fitbrand-generated-plan{
+  display:none;
+  margin-top:28px;
+  background:#080808;
+  color:white;
+  border-radius:26px;
+  padding:26px;
+}
+.fitbrand-plan-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:20px;
+  border-bottom:1px solid rgba(255,255,255,.15);
+  padding-bottom:18px;
+  margin-bottom:22px;
+}
+.fitbrand-plan-badge{
+  background:white;
+  color:#080808;
+  border-radius:999px;
+  padding:8px 12px;
+  font-weight:900;
+  white-space:nowrap;
+}
+.fitbrand-workout-days{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+.fitbrand-day-card{
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.04);
+  border-radius:20px;
+  padding:18px;
+}
+.fitbrand-day-card h4{margin:0 0 12px;font-size:20px;}
+.fitbrand-day-card ul{padding-left:18px;margin:0;}
+.fitbrand-day-card li{margin:8px 0;color:#ddd;}
+.fitbrand-highlight-card{
+  outline:3px solid white !important;
+  box-shadow:0 0 45px rgba(255,255,255,.45) !important;
+  transform:scale(1.025);
+  transition:.25s ease;
+}
+@media(max-width:850px){
+  .fitbrand-tool-grid,.fitbrand-form-row,.fitbrand-reason-list,.fitbrand-workout-days{grid-template-columns:1fr;}
+  .fitbrand-plan-top{display:block;}
+  .fitbrand-plan-badge{display:inline-block;margin-top:12px;}
+}
+</style>
 </head>
 <body>
 
@@ -24,85 +221,81 @@
     <span class="cart-count" id="cart-count-btn">0</span>
   </a>
 </header>
-
 <main>
 <section class="hero photo-gym"><div class="hero-content"><p class="eyebrow">Fitness • Content • Community</p><h1>Build your best self.</h1><p>Premium training programs, content and community made for discipline, aesthetics and real transformation.</p><a class="btn-silver" href="programs.html">Shop programs</a></div></section>
 
-<section id="fitbrand-program-finder" style="padding:60px 20px; background:#0b0b0b; color:white; font-family:Arial, sans-serif;">
-  <div style="max-width:950px; margin:auto;">
-    <div style="text-align:center; margin-bottom:25px;">
-      <p style="letter-spacing:2px; text-transform:uppercase; color:#aaa; font-size:13px;">Premium Access</p>
-      <h2 style="font-size:38px; margin-bottom:10px;">Find The Best Program For You</h2>
-      <p style="color:#ccc;">Answer a few questions and we will recommend the best FitBrand program for your goal.</p>
+<section id="public-product-finder" class="fitbrand-tool-wrap">
+  <div class="fitbrand-tool-container">
+    <div class="fitbrand-tool-header">
+      <div class="kicker">Free before purchase</div>
+      <h2>Find Your Best FitBrand Program</h2>
+      <p>Not sure what to buy? Answer a few questions and we will recommend the best program for your current goal.</p>
     </div>
 
-    <div id="accessBox" style="margin-top:25px; padding:30px; background:#151515; border:1px solid #333; border-radius:22px; box-shadow:0 20px 60px rgba(0,0,0,.35);">
-      <h3>Enter Access Code</h3>
-      <p style="color:#aaa;">This tool is only available after purchase.</p>
-      <input id="accessCode" type="text" placeholder="Enter your code"
-        style="width:100%; padding:15px; border-radius:12px; border:1px solid #333; background:#050505; color:white; margin:10px 0;">
-      <button onclick="unlockFinder()"
-        style="padding:15px 24px; border:none; border-radius:12px; background:white; color:black; font-weight:bold; cursor:pointer;">
-        Unlock Program Finder
-      </button>
-      <p id="accessMessage" style="color:#ff6b6b;"></p>
-    </div>
+    <div class="fitbrand-tool-grid">
+      <div class="fitbrand-premium-panel">
+        <h3>Program Finder</h3>
+        <p>This is free for everyone. It helps the customer choose the right product before buying.</p>
 
-    <div id="finderBox" style="display:none; margin-top:25px; padding:30px; background:#151515; border:1px solid #333; border-radius:22px; box-shadow:0 20px 60px rgba(0,0,0,.35);">
-      <h3>Your Information</h3>
+        <div class="fitbrand-form-row">
+          <div class="fitbrand-field">
+            <label>Main goal</label>
+            <select id="finderGoal">
+              <option value="">Choose</option>
+              <option value="fatloss">Lose fat / get lean</option>
+              <option value="muscle">Build muscle / aesthetics</option>
+              <option value="strength">Get stronger</option>
+            </select>
+          </div>
+          <div class="fitbrand-field">
+            <label>Training place</label>
+            <select id="finderPlace">
+              <option value="">Choose</option>
+              <option value="gym">Gym</option>
+              <option value="home">Home</option>
+            </select>
+          </div>
+        </div>
 
-      <label>Age</label>
-      <input id="age" type="number" placeholder="Example: 18" style="width:100%; padding:14px; border-radius:10px; border:none; margin:8px 0 15px;">
+        <div class="fitbrand-form-row">
+          <div class="fitbrand-field">
+            <label>Experience level</label>
+            <select id="finderLevel">
+              <option value="">Choose</option>
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+          </div>
+          <div class="fitbrand-field">
+            <label>Days per week</label>
+            <select id="finderDays">
+              <option value="">Choose</option>
+              <option value="3">3 days</option>
+              <option value="4">4 days</option>
+              <option value="5">5 days</option>
+              <option value="6">6 days</option>
+            </select>
+          </div>
+        </div>
 
-      <label>Weight / kg</label>
-      <input id="weight" type="number" placeholder="Example: 75" style="width:100%; padding:14px; border-radius:10px; border:none; margin:8px 0 15px;">
+        <button class="fitbrand-action" onclick="findBestProduct()">Find Best Product</button>
 
-      <label>Height / cm</label>
-      <input id="height" type="number" placeholder="Example: 180" style="width:100%; padding:14px; border-radius:10px; border:none; margin:8px 0 15px;">
+        <div id="finderResult" class="fitbrand-result">
+          <h3 id="finderTitle"></h3>
+          <p id="finderText"></p>
+          <a id="finderLink" class="fitbrand-secondary-action" href="#">View Recommended Program</a>
+        </div>
+      </div>
 
-      <label>Gender</label>
-      <select id="gender" style="width:100%; padding:14px; border-radius:10px; border:none; margin:8px 0 15px;">
-        <option value="">Choose</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
-      </select>
-
-      <label>Main Goal</label>
-      <select id="goal" style="width:100%; padding:14px; border-radius:10px; border:none; margin:8px 0 15px;">
-        <option value="">Choose</option>
-        <option value="fatloss">Fat Loss</option>
-        <option value="muscle">Build Muscle</option>
-        <option value="strength">Strength</option>
-      </select>
-
-      <label>Training Place</label>
-      <select id="place" style="width:100%; padding:14px; border-radius:10px; border:none; margin:8px 0 15px;">
-        <option value="">Choose</option>
-        <option value="gym">Gym</option>
-        <option value="home">Home</option>
-      </select>
-
-      <label>Training Days Per Week</label>
-      <select id="days" style="width:100%; padding:14px; border-radius:10px; border:none; margin:8px 0 15px;">
-        <option value="">Choose</option>
-        <option value="3">3 days</option>
-        <option value="4">4 days</option>
-        <option value="5">5 days</option>
-        <option value="6">6 days</option>
-      </select>
-
-      <button onclick="recommendProgram()"
-        style="padding:15px 24px; border:none; border-radius:12px; background:white; color:black; font-weight:bold; cursor:pointer;">
-        Find My Best Program
-      </button>
-
-      <div id="resultBox" style="display:none; margin-top:25px; padding:25px; background:#000; border:2px solid white; border-radius:18px;">
-        <h2 id="programTitle"></h2>
-        <p id="programText" style="color:#ccc;"></p>
-        <a id="programLink" href="#" style="display:inline-block; margin-top:15px; padding:14px 22px; background:white; color:black; border-radius:10px; text-decoration:none; font-weight:bold;">
-          Go To Program
-        </a>
+      <div class="fitbrand-premium-panel">
+        <h3>How it works</h3>
+        <p>The finder recommends the product. After purchase, the customer unlocks the personal generator and gets a custom plan based on the exact product they bought.</p>
+        <div class="fitbrand-reason-list">
+          <div class="fitbrand-reason"><strong>1</strong><span>Choose goal</span></div>
+          <div class="fitbrand-reason"><strong>2</strong><span>Get recommendation</span></div>
+          <div class="fitbrand-reason"><strong>3</strong><span>Buy & generate plan</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -113,6 +306,126 @@
 <article class="card" id="shred-program"><div class="product-visual silver"><span class="product-badge">Most Popular</span><div class="mockup"><div class="side"></div><div class="top"></div><div class="front"><div class="brand-small">FITBRAND</div><div class="logo-big">FB</div><div class="title">Shred</div><div class="sub">Premium guide</div></div></div></div><div class="card-body"><h3>Shred Program</h3><p>Lose fat, reveal definition and build discipline with a simple system.</p><div class="price">€6.99</div><a class="btn-dark" href="checkout.html?product=shred">Buy now</a><button class="btn-outline" onclick="addToCart('shred')">Add to cart</button></div></article>
 <article class="card" id="strength-program"><div class="product-visual"><div class="mockup"><div class="side"></div><div class="top"></div><div class="front"><div class="brand-small">FITBRAND</div><div class="logo-big">FB</div><div class="title">Strength</div><div class="sub">Premium guide</div></div></div></div><div class="card-body"><h3>Strength Program</h3><p>Build power, size and confidence with progressive training.</p><div class="price">€6.99</div><a class="btn-dark" href="checkout.html?product=strength">Buy now</a><button class="btn-outline" onclick="addToCart('strength')">Add to cart</button></div></article>
 </div></section>
+
+<section id="customer-program-generator" class="fitbrand-generator-section">
+  <div class="fitbrand-generator-container">
+    <div class="fitbrand-generator-card">
+      <div class="premium-badge">After purchase</div>
+      <h2>Generate Your Personal Training Plan</h2>
+      <p>This area is for customers who already bought a FitBrand program. Enter the access code from your purchase and generate a plan based on your package.</p>
+
+      <div id="generatorAccess">
+        <div class="fitbrand-form-row">
+          <div class="fitbrand-field">
+            <label>Access code after purchase</label>
+            <input id="purchaseCode" placeholder="Example: AESTHETICVIP">
+          </div>
+          <div class="fitbrand-field">
+            <label>Package bought</label>
+            <select id="boughtPackage">
+              <option value="">Choose</option>
+              <option value="aesthetic">Aesthetic Program</option>
+              <option value="shred">Shred Program</option>
+              <option value="strength">Strength Program</option>
+              <option value="bundle">Ultimate Bundle</option>
+            </select>
+          </div>
+        </div>
+        <button class="fitbrand-action" onclick="unlockGenerator()">Unlock Generator</button>
+        <p id="generatorAccessMessage" style="color:#d00000;font-weight:700;"></p>
+      </div>
+
+      <div id="generatorForm" style="display:none;">
+        <div class="fitbrand-form-row">
+          <div class="fitbrand-field">
+            <label>Age</label>
+            <input id="genAge" type="number" placeholder="Example: 18">
+          </div>
+          <div class="fitbrand-field">
+            <label>Gender</label>
+            <select id="genGender">
+              <option value="">Choose</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fitbrand-form-row">
+          <div class="fitbrand-field">
+            <label>Weight / kg</label>
+            <input id="genWeight" type="number" placeholder="Example: 75">
+          </div>
+          <div class="fitbrand-field">
+            <label>Height / cm</label>
+            <input id="genHeight" type="number" placeholder="Example: 180">
+          </div>
+        </div>
+
+        <div class="fitbrand-form-row">
+          <div class="fitbrand-field">
+            <label>Training place</label>
+            <select id="genPlace">
+              <option value="">Choose</option>
+              <option value="gym">Gym</option>
+              <option value="home">Home</option>
+            </select>
+          </div>
+          <div class="fitbrand-field">
+            <label>Days per week</label>
+            <select id="genDays">
+              <option value="">Choose</option>
+              <option value="3">3 days</option>
+              <option value="4">4 days</option>
+              <option value="5">5 days</option>
+              <option value="6">6 days</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fitbrand-form-row">
+          <div class="fitbrand-field">
+            <label>Experience level</label>
+            <select id="genLevel">
+              <option value="">Choose</option>
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+          </div>
+          <div class="fitbrand-field">
+            <label>Main limitation</label>
+            <select id="genLimit">
+              <option value="">Choose</option>
+              <option value="none">No limitation</option>
+              <option value="knees">Knee discomfort</option>
+              <option value="shoulders">Shoulder discomfort</option>
+              <option value="time">Short workouts</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="fitbrand-action" onclick="generatePersonalProgram()">Generate My Program</button>
+
+        <div id="generatedPlan" class="fitbrand-generated-plan">
+          <div class="fitbrand-plan-top">
+            <div>
+              <h3 id="generatedTitle" style="font-size:32px;margin:0;"></h3>
+              <p id="generatedSummary" style="color:#d5d5d5;"></p>
+            </div>
+            <div id="generatedBadge" class="fitbrand-plan-badge"></div>
+          </div>
+          <div id="generatedWorkouts" class="fitbrand-workout-days"></div>
+          <div style="margin-top:24px;border-top:1px solid rgba(255,255,255,.15);padding-top:18px;">
+            <h3>FitBrand Rules</h3>
+            <p id="generatedRules" style="color:#ddd;"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="split"><div class="split-photo"></div><div class="split-content"><p class="eyebrow">Why FitBrand</p><h2>More than a program.</h2><p>FitBrand is built around discipline, identity and consistency. We want fitness to feel clear, premium and motivating from the first click.</p><a class="btn-silver" href="about.html">Read about us</a></div></section>
 <section class="cta"><h2>Ready to start?</h2><p>Choose your plan, follow the structure and build a stronger version of yourself.</p><a class="btn-silver" href="programs.html">View programs</a></section>
@@ -151,11 +464,10 @@
   </div>
 </section>
 
-</main>
-
-<footer>
+</main><footer>
   <div class="footer-grid">
     <div><a class="brand" href="index.html"><img class="logo-img" src="assets/fitbrand-logo-real.png" alt="FitBrand logo"></a><p>Premium programs. Real results. No excuses.</p></div>
+
     <div><h4>Support</h4><a href="policies.html">Our Policies</a><a href="policies.html#refunds">Refund Policy</a><a href="policies.html#privacy">Privacy Policy</a><a href="policies.html#terms">Terms & Conditions</a></div>
     <div><h4>Connect</h4><a href="https://instagram.com/fitbrand.co" target="_blank" rel="noreferrer">Instagram</a><a href="https://tiktok.com/@fitbrand.co" target="_blank" rel="noreferrer">TikTok</a><a href="https://www.facebook.com/profile.php?id=61588721279095" target="_blank" rel="noreferrer">Facebook</a><a href="mailto:support@fitbrand.co">Email</a></div>
   </div>
@@ -163,29 +475,29 @@
 </footer>
 
 <script>
-function unlockFinder() {
-  const code = document.getElementById("accessCode").value.trim().toUpperCase();
-  const message = document.getElementById("accessMessage");
+function resetHighlights(){
+  document.querySelectorAll(".card").forEach(card=>{
+    card.classList.remove("fitbrand-highlight-card");
+  });
+}
 
-  if (code === "FITBRAND29") {
-    document.getElementById("accessBox").style.display = "none";
-    document.getElementById("finderBox").style.display = "block";
-  } else {
-    message.innerText = "Wrong code. Please enter the code you received after purchase.";
+function scrollToProgram(link){
+  const target = document.querySelector(link);
+  if(target){
+    target.scrollIntoView({behavior:"smooth", block:"center"});
+    resetHighlights();
+    target.classList.add("fitbrand-highlight-card");
   }
 }
 
-function recommendProgram() {
-  const age = document.getElementById("age").value;
-  const weight = document.getElementById("weight").value;
-  const height = document.getElementById("height").value;
-  const gender = document.getElementById("gender").value;
-  const goal = document.getElementById("goal").value;
-  const place = document.getElementById("place").value;
-  const days = document.getElementById("days").value;
+function findBestProduct(){
+  const goal = document.getElementById("finderGoal").value;
+  const place = document.getElementById("finderPlace").value;
+  const level = document.getElementById("finderLevel").value;
+  const days = document.getElementById("finderDays").value;
 
-  if (!age || !weight || !height || !gender || !goal || !place || !days) {
-    alert("Please fill in all information.");
+  if(!goal || !place || !level || !days){
+    alert("Please fill in all fields.");
     return;
   }
 
@@ -193,56 +505,199 @@ function recommendProgram() {
   let text = "";
   let link = "";
 
-  if (goal === "fatloss") {
+  if(goal === "fatloss"){
     title = "Best Match: Shred Program";
-    text = "Based on your goal, the Shred Program is best for you. It is built for fat loss while keeping muscle.";
+    text = "Best for fat loss, definition, discipline and staying consistent while getting lean.";
     link = "#shred-program";
-  } else if (goal === "muscle") {
+  } else if(goal === "muscle"){
     title = "Best Match: Aesthetic Program";
-    text = "Based on your goal, the Aesthetic Program is best for you. It focuses on building muscle, shape and a balanced physique.";
+    text = "Best for building a balanced physique, muscle shape, shoulders, chest, back and overall aesthetics.";
     link = "#aesthetic-program";
-  } else if (goal === "strength") {
+  } else {
     title = "Best Match: Strength Program";
-    text = "Based on your goal, the Strength Program is best for you. It focuses on getting stronger with progressive overload.";
+    text = "Best for building power, increasing your main lifts and getting stronger with structure.";
     link = "#strength-program";
   }
 
-  if (place === "home") {
-    text += " Since you train at home, choose the Home Workout version inside the program.";
-  } else {
-    text += " Since you train in a gym, choose the Gym Workout version inside the program.";
-  }
+  text += " You selected " + place + " training, " + level + " level and " + days + " days per week.";
 
-  text += " Recommended training frequency: " + days + " days per week.";
-
-  document.getElementById("programTitle").innerText = title;
-  document.getElementById("programText").innerText = text;
-  document.getElementById("programLink").href = link;
-  document.getElementById("resultBox").style.display = "block";
-
-  document.querySelectorAll(".card").forEach(card => {
-    card.style.outline = "none";
-    card.style.boxShadow = "";
-    card.style.transform = "";
-  });
-
-  const recommendedCard = document.querySelector(link);
-  if (recommendedCard) {
-    recommendedCard.style.outline = "3px solid white";
-    recommendedCard.style.boxShadow = "0 0 35px rgba(255,255,255,.35)";
-    recommendedCard.style.transform = "scale(1.02)";
-  }
+  document.getElementById("finderTitle").innerText = title;
+  document.getElementById("finderText").innerText = text;
+  document.getElementById("finderLink").href = link;
+  document.getElementById("finderResult").style.display = "block";
 }
 
 document.addEventListener("click", function(e){
-  if(e.target && e.target.id === "programLink"){
+  if(e.target && e.target.id === "finderLink"){
     e.preventDefault();
-    const target = document.querySelector(e.target.getAttribute("href"));
-    if(target){
-      target.scrollIntoView({behavior:"smooth", block:"center"});
-    }
+    scrollToProgram(e.target.getAttribute("href"));
   }
 });
+
+let unlockedPackage = "";
+
+function unlockGenerator(){
+  const code = document.getElementById("purchaseCode").value.trim().toUpperCase();
+  const boughtPackage = document.getElementById("boughtPackage").value;
+  const msg = document.getElementById("generatorAccessMessage");
+
+  const validCodes = {
+    "AESTHETICVIP":"aesthetic",
+    "SHREDVIP":"shred",
+    "STRENGTHVIP":"strength",
+    "FITBRAND29":"bundle"
+  };
+
+  if(!boughtPackage){
+    msg.innerText = "Please choose the package you bought.";
+    return;
+  }
+
+  if(validCodes[code] && (validCodes[code] === boughtPackage || validCodes[code] === "bundle")){
+    unlockedPackage = boughtPackage;
+    document.getElementById("generatorAccess").style.display = "none";
+    document.getElementById("generatorForm").style.display = "block";
+    msg.innerText = "";
+  } else {
+    msg.innerText = "Wrong code for this package. Use the code from your purchase.";
+  }
+}
+
+function getExercises(packageType, place, limit){
+  const gym = {
+    aesthetic: [
+      ["Day 1 — Push", ["Bench Press — 4x6-8", "Incline DB Press — 3x8-10", "Cable Fly — 3x12-15", "Lateral Raises — 4x12-15", "Tricep Pushdown — 3x10-12"]],
+      ["Day 2 — Pull", ["Pull Ups / Lat Pulldown — 4x8-10", "Barbell Row — 4x8-10", "Seated Cable Row — 3x10-12", "Rear Delt Fly — 3x12-15", "DB Curl — 3x10-12"]],
+      ["Day 3 — Legs", ["Squat — 4x6-8", "Leg Press — 3x10-12", "Romanian Deadlift — 3x8-10", "Leg Curl — 3x12-15", "Calf Raise — 4x12-15"]],
+      ["Day 4 — Upper Aesthetic", ["Incline Bench — 4x8", "Lat Pulldown — 4x10", "Chest Supported Row — 3x10", "Cable Lateral Raise — 4x15", "Arms Superset — 3x12"]],
+      ["Day 5 — Pump + Core", ["Machine Chest Press — 3x12", "Cable Row — 3x12", "Leg Extension — 3x15", "Hanging Leg Raise — 3x12", "Plank — 3x45 sec"]],
+      ["Day 6 — Optional Weak Points", ["Shoulders — 4 sets", "Upper chest — 4 sets", "Back width — 4 sets", "Arms — 4 sets", "Core — 3 sets"]]
+    ],
+    shred: [
+      ["Day 1 — Full Body Strength", ["Squat — 4x6-8", "Bench Press — 4x6-8", "Row — 4x8-10", "Lateral Raise — 3x15", "Incline Walk — 20 min"]],
+      ["Day 2 — Conditioning", ["Leg Press — 3x12", "Lat Pulldown — 3x12", "DB Press — 3x12", "Battle Rope / Bike — 10 rounds", "Core Circuit — 3 rounds"]],
+      ["Day 3 — Lower + Cardio", ["Romanian Deadlift — 4x8", "Bulgarian Split Squat — 3x10", "Leg Curl — 3x12", "Calf Raise — 4x15", "Incline Walk — 25 min"]],
+      ["Day 4 — Upper + HIIT", ["Incline Press — 3x10", "Cable Row — 3x10", "Shoulder Press — 3x10", "Curls + Triceps — 3x12", "Bike Intervals — 12 min"]],
+      ["Day 5 — Fat Loss Circuit", ["Goblet Squat — 4x12", "Push Ups — 4xAMRAP", "Cable Row — 4x12", "Walking Lunges — 3x20", "Treadmill — 20 min"]],
+      ["Day 6 — Low Intensity", ["Steps goal — 8k-12k", "Mobility — 15 min", "Core — 10 min", "Stretch — 10 min"]]
+    ],
+    strength: [
+      ["Day 1 — Squat Focus", ["Back Squat — 5x3-5", "Paused Squat — 3x5", "Leg Press — 3x8", "Hamstring Curl — 3x10", "Core — 3 sets"]],
+      ["Day 2 — Bench Focus", ["Bench Press — 5x3-5", "Incline DB Press — 3x8", "Barbell Row — 4x8", "Tricep Dips — 3x8", "Face Pull — 3x15"]],
+      ["Day 3 — Deadlift Focus", ["Deadlift — 5x3", "Romanian Deadlift — 3x6-8", "Lat Pulldown — 4x8", "Back Extension — 3x10", "Farmer Carry — 4 rounds"]],
+      ["Day 4 — Overhead Focus", ["Overhead Press — 5x3-5", "Close Grip Bench — 3x6", "Pull Ups — 4xAMRAP", "Lateral Raise — 3x15", "Core — 3 sets"]],
+      ["Day 5 — Volume Strength", ["Front Squat — 4x6", "Paused Bench — 4x6", "Row — 4x8", "Hip Thrust — 3x8", "Arms — 3x10"]],
+      ["Day 6 — Recovery Strength", ["Technique work — 30 min", "Mobility — 15 min", "Light cardio — 20 min"]]
+    ]
+  };
+
+  const home = {
+    aesthetic: [
+      ["Day 1 — Push", ["Push Ups — 4xAMRAP", "Feet Elevated Push Ups — 3x10-15", "Band Fly — 3x15", "Pike Push Ups — 4x8-12", "Bench Dips — 3x12"]],
+      ["Day 2 — Pull", ["One Arm DB Row — 4x10", "Band Pulldown — 4x12", "Band Row — 3x15", "Rear Delt Raise — 3x15", "DB Curl — 3x12"]],
+      ["Day 3 — Legs", ["Goblet Squat — 4x12", "Bulgarian Split Squat — 3x10 each", "Single Leg RDL — 3x10", "Glute Bridge — 3x15", "Calf Raise — 4x15"]],
+      ["Day 4 — Upper Aesthetic", ["Push Ups — 4 sets", "DB Row — 4 sets", "Lateral Raise — 4x15", "Band Pull Apart — 3x20", "Arms Superset — 3x12"]],
+      ["Day 5 — Pump + Core", ["Full body circuit — 4 rounds", "Mountain Climbers — 3x30 sec", "Plank — 3x45 sec", "Leg Raises — 3x12"]],
+      ["Day 6 — Weak Points", ["Shoulders — 4 sets", "Back — 4 sets", "Arms — 4 sets", "Core — 3 sets"]]
+    ],
+    shred: [
+      ["Day 1 — Full Body", ["Goblet Squat — 4x12", "Push Ups — 4xAMRAP", "DB Row — 4x12", "Burpees — 3x10", "Fast Walk — 25 min"]],
+      ["Day 2 — Conditioning", ["Jump Squats — 4x12", "Mountain Climbers — 4x30 sec", "Band Row — 4x15", "Plank — 3x45 sec", "Steps — 8k-12k"]],
+      ["Day 3 — Lower Burn", ["Bulgarian Split Squat — 4x10", "Glute Bridge — 4x15", "Single Leg RDL — 3x10", "Calf Raise — 4x20", "Walk — 30 min"]],
+      ["Day 4 — Upper Burn", ["Push Ups — 4 sets", "Pike Push Ups — 3x10", "Band Row — 4x15", "DB Curl — 3x12", "HIIT — 10 min"]],
+      ["Day 5 — Fat Loss Circuit", ["Squat — 20 reps", "Push Ups — AMRAP", "Rows — 15 reps", "Lunges — 20 reps", "Repeat 4 rounds"]],
+      ["Day 6 — Active Recovery", ["Walk — 40 min", "Mobility — 15 min", "Core — 10 min"]]
+    ],
+    strength: [
+      ["Day 1 — Lower Strength", ["Goblet Squat — 5x8", "Bulgarian Split Squat — 4x8", "Single Leg RDL — 4x8", "Wall Sit — 3x45 sec", "Core — 3 sets"]],
+      ["Day 2 — Push Strength", ["Weighted Push Ups — 5x6-10", "Pike Push Ups — 4x8", "Slow Push Ups — 3x8", "Bench Dips — 3x10", "Plank — 3 sets"]],
+      ["Day 3 — Pull Strength", ["Heavy DB Row — 5x8", "Band Row — 4x12", "Towel Row — 4xAMRAP", "DB Curl — 4x10", "Farmer Hold — 4 rounds"]],
+      ["Day 4 — Full Body Strength", ["Goblet Squat — 4x8", "Push Ups — 4xAMRAP", "DB Row — 4x8", "Split Squat — 3x10", "Core — 3 sets"]],
+      ["Day 5 — Volume Strength", ["Tempo Squat — 4x10", "Tempo Push Up — 4x10", "Tempo Row — 4x10", "Glute Bridge — 3x15", "Carries — 4 rounds"]],
+      ["Day 6 — Recovery Strength", ["Mobility — 20 min", "Walk — 30 min", "Technique work — 15 min"]]
+    ]
+  };
+
+  return (place === "gym" ? gym : home)[packageType];
+}
+
+function generatePersonalProgram(){
+  const age = document.getElementById("genAge").value;
+  const gender = document.getElementById("genGender").value;
+  const weight = document.getElementById("genWeight").value;
+  const height = document.getElementById("genHeight").value;
+  const place = document.getElementById("genPlace").value;
+  const days = parseInt(document.getElementById("genDays").value);
+  const level = document.getElementById("genLevel").value;
+  const limit = document.getElementById("genLimit").value;
+
+  if(!age || !gender || !weight || !height || !place || !days || !level || !limit){
+    alert("Please fill in all information.");
+    return;
+  }
+
+  let packageType = unlockedPackage === "bundle" ? "aesthetic" : unlockedPackage;
+  if(unlockedPackage === "bundle"){
+    const preferred = document.getElementById("boughtPackage").value;
+    packageType = preferred === "bundle" ? "aesthetic" : preferred;
+  }
+
+  const exercises = getExercises(packageType, place, limit).slice(0, days);
+  const packageName = packageType.charAt(0).toUpperCase() + packageType.slice(1);
+
+  document.getElementById("generatedTitle").innerText = "Your " + packageName + " Plan";
+  document.getElementById("generatedBadge").innerText = days + " days / " + place.toUpperCase();
+  document.getElementById("generatedSummary").innerText =
+    "Built for a " + age + "-year-old " + gender + ", " + weight + "kg, " + height + "cm, " + level + " level. This plan adapts your purchased package to your training place and weekly schedule.";
+
+  let html = "";
+  exercises.forEach(day=>{
+    html += `<div class="fitbrand-day-card"><h4>${day[0]}</h4><ul>`;
+    day[1].forEach(ex=> html += `<li>${ex}</li>`);
+    html += `</ul></div>`;
+  });
+
+  document.getElementById("generatedWorkouts").innerHTML = html;
+
+  let rules = "Rest 60-120 seconds between normal sets. Track your reps and weight every week. ";
+  if(packageType === "shred"){
+    rules += "Keep your calories controlled and aim for daily steps. Add 20-30 minutes of cardio 3 times per week.";
+  } else if(packageType === "strength"){
+    rules += "Rest 2-3 minutes on heavy compound sets. Increase weight slowly when form is clean.";
+  } else {
+    rules += "Focus on controlled reps, full range of motion and progressive overload for muscle growth.";
+  }
+  if(limit === "knees") rules += " Avoid painful knee movements and keep leg exercises controlled.";
+  if(limit === "shoulders") rules += " Avoid painful shoulder angles and use controlled pressing.";
+  if(limit === "time") rules += " Keep workouts under 45 minutes by reducing rest time.";
+
+  document.getElementById("generatedRules").innerText = rules;
+  document.getElementById("generatedPlan").style.display = "block";
+  document.getElementById("generatedPlan").scrollIntoView({behavior:"smooth", block:"start"});
+}
+</script>
+
+<script>
+function updateCartCount(){
+  const cart = JSON.parse(localStorage.getItem("fitbrandCart") || "[]");
+  document.querySelectorAll("#cart-count-btn").forEach(el => {
+    el.textContent = cart.length;
+    el.style.display = cart.length > 0 ? "inline-flex" : "none";
+  });
+}
+function addToCart(product){
+  const cart = JSON.parse(localStorage.getItem("fitbrandCart") || "[]");
+  cart.push(product);
+  localStorage.setItem("fitbrandCart", JSON.stringify(cart));
+  updateCartCount();
+  showMiniCartPopup();
+  const toast = document.getElementById("cart-toast");
+  if(toast){
+    toast.classList.add("show");
+    setTimeout(()=>toast.classList.remove("show"), 2500);
+  }
+}
+document.addEventListener("DOMContentLoaded", updateCartCount);
 </script>
 
 <div id="cart-toast" class="cart-toast">Added to cart. <a href="cart.html" style="text-decoration:underline;color:white;">View cart</a></div>
