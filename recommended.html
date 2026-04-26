@@ -249,7 +249,7 @@
 .meal-details-img{
   min-height:420px;
   border-radius:28px;
-  background-image:url('assets/meal-plan-guide-premium.png');
+  background-image:url('assets/meal-plan-guide.png');
   background-size:cover;
   background-position:center;
   box-shadow: inset 0 0 0 1px rgba(0,0,0,.08), 0 22px 60px rgba(0,0,0,.14);
@@ -431,6 +431,120 @@
   .meal-field.wide{grid-column:span 1!important;}
 }
 
+
+/* Final premium upgrades for Meal Plan AI */
+#meal-plan-ai{
+  display:none !important;
+}
+#meal-plan-ai.unlocked{
+  display:block !important;
+}
+.meal-ai-lock-head p strong{
+  display:none;
+}
+.meal-ai-lock-head p{
+  max-width:760px;
+  margin:auto;
+}
+.meal-generator{
+  display:block !important;
+}
+.meal-output{
+  animation: mealFadeIn .25s ease;
+}
+@keyframes mealFadeIn{
+  from{opacity:0; transform:translateY(8px);}
+  to{opacity:1; transform:translateY(0);}
+}
+.meal-week-grid{
+  display:grid;
+  gap:18px;
+  margin-top:24px;
+}
+.meal-week-day{
+  border-radius:24px;
+  border:1px solid rgba(255,255,255,.12);
+  background:linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035));
+  padding:20px;
+}
+.meal-week-day h4{
+  margin:0 0 14px;
+  font-size:22px;
+}
+.meal-week-meals{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+}
+.meal-mini{
+  border-radius:18px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.09);
+  padding:14px;
+}
+.meal-mini strong{
+  display:block;
+  margin-bottom:8px;
+}
+.meal-mini span{
+  display:block;
+  color:#dcdcdc;
+  line-height:1.45;
+  font-size:14px;
+}
+.meal-action-row{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:22px;
+}
+.meal-action-row button{
+  min-height:54px;
+  border-radius:14px;
+  padding:0 18px;
+  border:none;
+  font-weight:1000;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+.meal-action-row .download-btn{
+  background:linear-gradient(135deg,#fff,#bdbdbd);
+  color:#050505;
+}
+.meal-action-row .reset-btn{
+  background:rgba(255,255,255,.08);
+  color:white;
+  border:1px solid rgba(255,255,255,.14);
+}
+.meal-locked-preview{
+  margin:70px auto 0;
+  max-width:1120px;
+  border-radius:34px;
+  padding:42px;
+  background:linear-gradient(135deg,#ffffff,#f0f0f0);
+  color:#080808;
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow:0 30px 90px rgba(0,0,0,.10);
+  text-align:center;
+}
+.meal-locked-preview h2{
+  font-size:clamp(32px,5vw,54px);
+  line-height:1;
+  letter-spacing:-1.2px;
+  margin:0 0 14px;
+}
+.meal-locked-preview p{
+  color:#4d4d4d;
+  max-width:680px;
+  margin:0 auto 22px;
+  line-height:1.65;
+  font-size:17px;
+}
+@media(max-width:900px){
+  .meal-week-meals{grid-template-columns:1fr;}
+}
+
 </style>
 </head>
 <body>
@@ -456,7 +570,7 @@
   <div class="rec-grid three-products">
     <article class="rec-card meal-ai-card">
       <a href="#meal-plan-details">
-        <div class="rec-img own-photo meal-guide-photo" style="background-image:url('assets/meal-plan-guide-premium.png')">
+        <div class="rec-img own-photo meal-guide-photo" style="background-image:url('assets/meal-plan-guide.png')">
           <span class="product-badge">AI Powered</span>
         </div>
       </a>
@@ -519,11 +633,23 @@
   </div>
 
 
+  
+  <div id="mealLockedPreview" class="meal-locked-preview">
+    <p class="meal-details-kicker">Locked after purchase</p>
+    <h2>Meal Plan AI Generator</h2>
+    <p>
+      Buy the Meal Plan Guide AI to unlock a personal 7-day meal plan generator with calories,
+      macros, meals, grocery guidance and PDF download.
+    </p>
+    <a class="btn-dark" href="checkout.html?product=mealplan">Buy Meal Plan Guide €5.99</a>
+  </div>
+
+
   <div id="meal-plan-ai" class="meal-ai-lock">
     <div class="meal-ai-lock-head">
       <div class="meal-ai-kicker">After purchase</div>
       <h2>Meal Plan AI Generator</h2>
-      <p>This generator unlocks automatically after buying the Meal Plan Guide.</p>
+      <p>This generator unlocks automatically after purchase and creates a complete 7-day meal plan.</p>
     </div>
 
     <div id="mealAccessBox">
@@ -633,7 +759,9 @@
 
         <div id="macroGrid" class="macro-grid"></div>
         <div id="mealDays" class="meal-days"></div>
+        <div id="mealWeekPlan" class="meal-week-grid"></div>
         <div id="mealNotes" class="meal-notes"></div>
+        <div class="meal-action-row"><button class="download-btn" onclick="downloadMealPlanPDF()">Download PDF</button><button class="reset-btn" onclick="resetMealPlan()">Create new plan</button></div>
       </div>
     </div>
   </div>
@@ -789,11 +917,17 @@ function unlockMealAI(){
 
 function checkMealPurchase(){
   const params = new URLSearchParams(window.location.search);
-  if(params.get("purchased") === "mealplan"){
+
+  // Works with Stripe redirect like recommended.html?purchased=mealplan
+  if(params.get("purchased") === "mealplan" || params.get("product") === "mealplan"){
     localStorage.setItem("fitbrandMealPlanUnlocked", "true");
   }
+
   if(localStorage.getItem("fitbrandMealPlanUnlocked") === "true"){
-    document.getElementById("meal-plan-ai").classList.add("unlocked");
+    const preview = document.getElementById("mealLockedPreview");
+    const generator = document.getElementById("meal-plan-ai");
+    if(preview) preview.style.display = "none";
+    if(generator) generator.classList.add("unlocked");
     document.getElementById("mealGenerator").classList.add("show");
   }
 }
@@ -819,6 +953,9 @@ function estimateCalories(weight, height, age, gender, goal, trainingDays){
   return Math.max(1400, Math.round(calories / 50) * 50);
 }
 
+
+let latestMealPlanText = "";
+
 function generateMealPlan(){
   const goal = document.getElementById("mealGoal").value;
   const gender = document.getElementById("mealGender").value;
@@ -842,10 +979,10 @@ function generateMealPlan(){
   const fat = Math.round((calories * 0.25) / 9);
   const carbs = Math.max(80, Math.round((calories - protein * 4 - fat * 9) / 4));
 
-  let mealBank = {
+  const banks = {
     normal: [
-      ["Breakfast", ["Oats with Greek yogurt", "Berries", "1 scoop protein or eggs", "Water"]],
-      ["Lunch", ["Chicken rice bowl", "Mixed vegetables", "Avocado or olive oil", "Fruit"]],
+      ["Breakfast", ["Oats with Greek yogurt", "Berries", "Protein source", "Water"]],
+      ["Lunch", ["Chicken rice bowl", "Mixed vegetables", "Olive oil or avocado", "Fruit"]],
       ["Dinner", ["Lean beef/chicken/salmon", "Potatoes or rice", "Green vegetables", "Low calorie sauce"]],
       ["Snack", ["Skyr/protein yogurt", "Banana", "Rice cakes"]],
       ["Extra Meal", ["Wholegrain wrap", "Turkey/chicken/tofu", "Salad", "Light dressing"]]
@@ -880,14 +1017,17 @@ function generateMealPlan(){
     ]
   };
 
-  let selectedMeals = mealBank[diet] || mealBank.normal;
-  if(style === "simple" || time === "fast") selectedMeals = mealBank.easy;
-  if(style === "bulking" && diet !== "vegetarian") selectedMeals = mealBank.highprotein;
-  if(style === "lowcalorie") selectedMeals = selectedMeals.map(m => [m[0], m[1].map(x => x.includes("oil") || x.includes("Avocado") ? "Low calorie vegetables" : x)]);
+  let selectedBank = banks[diet] || banks.normal;
+  if(style === "simple" || time === "fast") selectedBank = banks.easy;
+  if(style === "bulking" && diet !== "vegetarian") selectedBank = banks.highprotein;
 
-  const chosen = selectedMeals.slice(0, meals);
+  const dayNames = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+  const weeklyPlan = dayNames.map((day, dayIndex) => {
+    const rotated = selectedBank.map((meal, i) => selectedBank[(i + dayIndex) % selectedBank.length]);
+    return { day, meals: rotated.slice(0, meals) };
+  });
 
-  document.getElementById("mealOutputTitle").textContent = "Your FitBrand Meal Plan";
+  document.getElementById("mealOutputTitle").textContent = "Your 7-Day FitBrand Meal Plan";
   document.getElementById("mealOutputSubtitle").textContent =
     "Built for " + goal.replace("fatloss","fat loss") + ", " + weight + "kg, " + height + "cm, training " + trainingDays + " days per week.";
   document.getElementById("mealOutputPill").textContent = meals + " MEALS / " + diet.toUpperCase();
@@ -899,23 +1039,82 @@ function generateMealPlan(){
     <div class="macro-box"><span>Fat</span><strong>${fat}g</strong></div>
   `;
 
-  document.getElementById("mealDays").innerHTML = chosen.map(meal => `
+  // Preview first day at top
+  document.getElementById("mealDays").innerHTML = weeklyPlan[0].meals.map(meal => `
     <div class="meal-day-card">
       <h4>${meal[0]}</h4>
       <ul>${meal[1].map(item => `<li>${item}</li>`).join("")}</ul>
     </div>
   `).join("");
 
+  // Full 7-day plan
+  document.getElementById("mealWeekPlan").innerHTML = weeklyPlan.map(day => `
+    <div class="meal-week-day">
+      <h4>${day.day}</h4>
+      <div class="meal-week-meals">
+        ${day.meals.map(meal => `
+          <div class="meal-mini">
+            <strong>${meal[0]}</strong>
+            <span>${meal[1].join(" • ")}</span>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `).join("");
+
   let notes = "Follow this for 7-14 days, then adjust calories based on progress. ";
   if(goal === "fatloss") notes += "If weight is not moving after 2 weeks, reduce 150-200 calories or add steps. ";
   if(goal === "muscle") notes += "If weight is not increasing slowly, add 150-250 calories. ";
+  if(goal === "maintenance") notes += "If energy or performance drops, add 100-150 calories from carbs. ";
   if(avoid) notes += "Avoid these foods: " + avoid + ". Replace them with similar foods you tolerate. ";
   notes += "This is general fitness guidance, not medical nutrition advice.";
 
   document.getElementById("mealNotes").textContent = notes;
+
+  latestMealPlanText = "FITBRAND 7-DAY MEAL PLAN\n\n" +
+    "Goal: " + goal + "\nCalories: " + calories + "\nProtein: " + protein + "g\nCarbs: " + carbs + "g\nFat: " + fat + "g\n\n" +
+    weeklyPlan.map(day => day.day + "\n" + day.meals.map(meal => "- " + meal[0] + ": " + meal[1].join(", ")).join("\n")).join("\n\n") +
+    "\n\nNotes: " + notes;
+
   document.getElementById("mealOutput").classList.add("show");
   document.getElementById("mealOutput").scrollIntoView({behavior:"smooth", block:"start"});
 }
+
+function downloadMealPlanPDF(){
+  if(!latestMealPlanText){
+    alert("Generate your meal plan first.");
+    return;
+  }
+
+  const printWindow = window.open("", "_blank");
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>FitBrand Meal Plan</title>
+        <style>
+          body{font-family:Arial,sans-serif;padding:40px;line-height:1.5;color:#111;}
+          h1{font-size:34px;margin-bottom:8px;}
+          pre{white-space:pre-wrap;font-family:Arial,sans-serif;font-size:14px;}
+          .brand{letter-spacing:2px;text-transform:uppercase;font-weight:900;color:#555;}
+        </style>
+      </head>
+      <body>
+        <div class="brand">FitBrand</div>
+        <h1>Your 7-Day Meal Plan</h1>
+        <pre>${latestMealPlanText.replace(/</g,"&lt;").replace(/>/g,"&gt;")}</pre>
+        <script>window.print();<\/script>
+      </body>
+    </html>
+  `);
+  printWindow.document.close();
+}
+
+function resetMealPlan(){
+  document.getElementById("mealOutput").classList.remove("show");
+  document.getElementById("mealWeekPlan").innerHTML = "";
+  latestMealPlanText = "";
+}
+
 
 document.addEventListener("DOMContentLoaded", () => {
   updateCartCount();
