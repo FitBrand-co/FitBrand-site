@@ -796,6 +796,62 @@
       .fb-modal-header{ padding:42px 18px 26px; }
     }
 
+
+    /* FINAL FIX: hide old generated table section and polish modal plan output */
+    #fitbrand-generator,
+    .program-generator,
+    .email-signup{
+      display:none !important;
+    }
+
+    .fb-plan-output{
+      background:
+        radial-gradient(circle at 15% 0%, rgba(255,255,255,.10), transparent 28%),
+        linear-gradient(145deg, #0c0d10, #050506) !important;
+      border:1px solid rgba(255,255,255,.14) !important;
+      border-radius:26px !important;
+      padding:26px !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 24px 80px rgba(0,0,0,.45);
+    }
+    .fb-plan-head{
+      align-items:center;
+      margin-bottom:24px !important;
+    }
+    .fb-plan-days{
+      grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+      gap:16px !important;
+    }
+    .fb-plan-day{
+      background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035)) !important;
+      border:1px solid rgba(255,255,255,.12) !important;
+      border-radius:22px !important;
+      padding:20px !important;
+      min-height:210px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+    }
+    .fb-plan-day h4{
+      font-size:19px !important;
+      margin-bottom:14px !important;
+      letter-spacing:-.2px;
+    }
+    .fb-plan-day li{
+      font-size:14px;
+      color:#e8e8e8 !important;
+      line-height:1.55 !important;
+      margin:8px 0 !important;
+    }
+    #modalPackage{
+      pointer-events:none;
+      opacity:.78;
+    }
+
+    @media(max-width:980px){
+      .fb-plan-days{ grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
+    }
+    @media(max-width:650px){
+      .fb-plan-days{ grid-template-columns:1fr !important; }
+    }
+
   </style>
 </head>
 <body>
@@ -986,7 +1042,7 @@
           <h3>Aesthetic Program</h3>
           <p>Build a balanced and aesthetic physique with a clear weekly structure.</p>
           <div class="price">€4.99</div>
-          <a class="btn-dark" href="checkout.html?product=aesthetic" onclick="savePurchasedPackage('aesthetic')">Buy now</a>
+          <a class="btn-dark" href="checkout.html?product=aesthetic">Buy now</a>
           <button class="btn-outline" onclick="addToCart('aesthetic')">Add to cart</button>
         </div>
       </article>
@@ -1009,7 +1065,7 @@
           <h3>Shred Program</h3>
           <p>Lose fat, reveal definition and build discipline with a simple system.</p>
           <div class="price">€6.99</div>
-          <a class="btn-dark" href="checkout.html?product=shred" onclick="savePurchasedPackage('shred')">Buy now</a>
+          <a class="btn-dark" href="checkout.html?product=shred">Buy now</a>
           <button class="btn-outline" onclick="addToCart('shred')">Add to cart</button>
         </div>
       </article>
@@ -1031,7 +1087,7 @@
           <h3>Strength Program</h3>
           <p>Build power, size and confidence with progressive training.</p>
           <div class="price">€6.99</div>
-          <a class="btn-dark" href="checkout.html?product=strength" onclick="savePurchasedPackage('strength')">Buy now</a>
+          <a class="btn-dark" href="checkout.html?product=strength">Buy now</a>
           <button class="btn-outline" onclick="addToCart('strength')">Add to cart</button>
         </div>
       </article>
@@ -1157,7 +1213,7 @@
       <div class="fb-logo-mark">FB</div>
       <div class="fb-modal-kicker">After purchase</div>
       <h2>Generate Your Personal Training Plan</h2>
-      <p>Enter your details below and FitBrand will create a training plan based on the package you purchased.</p>
+      <p>Fill in your details and FitBrand will create a personal plan based on the program you purchased.</p>
     </div>
 
     <div class="fb-modal-body">
@@ -1544,47 +1600,40 @@
     });
     document.getElementById("generatorPlan").classList.remove("show");
   }
-
-
-  function savePurchasedPackage(packageName){
-    localStorage.setItem("fitbrandPurchasedPackage", packageName);
-  }
-
-  function detectPurchaseAndShowGenerator(){
+function detectPurchaseAndShowGenerator(){
     const params = new URLSearchParams(window.location.search);
-    const purchasedFromUrl = params.get("purchased") || params.get("product");
-    const stored = localStorage.getItem("fitbrandPurchasedPackage");
+    const purchasedFromUrl = params.get("purchased");
     const valid = ["aesthetic", "shred", "strength"];
 
-    let packageName = "";
-    if(valid.includes(purchasedFromUrl)){
-      packageName = purchasedFromUrl;
-      localStorage.setItem("fitbrandPurchasedPackage", packageName);
-    } else if(valid.includes(stored)){
-      packageName = stored;
+    if(!valid.includes(purchasedFromUrl)){
+      return;
     }
 
-    if(packageName){
-      const trigger = document.getElementById("openGeneratorBtn");
-      if(trigger) trigger.classList.add("show");
+    localStorage.setItem("fitbrandPurchasedPackage", purchasedFromUrl);
 
-      const packageSelect = document.getElementById("modalPackage");
-      if(packageSelect) packageSelect.value = packageName;
+    const trigger = document.getElementById("openGeneratorBtn");
+    if(trigger) trigger.classList.add("show");
 
-      if(params.get("purchased")){
-        setTimeout(openGeneratorModal, 600);
-      }
-    }
+    const packageSelect = document.getElementById("modalPackage");
+    if(packageSelect) packageSelect.value = purchasedFromUrl;
+
+    setTimeout(openGeneratorModal, 600);
   }
 
   function openGeneratorModal(){
+    const stored = localStorage.getItem("fitbrandPurchasedPackage");
+    const valid = ["aesthetic", "shred", "strength"];
+
+    if(!valid.includes(stored)){
+      alert("This generator is only available after purchasing a program.");
+      return;
+    }
+
     const modal = document.getElementById("fitbrandGeneratorModal");
     if(modal) modal.classList.add("show");
 
-    const stored = localStorage.getItem("fitbrandPurchasedPackage");
-    if(stored && document.getElementById("modalPackage")){
-      document.getElementById("modalPackage").value = stored;
-    }
+    const packageSelect = document.getElementById("modalPackage");
+    if(packageSelect) packageSelect.value = stored;
   }
 
   function closeGeneratorModal(){
