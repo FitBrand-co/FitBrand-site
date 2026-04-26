@@ -852,6 +852,146 @@
       .fb-plan-days{ grid-template-columns:1fr !important; }
     }
 
+
+    .bundle-section{
+      background:
+        radial-gradient(circle at 12% 20%, rgba(255,255,255,.10), transparent 28%),
+        linear-gradient(135deg,#050505,#0d0d0f 55%,#050505);
+      padding:90px 20px;
+      color:white;
+      overflow:hidden;
+    }
+    .bundle-container{
+      max-width:1180px;
+      margin:auto;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:54px;
+      align-items:center;
+      background:rgba(255,255,255,.045);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:34px;
+      padding:44px;
+      box-shadow:0 35px 90px rgba(0,0,0,.38);
+      backdrop-filter: blur(10px);
+    }
+    .bundle-image{
+      min-height:420px;
+      border-radius:28px;
+      background:
+        radial-gradient(circle at center, rgba(255,255,255,.10), transparent 45%),
+        linear-gradient(145deg,#111,#050505);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:26px;
+      border:1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+    }
+    .bundle-image img{
+      width:100%;
+      max-width:500px;
+      display:block;
+      filter: drop-shadow(0 28px 45px rgba(0,0,0,.55));
+      border-radius:22px;
+    }
+    .bundle-tag{
+      letter-spacing:3px;
+      color:#bdbdbd;
+      font-size:12px;
+      font-weight:900;
+      text-transform:uppercase;
+      margin:0 0 12px;
+    }
+    .bundle-content h2{
+      font-size:clamp(38px,5vw,62px);
+      line-height:1;
+      letter-spacing:-1.4px;
+      margin:0 0 16px;
+    }
+    .bundle-text{
+      color:#d0d0d0;
+      font-size:18px;
+      line-height:1.6;
+      margin:0 0 22px;
+    }
+    .bundle-list{
+      list-style:none;
+      padding:0;
+      margin:0 0 26px;
+      display:grid;
+      gap:12px;
+    }
+    .bundle-list li{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:#f1f1f1;
+      font-weight:800;
+      font-size:16px;
+    }
+    .bundle-check{
+      width:28px;
+      height:28px;
+      border-radius:50%;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.22);
+      font-size:15px;
+    }
+    .bundle-features{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      margin:0 0 26px;
+    }
+    .bundle-feature{
+      padding:14px;
+      border-radius:18px;
+      background:rgba(255,255,255,.055);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .bundle-feature strong{
+      display:block;
+      font-size:14px;
+      margin-bottom:4px;
+    }
+    .bundle-feature span{
+      display:block;
+      color:#bdbdbd;
+      font-size:12px;
+      line-height:1.35;
+    }
+    .bundle-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      max-width:420px;
+      min-height:62px;
+      background:linear-gradient(135deg,#fff,#bfbfbf);
+      color:#050505;
+      border-radius:16px;
+      font-weight:1000;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      text-decoration:none;
+      box-shadow:0 18px 45px rgba(255,255,255,.12);
+    }
+    .bundle-secure{
+      margin-top:14px;
+      color:#bdbdbd;
+      font-size:13px;
+      font-weight:700;
+    }
+    @media(max-width:900px){
+      .bundle-container{grid-template-columns:1fr;padding:28px;}
+      .bundle-image{min-height:auto;}
+      .bundle-features{grid-template-columns:1fr;}
+    }
+
   </style>
 </head>
 <body>
@@ -1092,25 +1232,7 @@
         </div>
       </article>
     </div>
-  </section>
-
-  
-<div class="fitbrand-bundle-offer" style="margin:34px auto 0; max-width:900px; padding:30px; border-radius:28px; background:linear-gradient(135deg,#080808,#191919); color:white; text-align:center; box-shadow:0 25px 70px rgba(0,0,0,.22);">
-  <p style="letter-spacing:2px; text-transform:uppercase; color:#bdbdbd; font-size:12px; font-weight:800; margin:0 0 10px;">Best value</p>
-  <h2 style="font-size:34px; margin:0 0 10px;">Get All 3 Programs</h2>
-  <p style="color:#d0d0d0; max-width:650px; margin:0 auto 20px;">Aesthetic, Shred and Strength in one bundle. Perfect for customers who want the full FitBrand system.</p>
-  <a class="btn-silver" href="https://buy.stripe.com/test_14A14h1AX1lZ3kHc033F604" target="_blank" rel="noreferrer" style="display:inline-block; text-decoration:none;">Buy Bundle €18.97</a>
-</div>
-
-<section class="split">
-    <div class="split-photo"></div>
-    <div class="split-content">
-      <p class="eyebrow">Why FitBrand</p>
-      <h2>More than a program.</h2>
-      <p>FitBrand is built around discipline, identity and consistency. We want fitness to feel clear, premium and motivating from the first click.</p>
-      <a class="btn-silver" href="about.html">Read about us</a>
-    </div>
-  </section>
+  </section></section>
 
   <section class="cta">
     <h2>Ready to start?</h2>
@@ -1707,7 +1829,6 @@ function detectPurchaseAndShowGenerator(){
     shred: {name:"Shred Program", price:6.99},
     strength: {name:"Strength Program", price:6.99},
     bundle: {name:"Complete Bundle", price:18.97},
-    shaker: {name:"Premium Shaker", price:9.99},
     belt: {name:"Lifting Belt", price:24.99},
     straps: {name:"Lifting Straps", price:12.99},
   };
