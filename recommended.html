@@ -203,6 +203,234 @@
   .meal-field.wide{grid-column:span 1}
   .meal-output-head{flex-direction:column}
 }
+
+/* Premium Meal Plan Guide redesign */
+.meal-ai-card{
+  background:linear-gradient(180deg,#ffffff,#f2f2f2)!important;
+  color:#090909!important;
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow:0 25px 70px rgba(0,0,0,.10);
+}
+.meal-ai-card .body h3,
+.meal-ai-card .price{color:#090909!important;}
+.meal-ai-card .body p{color:#555!important;}
+.meal-guide-photo{
+  min-height:280px!important;
+  background-size:cover!important;
+  background-position:center!important;
+  display:block!important;
+}
+.meal-ai-card .btn-outline{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  text-decoration:none;
+}
+
+.meal-details-section{
+  margin:70px auto 0;
+  max-width:1120px;
+  border-radius:34px;
+  padding:42px;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(255,255,255,.75), transparent 32%),
+    linear-gradient(135deg,#ffffff,#eeeeee);
+  color:#080808;
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow:0 30px 90px rgba(0,0,0,.10);
+}
+.meal-details-grid{
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:38px;
+  align-items:center;
+}
+.meal-details-img{
+  min-height:420px;
+  border-radius:28px;
+  background-image:url('assets/meal-plan-guide-premium.png');
+  background-size:cover;
+  background-position:center;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.08), 0 22px 60px rgba(0,0,0,.14);
+}
+.meal-details-kicker{
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:#777;
+  font-size:12px;
+  font-weight:900;
+  margin:0 0 12px;
+}
+.meal-details-content h2{
+  font-size:clamp(34px,5vw,58px);
+  line-height:1;
+  letter-spacing:-1.4px;
+  margin:0 0 16px;
+}
+.meal-details-content p{
+  color:#4d4d4d;
+  line-height:1.7;
+  font-size:17px;
+  margin:0 0 20px;
+}
+.meal-benefits{
+  display:grid;
+  gap:12px;
+  margin:22px 0 28px;
+  padding:0;
+  list-style:none;
+}
+.meal-benefits li{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  padding:14px;
+  border-radius:18px;
+  background:#f8f8f8;
+  border:1px solid rgba(0,0,0,.08);
+  color:#111;
+  font-weight:800;
+}
+.meal-benefits span{
+  width:27px;
+  height:27px;
+  border-radius:999px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:#111;
+  color:white;
+  flex:0 0 auto;
+}
+.meal-details-actions{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.meal-details-actions a,
+.meal-details-actions button{
+  min-height:52px;
+  border-radius:14px;
+  padding:0 18px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:1.2px;
+  text-decoration:none;
+  cursor:pointer;
+}
+.meal-details-actions .primary{
+  background:#090909;
+  color:white;
+  border:1px solid #090909;
+  display:inline-flex;
+  align-items:center;
+}
+.meal-details-actions .secondary{
+  background:white;
+  color:#090909;
+  border:1px solid rgba(0,0,0,.14);
+}
+
+#meal-plan-ai{
+  display:none;
+}
+#meal-plan-ai.unlocked{
+  display:block;
+}
+.meal-ai-lock{
+  margin:70px auto 0!important;
+  max-width:1120px!important;
+  border-radius:34px!important;
+  padding:42px!important;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(255,255,255,.12), transparent 30%),
+    linear-gradient(145deg,#080808,#151515)!important;
+  color:white!important;
+  border:1px solid rgba(255,255,255,.14)!important;
+  box-shadow:0 30px 90px rgba(0,0,0,.30)!important;
+}
+.meal-access-box,
+#mealAccessBox{
+  display:none!important;
+}
+.meal-generator{
+  display:block!important;
+}
+.meal-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:18px!important;
+}
+.meal-field{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:9px!important;
+}
+.meal-field.wide{
+  grid-column:span 2!important;
+}
+.meal-field label{
+  text-transform:uppercase!important;
+  letter-spacing:1.5px!important;
+  color:#f2f2f2!important;
+  font-size:12px!important;
+  font-weight:900!important;
+}
+.meal-field input,
+.meal-field select{
+  height:58px!important;
+  border-radius:14px!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.095),rgba(255,255,255,.045))!important;
+  color:white!important;
+  padding:0 15px!important;
+}
+.meal-field option{
+  color:#111!important;
+  background:white!important;
+}
+.meal-generate-btn{
+  width:100%!important;
+  height:68px!important;
+  border-radius:16px!important;
+  margin-top:26px!important;
+  background:linear-gradient(135deg,#ffffff,#bdbdbd)!important;
+  color:#050505!important;
+  font-weight:1000!important;
+  letter-spacing:2px!important;
+  text-transform:uppercase!important;
+}
+.meal-output{
+  background:
+    radial-gradient(circle at 15% 0%, rgba(255,255,255,.10), transparent 28%),
+    linear-gradient(145deg,#0d0d10,#050505)!important;
+  border:1px solid rgba(255,255,255,.14)!important;
+  border-radius:28px!important;
+  padding:28px!important;
+  box-shadow:0 28px 80px rgba(0,0,0,.40)!important;
+}
+.meal-days{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+.meal-day-card{
+  background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.035))!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+  border-radius:22px!important;
+  padding:20px!important;
+  min-height:210px;
+}
+.macro-box{
+  background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.035))!important;
+}
+@media(max-width:950px){
+  .meal-details-grid,
+  .meal-grid,
+  .meal-days,
+  .macro-grid{grid-template-columns:1fr!important;}
+  .meal-field.wide{grid-column:span 1!important;}
+}
+
 </style>
 </head>
 <body>
@@ -227,13 +455,18 @@
 <section class="section">
   <div class="rec-grid three-products">
     <article class="rec-card meal-ai-card">
-      <a href="#meal-plan-ai"><div class="rec-img own-photo"><span class="product-badge">AI Powered</span><div class="meal-ai-visual"><div class="fb">FB</div><div class="title">Meal Plan</div><div class="sub">AI Guide</div></div></div></a>
+      <a href="#meal-plan-details">
+        <div class="rec-img own-photo meal-guide-photo" style="background-image:url('assets/meal-plan-guide-premium.png')">
+          <span class="product-badge">AI Powered</span>
+        </div>
+      </a>
       <div class="body">
         <h3>Meal Plan Guide AI</h3>
-        <p>Premium nutrition guide with a locked AI meal plan generator after purchase.</p>
+        <p>Premium nutrition guide with a personal meal plan generator unlocked after purchase.</p>
         <div class="price">€5.99</div>
         <a class="btn-dark" href="checkout.html?product=mealplan">Buy now</a>
         <button class="btn-outline" onclick="addToCart('mealplan')">Add to cart</button>
+        <a class="btn-outline" href="#meal-plan-details" style="margin-top:10px;">Read more</a>
       </div>
     </article>
 
@@ -258,11 +491,39 @@
     </article>
   </div>
 
+  
+  <div id="meal-plan-details" class="meal-details-section">
+    <div class="meal-details-grid">
+      <div class="meal-details-img" aria-label="FitBrand Meal Plan Guide AI"></div>
+      <div class="meal-details-content">
+        <p class="meal-details-kicker">Nutrition made simple</p>
+        <h2>Why you need the Meal Plan Guide AI</h2>
+        <p>
+          Training is only half of the transformation. The Meal Plan Guide AI gives customers a clear eating structure based on their goal, bodyweight, training schedule and food preferences.
+        </p>
+        <p>
+          Instead of guessing what to eat, customers get a simple meal plan with estimated calories, protein, carbs and fats. It is made to be easy to follow, realistic and built for consistency.
+        </p>
+        <ul class="meal-benefits">
+          <li><span>✓</span>Personal meal plan based on goal, weight, height and activity</li>
+          <li><span>✓</span>Estimated calories and macros for fat loss, muscle gain or maintenance</li>
+          <li><span>✓</span>Preferences for high protein, vegetarian, budget or fast meals</li>
+          <li><span>✓</span>Perfect add-on for customers who already bought a training program</li>
+        </ul>
+        <div class="meal-details-actions">
+          <a class="primary" href="checkout.html?product=mealplan">Buy Meal Plan Guide €5.99</a>
+          <button class="secondary" onclick="addToCart('mealplan')">Add to cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <div id="meal-plan-ai" class="meal-ai-lock">
     <div class="meal-ai-lock-head">
       <div class="meal-ai-kicker">After purchase</div>
       <h2>Meal Plan AI Generator</h2>
-      <p>This generator is only visible after buying the Meal Plan Guide. Enter the purchase code or return from checkout with <strong>?purchased=mealplan</strong>.</p>
+      <p>This generator unlocks automatically after buying the Meal Plan Guide.</p>
     </div>
 
     <div id="mealAccessBox">
@@ -520,15 +781,9 @@ function applyDrawerDiscount(){
 }
 
 function unlockMealAI(){
-  const code = (document.getElementById("mealAccessCode").value || "").trim().toUpperCase();
-  const error = document.getElementById("mealAccessError");
-  if(code === "MEALAI" || code === "FITBRANDMEAL" || localStorage.getItem("fitbrandMealPlanUnlocked") === "true"){
-    localStorage.setItem("fitbrandMealPlanUnlocked", "true");
-    document.getElementById("mealAccessBox").style.display = "none";
+  if(localStorage.getItem("fitbrandMealPlanUnlocked") === "true"){
+    document.getElementById("meal-plan-ai").classList.add("unlocked");
     document.getElementById("mealGenerator").classList.add("show");
-    error.textContent = "";
-  } else {
-    error.textContent = "Access denied. Buy the Meal Plan Guide to unlock the AI generator.";
   }
 }
 
@@ -538,7 +793,7 @@ function checkMealPurchase(){
     localStorage.setItem("fitbrandMealPlanUnlocked", "true");
   }
   if(localStorage.getItem("fitbrandMealPlanUnlocked") === "true"){
-    document.getElementById("mealAccessBox").style.display = "none";
+    document.getElementById("meal-plan-ai").classList.add("unlocked");
     document.getElementById("mealGenerator").classList.add("show");
   }
 }
