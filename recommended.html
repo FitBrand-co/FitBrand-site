@@ -1172,9 +1172,7 @@ body{
   transform:scale(1.025) !important;
 }
 
-.rec-card .rec-img::after{
-  background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.34)) !important;
-}
+.rec-card .rec-img::after{display:none!important;content:none!important;}
 
 .rec-card .body{
   position:relative !important;
@@ -1218,8 +1216,7 @@ body{
   padding:11px 16px !important;
   border-radius:999px !important;
   background:rgba(5,5,5,.88) !important;
-  backdrop-filter:blur(10px) !important;
-  box-shadow:0 16px 34px rgba(0,0,0,.24) !important;
+  backdrop-box-shadow:0 16px 34px rgba(0,0,0,.24) !important;
 }
 
 /* Premium section spacing around Meal Plan Guide */
@@ -1350,10 +1347,7 @@ body{
 
 /* Remove dark shade/overlay from product images */
 .rec-img::after,
-.rec-card .rec-img::after{
-  display:none !important;
-  content:none !important;
-}
+.rec-card .rec-img::after{display:none!important;content:none!important;}
 
 /* Premium product card movement */
 .rec-card{
@@ -1369,13 +1363,11 @@ body{
 /* Smooth image zoom even when image is a background */
 .rec-card .rec-img{
   transition: transform .65s ease, filter .65s ease !important;
-  filter: contrast(1.03) saturate(1.02) !important;
-}
+  }
 
 .rec-card:hover .rec-img{
   transform: scale(1.045) !important;
-  filter: contrast(1.08) saturate(1.05) !important;
-}
+  }
 
 /* Better button feel */
 .btn-dark,
@@ -1491,6 +1483,155 @@ body{
   .fitbrand-sticky-buy a,
   .fitbrand-sticky-buy button{
     width:100%;
+  }
+}
+
+
+/* ===== REAL FINAL FIX: CLEAN PRODUCT IMAGES + PREMIUM EFFECTS ===== */
+
+/* Remove all dark shade from recommended product images */
+.rec-img::before,
+.rec-img::after,
+.rec-card .rec-img::before,
+.rec-card .rec-img::after{
+  display:none!important;
+  content:none!important;
+  background:none!important;
+  opacity:0!important;
+}
+
+/* Make belt and straps images clear again */
+.rec-card .rec-img{
+  filter:none!important;
+  opacity:1!important;
+  background-blend-mode:normal!important;
+  transition:transform .55s ease, box-shadow .35s ease!important;
+}
+
+/* Premium hover without making image darker */
+.rec-card{
+  transition:transform .35s ease, box-shadow .35s ease, border-color .35s ease!important;
+}
+
+.rec-card:hover{
+  transform:translateY(-8px)!important;
+  box-shadow:0 34px 95px rgba(0,0,0,.18)!important;
+  border-color:rgba(0,0,0,.13)!important;
+}
+
+.rec-card:hover .rec-img{
+  transform:scale(1.035)!important;
+}
+
+/* Premium buttons */
+.rec-card .btn-dark,
+.rec-card .btn-outline,
+.meal-black-btn,
+.meal-white-btn,
+.meal-generate-preview-btn,
+.meal-generate-btn{
+  transition:transform .24s ease, box-shadow .24s ease, background .24s ease, color .24s ease!important;
+}
+
+.rec-card .btn-dark:hover,
+.meal-black-btn:hover,
+.meal-generate-preview-btn:hover,
+.meal-generate-btn:hover{
+  transform:translateY(-2px)!important;
+  box-shadow:0 15px 34px rgba(0,0,0,.22)!important;
+}
+
+.rec-card .btn-outline:hover,
+.meal-white-btn:hover{
+  background:#111!important;
+  color:#fff!important;
+  border-color:#111!important;
+  transform:translateY(-2px)!important;
+}
+
+/* Smooth scroll reveal */
+.reveal-on-scroll{
+  opacity:0;
+  transform:translateY(24px);
+  transition:opacity .7s ease, transform .7s ease;
+}
+
+.reveal-on-scroll.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* Sticky Meal Plan buy bar */
+.fitbrand-sticky-buy{
+  position:fixed;
+  left:50%;
+  bottom:22px;
+  transform:translateX(-50%) translateY(130%);
+  z-index:9998;
+  width:min(900px,calc(100vw - 32px));
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  border:1px solid rgba(0,0,0,.10);
+  border-radius:22px;
+  box-shadow:0 25px 80px rgba(0,0,0,.20);
+  padding:14px;
+  display:grid;
+  grid-template-columns:1fr auto auto;
+  gap:14px;
+  align-items:center;
+  transition:transform .35s ease;
+}
+
+.fitbrand-sticky-buy.show{
+  transform:translateX(-50%) translateY(0);
+}
+
+.fitbrand-sticky-buy strong{
+  display:block;
+  font-size:14px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#080808;
+}
+
+.fitbrand-sticky-buy span{
+  display:block;
+  color:rgba(0,0,0,.62);
+  font-size:13px;
+  margin-top:3px;
+}
+
+.fitbrand-sticky-buy a,
+.fitbrand-sticky-buy button{
+  min-height:46px;
+  border-radius:14px;
+  padding:0 18px;
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  cursor:pointer;
+  text-decoration:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.fitbrand-sticky-buy a{
+  background:#050505;
+  color:#fff;
+}
+
+.fitbrand-sticky-buy button{
+  background:#fff;
+  color:#050505;
+  border:1px solid rgba(0,0,0,.14);
+}
+
+@media(max-width:700px){
+  .fitbrand-sticky-buy{
+    grid-template-columns:1fr;
   }
 }
 
@@ -2465,6 +2606,57 @@ function showMiniCartPopup(){
   window.addEventListener("DOMContentLoaded", function(){
     revealRecommendedElements();
     stickyMealBuyBar();
+  });
+})();
+</script>
+
+
+<script>
+(function(){
+  function setupRecommendedPremiumEffects(){
+    document.querySelectorAll(".rec-card, .meal-product-card, .meal-generator-preview, .meal-trust-strip").forEach(el=>{
+      el.classList.add("reveal-on-scroll");
+    });
+
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add("visible");
+        }
+      });
+    }, {threshold:0.12});
+
+    document.querySelectorAll(".reveal-on-scroll").forEach(el=>observer.observe(el));
+  }
+
+  function setupStickyMealBuyBar(){
+    const bar = document.getElementById("fitbrandStickyBuy");
+    const mealSection = document.getElementById("meal-plan-guide-ai");
+    if(!bar || !mealSection) return;
+
+    function update(){
+      const rect = mealSection.getBoundingClientRect();
+      const unlocked = localStorage.getItem("fitbrandMealPlanUnlocked") === "true";
+
+      if(unlocked){
+        bar.classList.remove("show");
+        return;
+      }
+
+      if(rect.top < window.innerHeight * 0.45 && rect.bottom > window.innerHeight * 0.5){
+        bar.classList.add("show");
+      } else {
+        bar.classList.remove("show");
+      }
+    }
+
+    window.addEventListener("scroll", update, {passive:true});
+    update();
+  }
+
+  window.addEventListener("DOMContentLoaded", function(){
+    setupRecommendedPremiumEffects();
+    setupStickyMealBuyBar();
   });
 })();
 </script>
