@@ -211,6 +211,8 @@
 
       <button onclick="openProfileModal('profile')">View profile</button>
       <a class="profile-menu-link" href="profile.html">Edit profile</a>
+      <a class="profile-menu-link" href="account.html#products">My products</a>
+      <a class="profile-menu-link" href="account.html#orders">My orders</a>
       <button id="profileLoginBtn" onclick="openProfileModal('login')">Log in</button>
       <button id="profileLogoutBtn" onclick="logoutFitBrandUser()" style="display:none;">Log out</button>
     </div>
@@ -604,6 +606,7 @@ function estimateCalories(weight,height,age,gender,goal,trainingDays){
 }
 
 function generateMealPlan(){
+  if(typeof syncMealWizardToReal === "function") syncMealWizardToReal();
   const goal = document.getElementById("mealGoal").value;
   const gender = document.getElementById("mealGender").value;
   const age = Number(document.getElementById("mealAge").value);

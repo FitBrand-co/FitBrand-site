@@ -108,7 +108,8 @@
 
       <div id="checkout-discount-message" class="discount-message">Try code FIT10 for 10% off.</div>
 
-      <input id="checkout-email" type="email" placeholder="Email for order confirmation">
+      <input id="checkout-email" type="email" placeholder="Email for order confirmation" required>
+      <div id="checkout-email-message" class="discount-message">Email is required before payment. We use it to create/save your FitBrand account on this device.</div>
 
       <label class="policy-check">
         <input type="checkbox" id="accept-policies">
@@ -399,8 +400,16 @@ function applyCheckoutDiscount(){
 function updatePaymentLink(){
   const acceptPolicies = document.getElementById("accept-policies");
   const payButton = document.getElementById("stripe-link");
+  const emailInput = document.getElementById("checkout-email");
+  const email = (emailInput?.value || "").trim();
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const msg = document.getElementById("checkout-email-message");
 
-  if(!acceptPolicies.checked){
+  if(msg){
+    msg.textContent = emailOk ? "Email ready. Your FitBrand account will be saved with this email." : "Email is required before payment. We use it to create/save your FitBrand account on this device.";
+  }
+
+  if(!acceptPolicies.checked || !emailOk){
     payButton.classList.add("btn-disabled");
     payButton.href = "#";
     return;
@@ -409,17 +418,10 @@ function updatePaymentLink(){
   const product = getMainCheckoutProduct();
   const params = new URLSearchParams(location.search);
   const cartMode = params.get("cart") === "true";
-
   const stripeLinks = typeof FITBRAND_STRIPE_LINKS !== "undefined" ? FITBRAND_STRIPE_LINKS : {};
   const stripeUrl = cartMode ? stripeLinks.cart : stripeLinks[product];
-
   payButton.classList.remove("btn-disabled");
-
-  if(stripeUrl && !stripeUrl.startsWith("#")){
-    payButton.href = stripeUrl;
-  } else {
-    payButton.href = getConfirmationLink();
-  }
+  payButton.href = (stripeUrl && !stripeUrl.startsWith("#")) ? stripeUrl : getConfirmationLink();
 }
 
 function updateCartCount(){
@@ -663,6 +665,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("shipping-region").addEventListener("change", renderCheckout);
   document.getElementById("accept-policies").addEventListener("change", updatePaymentLink);
+  document.getElementById("checkout-email").addEventListener("input", updatePaymentLink);
+  document.getElementById("stripe-link").addEventListener("click", function(e){
+    const email = (document.getElementById("checkout-email")?.value || "").trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ e.preventDefault(); alert("Please enter your email first."); return; }
+    const existing = typeof getFitBrandUser === "function" ? getFitBrandUser() : JSON.parse(localStorage.getItem("fitbrandUser") || "null");
+    const name = existing?.name || email.split("@")[0].replace(/[._-]/g," ").replace(/\b\w/g, ch => ch.toUpperCase());
+    if(typeof saveFitBrandUser === "function") saveFitBrandUser({name,email}, true); else localStorage.setItem("fitbrandUser", JSON.stringify({name,email}));
+  });
 
   document.querySelectorAll(".cart-icon-btn").forEach(btn => {
     btn.addEventListener("click", function(e){

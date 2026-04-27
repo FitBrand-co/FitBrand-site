@@ -1388,3 +1388,40 @@ body{opacity:0;animation:pageFadeIn .65s ease forwards}
 .fb-meal-choice-panel{margin-top:0 !important;}
 .fb-meal-question.active{display:block !important;}
 @media(max-width:800px){.fb-meal-profile-summary{grid-template-columns:1fr}.fb-meal-profile-actions{display:grid;grid-template-columns:1fr}}
+
+
+/* ===== FITBRAND V3 FINAL ACCOUNT + PROFILE FIXES ===== */
+.profile-icon-btn{width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important;border-radius:50%!important;aspect-ratio:1/1!important;overflow:hidden!important;background:#f7f7f7!important;color:#050505!important;border:1px solid rgba(0,0,0,.14)!important;display:flex!important;align-items:center!important;justify-content:center!important;}
+.profile-icon-btn span,.profile-avatar span{font-size:16px!important;line-height:1!important;color:#050505!important;font-weight:1000!important;}
+.profile-avatar{width:58px!important;height:58px!important;min-width:58px!important;min-height:58px!important;aspect-ratio:1/1!important;border-radius:50%!important;overflow:hidden!important;background:#f7f7f7!important;color:#050505!important;border:1px solid rgba(0,0,0,.12)!important;display:flex!important;align-items:center!important;justify-content:center!important;}
+.profile-menu-head{align-items:center!important;}
+.profile-remember-row{display:flex!important;align-items:center!important;gap:10px!important;font-size:13px!important;color:rgba(0,0,0,.68)!important;font-weight:800!important;}
+.profile-remember-row input{width:auto!important;height:auto!important;margin:0!important;}
+.account-page{min-height:700px;background:#e8e8e8;padding:95px 30px;}
+.account-card{max-width:1100px;margin:0 auto;background:#fff;border-radius:30px;padding:44px;box-shadow:0 28px 90px rgba(0,0,0,.16);}
+.account-card h1{font-size:clamp(38px,6vw,72px);text-transform:uppercase;line-height:1;margin-bottom:12px;}
+.account-card p{color:rgba(0,0,0,.65);line-height:1.7;margin-bottom:24px;}
+.account-section{margin-top:32px;}
+.account-section h2{text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;}
+.access-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+.access-card{border-radius:22px;padding:20px;border:1px solid rgba(0,0,0,.08);background:linear-gradient(135deg,#fff,#f3f3f3);box-shadow:0 18px 50px rgba(0,0,0,.08);}
+.access-card.locked{opacity:.72;}
+.access-card strong{display:block;text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px;}
+.access-card span{display:block;color:rgba(0,0,0,.62);line-height:1.45;margin-bottom:14px;}
+.access-card a{min-height:44px;border-radius:12px;padding:0 14px;font-size:12px;font-weight:1000;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;background:#050505;color:white;}
+.orders-list{display:grid;gap:12px;}
+.order-row{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:16px;border-radius:18px;background:#f6f6f6;border:1px solid rgba(0,0,0,.08);}
+.order-row strong{text-transform:uppercase;letter-spacing:.06em;}
+.order-row span{color:rgba(0,0,0,.62);font-size:14px;}
+.fb-meal-choice-panel-pro{margin-bottom:24px!important;background:linear-gradient(145deg,rgba(255,255,255,.095),rgba(255,255,255,.04))!important;border:1px solid rgba(255,255,255,.14)!important;border-radius:30px!important;padding:26px!important;box-shadow:0 24px 70px rgba(0,0,0,.24)!important;}
+.fb-meal-mini-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px;}
+.fb-meal-mini-form input,.fb-meal-mini-form select{height:62px;border-radius:18px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:white;padding:0 16px;font-weight:800;outline:none;}
+.fb-meal-mini-form option{background:white;color:#111;}
+.fb-meal-mini-form .wide{grid-column:span 2;}
+.fb-meal-options.compact{grid-template-columns:repeat(3,1fr);margin-top:14px;}
+.fb-meal-generate-final{width:100%;height:64px;margin-top:18px;border:0;border-radius:18px;background:linear-gradient(135deg,#fff,#d7d7d7);color:#050505;font-weight:1000;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;}
+.fb-meal-wizard-note{padding:14px 16px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);color:rgba(255,255,255,.78);margin:0 0 14px;}
+.fb-meal-grid-collapsed{display:none!important;}
+.fb-meal-question{display:none;}.fb-meal-question.active{display:block;animation:mealFadeIn .25s ease;}
+.fb-meal-choice-actions{display:flex;gap:12px;margin-top:20px;}.fb-meal-choice-actions button{min-height:50px;border-radius:14px;padding:0 18px;font-weight:1000;cursor:pointer;text-transform:uppercase;}.fb-meal-back{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.14);}.fb-meal-next{background:#fff;color:#050505;border:0;}
+@media(max-width:900px){.access-grid{grid-template-columns:1fr}.order-row{grid-template-columns:1fr}.fb-meal-mini-form,.fb-meal-mini-form .wide,.fb-meal-options.compact{grid-template-columns:1fr;grid-column:span 1}}

@@ -1,20 +1,34 @@
 /* FitBrand global script: cart helpers, profile system, welcome choice, generator autofill and page polish. */
 (function(){
   const USER_KEY = "fitbrandUser";
+  const SESSION_USER_KEY = "fitbrandSessionUser";
   const WELCOME_KEY = "fitbrandWelcomeChoice";
+  const WELCOME_SESSION_KEY = "fitbrandWelcomeSeenSession";
   const PURCHASED_KEY = "fitbrandPurchasedPackage";
+  const PURCHASES_KEY = "fitbrandPurchases";
+  const ORDERS_KEY = "fitbrandOrders";
 
   function safeJson(value, fallback){
     try { return value ? (JSON.parse(value) || fallback) : fallback; }
     catch(e){ return fallback; }
   }
 
-  window.getFitBrandUser = function(){ return safeJson(localStorage.getItem(USER_KEY), null); };
-  window.saveFitBrandUser = function(user){
+  window.getFitBrandUser = function(){
+    return safeJson(sessionStorage.getItem(SESSION_USER_KEY), null) || safeJson(localStorage.getItem(USER_KEY), null);
+  };
+  window.saveFitBrandUser = function(user, remember){
     const existing = getFitBrandUser() || {};
     const saved = Object.assign({}, existing, user || {});
-    localStorage.setItem(USER_KEY, JSON.stringify(saved));
+    const rememberChoice = remember !== undefined ? !!remember : (document.getElementById('profileRememberInput')?.checked !== false);
+    if(rememberChoice){
+      localStorage.setItem(USER_KEY, JSON.stringify(saved));
+      sessionStorage.removeItem(SESSION_USER_KEY);
+    } else {
+      sessionStorage.setItem(SESSION_USER_KEY, JSON.stringify(saved));
+      localStorage.removeItem(USER_KEY);
+    }
     localStorage.setItem(WELCOME_KEY, "login");
+    sessionStorage.setItem(WELCOME_SESSION_KEY, "true");
     updateFitBrandProfileUI();
     prefillGeneratorsFromProfile();
     return saved;
@@ -76,6 +90,8 @@
         </div>
         <button type="button" onclick="openProfileModal('profile')">View profile</button>
         <a class="profile-menu-link" href="profile.html">Edit profile</a>
+        <a class="profile-menu-link" href="account.html#products">My products</a>
+        <a class="profile-menu-link" href="account.html#orders">My orders</a>
         <button id="profileLoginBtn" type="button" onclick="openProfileModal('login')">Log in</button>
         <button id="profileLogoutBtn" type="button" onclick="logoutFitBrandUser()">Log out</button>`;
       actions.appendChild(menu);
@@ -103,6 +119,7 @@
         <form id="profileForm" class="profile-form">
           <input id="profileNameInput" type="text" placeholder="Your name" autocomplete="name">
           <input id="profileEmailInput" type="email" placeholder="your@email.com" autocomplete="email">
+          <label class="profile-remember-row"><input id="profileRememberInput" type="checkbox" checked> Remember my login on this device</label>
           <button class="profile-main-btn" type="submit">Save / log in</button>
           <button class="profile-google-btn" type="button" onclick="fakeGoogleLogin()">Continue with Google</button>
         </form>
@@ -130,12 +147,14 @@
 
   window.openProfileFromWelcome = function(){
     localStorage.setItem(WELCOME_KEY, "login");
+    sessionStorage.setItem(WELCOME_SESSION_KEY, "true");
     document.getElementById("fitbrandWelcomeOverlay")?.classList.remove("show");
     openProfileModal("login");
   };
 
   window.continueAsGuest = function(){
     localStorage.setItem(WELCOME_KEY, "guest");
+    sessionStorage.setItem(WELCOME_SESSION_KEY, "true");
     document.getElementById("fitbrandWelcomeOverlay")?.classList.remove("show");
   };
 
@@ -180,7 +199,9 @@
 
   window.logoutFitBrandUser = function(){
     localStorage.removeItem(USER_KEY);
+    sessionStorage.removeItem(SESSION_USER_KEY);
     localStorage.removeItem(WELCOME_KEY);
+    sessionStorage.removeItem(WELCOME_SESSION_KEY);
     updateFitBrandProfileUI();
     document.getElementById("profileMenu")?.classList.remove("show");
     document.getElementById("profileModalOverlay")?.classList.remove("show");
@@ -195,7 +216,7 @@
     if(!email) return;
     const rawName = email.split("@")[0].replace(/[._-]/g, " ").trim();
     const name = rawName ? rawName.charAt(0).toUpperCase() + rawName.slice(1) : "FitBrand User";
-    saveFitBrandUser({name, email});
+    saveFitBrandUser({name, email}, true);
     closeProfileModal();
   };
 
@@ -208,7 +229,7 @@
       const name = (document.getElementById("profileNameInput")?.value || "").trim();
       const email = (document.getElementById("profileEmailInput")?.value || "").trim();
       if(!name || !email){ alert("Enter name and email"); return; }
-      saveFitBrandUser({name, email});
+      saveFitBrandUser({name, email}, document.getElementById('profileRememberInput')?.checked !== false);
       closeProfileModal();
     });
   }
@@ -235,7 +256,7 @@
 
   function maybeShowWelcome(){
     ensureWelcomeModal();
-    if(!localStorage.getItem(WELCOME_KEY) && !getFitBrandUser()){
+    if(!getFitBrandUser() && !sessionStorage.getItem(WELCOME_SESSION_KEY)){
       setTimeout(() => document.getElementById("fitbrandWelcomeOverlay")?.classList.add("show"), 500);
     }
   }
@@ -245,34 +266,66 @@
     if(!target || document.getElementById("fbMealChoicePanel")) return;
     const panel = document.createElement("div");
     panel.id = "fbMealChoicePanel";
-    panel.className = "fb-meal-choice-panel";
+    panel.className = "fb-meal-choice-panel fb-meal-choice-panel-pro";
     panel.innerHTML = `
       <div class="fb-meal-choice-head">
-        <div><h3>Quick Meal Setup</h3><p>Click through the choices and the form fills itself automatically.</p></div>
-        <div id="fbMealStepPill" class="fb-meal-step-pill">1 / 5</div>
+        <div><h3>Step-by-step Meal Plan AI</h3><p>Click through the cards. Your saved profile can fill the boring stuff automatically.</p></div>
+        <div id="fbMealStepPill" class="fb-meal-step-pill">1 / 6</div>
       </div>
-      <div class="fb-meal-question active" data-step="1"><h4>What is your goal?</h4><div class="fb-meal-options"><button class="fb-meal-option" data-field="mealGoal" data-value="fatloss"><strong>Lose fat</strong><span>Lower calories and high protein.</span></button><button class="fb-meal-option" data-field="mealGoal" data-value="muscle"><strong>Build muscle</strong><span>More food for growth.</span></button><button class="fb-meal-option" data-field="mealGoal" data-value="maintenance"><strong>Maintain</strong><span>Clean eating and balance.</span></button></div></div>
-      <div class="fb-meal-question" data-step="2"><h4>How many meals do you want?</h4><div class="fb-meal-options"><button class="fb-meal-option" data-field="mealMeals" data-value="3"><strong>3 meals</strong><span>Simple and easy.</span></button><button class="fb-meal-option" data-field="mealMeals" data-value="4"><strong>4 meals</strong><span>Balanced day.</span></button><button class="fb-meal-option" data-field="mealMeals" data-value="5"><strong>5 meals</strong><span>Best structure.</span></button></div></div>
-      <div class="fb-meal-question" data-step="3"><h4>Choose food style</h4><div class="fb-meal-options"><button class="fb-meal-option" data-field="mealDiet" data-value="highprotein"><strong>High protein</strong><span>Best for results.</span></button><button class="fb-meal-option" data-field="mealDiet" data-value="budget"><strong>Budget</strong><span>Cheaper meals.</span></button><button class="fb-meal-option" data-field="mealDiet" data-value="vegetarian"><strong>Vegetarian</strong><span>No meat.</span></button></div></div>
-      <div class="fb-meal-question" data-step="4"><h4>How much cooking time?</h4><div class="fb-meal-options"><button class="fb-meal-option" data-field="mealTime" data-value="fast"><strong>Under 15 min</strong><span>Fast meals.</span></button><button class="fb-meal-option" data-field="mealTime" data-value="prep"><strong>Meal prep</strong><span>Prepare ahead.</span></button><button class="fb-meal-option" data-field="mealTime" data-value="normal"><strong>Normal</strong><span>More flexible.</span></button></div></div>
-      <div class="fb-meal-question" data-step="5"><h4>How strict should it be?</h4><div class="fb-meal-options"><button class="fb-meal-option" data-field="mealDifficulty" data-value="easy"><strong>Easy</strong><span>Simple to follow.</span></button><button class="fb-meal-option" data-field="mealDifficulty" data-value="flexible"><strong>Flexible</strong><span>Lifestyle friendly.</span></button><button class="fb-meal-option" data-field="mealDifficulty" data-value="strict"><strong>Strict</strong><span>More precise.</span></button></div></div>
+      <div class="fb-meal-question active" data-step="1">
+        <h4>Start with profile info</h4>
+        <div class="fb-meal-wizard-note">Log in or save your profile to skip repeated fields.</div>
+        <div class="fb-meal-options">
+          <button class="fb-meal-option" type="button" data-action="use-profile"><strong>Use saved profile</strong><span>Auto-fill age, gender, weight, height and training days.</span></button>
+          <a class="fb-meal-option" href="profile.html"><strong>Change profile</strong><span>Edit name, address, phone, gender, weight and more.</span></a>
+          <button class="fb-meal-option" type="button" data-action="manual"><strong>Enter manually</strong><span>Use different information for this plan.</span></button>
+        </div>
+      </div>
+      <div class="fb-meal-question" data-step="2"><h4>What is your goal?</h4><div class="fb-meal-options"><button class="fb-meal-option" data-field="mealGoal" data-value="fatloss"><strong>Lose fat</strong><span>High protein and controlled calories.</span></button><button class="fb-meal-option" data-field="mealGoal" data-value="muscle"><strong>Build muscle</strong><span>More calories for growth.</span></button><button class="fb-meal-option" data-field="mealGoal" data-value="maintenance"><strong>Maintain</strong><span>Clean eating and balance.</span></button></div></div>
+      <div class="fb-meal-question" data-step="3"><h4>Your body info</h4><div class="fb-meal-mini-form"><input id="fbWizAge" type="number" placeholder="Age"><select id="fbWizGender"><option value="">Gender</option><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option></select><input id="fbWizWeight" type="number" placeholder="Weight kg"><input id="fbWizHeight" type="number" placeholder="Height cm"></div></div>
+      <div class="fb-meal-question" data-step="4"><h4>Training and meals</h4><div class="fb-meal-options"><button class="fb-meal-option" data-field="mealTrainingDays" data-value="3"><strong>2-3 days</strong><span>Simple routine.</span></button><button class="fb-meal-option" data-field="mealTrainingDays" data-value="5"><strong>4-5 days</strong><span>Balanced progress.</span></button><button class="fb-meal-option" data-field="mealTrainingDays" data-value="6"><strong>6+ days</strong><span>High consistency.</span></button></div><div class="fb-meal-options compact"><button class="fb-meal-option" data-field="mealMeals" data-value="3">3 meals</button><button class="fb-meal-option" data-field="mealMeals" data-value="4">4 meals</button><button class="fb-meal-option" data-field="mealMeals" data-value="5">5 meals</button></div></div>
+      <div class="fb-meal-question" data-step="5"><h4>Food style</h4><div class="fb-meal-options"><button class="fb-meal-option" data-field="mealDiet" data-value="highprotein"><strong>High protein</strong><span>Best for results.</span></button><button class="fb-meal-option" data-field="mealDiet" data-value="budget"><strong>Budget</strong><span>Cheaper meals.</span></button><button class="fb-meal-option" data-field="mealDiet" data-value="vegetarian"><strong>Vegetarian</strong><span>No meat.</span></button><button class="fb-meal-option" data-field="mealDiet" data-value="easy"><strong>Easy meals</strong><span>Fast and simple.</span></button></div></div>
+      <div class="fb-meal-question" data-step="6"><h4>Final details</h4><div class="fb-meal-mini-form"><select id="fbWizTime"><option value="normal">Normal cooking time</option><option value="fast">Under 15 min</option><option value="prep">Meal prep friendly</option></select><select id="fbWizDifficulty"><option value="easy">Easy to follow</option><option value="flexible">Flexible lifestyle</option><option value="strict">Strict / precise</option></select><input id="fbWizAvoid" class="wide" placeholder="Foods to avoid / allergies"></div><button class="fb-meal-generate-final" type="button" onclick="generateMealPlan()">Generate my 7-day meal plan</button></div>
       <div class="fb-meal-choice-actions"><button class="fb-meal-back" type="button" id="fbMealBack">Back</button><button class="fb-meal-next" type="button" id="fbMealNext">Next</button></div>`;
     target.insertBefore(panel, target.firstChild);
+    const grid = document.querySelector('#meal-plan-ai .meal-grid');
+    if(grid) grid.classList.add('fb-meal-grid-collapsed');
     let step = 1;
-    function render(){
-      panel.querySelectorAll(".fb-meal-question").forEach(q => q.classList.toggle("active", Number(q.dataset.step) === step));
-      const pill = document.getElementById("fbMealStepPill");
-      if(pill) pill.textContent = step + " / 5";
+    function setVal(id, val){ const el = document.getElementById(id); if(el && val !== undefined && val !== null) el.value = val; }
+    function syncWizardToReal(){
+      setVal('mealAge', document.getElementById('fbWizAge')?.value || document.getElementById('mealAge')?.value || '');
+      setVal('mealGender', document.getElementById('fbWizGender')?.value || document.getElementById('mealGender')?.value || '');
+      setVal('mealWeight', document.getElementById('fbWizWeight')?.value || document.getElementById('mealWeight')?.value || '');
+      setVal('mealHeight', document.getElementById('fbWizHeight')?.value || document.getElementById('mealHeight')?.value || '');
+      setVal('mealTime', document.getElementById('fbWizTime')?.value || 'normal');
+      setVal('mealDifficulty', document.getElementById('fbWizDifficulty')?.value || 'easy');
+      setVal('mealAvoid', document.getElementById('fbWizAvoid')?.value || document.getElementById('mealAvoid')?.value || '');
     }
-    panel.querySelectorAll(".fb-meal-option").forEach(btn => btn.addEventListener("click", () => {
-      const el = document.getElementById(btn.dataset.field);
-      if(el) el.value = btn.dataset.value;
-      btn.closest(".fb-meal-question").querySelectorAll(".fb-meal-option").forEach(b => b.classList.remove("selected"));
-      btn.classList.add("selected");
-      if(step < 5){ step++; render(); }
+    window.syncMealWizardToReal = syncWizardToReal;
+    function fillWizardFromProfile(){
+      const user = getFitBrandUser(); if(!user) return false;
+      setVal('fbWizAge', user.age || ''); setVal('fbWizGender', user.gender || ''); setVal('fbWizWeight', user.weight || ''); setVal('fbWizHeight', user.height || ''); setVal('fbWizAvoid', user.allergies || '');
+      if(user.trainingDays) setVal('mealTrainingDays', user.trainingDays);
+      if(user.goal) setVal('mealGoal', user.goal === 'strength' ? 'muscle' : user.goal);
+      syncWizardToReal(); return !!(user.age && user.gender && user.weight && user.height);
+    }
+    function render(){
+      panel.querySelectorAll('.fb-meal-question').forEach(q => q.classList.toggle('active', Number(q.dataset.step) === step));
+      const pill = document.getElementById('fbMealStepPill'); if(pill) pill.textContent = step + ' / 6';
+      const back=document.getElementById('fbMealBack'), next=document.getElementById('fbMealNext');
+      if(back) back.style.visibility = step === 1 ? 'hidden' : 'visible'; if(next) next.style.display = step === 6 ? 'none' : 'inline-flex'; syncWizardToReal();
+    }
+    panel.querySelectorAll('input, select').forEach(el => el.addEventListener('input', syncWizardToReal));
+    panel.querySelectorAll('.fb-meal-option').forEach(btn => btn.addEventListener('click', () => {
+      if(btn.tagName === 'A') return; const action = btn.dataset.action;
+      if(action === 'use-profile'){ if(!fillWizardFromProfile()){ alert('Save your profile first, or enter the details manually.'); return; } btn.closest('.fb-meal-question').querySelectorAll('.fb-meal-option').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); step = 2; render(); return; }
+      if(action === 'manual'){ btn.classList.add('selected'); step = 2; render(); return; }
+      if(btn.dataset.field){ const el = document.getElementById(btn.dataset.field); if(el) el.value = btn.dataset.value; }
+      const q = btn.closest('.fb-meal-question'); q.querySelectorAll('.fb-meal-option').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); syncWizardToReal();
     }));
-    document.getElementById("fbMealBack")?.addEventListener("click", () => { if(step > 1){ step--; render(); } });
-    document.getElementById("fbMealNext")?.addEventListener("click", () => { if(step < 5){ step++; render(); } });
+    document.getElementById('fbMealBack')?.addEventListener('click', () => { if(step > 1){ step--; render(); } });
+    document.getElementById('fbMealNext')?.addEventListener('click', () => { if(step < 6){ step++; render(); } });
+    fillWizardFromProfile(); render();
   }
 
 
