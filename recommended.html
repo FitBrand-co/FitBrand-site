@@ -909,6 +909,25 @@
 #meal-plan-ai.unlocked{display:block!important;}
 @media(max-width:1000px){.meal-product-card,.meal-generator-preview{grid-template-columns:1fr;}.meal-buy-row,.meal-trust-strip,.meal-benefit-grid,.meal-preview-grid{grid-template-columns:1fr;}.meal-product-content{padding:34px 24px;}.meal-product-image{min-height:360px;}.meal-product-image::after{display:none;}}
 
+
+/* Premium transparent header */
+.nav{
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
+  background: rgba(5,5,5,0.58) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.10) !important;
+  transition: background 0.28s ease, backdrop-filter 0.28s ease, box-shadow 0.28s ease !important;
+}
+.nav.scrolled{
+  background: rgba(5,5,5,0.88) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.22) !important;
+}
+
 </style>
 </head>
 <body>
@@ -1781,6 +1800,19 @@ function showMiniCartPopup(){
   popup.classList.add("show");
   setTimeout(()=>popup.classList.remove("show"), 3000);
 }
+</script>
+
+
+<script>
+window.addEventListener("scroll", function(){
+  const nav = document.querySelector(".nav");
+  if(!nav) return;
+  if(window.scrollY > 45){
+    nav.classList.add("scrolled");
+  } else {
+    nav.classList.remove("scrolled");
+  }
+});
 </script>
 
 <script src="fitbrand.js"></script>
