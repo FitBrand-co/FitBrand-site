@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="style.css">
 
 <meta name="description" content="Black lifting straps for stronger grip and heavy pull movements.">
-<meta name="keywords" content="FitBrand, fitness programs, gym accessories, workout plans, lifting belt, lifting straps, shaker bottle">
+<meta name="keywords" content="FitBrand, fitness programs, gym accessories, lifting straps, back training, deadlifts">
 <meta name="author" content="FitBrand">
 <meta property="og:title" content="Lifting Straps | FitBrand">
 <meta property="og:description" content="Black lifting straps for stronger grip and heavy pull movements.">
@@ -15,11 +15,273 @@
 <meta property="og:image" content="assets/fitbrand-logo-real.png">
 <meta name="twitter:card" content="summary_large_image">
 
+<style>
+/* ===== PRODUCT STRAPS PREMIUM PAGE ===== */
+body{background:#ececec!important;}
+
+.product-detail-hero{
+  min-height:640px!important;
+  position:relative;
+  overflow:hidden;
+}
+.product-detail-hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,.18), transparent 30%),
+    linear-gradient(180deg, transparent 0%, rgba(0,0,0,.24) 100%);
+  pointer-events:none;
+}
+.product-detail-hero .hero-content{
+  position:relative;
+  z-index:2;
+}
+.product-detail-hero h1{
+  max-width:850px!important;
+}
+.product-hero-actions{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.product-hero-actions a,
+.product-hero-actions button{
+  min-height:54px;
+  border-radius:14px;
+}
+
+.product-detail-section{
+  background:linear-gradient(180deg,#f4f4f4,#e7e7e7)!important;
+  padding:86px 30px!important;
+}
+.product-detail-wrap{
+  max-width:1240px!important;
+  gap:40px!important;
+}
+.product-gallery-slider{
+  border-radius:32px!important;
+  padding:18px!important;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255,255,255,.12), transparent 28%),
+    linear-gradient(135deg,#0b0b0c,#191a1d)!important;
+  box-shadow:0 34px 100px rgba(0,0,0,.25)!important;
+  position:sticky;
+  top:120px;
+}
+.slider-main{
+  height:540px!important;
+  border-radius:26px!important;
+  overflow:hidden;
+  position:relative;
+}
+.slider-main::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:26px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);
+  pointer-events:none;
+}
+.slider-thumbs{
+  grid-template-columns:repeat(3,1fr)!important;
+}
+.slider-thumb{
+  height:120px!important;
+  border-radius:18px!important;
+}
+.product-info{
+  border-radius:32px!important;
+  padding:44px!important;
+  box-shadow:0 30px 100px rgba(0,0,0,.15)!important;
+  border:1px solid rgba(0,0,0,.07)!important;
+}
+.product-info h1{
+  letter-spacing:.04em!important;
+}
+.rating-line{
+  background:#f5f5f5;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:999px;
+  display:inline-flex!important;
+  padding:10px 14px;
+}
+.stock-box div{
+  background:linear-gradient(135deg,#fafafa,#ececec)!important;
+  border-radius:16px!important;
+}
+.product-actions{
+  grid-template-columns:1fr 1fr!important;
+}
+.product-actions .btn-dark,
+.product-actions .btn-outline{
+  min-height:58px;
+  border-radius:16px;
+}
+.product-quick-benefits{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin:24px 0;
+}
+.product-quick-benefits div{
+  padding:16px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#f8f8f8,#e9e9e9);
+  border:1px solid rgba(0,0,0,.08);
+}
+.product-quick-benefits strong{
+  display:block;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-size:12px;
+  margin-bottom:6px;
+}
+.product-quick-benefits span{
+  display:block;
+  color:rgba(0,0,0,.62);
+  font-size:13px;
+  line-height:1.45;
+}
+.product-accordion details{
+  transition:.24s ease;
+}
+.product-accordion details:hover{
+  transform:translateY(-2px);
+}
+.product-reviews{
+  grid-template-columns:1fr 1fr;
+}
+.mini-review{
+  background:linear-gradient(135deg,#fff,#f1f1f1)!important;
+}
+.related-products-section{
+  padding:86px 30px;
+  background:#08090b;
+  color:white;
+}
+.related-products-grid{
+  max-width:1180px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+}
+.related-card{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:24px;
+  padding:24px;
+  transition:.28s ease;
+}
+.related-card:hover{
+  transform:translateY(-6px);
+  background:rgba(255,255,255,.09);
+}
+.related-card h3{
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.related-card p{
+  color:rgba(255,255,255,.68);
+  line-height:1.65;
+  margin-bottom:16px;
+}
+.related-card a{
+  color:white;
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  font-size:12px;
+}
+.reveal-on-scroll{
+  opacity:0;
+  transform:translateY(24px);
+  transition:opacity .7s ease, transform .7s ease;
+}
+.reveal-on-scroll.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* ===== PROFILE HEADER ===== */
+.nav-actions{display:flex;align-items:center;gap:12px;position:relative;}
+.profile-icon-btn{
+  width:46px;height:46px;border-radius:50%;border:1px solid rgba(0,0,0,.12);
+  background:linear-gradient(135deg,#fff,#d7d7d7);color:#050505;font-weight:1000;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 25px rgba(0,0,0,.10);transition:.22s ease;
+}
+.profile-icon-btn:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(0,0,0,.14);}
+.profile-menu{
+  position:absolute;top:58px;right:0;width:300px;background:rgba(255,255,255,.94);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border:1px solid rgba(0,0,0,.10);border-radius:22px;box-shadow:0 24px 80px rgba(0,0,0,.22);
+  padding:14px;display:none;z-index:12000;color:#050505;
+}
+.profile-menu.show{display:block;}
+.profile-menu-head{display:flex;gap:12px;align-items:center;padding:12px;border-bottom:1px solid #eee;margin-bottom:8px;}
+.profile-avatar{width:46px;height:46px;border-radius:50%;background:#050505;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:1000;}
+.profile-menu button{width:100%;border:0;background:transparent;padding:13px 12px;text-align:left;cursor:pointer;border-radius:12px;font-weight:900;text-transform:uppercase;font-size:12px;color:#050505;}
+.profile-menu button:hover{background:#f0f0f0;}
+.profile-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;z-index:13000;padding:22px;}
+.profile-modal-overlay.show{display:flex;}
+.profile-modal{width:min(520px,100%);background:linear-gradient(135deg,#fff,#eee);border-radius:28px;padding:30px;box-shadow:0 30px 100px rgba(0,0,0,.35);position:relative;color:#050505;}
+.profile-modal-close{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:22px;}
+.profile-modal h2{text-transform:uppercase;font-size:34px;margin-bottom:10px;}
+.profile-form{display:grid;gap:12px;}
+.profile-form input{height:54px;border-radius:14px;border:1px solid rgba(0,0,0,.14);padding:0 14px;margin:0;}
+.profile-main-btn,.profile-google-btn{height:56px;border-radius:14px;font-weight:1000;cursor:pointer;text-transform:uppercase;}
+.profile-main-btn{border:0;background:#050505;color:white;}
+.profile-google-btn{border:1px solid #ddd;background:white;color:#050505;}
+
+.fitbrand-sticky-buy{
+  position:fixed;
+  left:50%;
+  bottom:22px;
+  transform:translateX(-50%) translateY(130%);
+  z-index:9998;
+  width:min(900px,calc(100vw - 32px));
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  border:1px solid rgba(0,0,0,.10);
+  border-radius:22px;
+  box-shadow:0 25px 80px rgba(0,0,0,.20);
+  padding:14px;
+  display:grid;
+  grid-template-columns:1fr auto auto;
+  gap:14px;
+  align-items:center;
+  transition:transform .35s ease;
+}
+.fitbrand-sticky-buy.show{transform:translateX(-50%) translateY(0);}
+.fitbrand-sticky-buy strong{display:block;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:#080808;}
+.fitbrand-sticky-buy span{display:block;color:rgba(0,0,0,.62);font-size:13px;margin-top:3px;}
+.fitbrand-sticky-buy a,.fitbrand-sticky-buy button{
+  min-height:46px;border-radius:14px;padding:0 18px;font-size:12px;font-weight:950;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;
+}
+.fitbrand-sticky-buy a{background:#050505;color:#fff;}
+.fitbrand-sticky-buy button{background:#fff;color:#050505;border:1px solid rgba(0,0,0,.14);}
+
+@media(max-width:950px){
+  .product-gallery-slider{position:static;}
+  .product-quick-benefits,.product-reviews,.related-products-grid,.product-actions{grid-template-columns:1fr!important;}
+  .slider-main{height:360px!important;}
+  .fitbrand-sticky-buy{grid-template-columns:1fr;}
+}
+</style>
 </head>
+
 <body>
 <button class="back-button-global" onclick="history.back()">← Back</button>
+
 <header class="nav">
-  <a href="index.html" class="brand"><img class="logo-img" src="assets/fitbrand-logo-real.png" alt="FitBrand logo"><span class="brand-word">FITBRAND</span></a>
+  <a href="index.html" class="brand">
+    <img class="logo-img" src="assets/fitbrand-logo-real.png" alt="FitBrand logo">
+    <span class="brand-word">FITBRAND</span>
+  </a>
+
   <nav>
     <a href="index.html">Home</a>
     <a href="programs.html">Programs</a>
@@ -27,18 +289,43 @@
     <a href="about.html">About us</a>
     <a href="policies.html">Policies</a>
   </nav>
-  <a href="cart.html" class="cart-icon-btn">
-    <span class="cart-svg">🛒</span>
-    <span class="cart-count" id="cart-count-btn">0</span>
-  </a>
+
+  <div class="nav-actions">
+    <a href="cart.html" class="cart-icon-btn">
+      <span class="cart-svg">🛒</span>
+      <span class="cart-count" id="cart-count-btn">0</span>
+    </a>
+
+    <button class="profile-icon-btn" onclick="toggleProfileMenu()" aria-label="Profile">
+      <span id="profileInitial">?</span>
+    </button>
+
+    <div id="profileMenu" class="profile-menu">
+      <div class="profile-menu-head">
+        <div class="profile-avatar"><span id="profileMenuInitial">?</span></div>
+        <div>
+          <strong id="profileMenuName">Guest</strong><br>
+          <span id="profileMenuEmail">Not logged in</span>
+        </div>
+      </div>
+      <button onclick="openProfileModal('profile')">View profile</button>
+      <button onclick="openProfileModal('edit')">Edit profile</button>
+      <button id="profileLoginBtn" onclick="openProfileModal('login')">Log in</button>
+      <button id="profileLogoutBtn" onclick="logoutFitBrandUser()" style="display:none;">Log out</button>
+    </div>
+  </div>
 </header>
+
 <main>
 <section class="hero product-detail-hero own-photo" style="background-image:linear-gradient(90deg,rgba(0,0,0,.96),rgba(0,0,0,.72),rgba(0,0,0,.15)),url('assets/own-straps-1.jpg');background-size:cover;background-position:center;">
   <div class="hero-content">
     <p class="eyebrow">Recommended Product</p>
     <h1>Lifting Straps</h1>
     <p>Black lifting straps made for stronger grip during heavy pull movements. Designed for back training, deadlifts, rows and shrugs.</p>
-    <a class="btn-silver" href="checkout.html?product=straps">Buy on FitBrand</a>
+    <div class="product-hero-actions">
+      <a class="btn-silver" href="checkout.html?product=straps">Buy now</a>
+      <button class="btn-outline" onclick="addToCart('straps')">Add to cart</button>
+    </div>
   </div>
 </section>
 
@@ -48,17 +335,26 @@
       <div id="slider-main" class="slider-main own-photo" style="background-image:url('assets/own-straps-1.jpg')"></div>
       <div class="slider-thumbs">
         <div class="slider-thumb own-photo active" onclick="setGalleryImage('assets/own-straps-1.jpg', this)" style="background-image:url('assets/own-straps-1.jpg')"></div>
-<div class="slider-thumb own-photo " onclick="setGalleryImage('assets/own-straps-2.jpg', this)" style="background-image:url('assets/own-straps-2.jpg')"></div>
-<div class="slider-thumb own-photo " onclick="setGalleryImage('assets/own-straps-3.jpg', this)" style="background-image:url('assets/own-straps-3.jpg')"></div>
+        <div class="slider-thumb own-photo" onclick="setGalleryImage('assets/own-straps-2.jpg', this)" style="background-image:url('assets/own-straps-2.jpg')"></div>
+        <div class="slider-thumb own-photo" onclick="setGalleryImage('assets/own-straps-3.jpg', this)" style="background-image:url('assets/own-straps-3.jpg')"></div>
       </div>
     </div>
 
     <div class="product-info">
       <a class="back-link" href="recommended.html">← Back to products</a>
-      <div class="premium-badge">Premium Pick</div>
+      <div class="premium-badge">Most Popular</div>
       <h1>Lifting Straps</h1>
       <div class="rating-line"><span class="rating-stars">★★★★★</span><span>4.9 • 156 reviews</span></div>
+
       <p>Black lifting straps made for stronger grip during heavy pull movements. Designed for back training, deadlifts, rows and shrugs.</p>
+      <p>Perfect if your grip fails before your back muscles. They help you keep focus on the movement, push heavier sets and train with more confidence.</p>
+
+      <div class="product-quick-benefits">
+        <div><strong>Grip support</strong><span>Stay locked in on heavy pulling sets.</span></div>
+        <div><strong>Back focus</strong><span>Reduce grip limitation and hit the target muscle.</span></div>
+        <div><strong>Premium look</strong><span>Clean black FitBrand gym aesthetic.</span></div>
+      </div>
+
       <div class="price">€12.99</div>
 
       <div class="stock-box">
@@ -73,56 +369,65 @@
         <button class="btn-outline" onclick="addToCart('straps')">Add to cart</button>
       </div>
 
-      
       <div class="product-accordion">
-        <details open><summary>Why this product</summary><p>Straps help when grip fails before your back, letting you focus on target muscles.</p></details>
-        <details><summary>Care instructions</summary><p>Let the straps dry after hard sessions. Hand wash only if needed.</p></details>
+        <details open><summary>Why this product</summary><p>Straps help when grip fails before your back, letting you focus on target muscles and finish harder sets with better control.</p></details>
+        <details><summary>How to use</summary><p>Wrap the strap around your wrist, loop it tightly around the bar, then pull with control. Best used on heavy pulling exercises.</p></details>
+        <details><summary>Care instructions</summary><p>Let the straps dry after hard sessions. Hand wash only if needed and avoid tumble drying.</p></details>
         <details><summary>Shipping</summary><p>Physical product. Shipping is estimated during checkout.</p></details>
       </div>
 
       <div class="product-reviews">
-        <div class="mini-review"><div class="stars">★★★★★</div><p>“Looks clean and feels like it fits the FitBrand lifestyle.”</p></div>
-        <div class="mini-review"><div class="stars">★★★★★</div><p>“Useful product, good for staying consistent with training.”</p></div>
+        <div class="mini-review"><div class="stars">★★★★★</div><p>“The straps make pull days feel stronger and more controlled.”</p></div>
+        <div class="mini-review"><div class="stars">★★★★★</div><p>“Clean look, useful product and perfect for heavier back training.”</p></div>
       </div>
     </div>
   </div>
 </section>
+
+<section class="related-products-section">
+  <div class="section-head">
+    <h2>Complete your setup</h2>
+    <p>Pair your straps with other FitBrand products for better training structure and recovery.</p>
+  </div>
+  <div class="related-products-grid">
+    <div class="related-card">
+      <h3>Lifting Belt</h3>
+      <p>Add support for heavy squats, deadlifts and strength-focused training.</p>
+      <a href="product-belt.html">View product</a>
+    </div>
+    <div class="related-card">
+      <h3>Meal Plan Guide AI</h3>
+      <p>Fuel your training with a personal 7-day meal plan generator after purchase.</p>
+      <a href="recommended.html#meal-plan-guide-ai">View meal plan</a>
+    </div>
+    <div class="related-card">
+      <h3>Programs</h3>
+      <p>Get a clear FitBrand training plan for aesthetics, fat loss or strength.</p>
+      <a href="programs.html">View programs</a>
+    </div>
+  </div>
+</section>
 </main>
+
 <footer>
   <div class="footer-grid">
     <div><a class="brand" href="index.html"><img class="logo-img" src="assets/fitbrand-logo-real.png" alt="FitBrand logo"></a><p>Premium programs. Real results. No excuses.</p></div>
-    
     <div><h4>Support</h4><a href="policies.html">Our Policies</a><a href="policies.html#refunds">Refund Policy</a><a href="policies.html#privacy">Privacy Policy</a><a href="policies.html#terms">Terms & Conditions</a></div>
     <div><h4>Connect</h4><a href="https://instagram.com/fitbrand.co" target="_blank" rel="noreferrer">Instagram</a><a href="https://tiktok.com/@fitbrand.co" target="_blank" rel="noreferrer">TikTok</a><a href="https://www.facebook.com/profile.php?id=61588721279095" target="_blank" rel="noreferrer">Facebook</a><a href="mailto:support@fitbrand.co">Email</a></div>
   </div>
   <div class="copy"><span>© 2026 FitBrand. All rights reserved.</span><span>Built for your transformation.</span></div>
 </footer>
+
+<div id="fitbrandStickyBuy" class="fitbrand-sticky-buy">
+  <div>
+    <strong>Lifting Straps</strong>
+    <span>Stronger grip for heavy pulls — €12.99</span>
+  </div>
+  <a href="checkout.html?product=straps">Buy now</a>
+  <button onclick="addToCart('straps')">Add to cart</button>
+</div>
+
 <div id="cart-toast" class="cart-toast">Added to cart. <a href="cart.html" style="text-decoration:underline;color:white;">View cart</a></div>
-<script>
-function setGalleryImage(url, el){
-  document.getElementById("slider-main").style.backgroundImage = "url('" + url + "')";
-  document.querySelectorAll(".slider-thumb").forEach(t => t.classList.remove("active"));
-  el.classList.add("active");
-}
-function updateCartCount(){
-  const cart = JSON.parse(localStorage.getItem("fitbrandCart") || "[]");
-  document.querySelectorAll("#cart-count, #cart-count-btn").forEach(el => {
-    el.textContent = cart.length;
-    el.style.display = cart.length > 0 ? "inline-flex" : "none";
-  });
-}
-function addToCart(product){
-  const cart = JSON.parse(localStorage.getItem("fitbrandCart") || "[]");
-  cart.push(product);
-  localStorage.setItem("fitbrandCart", JSON.stringify(cart));
-  updateCartCount();
-  showMiniCartPopup();
-  const toast = document.getElementById("cart-toast");
-  toast.classList.add("show");
-  setTimeout(()=>toast.classList.remove("show"), 2500);
-}
-document.addEventListener("DOMContentLoaded", updateCartCount);
-</script>
 
 <div id="drawer-overlay" class="cart-drawer-overlay" onclick="closeCartDrawer()"></div>
 <aside id="cart-drawer" class="cart-drawer">
@@ -134,7 +439,8 @@ document.addEventListener("DOMContentLoaded", updateCartCount);
     <div id="drawer-items"></div>
     <div class="upsell-section">
       <h3>Recommended add-ons</h3>
-      <div class="upsell-card"><span>Premium Shaker</span><button class="remove-item-btn" onclick="addToCart('shaker')">Add</button></div>
+      <div class="upsell-card"><span>Lifting Belt</span><button class="remove-item-btn" onclick="addToCart('belt')">Add</button></div>
+      <div class="upsell-card"><span>Meal Plan Guide AI</span><button class="remove-item-btn" onclick="addToCart('mealplan')">Add</button></div>
     </div>
   </div>
   <div class="drawer-footer">
@@ -145,84 +451,128 @@ document.addEventListener("DOMContentLoaded", updateCartCount);
     <div id="drawer-discount-message" class="discount-message">Try code FIT10 for 10% off.</div>
     <div class="cart-total"><span>Total</span><span id="drawer-total">€0.00</span></div>
     <a class="btn-dark" style="width:100%;" href="checkout.html?cart=true">Continue to checkout</a>
-    <a class="btn-outline" style="width:100%;margin-top:10px;" href="programs.html">Continue shopping</a>
+    <a class="btn-outline" style="width:100%;margin-top:10px;" href="recommended.html">Continue shopping</a>
   </div>
 </aside>
 
+<div id="mini-cart-popup" class="mini-cart-popup">
+  <h3>Added to cart</h3>
+  <p>Your product has been added to your FitBrand cart.</p>
+  <div class="mini-cart-actions">
+    <a class="btn-outline" href="recommended.html">Keep shopping</a>
+    <a class="btn-dark" href="cart.html">View cart</a>
+  </div>
+</div>
+
+<div id="profileModalOverlay" class="profile-modal-overlay" onclick="closeProfileModal()">
+  <div class="profile-modal" onclick="event.stopPropagation()">
+    <button class="profile-modal-close" onclick="closeProfileModal()">×</button>
+    <h2 id="profileModalTitle">Log in</h2>
+    <div id="profileViewBox" style="display:none;">
+      <div class="profile-menu-head">
+        <div class="profile-avatar"><span id="profileViewInitial">?</span></div>
+        <div><strong id="profileViewName">Guest</strong><br><span id="profileViewEmail">Not logged in</span></div>
+      </div>
+    </div>
+    <form id="profileForm" class="profile-form">
+      <input id="profileNameInput" type="text" placeholder="Your name">
+      <input id="profileEmailInput" type="email" placeholder="your@email.com">
+      <button class="profile-main-btn" type="submit">Save / log in</button>
+      <button class="profile-google-btn" type="button" onclick="fakeGoogleLogin()">Continue with Google</button>
+    </form>
+  </div>
+</div>
+
 <script>
 const fitbrandProductData = {
-  aesthetic: {name:"Aesthetic Program", price:4.99},
-  shred: {name:"Shred Program", price:6.99},
-  strength: {name:"Strength Program", price:6.99},
-  bundle: {name:"Complete Bundle", price:14.99},
-  shaker: {name:"Premium Shaker", price:9.99},
-  belt: {name:"Lifting Belt", price:24.99},
-  straps: {name:"Lifting Straps", price:12.99},
+  aesthetic:{name:"Aesthetic Program",price:4.99},
+  shred:{name:"Shred Program",price:6.99},
+  strength:{name:"Strength Program",price:6.99},
+  bundle:{name:"Complete Bundle",price:14.99},
+  mealplan:{name:"Meal Plan Guide AI",price:5.99},
+  belt:{name:"Lifting Belt",price:24.99},
+  straps:{name:"Lifting Straps",price:12.99}
 };
+
 let fitbrandDiscount = 0;
-function getCart(){
-  return JSON.parse(localStorage.getItem("fitbrandCart") || "[]");
+
+function setGalleryImage(url, el){
+  document.getElementById("slider-main").style.backgroundImage = "url('" + url + "')";
+  document.querySelectorAll(".slider-thumb").forEach(t => t.classList.remove("active"));
+  el.classList.add("active");
 }
-function saveCart(cart){
-  localStorage.setItem("fitbrandCart", JSON.stringify(cart));
-}
+
+function getCart(){return JSON.parse(localStorage.getItem("fitbrandCart") || "[]");}
+function saveCart(cart){localStorage.setItem("fitbrandCart", JSON.stringify(cart));}
+
 function updateCartCount(){
   const cart = getCart();
-  document.querySelectorAll("#cart-count, #cart-count-btn").forEach(el => {
+  document.querySelectorAll("#cart-count, #cart-count-btn").forEach(el=>{
     el.textContent = cart.length;
     el.style.display = cart.length > 0 ? "inline-flex" : "none";
   });
   renderCartDrawer();
 }
+
 function addToCart(product){
   const cart = getCart();
   cart.push(product);
   saveCart(cart);
   updateCartCount();
   showMiniCartPopup();
+
   const toast = document.getElementById("cart-toast");
   if(toast){
     toast.classList.add("show");
-    setTimeout(()=>toast.classList.remove("show"), 2200);
+    setTimeout(()=>toast.classList.remove("show"),2200);
   }
 }
+
 function removeDrawerItem(index){
   const cart = getCart();
-  cart.splice(index, 1);
+  cart.splice(index,1);
   saveCart(cart);
   updateCartCount();
 }
+
 function renderCartDrawer(){
   const drawerItems = document.getElementById("drawer-items");
   const totalEl = document.getElementById("drawer-total");
   if(!drawerItems || !totalEl) return;
+
   const cart = getCart();
   if(cart.length === 0){
     drawerItems.innerHTML = "<p>Your cart is empty.</p>";
     totalEl.textContent = "€0.00";
     return;
   }
+
   let total = 0;
-  drawerItems.innerHTML = cart.map((item, index) => {
-    const p = fitbrandProductData[item] || fitbrandProductData.bundle;
+  drawerItems.innerHTML = cart.map((item,index)=>{
+    const p = fitbrandProductData[item] || fitbrandProductData.straps;
     total += p.price;
     return `<div class="drawer-item"><div><strong>${p.name}</strong><span>FitBrand product</span></div><div><strong>€${p.price.toFixed(2)}</strong><br><button class="remove-item-btn" onclick="removeDrawerItem(${index})">Remove</button></div></div>`;
   }).join("");
+
   const discounted = total * (1 - fitbrandDiscount);
   totalEl.textContent = "€" + discounted.toFixed(2);
 }
+
 function openCartDrawer(){
   document.getElementById("cart-drawer")?.classList.add("show");
   document.getElementById("drawer-overlay")?.classList.add("show");
   renderCartDrawer();
 }
+
 function closeCartDrawer(){
   document.getElementById("cart-drawer")?.classList.remove("show");
   document.getElementById("drawer-overlay")?.classList.remove("show");
 }
+
 function applyDrawerDiscount(){
   const code = (document.getElementById("drawer-discount")?.value || "").trim().toUpperCase();
   const msg = document.getElementById("drawer-discount-message");
+
   if(code === "FIT10"){
     fitbrandDiscount = 0.10;
     if(msg) msg.textContent = "Discount applied: 10% off.";
@@ -230,36 +580,162 @@ function applyDrawerDiscount(){
     fitbrandDiscount = 0;
     if(msg) msg.textContent = "Invalid code. Try FIT10.";
   }
+
   renderCartDrawer();
 }
-document.addEventListener("DOMContentLoaded", () => {
-  updateCartCount();
-  document.querySelectorAll(".cart-icon-btn").forEach(btn => {
-    btn.addEventListener("click", function(e){
-      e.preventDefault();
-      openCartDrawer();
-    });
-  });
-});
-</script>
 
-
-<div id="mini-cart-popup" class="mini-cart-popup">
-  <h3>Added to cart</h3>
-  <p>Your product has been added to your FitBrand cart.</p>
-  <div class="mini-cart-actions">
-    <a class="btn-outline" href="programs.html">Keep shopping</a>
-    <a class="btn-dark" href="cart.html">View cart</a>
-  </div>
-</div>
-
-<script>
 function showMiniCartPopup(){
   const popup = document.getElementById("mini-cart-popup");
   if(!popup) return;
   popup.classList.add("show");
-  setTimeout(()=>popup.classList.remove("show"), 3000);
+  setTimeout(()=>popup.classList.remove("show"),3000);
 }
+
+/* ===== PROFILE SYSTEM ===== */
+function getFitBrandUser(){return JSON.parse(localStorage.getItem("fitbrandUser") || "null");}
+
+function updateFitBrandProfileUI(){
+  const user = getFitBrandUser();
+  const initial = user?.name ? user.name.trim().charAt(0).toUpperCase() : "?";
+
+  document.querySelectorAll("#profileInitial,#profileMenuInitial,#profileViewInitial").forEach(el=>{
+    if(el) el.textContent = initial;
+  });
+
+  document.querySelectorAll("#profileMenuName,#profileViewName").forEach(el=>{
+    if(el) el.textContent = user?.name || "Guest";
+  });
+
+  document.querySelectorAll("#profileMenuEmail,#profileViewEmail").forEach(el=>{
+    if(el) el.textContent = user?.email || "Not logged in";
+  });
+
+  const login = document.getElementById("profileLoginBtn");
+  const logout = document.getElementById("profileLogoutBtn");
+
+  if(login) login.style.display = user ? "none" : "block";
+  if(logout) logout.style.display = user ? "block" : "none";
+}
+
+function toggleProfileMenu(){document.getElementById("profileMenu")?.classList.toggle("show");}
+
+function openProfileModal(mode){
+  document.getElementById("profileMenu")?.classList.remove("show");
+
+  const modal = document.getElementById("profileModalOverlay");
+  const form = document.getElementById("profileForm");
+  const view = document.getElementById("profileViewBox");
+  const title = document.getElementById("profileModalTitle");
+  const user = getFitBrandUser();
+
+  if(!modal) return;
+
+  if(mode === "profile"){
+    title.textContent = "Your Profile";
+    form.style.display = "none";
+    view.style.display = "block";
+  } else {
+    title.textContent = mode === "edit" ? "Edit Profile" : "Log in";
+    form.style.display = "grid";
+    view.style.display = "none";
+    document.getElementById("profileNameInput").value = user?.name || "";
+    document.getElementById("profileEmailInput").value = user?.email || "";
+  }
+
+  updateFitBrandProfileUI();
+  modal.classList.add("show");
+}
+
+function closeProfileModal(){document.getElementById("profileModalOverlay")?.classList.remove("show");}
+
+function logoutFitBrandUser(){
+  localStorage.removeItem("fitbrandUser");
+  updateFitBrandProfileUI();
+  document.getElementById("profileMenu")?.classList.remove("show");
+}
+
+function fakeGoogleLogin(){
+  const email = prompt("Enter your Google email:");
+  if(!email) return;
+  const name = email.split("@")[0].replace(/[._-]/g," ");
+  localStorage.setItem("fitbrandUser", JSON.stringify({name:name.charAt(0).toUpperCase()+name.slice(1),email}));
+  updateFitBrandProfileUI();
+  closeProfileModal();
+}
+
+function setupPremiumEffects(){
+  document.querySelectorAll(".product-gallery-slider,.product-info,.related-card").forEach(el=>{
+    el.classList.add("reveal-on-scroll");
+  });
+
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting) entry.target.classList.add("visible");
+    });
+  },{threshold:0.12});
+
+  document.querySelectorAll(".reveal-on-scroll").forEach(el=>observer.observe(el));
+}
+
+function setupStickyBuy(){
+  const bar = document.getElementById("fitbrandStickyBuy");
+  const section = document.querySelector(".product-detail-section");
+  if(!bar || !section) return;
+
+  function update(){
+    const rect = section.getBoundingClientRect();
+    if(rect.top < window.innerHeight * 0.25 && rect.bottom > window.innerHeight * 0.4){
+      bar.classList.add("show");
+    } else {
+      bar.classList.remove("show");
+    }
+  }
+
+  window.addEventListener("scroll", update, {passive:true});
+  update();
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  updateCartCount();
+  updateFitBrandProfileUI();
+  setupPremiumEffects();
+  setupStickyBuy();
+
+  document.querySelectorAll(".cart-icon-btn").forEach(btn=>{
+    btn.addEventListener("click",function(e){
+      e.preventDefault();
+      openCartDrawer();
+    });
+  });
+
+  const profileForm = document.getElementById("profileForm");
+  if(profileForm){
+    profileForm.addEventListener("submit",function(e){
+      e.preventDefault();
+
+      const name = document.getElementById("profileNameInput").value.trim();
+      const email = document.getElementById("profileEmailInput").value.trim();
+
+      if(!name || !email){
+        alert("Enter name and email");
+        return;
+      }
+
+      localStorage.setItem("fitbrandUser",JSON.stringify({name,email}));
+      updateFitBrandProfileUI();
+      closeProfileModal();
+    });
+  }
+
+  document.addEventListener("click",function(e){
+    const menu = document.getElementById("profileMenu");
+    const btn = document.querySelector(".profile-icon-btn");
+
+    if(menu && btn && !menu.contains(e.target) && !btn.contains(e.target)){
+      menu.classList.remove("show");
+    }
+  });
+});
 </script>
 
 <script src="fitbrand.js"></script>
