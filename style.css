@@ -1370,3 +1370,21 @@ body{opacity:0;animation:pageFadeIn .65s ease forwards}
     letter-spacing:.22em;
   }
 }
+
+
+/* ===== FITBRAND FINAL PROFILE + MEAL AI UX FIX ===== */
+.profile-icon-btn span,.profile-avatar span{color:#050505 !important;font-weight:1000;letter-spacing:.02em;}
+.profile-avatar{background:#f4f4f4 !important;border:1px solid rgba(0,0,0,.12);}
+.profile-icon-btn{display:flex !important;}
+.profile-menu-link{text-decoration:none !important;}
+.fb-meal-profile-summary{margin:0 0 22px;padding:20px;border-radius:24px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;}
+.fb-meal-profile-summary strong{display:block;color:#fff;font-size:18px;margin-bottom:6px;}
+.fb-meal-profile-summary span{color:rgba(255,255,255,.72);line-height:1.45;}
+.fb-meal-profile-actions{display:flex;gap:10px;flex-wrap:wrap;}
+.fb-meal-profile-actions button,.fb-meal-profile-actions a{min-height:46px;border-radius:14px;padding:0 15px;font-weight:1000;cursor:pointer;text-transform:uppercase;font-size:12px;letter-spacing:.08em;display:flex;align-items:center;justify-content:center;text-decoration:none;}
+.fb-meal-profile-actions button:first-child,.fb-meal-profile-actions a{background:#fff;color:#050505;border:0;}
+.fb-meal-profile-actions button:last-child{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.14);}
+#meal-plan-ai .meal-grid.fb-meal-grid-collapsed{display:none !important;}
+.fb-meal-choice-panel{margin-top:0 !important;}
+.fb-meal-question.active{display:block !important;}
+@media(max-width:800px){.fb-meal-profile-summary{grid-template-columns:1fr}.fb-meal-profile-actions{display:grid;grid-template-columns:1fr}}

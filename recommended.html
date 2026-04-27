@@ -561,14 +561,14 @@ function showMiniCartPopup(){
 
 /* ===== MEAL PLAN ACCESS ===== */
 function handleMealPreviewClick(){
-  localStorage.setItem("fitbrandMealPlanUnlocked","true");
+  localStorage.setItem("fitbrandMealPlanUnlocked", "true");
   const generator = document.getElementById("meal-plan-ai");
   if(generator){
     generator.classList.add("unlocked");
     document.getElementById("mealGenerator")?.classList.add("show");
-    generator.scrollIntoView({behavior:"smooth",block:"start"});
+    if(typeof prefillGeneratorsFromProfile === "function") prefillGeneratorsFromProfile();
+    generator.scrollIntoView({behavior:"smooth", block:"start"});
   }
-  prefillGeneratorsFromProfile?.();
 }
 
 function checkMealPurchase(){

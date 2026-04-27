@@ -21,7 +21,12 @@
   };
 
   function getInitial(user){
-    return user && user.name ? user.name.trim().charAt(0).toUpperCase() : "?";
+    if(!user || !user.name) return "?";
+    const parts = user.name.trim().split(/\s+/).filter(Boolean);
+    if(parts.length === 0) return "?";
+    const first = parts[0].charAt(0).toUpperCase();
+    const last = parts.length > 1 ? parts[parts.length - 1].charAt(0).toUpperCase() : "";
+    return (first + last).slice(0, 2);
   }
 
   window.updateFitBrandProfileUI = function(){
@@ -34,6 +39,7 @@
     const logout = document.getElementById("profileLogoutBtn");
     if(login) login.style.display = user ? "none" : "block";
     if(logout) logout.style.display = user ? "block" : "none";
+    document.querySelectorAll('.profile-menu-link').forEach(el => { el.style.display = user ? 'block' : 'none'; });
   };
 
   function ensureHeaderProfile(){
@@ -174,11 +180,17 @@
 
   window.logoutFitBrandUser = function(){
     localStorage.removeItem(USER_KEY);
+    localStorage.removeItem(WELCOME_KEY);
     updateFitBrandProfileUI();
     document.getElementById("profileMenu")?.classList.remove("show");
+    document.getElementById("profileModalOverlay")?.classList.remove("show");
+    document.getElementById("fitbrandWelcomeOverlay")?.classList.remove("show");
+    if(location.pathname.endsWith('profile.html')){
+      setTimeout(() => { location.href = 'index.html'; }, 150);
+    }
   };
 
-  window.fakeGoogleLogin = function(){
+    window.fakeGoogleLogin = function(){
     const email = prompt("Enter your Google email:");
     if(!email) return;
     const rawName = email.split("@")[0].replace(/[._-]/g, " ").trim();
@@ -263,6 +275,66 @@
     document.getElementById("fbMealNext")?.addEventListener("click", () => { if(step < 5){ step++; render(); } });
   }
 
+
+  function profileHasMealBasics(user){
+    return !!(user && user.age && user.gender && user.weight && user.height && user.trainingDays);
+  }
+
+  window.useProfileForMealPlan = function(){
+    prefillGeneratorsFromProfile();
+    const grid = document.querySelector('#meal-plan-ai .meal-grid');
+    const summary = document.getElementById('fbMealProfileSummary');
+    if(grid) grid.classList.add('fb-meal-grid-collapsed');
+    if(summary) summary.classList.add('using-profile');
+  };
+
+  window.changeMealInformation = function(){
+    const grid = document.querySelector('#meal-plan-ai .meal-grid');
+    if(grid){
+      grid.classList.remove('fb-meal-grid-collapsed');
+      grid.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  };
+
+  window.handleMealPreviewClick = function(){
+    localStorage.setItem('fitbrandMealPlanUnlocked', 'true');
+    const generator = document.getElementById('meal-plan-ai');
+    if(generator){
+      generator.classList.add('unlocked');
+      document.getElementById('mealGenerator')?.classList.add('show');
+      prefillGeneratorsFromProfile();
+      setupMealChoiceWizard();
+      setupMealProfileSmartMode();
+      generator.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  };
+
+  function setupMealProfileSmartMode(){
+    const generator = document.querySelector('#meal-plan-ai .meal-generator');
+    if(!generator || document.getElementById('fbMealProfileSummary')) return;
+    const user = getFitBrandUser();
+    const profileOk = profileHasMealBasics(user);
+    const box = document.createElement('div');
+    box.id = 'fbMealProfileSummary';
+    box.className = 'fb-meal-profile-summary' + (profileOk ? ' using-profile' : '');
+    box.innerHTML = `
+      <div>
+        <strong>${profileOk ? 'Using your saved profile' : 'Profile info missing'}</strong>
+        <span>${profileOk ? `${user.age} years • ${user.gender || 'gender'} • ${user.weight}kg • ${user.height}cm • ${user.trainingDays} training days/week` : 'Save your profile to skip age, gender, weight, height and training days next time.'}</span>
+      </div>
+      <div class="fb-meal-profile-actions">
+        ${profileOk ? '<button type="button" onclick="useProfileForMealPlan()">Use saved profile</button>' : '<a href="profile.html">Complete profile</a>'}
+        <button type="button" onclick="changeMealInformation()">Change information</button>
+      </div>`;
+    const choicePanel = document.getElementById('fbMealChoicePanel');
+    generator.insertBefore(box, choicePanel ? choicePanel.nextSibling : generator.firstChild);
+    if(profileOk){
+      prefillGeneratorsFromProfile();
+      const grid = document.querySelector('#meal-plan-ai .meal-grid');
+      if(grid) grid.classList.add('fb-meal-grid-collapsed');
+    }
+  }
+
   function unlockFromUrl(){
     const params = new URLSearchParams(location.search);
     const purchased = params.get("purchased") || params.get("product");
@@ -316,6 +388,7 @@
     unlockFromUrl();
     prefillGeneratorsFromProfile();
     setupMealChoiceWizard();
+    setupMealProfileSmartMode();
     revealSetup();
     signupSetup();
     updateHeaderScroll();
