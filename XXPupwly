@@ -32,8 +32,6 @@
         <select id="pfLevel"><option value="">Fitness level</option><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select>
         <select id="pfTrainingLocation"><option value="">Training location</option><option value="gym">Gym</option><option value="home">Home</option></select>
         <select id="pfTrainingDays"><option value="">Workout days per week</option><option value="3">3 days</option><option value="4">4 days</option><option value="5">5 days</option><option value="6">6+ days</option></select>
-        <input id="pfEquipment" placeholder="Equipment available, e.g. gym, dumbbells, bands">
-        <input id="pfAllergies" placeholder="Foods to avoid / allergies">
         <select id="pfGoal"><option value="">Main goal</option><option value="muscle">Build muscle</option><option value="fatloss">Lose fat</option><option value="strength">Get stronger</option><option value="maintenance">Maintain</option></select>
       </div>
       <button class="profile-main-btn" type="submit" style="margin-top:18px;">Save profile</button>
@@ -52,8 +50,8 @@
 <script src="fitbrand.js"></script>
 <script>
 function updateCartCount(){const cart=JSON.parse(localStorage.getItem('fitbrandCart')||'[]');document.querySelectorAll('#cart-count-btn').forEach(el=>{el.textContent=cart.length;el.style.display=cart.length>0?'inline-flex':'none';});}
-function loadProfile(){const u=getFitBrandUser()||{};const map={pfName:u.name,pfEmail:u.email,pfPhone:u.phone,pfAddress:u.address,pfGender:u.gender,pfAge:u.age,pfWeight:u.weight,pfHeight:u.height,pfLevel:u.level,pfTrainingLocation:u.trainingLocation,pfTrainingDays:u.trainingDays,pfEquipment:u.equipment,pfAllergies:u.allergies,pfGoal:u.goal};Object.entries(map).forEach(([id,v])=>{const el=document.getElementById(id); if(el&&v) el.value=v;});}
-document.addEventListener('DOMContentLoaded',()=>{updateCartCount();loadProfile();document.getElementById('fullProfileForm').addEventListener('submit',e=>{e.preventDefault();const user={name:pfName.value.trim(),email:pfEmail.value.trim(),phone:pfPhone.value.trim(),address:pfAddress.value.trim(),gender:pfGender.value,age:pfAge.value,weight:pfWeight.value,height:pfHeight.value,level:pfLevel.value,trainingLocation:pfTrainingLocation.value,trainingDays:pfTrainingDays.value,equipment:pfEquipment.value.trim(),allergies:pfAllergies.value.trim(),goal:pfGoal.value};if(!user.name||!user.email){alert('Please add at least name and email.');return;}saveFitBrandUser(user);alert('Profile saved.');});});
+function loadProfile(){const u=getFitBrandUser()||{};const map={pfName:u.name,pfEmail:u.email,pfPhone:u.phone,pfAddress:u.address,pfGender:u.gender,pfAge:u.age,pfWeight:u.weight,pfHeight:u.height,pfLevel:u.level,pfTrainingLocation:u.trainingLocation,pfTrainingDays:u.trainingDays,pfGoal:u.goal};Object.entries(map).forEach(([id,v])=>{const el=document.getElementById(id); if(el&&v) el.value=v;});}
+document.addEventListener('DOMContentLoaded',()=>{updateCartCount();loadProfile();document.getElementById('fullProfileForm').addEventListener('submit',e=>{e.preventDefault();const user={name:pfName.value.trim(),email:pfEmail.value.trim(),phone:pfPhone.value.trim(),address:pfAddress.value.trim(),gender:pfGender.value,age:pfAge.value,weight:pfWeight.value,height:pfHeight.value,level:pfLevel.value,trainingLocation:pfTrainingLocation.value,trainingDays:pfTrainingDays.value,goal:pfGoal.value};if(!user.name||!user.email){alert('Please add at least name and email.');return;}saveFitBrandUser(user);alert('Profile saved.');});});
 </script>
 </body>
 </html>

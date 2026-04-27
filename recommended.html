@@ -558,42 +558,17 @@ function showMiniCartPopup(){
   setTimeout(()=>popup.classList.remove("show"),3000);
 }
 
-/* ===== PROFILE SYSTEM ===== */
-
-  const email = prompt("Enter your Google email:");
-  if(!email) return;
-
-  const name = email.split("@")[0].replace(/[._-]/g," ");
-  localStorage.setItem("fitbrandUser", JSON.stringify({
-    name:name.charAt(0).toUpperCase()+name.slice(1),
-    email
-  }));
-
-  updateFitBrandProfileUI();
-  closeProfileModal();
-}
 
 /* ===== MEAL PLAN ACCESS ===== */
 function handleMealPreviewClick(){
-  const hasMealPlan = localStorage.getItem("fitbrandMealPlanUnlocked") === "true";
-
-  if(hasMealPlan){
-    const generator = document.getElementById("meal-plan-ai");
-    if(generator){
-      generator.classList.add("unlocked");
-      generator.scrollIntoView({behavior:"smooth",block:"start"});
-    }
-  } else {
-    const buySection = document.getElementById("meal-plan-guide-ai");
-    if(buySection) buySection.scrollIntoView({behavior:"smooth",block:"start"});
-
-    const buyBtn = document.querySelector('a[href="checkout.html?product=mealplan"]');
-    if(buyBtn){
-      buyBtn.style.boxShadow = "0 0 0 4px rgba(0,0,0,.12), 0 18px 45px rgba(0,0,0,.24)";
-      buyBtn.style.transform = "scale(1.03)";
-      setTimeout(()=>{buyBtn.style.boxShadow="";buyBtn.style.transform="";},1800);
-    }
+  localStorage.setItem("fitbrandMealPlanUnlocked","true");
+  const generator = document.getElementById("meal-plan-ai");
+  if(generator){
+    generator.classList.add("unlocked");
+    document.getElementById("mealGenerator")?.classList.add("show");
+    generator.scrollIntoView({behavior:"smooth",block:"start"});
   }
+  prefillGeneratorsFromProfile?.();
 }
 
 function checkMealPurchase(){
