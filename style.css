@@ -1224,3 +1224,74 @@ body{opacity:0;animation:pageFadeIn .65s ease forwards}
 .nav .brand-word{
   color:#050505;
 }
+/* ===== FITBRAND PREMIUM GLASS HEADER ===== */
+
+.nav{
+  position: sticky;
+  top:0;
+  z-index:1000;
+
+  background: rgba(246,246,246,0.75);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+
+  border-bottom:1px solid rgba(255,255,255,0.6);
+  box-shadow:0 14px 40px rgba(0,0,0,0.08);
+
+  transition: all .25s ease;
+}
+
+.nav.scrolled{
+  background: rgba(255,255,255,0.92);
+  box-shadow:0 18px 45px rgba(0,0,0,0.12);
+}
+
+/* text farve */
+
+.nav a,
+.nav .brand-word,
+.nav .cart-svg{
+  color:#050505;
+}
+
+/* hover animation */
+
+.nav nav a{
+  position:relative;
+  font-weight:700;
+  transition:all .2s ease;
+}
+
+.nav nav a:hover{
+  color:#666;
+  transform:translateY(-1px);
+}
+
+.nav nav a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-6px;
+  width:0;
+  height:2px;
+  background:linear-gradient(90deg,#111,#aaa);
+  transition:width .25s ease;
+}
+
+.nav nav a:hover::after{
+  width:100%;
+}
+
+/* cart icon */
+
+.cart-icon-btn{
+  background:rgba(255,255,255,0.55);
+  border:1px solid rgba(0,0,0,0.1);
+  box-shadow:0 10px 25px rgba(0,0,0,0.06);
+  transition:.2s;
+}
+
+.cart-icon-btn:hover{
+  transform:translateY(-1px);
+  background:rgba(255,255,255,0.8);
+}
