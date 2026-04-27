@@ -1085,6 +1085,255 @@
   }
 }
 
+
+/* ===== RECOMMENDED PRODUCTS - PREMIUM SALES LAYOUT ===== */
+body{
+  background:#f2f2f2 !important;
+}
+
+.hero.photo-gear{
+  min-height:430px !important;
+  display:flex !important;
+  align-items:center !important;
+  background-position:center !important;
+}
+
+.hero.photo-gear::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 50% 0%, rgba(255,255,255,.18), transparent 35%);
+  pointer-events:none;
+}
+
+.hero.photo-gear .hero-content{
+  text-align:center !important;
+  max-width:1050px !important;
+  padding-top:70px !important;
+  padding-bottom:70px !important;
+}
+
+.hero.photo-gear h1{
+  margin:0 auto !important;
+  font-size:clamp(42px,6vw,82px) !important;
+  letter-spacing:.07em !important;
+}
+
+.hero.photo-gear p{
+  margin:18px auto 0 !important;
+  max-width:760px !important;
+  color:rgba(255,255,255,.82) !important;
+}
+
+.section{
+  background:linear-gradient(180deg,#f4f4f4 0%,#e8e8e8 100%) !important;
+  padding:72px 30px 96px !important;
+}
+
+.rec-grid.two-products{
+  max-width:1180px !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:34px !important;
+  align-items:stretch !important;
+  margin-bottom:56px !important;
+}
+
+.rec-card{
+  border-radius:30px !important;
+  background:rgba(255,255,255,.86) !important;
+  border:1px solid rgba(0,0,0,.08) !important;
+  box-shadow:0 26px 85px rgba(0,0,0,.12) !important;
+  overflow:hidden !important;
+  position:relative !important;
+  isolation:isolate !important;
+}
+
+.rec-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.65),transparent 38%);
+  pointer-events:none;
+  z-index:1;
+}
+
+.rec-card:hover{
+  transform:translateY(-8px) !important;
+  box-shadow:0 36px 110px rgba(0,0,0,.18) !important;
+}
+
+.rec-card .rec-img{
+  height:340px !important;
+  border-bottom:1px solid rgba(0,0,0,.06) !important;
+  transform:none !important;
+}
+
+.rec-card:hover .rec-img{
+  transform:scale(1.025) !important;
+}
+
+.rec-card .rec-img::after{
+  background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.34)) !important;
+}
+
+.rec-card .body{
+  position:relative !important;
+  z-index:2 !important;
+  padding:34px !important;
+}
+
+.rec-card h3{
+  font-size:28px !important;
+  letter-spacing:.08em !important;
+  line-height:1.05 !important;
+  margin-bottom:12px !important;
+}
+
+.rec-card p{
+  font-size:16px !important;
+  line-height:1.75 !important;
+  color:rgba(0,0,0,.66) !important;
+  min-height:84px !important;
+}
+
+.rec-card .price{
+  font-size:42px !important;
+  letter-spacing:-.04em !important;
+  margin:20px 0 22px !important;
+}
+
+.rec-card .btn-dark,
+.rec-card .btn-outline{
+  width:100% !important;
+  min-height:56px !important;
+  border-radius:16px !important;
+  font-size:13px !important;
+  letter-spacing:.14em !important;
+  margin-top:10px !important;
+}
+
+.product-badge{
+  top:22px !important;
+  left:22px !important;
+  padding:11px 16px !important;
+  border-radius:999px !important;
+  background:rgba(5,5,5,.88) !important;
+  backdrop-filter:blur(10px) !important;
+  box-shadow:0 16px 34px rgba(0,0,0,.24) !important;
+}
+
+/* Premium section spacing around Meal Plan Guide */
+.meal-product-section{
+  padding:44px 0 0 !important;
+  background:transparent !important;
+}
+
+.meal-product-shell{
+  max-width:1240px !important;
+}
+
+.meal-product-card{
+  border-radius:34px !important;
+  box-shadow:0 34px 110px rgba(0,0,0,.12) !important;
+  border:1px solid rgba(0,0,0,.07) !important;
+}
+
+.meal-product-image{
+  min-height:560px !important;
+}
+
+.meal-product-content{
+  padding:64px 58px 46px !important;
+}
+
+.meal-product-content h2{
+  font-size:clamp(44px,5.3vw,74px) !important;
+}
+
+.meal-copy{
+  font-size:18px !important;
+  line-height:1.7 !important;
+}
+
+.meal-buy-row{
+  grid-template-columns:auto 1fr 1fr 1fr !important;
+}
+
+.meal-black-btn,
+.meal-white-btn{
+  border-radius:14px !important;
+  min-height:58px !important;
+}
+
+.meal-generator-preview{
+  border-radius:24px !important;
+  margin:24px 22px 0 !important;
+  padding:28px !important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.45), 0 20px 60px rgba(0,0,0,.08) !important;
+}
+
+.meal-trust-strip{
+  background:rgba(255,255,255,.58) !important;
+  border-radius:0 0 34px 34px !important;
+  margin:0 22px 0 !important;
+  border:1px solid rgba(0,0,0,.06) !important;
+  border-top:0 !important;
+}
+
+/* Sales strip between gear and meal guide */
+.recommended-sales-strip{
+  max-width:1180px;
+  margin:0 auto 34px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+
+.recommended-sales-strip .sales-pill{
+  background:rgba(255,255,255,.78);
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:22px;
+  padding:22px;
+  box-shadow:0 20px 60px rgba(0,0,0,.08);
+}
+
+.sales-pill strong{
+  display:block;
+  font-size:16px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:7px;
+}
+
+.sales-pill span{
+  color:rgba(0,0,0,.62);
+  line-height:1.55;
+  font-size:14px;
+}
+
+/* Better mobile */
+@media(max-width:950px){
+  .rec-grid.two-products{
+    grid-template-columns:1fr !important;
+  }
+
+  .recommended-sales-strip{
+    grid-template-columns:1fr !important;
+  }
+
+  .meal-product-content{
+    padding:38px 24px !important;
+  }
+
+  .meal-buy-row{
+    grid-template-columns:1fr !important;
+  }
+
+  .meal-product-image{
+    min-height:360px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1104,7 +1353,7 @@
   </a>
 </header>
 <main>
-<section class="hero photo-gear"><div class="hero-content"><p class="eyebrow">Recommended Products</p><h1>Gear that supports your transformation.</h1><p>Fitness gear and tools that fit the FitBrand lifestyle. Use these as affiliate products or future shop items.</p></div></section>
+<section class="hero photo-gear"><div class="hero-content"><p class="eyebrow">Recommended Products</p><h1>Gear that supports your transformation.</h1><p>Premium tools and guides made to support training, nutrition and real progress.</p></div></section>
 
 <section class="section">
   <div class="rec-grid two-products">
@@ -1112,7 +1361,7 @@
       <a href="product-belt.html"><div class="rec-img own-photo" style="background-image:url('assets/own-belt-1.jpg')"><span class="product-badge">Premium Pick</span></div></a>
       <div class="body">
         <h3>Lifting Belt</h3>
-        <p>Black premium lifting belt for heavy lifts, extra support and a strong gym aesthetic.</p>
+        <p>Premium lifting belt built for heavy lifts, stronger support and a serious gym look.</p>
         <div class="price">€24.99</div>
         <a class="btn-dark" href="product-belt.html">Read more</a>
       </div>
@@ -1122,11 +1371,26 @@
       <a href="product-straps.html"><div class="rec-img own-photo" style="background-image:url('assets/own-straps-1.jpg')"><span class="product-badge">Most Popular</span></div></a>
       <div class="body">
         <h3>Lifting Straps</h3>
-        <p>Black lifting straps for stronger grip, heavy pull movements and serious back training.</p>
+        <p>Lifting straps made for stronger grip, heavier pulls and better back-focused training.</p>
         <div class="price">€12.99</div>
         <a class="btn-dark" href="product-straps.html">Read more</a>
       </div>
     </article>
+  </div>
+
+  <div class="recommended-sales-strip">
+    <div class="sales-pill">
+      <strong>Built for progress</strong>
+      <span>Every product is selected to help customers train harder, stay consistent and feel more serious in the gym.</span>
+    </div>
+    <div class="sales-pill">
+      <strong>Premium FitBrand look</strong>
+      <span>Clean black, silver and white design that matches the same premium identity across the whole website.</span>
+    </div>
+    <div class="sales-pill">
+      <strong>Smart add-ons</strong>
+      <span>Gear supports performance, while the Meal Plan AI supports nutrition, recovery and better results.</span>
+    </div>
   </div>
 
   <section id="meal-plan-guide-ai" class="meal-product-section">
