@@ -24,35 +24,25 @@
     .section{background:linear-gradient(180deg,#f4f4f4 0%,#e8e8e8 100%)!important;padding:72px 30px 96px!important;}
 
     /* ===== PROFILE HEADER ===== */
-    .nav-actions{display:flex;align-items:center;gap:12px;position:relative;}
-    .profile-icon-btn{
-      width:46px;height:46px;border-radius:50%;border:1px solid rgba(0,0,0,.12);
-      background:linear-gradient(135deg,#fff,#d7d7d7);color:#050505;font-weight:1000;
-      cursor:pointer;display:flex;align-items:center;justify-content:center;
-      box-shadow:0 10px 25px rgba(0,0,0,.10);transition:.22s ease;
-    }
-    .profile-icon-btn:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(0,0,0,.14);}
-    .profile-menu{
-      position:absolute;top:58px;right:0;width:300px;background:rgba(255,255,255,.94);
-      backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-      border:1px solid rgba(0,0,0,.10);border-radius:22px;box-shadow:0 24px 80px rgba(0,0,0,.22);
-      padding:14px;display:none;z-index:12000;
-    }
-    .profile-menu.show{display:block;}
-    .profile-menu-head{display:flex;gap:12px;align-items:center;padding:12px;border-bottom:1px solid #eee;margin-bottom:8px;}
-    .profile-avatar{width:46px;height:46px;border-radius:50%;background:#050505;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:1000;}
-    .profile-menu button{width:100%;border:0;background:transparent;padding:13px 12px;text-align:left;cursor:pointer;border-radius:12px;font-weight:900;text-transform:uppercase;font-size:12px;}
-    .profile-menu button:hover{background:#f0f0f0;}
-    .profile-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;z-index:13000;padding:22px;}
-    .profile-modal-overlay.show{display:flex;}
-    .profile-modal{width:min(520px,100%);background:linear-gradient(135deg,#fff,#eee);border-radius:28px;padding:30px;box-shadow:0 30px 100px rgba(0,0,0,.35);position:relative;}
-    .profile-modal-close{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:22px;}
-    .profile-modal h2{text-transform:uppercase;font-size:34px;margin-bottom:10px;}
-    .profile-form{display:grid;gap:12px;}
-    .profile-form input{height:54px;border-radius:14px;border:1px solid rgba(0,0,0,.14);padding:0 14px;margin:0;}
-    .profile-main-btn,.profile-google-btn{height:56px;border-radius:14px;font-weight:1000;cursor:pointer;text-transform:uppercase;}
-    .profile-main-btn{border:0;background:#050505;color:white;}
-    .profile-google-btn{border:1px solid #ddd;background:white;color:#050505;}
+    <header class="nav">
+  <a href="index.html" class="brand">
+    <img class="logo-img" src="assets/fitbrand-logo-real.png" alt="FitBrand logo">
+    <span class="brand-word">FITBRAND</span>
+  </a>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="programs.html">Programs</a>
+    <a href="recommended.html">Recommended Products</a>
+    <a href="about.html">About us</a>
+    <a href="policies.html">Policies</a>
+  </nav>
+
+  <a href="cart.html" class="cart-icon-btn">
+    <span class="cart-svg">🛒</span>
+    <span class="cart-count" id="cart-count-btn">0</span>
+  </a>
+</header>
 
     /* ===== PRODUCTS ===== */
     .rec-grid.two-products{max-width:1180px!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:34px!important;align-items:stretch!important;margin-bottom:56px!important;}
@@ -489,30 +479,7 @@
   </div>
 </div>
 
-<div id="profileModalOverlay" class="profile-modal-overlay" onclick="closeProfileModal()">
-  <div class="profile-modal" onclick="event.stopPropagation()">
-    <button class="profile-modal-close" onclick="closeProfileModal()">×</button>
 
-    <h2 id="profileModalTitle">Log in</h2>
-
-    <div id="profileViewBox" style="display:none;">
-      <div class="profile-menu-head">
-        <div class="profile-avatar"><span id="profileViewInitial">?</span></div>
-        <div>
-          <strong id="profileViewName">Guest</strong><br>
-          <span id="profileViewEmail">Not logged in</span>
-        </div>
-      </div>
-    </div>
-
-    <form id="profileForm" class="profile-form">
-      <input id="profileNameInput" type="text" placeholder="Your name">
-      <input id="profileEmailInput" type="email" placeholder="your@email.com">
-      <button class="profile-main-btn" type="submit">Save / log in</button>
-      <button class="profile-google-btn" type="button" onclick="fakeGoogleLogin()">Continue with Google</button>
-    </form>
-  </div>
-</div>
 
 <script>
 const fitbrandProductData = {
@@ -613,73 +580,7 @@ function showMiniCartPopup(){
 }
 
 /* ===== PROFILE SYSTEM ===== */
-function getFitBrandUser(){return JSON.parse(localStorage.getItem("fitbrandUser") || "null");}
 
-function updateFitBrandProfileUI(){
-  const user = getFitBrandUser();
-  const initial = user?.name ? user.name.trim().charAt(0).toUpperCase() : "?";
-
-  document.querySelectorAll("#profileInitial,#profileMenuInitial,#profileViewInitial").forEach(el=>{
-    if(el) el.textContent = initial;
-  });
-
-  document.querySelectorAll("#profileMenuName,#profileViewName").forEach(el=>{
-    if(el) el.textContent = user?.name || "Guest";
-  });
-
-  document.querySelectorAll("#profileMenuEmail,#profileViewEmail").forEach(el=>{
-    if(el) el.textContent = user?.email || "Not logged in";
-  });
-
-  const login = document.getElementById("profileLoginBtn");
-  const logout = document.getElementById("profileLogoutBtn");
-
-  if(login) login.style.display = user ? "none" : "block";
-  if(logout) logout.style.display = user ? "block" : "none";
-}
-
-function toggleProfileMenu(){
-  document.getElementById("profileMenu")?.classList.toggle("show");
-}
-
-function openProfileModal(mode){
-  document.getElementById("profileMenu")?.classList.remove("show");
-
-  const modal = document.getElementById("profileModalOverlay");
-  const form = document.getElementById("profileForm");
-  const view = document.getElementById("profileViewBox");
-  const title = document.getElementById("profileModalTitle");
-  const user = getFitBrandUser();
-
-  if(!modal) return;
-
-  if(mode === "profile"){
-    title.textContent = "Your Profile";
-    form.style.display = "none";
-    view.style.display = "block";
-  } else {
-    title.textContent = mode === "edit" ? "Edit Profile" : "Log in";
-    form.style.display = "grid";
-    view.style.display = "none";
-    document.getElementById("profileNameInput").value = user?.name || "";
-    document.getElementById("profileEmailInput").value = user?.email || "";
-  }
-
-  updateFitBrandProfileUI();
-  modal.classList.add("show");
-}
-
-function closeProfileModal(){
-  document.getElementById("profileModalOverlay")?.classList.remove("show");
-}
-
-function logoutFitBrandUser(){
-  localStorage.removeItem("fitbrandUser");
-  updateFitBrandProfileUI();
-  document.getElementById("profileMenu")?.classList.remove("show");
-}
-
-function fakeGoogleLogin(){
   const email = prompt("Enter your Google email:");
   if(!email) return;
 
@@ -946,7 +847,6 @@ function setupStickyMealBuyBar(){
 
 document.addEventListener("DOMContentLoaded",()=>{
   updateCartCount();
-  updateFitBrandProfileUI();
   checkMealPurchase();
   setupRecommendedPremiumEffects();
   setupStickyMealBuyBar();
@@ -956,34 +856,6 @@ document.addEventListener("DOMContentLoaded",()=>{
       e.preventDefault();
       openCartDrawer();
     });
-  });
-
-  const profileForm = document.getElementById("profileForm");
-  if(profileForm){
-    profileForm.addEventListener("submit",function(e){
-      e.preventDefault();
-
-      const name = document.getElementById("profileNameInput").value.trim();
-      const email = document.getElementById("profileEmailInput").value.trim();
-
-      if(!name || !email){
-        alert("Enter name and email");
-        return;
-      }
-
-      localStorage.setItem("fitbrandUser",JSON.stringify({name,email}));
-      updateFitBrandProfileUI();
-      closeProfileModal();
-    });
-  }
-
-  document.addEventListener("click",function(e){
-    const menu = document.getElementById("profileMenu");
-    const btn = document.querySelector(".profile-icon-btn");
-
-    if(menu && btn && !menu.contains(e.target) && !btn.contains(e.target)){
-      menu.classList.remove("show");
-    }
   });
 });
 </script>
