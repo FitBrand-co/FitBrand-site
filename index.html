@@ -6,7 +6,6 @@
   <title>FitBrand | Premium Fitness Programs & Gym Gear</title>
   <link rel="stylesheet" href="style.css">
   <meta name="description" content="Premium fitness programs, gym accessories and recommended training products built for discipline, consistency and results.">
-  <meta name="keywords" content="FitBrand, fitness programs, gym accessories, workout plans, lifting belt, lifting straps, shaker bottle">
   <meta name="author" content="FitBrand">
   <meta property="og:title" content="FitBrand | Premium Fitness Programs & Gym Gear">
   <meta property="og:description" content="Premium fitness programs, gym accessories and recommended training products built for discipline, consistency and results.">
@@ -330,7 +329,7 @@
     <div class="fitbrand-bundle-offer">
       <p>Best value</p>
       <h2>Get All 3 Programs</h2>
-      <p>Aesthetic, Shred and Strength in one bundle. Perfect for customers who want the full FitBrand system.</p>
+      <p>Aesthetic, Shred, Strength and Meal Plan Guide AI in one bundle. Perfect for customers who want the full FitBrand training and nutrition system.</p>
       <a class="btn-silver" href="checkout.html?product=bundle">Buy Bundle €18.97</a>
       <button class="btn-outline" onclick="addToCart('bundle')" style="margin-left:10px;">Add to cart</button>
     </div>
@@ -396,7 +395,6 @@
     <div class="upsell-section">
       <h3>Recommended add-ons</h3>
       <div class="upsell-card"><span>Meal Plan Guide AI</span><button class="remove-item-btn" onclick="addToCart('mealplan')">Add</button></div>
-      <div class="upsell-card"><span>Premium Shaker</span><button class="remove-item-btn" onclick="addToCart('shaker')">Add</button></div>
     </div>
   </div>
   <div class="drawer-footer">
@@ -443,7 +441,7 @@
               <option value="aesthetic">Aesthetic Program</option>
               <option value="shred">Shred Program</option>
               <option value="strength">Strength Program</option>
-              <option value="bundle">Complete Bundle</option>
+              <option value="bundle">Complete Bundle + Meal Plan AI</option>
             </select>
           </div>
         </div>
@@ -509,7 +507,7 @@
     <form id="profileForm" class="profile-form">
       <input id="profileNameInput" type="text" placeholder="Your name">
       <input id="profileEmailInput" type="email" placeholder="your@email.com">
-      <button class="profile-main-btn" type="submit">Save / log in</button>
+      <button class="profile-main-btn" type="submit">Sign in/up</button>
       <button class="profile-google-btn" type="button" onclick="fakeGoogleLogin()">Continue with Google</button>
     </form>
   </div>
@@ -727,7 +725,7 @@
       aesthetic:"Aesthetic Program",
       shred:"Shred Program",
       strength:"Strength Program",
-      bundle:"Complete Bundle"
+      bundle:"Complete Bundle + Meal Plan AI"
     };
 
     const selectedDays = planLibrary[actualPackageType][place].slice(0, days);
@@ -755,9 +753,8 @@
     aesthetic:{name:"Aesthetic Program",price:4.99},
     shred:{name:"Shred Program",price:6.99},
     strength:{name:"Strength Program",price:6.99},
-    bundle:{name:"Complete Bundle",price:18.97},
+    bundle:{name:"Complete Bundle + Meal Plan AI",price:18.97},
     mealplan:{name:"Meal Plan Guide AI",price:5.99},
-    shaker:{name:"Premium Shaker",price:9.99},
     belt:{name:"Lifting Belt",price:24.99},
     straps:{name:"Lifting Straps",price:12.99}
   };
