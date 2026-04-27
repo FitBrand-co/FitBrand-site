@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 window.addEventListener("scroll", function(){
   const nav = document.querySelector(".nav");
 
-  if(window.scrollY > 40){
+  if(window.scrollY > 180){
     nav.classList.add("scrolled");
   } else {
     nav.classList.remove("scrolled");
@@ -42,7 +42,7 @@ window.addEventListener("scroll", function(){
     const nav = document.querySelector(".nav");
     if(!nav) return;
 
-    if(window.scrollY > 40){
+    if(window.scrollY > 180){
       nav.classList.add("scrolled");
     }else{
       nav.classList.remove("scrolled");
