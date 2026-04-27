@@ -1334,6 +1334,166 @@ body{
   }
 }
 
+
+/* Meal preview button behavior */
+.meal-generate-preview-btn{
+  cursor:pointer !important;
+  transition:transform .22s ease, box-shadow .22s ease, background .22s ease !important;
+}
+.meal-generate-preview-btn:hover{
+  transform:translateY(-2px) !important;
+  box-shadow:0 16px 38px rgba(0,0,0,.18) !important;
+}
+
+
+/* ===== FINAL PREMIUM RECOMMENDED PRODUCTS UPGRADES ===== */
+
+/* Remove dark shade/overlay from product images */
+.rec-img::after,
+.rec-card .rec-img::after{
+  display:none !important;
+  content:none !important;
+}
+
+/* Premium product card movement */
+.rec-card{
+  transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease !important;
+}
+
+.rec-card:hover{
+  transform: translateY(-10px) scale(1.015) !important;
+  box-shadow: 0 38px 100px rgba(0,0,0,0.18) !important;
+  border-color: rgba(0,0,0,0.14) !important;
+}
+
+/* Smooth image zoom even when image is a background */
+.rec-card .rec-img{
+  transition: transform .65s ease, filter .65s ease !important;
+  filter: contrast(1.03) saturate(1.02) !important;
+}
+
+.rec-card:hover .rec-img{
+  transform: scale(1.045) !important;
+  filter: contrast(1.08) saturate(1.05) !important;
+}
+
+/* Better button feel */
+.btn-dark,
+.btn-outline,
+.meal-black-btn,
+.meal-white-btn,
+.meal-generate-preview-btn,
+.meal-generate-btn{
+  transition: transform .25s ease, box-shadow .25s ease, background .25s ease, color .25s ease !important;
+}
+
+.btn-dark:hover,
+.meal-black-btn:hover,
+.meal-generate-preview-btn:hover,
+.meal-generate-btn:hover{
+  transform: translateY(-2px) !important;
+  box-shadow: 0 16px 36px rgba(0,0,0,0.22) !important;
+}
+
+.btn-outline:hover,
+.meal-white-btn:hover{
+  background:#111 !important;
+  color:#fff !important;
+  border-color:#111 !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Smooth scroll reveal animation */
+.reveal-on-scroll{
+  opacity:0;
+  transform: translateY(26px);
+  transition: opacity .75s ease, transform .75s ease;
+}
+
+.reveal-on-scroll.visible{
+  opacity:1;
+  transform: translateY(0);
+}
+
+/* Sticky buy bar for Meal Plan Guide */
+.fitbrand-sticky-buy{
+  position:fixed;
+  left:50%;
+  bottom:22px;
+  transform:translateX(-50%) translateY(130%);
+  z-index:9998;
+  width:min(920px, calc(100vw - 32px));
+  background:rgba(255,255,255,.86);
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  border:1px solid rgba(0,0,0,.10);
+  border-radius:22px;
+  box-shadow:0 25px 80px rgba(0,0,0,.20);
+  padding:14px;
+  display:grid;
+  grid-template-columns:1fr auto auto;
+  gap:14px;
+  align-items:center;
+  transition:transform .35s ease;
+}
+
+.fitbrand-sticky-buy.show{
+  transform:translateX(-50%) translateY(0);
+}
+
+.fitbrand-sticky-buy strong{
+  display:block;
+  font-size:14px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#080808;
+}
+
+.fitbrand-sticky-buy span{
+  display:block;
+  color:rgba(0,0,0,.62);
+  font-size:13px;
+  margin-top:3px;
+}
+
+.fitbrand-sticky-buy a,
+.fitbrand-sticky-buy button{
+  min-height:46px;
+  border-radius:14px;
+  padding:0 18px;
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  cursor:pointer;
+  text-decoration:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.fitbrand-sticky-buy a{
+  background:#050505;
+  color:#fff;
+}
+
+.fitbrand-sticky-buy button{
+  background:#fff;
+  color:#050505;
+  border:1px solid rgba(0,0,0,.14);
+}
+
+@media(max-width:700px){
+  .fitbrand-sticky-buy{
+    grid-template-columns:1fr;
+  }
+
+  .fitbrand-sticky-buy a,
+  .fitbrand-sticky-buy button{
+    width:100%;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1432,7 +1592,7 @@ body{
             <div class="meal-preview-block"><label>1. Your goal</label><div class="meal-chip-row"><button>Build Muscle</button><button>Lose Fat</button><button>Maintain</button></div></div>
             <div class="meal-preview-block"><label>2. Calories</label><div class="meal-slider-line"><span></span></div><strong>2500 kcal</strong></div>
             <div class="meal-preview-block"><label>3. Preferences</label><div class="meal-chip-row"><button>No Pork</button><button>No Beef</button><button>Low Carb</button><button>Vegetarian</button><button>Gluten Free</button><button>Dairy Free</button></div></div>
-            <div class="meal-preview-block"><label>4. Meals per day</label><div class="meal-chip-row"><button>3 Meals</button><button class="active">5 Meals</button></div><button class="meal-generate-preview-btn">Generate my meal plan</button></div>
+            <div class="meal-preview-block"><label>4. Meals per day</label><div class="meal-chip-row"><button>3 Meals</button><button class="active">5 Meals</button></div><button class="meal-generate-preview-btn" onclick="handleMealPreviewClick()">Generate my meal plan</button></div>
           </div>
         </div>
         <div class="meal-preview-card">
@@ -1491,6 +1651,16 @@ body{
   </div>
   <div class="copy"><span>© 2026 FitBrand. All rights reserved.</span><span>Built for your transformation.</span></div>
 </footer>
+
+<div id="fitbrandStickyBuy" class="fitbrand-sticky-buy">
+  <div>
+    <strong>Meal Plan Guide AI</strong>
+    <span>Unlock the generator and create a personal 7-day meal plan.</span>
+  </div>
+  <a href="checkout.html?product=mealplan">Buy €5.99</a>
+  <button onclick="addToCart('mealplan')">Add to cart</button>
+</div>
+
 <script>
 function updateCartCount(){
   const cart = JSON.parse(localStorage.getItem("fitbrandCart") || "[]");
@@ -1627,6 +1797,34 @@ function unlockMealAI(){
   if(localStorage.getItem("fitbrandMealPlanUnlocked") === "true"){
     document.getElementById("meal-plan-ai").classList.add("unlocked");
     document.getElementById("mealGenerator").classList.add("show");
+  }
+}
+
+
+function handleMealPreviewClick(){
+  const hasMealPlan = localStorage.getItem("fitbrandMealPlanUnlocked") === "true";
+
+  if(hasMealPlan){
+    const generator = document.getElementById("meal-plan-ai");
+    if(generator){
+      generator.classList.add("unlocked");
+      generator.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+  } else {
+    const buySection = document.getElementById("meal-plan-guide-ai");
+    if(buySection){
+      buySection.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
+    const buyBtn = document.querySelector('a[href="checkout.html?product=mealplan"]');
+    if(buyBtn){
+      buyBtn.style.boxShadow = "0 0 0 4px rgba(0,0,0,.12), 0 18px 45px rgba(0,0,0,.24)";
+      buyBtn.style.transform = "scale(1.03)";
+      setTimeout(() => {
+        buyBtn.style.boxShadow = "";
+        buyBtn.style.transform = "";
+      }, 1800);
+    }
   }
 }
 
@@ -2221,6 +2419,54 @@ function showMiniCartPopup(){
   popup.classList.add("show");
   setTimeout(()=>popup.classList.remove("show"), 3000);
 }
+</script>
+
+
+<script>
+(function(){
+  function revealRecommendedElements(){
+    document.querySelectorAll(".rec-card, .meal-product-card, .meal-generator-preview, .meal-trust-strip").forEach(el => {
+      el.classList.add("reveal-on-scroll");
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add("visible");
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll(".reveal-on-scroll").forEach(el => observer.observe(el));
+  }
+
+  function stickyMealBuyBar(){
+    const bar = document.getElementById("fitbrandStickyBuy");
+    const mealSection = document.getElementById("meal-plan-guide-ai");
+    if(!bar || !mealSection) return;
+
+    window.addEventListener("scroll", function(){
+      const rect = mealSection.getBoundingClientRect();
+      const unlocked = localStorage.getItem("fitbrandMealPlanUnlocked") === "true";
+
+      if(unlocked){
+        bar.classList.remove("show");
+        return;
+      }
+
+      if(rect.top < window.innerHeight * 0.35 && rect.bottom > window.innerHeight * 0.45){
+        bar.classList.add("show");
+      } else {
+        bar.classList.remove("show");
+      }
+    }, { passive:true });
+  }
+
+  window.addEventListener("DOMContentLoaded", function(){
+    revealRecommendedElements();
+    stickyMealBuyBar();
+  });
+})();
 </script>
 
 <script src="fitbrand.js"></script>
