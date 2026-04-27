@@ -1425,3 +1425,49 @@ body{opacity:0;animation:pageFadeIn .65s ease forwards}
 .fb-meal-question{display:none;}.fb-meal-question.active{display:block;animation:mealFadeIn .25s ease;}
 .fb-meal-choice-actions{display:flex;gap:12px;margin-top:20px;}.fb-meal-choice-actions button{min-height:50px;border-radius:14px;padding:0 18px;font-weight:1000;cursor:pointer;text-transform:uppercase;}.fb-meal-back{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.14);}.fb-meal-next{background:#fff;color:#050505;border:0;}
 @media(max-width:900px){.access-grid{grid-template-columns:1fr}.order-row{grid-template-columns:1fr}.fb-meal-mini-form,.fb-meal-mini-form .wide,.fb-meal-options.compact{grid-template-columns:1fr;grid-column:span 1}}
+
+
+/* ===== FITBRAND V4 HARD FIXES: profile, login checkbox, welcome + meal wizard ===== */
+.nav-actions{display:flex!important;align-items:center!important;gap:12px!important;position:relative!important;}
+.profile-icon-btn{
+  width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important;
+  aspect-ratio:1/1!important;border-radius:50%!important;overflow:hidden!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  background:#f7f7f7!important;color:#050505!important;border:1px solid rgba(0,0,0,.14)!important;
+  box-shadow:0 10px 25px rgba(0,0,0,.10)!important;cursor:pointer!important;
+  padding:0!important;line-height:1!important;
+}
+.profile-icon-btn span{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;height:100%!important;color:#050505!important;font-weight:1000!important;font-size:15px!important;line-height:1!important;}
+.profile-avatar,.profile-avatar.large{
+  width:58px!important;height:58px!important;min-width:58px!important;min-height:58px!important;
+  aspect-ratio:1/1!important;border-radius:50%!important;overflow:hidden!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  background:#050505!important;color:#fff!important;border:0!important;padding:0!important;line-height:1!important;
+}
+.profile-avatar span,.profile-avatar.large span{color:#fff!important;font-weight:1000!important;font-size:20px!important;line-height:1!important;}
+.profile-menu{display:none!important;}
+.profile-menu.show{display:block!important;}
+.profile-menu button,.profile-menu a.profile-menu-link{width:100%!important;border:0!important;background:transparent!important;padding:13px 12px!important;text-align:left!important;cursor:pointer!important;border-radius:12px!important;font-weight:900!important;text-transform:uppercase!important;font-size:12px!important;display:block!important;color:#050505!important;text-decoration:none!important;line-height:1.2!important;}
+.profile-menu button:hover,.profile-menu a.profile-menu-link:hover{background:#f0f0f0!important;}
+.profile-remember-row{display:flex!important;align-items:center!important;gap:10px!important;font-size:13px!important;color:rgba(0,0,0,.70)!important;font-weight:800!important;line-height:1.35!important;margin:4px 0 2px!important;text-transform:none!important;letter-spacing:0!important;}
+.profile-remember-row input{width:16px!important;height:16px!important;margin:0!important;padding:0!important;accent-color:#050505!important;}
+.profile-main-btn,.profile-google-btn{width:100%;}
+.fb-welcome-overlay{position:fixed!important;inset:0!important;background:rgba(0,0,0,.58)!important;backdrop-filter:blur(12px)!important;-webkit-backdrop-filter:blur(12px)!important;display:none!important;align-items:center!important;justify-content:center!important;z-index:14000!important;padding:22px!important;}
+.fb-welcome-overlay.show{display:flex!important;}
+.fb-welcome-card{width:min(560px,100%)!important;background:linear-gradient(135deg,#fff,#eee)!important;border-radius:28px!important;padding:30px!important;box-shadow:0 30px 100px rgba(0,0,0,.35)!important;color:#050505!important;}
+.fb-welcome-card h2{text-transform:uppercase!important;font-size:clamp(30px,5vw,46px)!important;line-height:1!important;margin:0 0 12px!important;}
+.fb-welcome-card p{color:rgba(0,0,0,.65)!important;line-height:1.65!important;margin:0 0 18px!important;}
+.fb-welcome-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:12px!important;margin-top:20px!important;}
+.fb-welcome-primary,.fb-welcome-secondary{height:56px!important;border-radius:14px!important;font-weight:1000!important;cursor:pointer!important;text-transform:uppercase!important;letter-spacing:.08em!important;display:flex!important;align-items:center!important;justify-content:center!important;}
+.fb-welcome-primary{border:0!important;background:#050505!important;color:#fff!important;}
+.fb-welcome-secondary{border:1px solid #ddd!important;background:#fff!important;color:#050505!important;}
+.fb-meal-grid-collapsed{display:none!important;}
+.fb-meal-choice-panel-pro{margin-bottom:24px!important;background:linear-gradient(145deg,rgba(255,255,255,.095),rgba(255,255,255,.04))!important;border:1px solid rgba(255,255,255,.14)!important;border-radius:30px!important;padding:26px!important;box-shadow:0 24px 70px rgba(0,0,0,.24)!important;}
+.fb-meal-mini-form{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important;margin-top:16px!important;}
+.fb-meal-mini-form input,.fb-meal-mini-form select{height:62px!important;border-radius:18px!important;border:1px solid rgba(255,255,255,.16)!important;background:rgba(255,255,255,.08)!important;color:white!important;padding:0 16px!important;font-weight:800!important;outline:none!important;margin:0!important;}
+.fb-meal-mini-form option{background:white!important;color:#111!important;}
+.fb-meal-mini-form .wide{grid-column:span 2!important;}
+.fb-meal-options.compact{grid-template-columns:repeat(3,1fr)!important;margin-top:14px!important;}
+.fb-meal-generate-final{width:100%!important;height:64px!important;margin-top:18px!important;border:0!important;border-radius:18px!important;background:linear-gradient(135deg,#fff,#d7d7d7)!important;color:#050505!important;font-weight:1000!important;text-transform:uppercase!important;letter-spacing:.08em!important;cursor:pointer!important;}
+.fb-meal-wizard-note{padding:14px 16px!important;border-radius:18px!important;background:rgba(255,255,255,.06)!important;border:1px solid rgba(255,255,255,.10)!important;color:rgba(255,255,255,.78)!important;margin:0 0 14px!important;}
+@media(max-width:900px){.fb-welcome-actions,.fb-meal-mini-form,.fb-meal-mini-form .wide,.fb-meal-options.compact{grid-template-columns:1fr!important;grid-column:span 1!important;}.profile-menu{right:-58px!important;}}
