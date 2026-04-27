@@ -22,29 +22,8 @@
     .hero.photo-gear h1{margin:0 auto!important;font-size:clamp(42px,6vw,82px)!important;letter-spacing:.07em!important;}
     .hero.photo-gear p{margin:18px auto 0!important;max-width:760px!important;color:rgba(255,255,255,.82)!important;}
     .section{background:linear-gradient(180deg,#f4f4f4 0%,#e8e8e8 100%)!important;padding:72px 30px 96px!important;}
-
-    /* ===== PROFILE HEADER ===== */
-    <header class="nav">
-  <a href="index.html" class="brand">
-    <img class="logo-img" src="assets/fitbrand-logo-real.png" alt="FitBrand logo">
-    <span class="brand-word">FITBRAND</span>
-  </a>
-
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="programs.html">Programs</a>
-    <a href="recommended.html">Recommended Products</a>
-    <a href="about.html">About us</a>
-    <a href="policies.html">Policies</a>
-  </nav>
-
-  <a href="cart.html" class="cart-icon-btn">
-    <span class="cart-svg">🛒</span>
-    <span class="cart-count" id="cart-count-btn">0</span>
-  </a>
-</header>
-
-    /* ===== PRODUCTS ===== */
+    /* ===== PROFILE HEADER removed: using global active profile system ===== */
+/* ===== PRODUCTS ===== */
     .rec-grid.two-products{max-width:1180px!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:34px!important;align-items:stretch!important;margin-bottom:56px!important;}
     .rec-card{
       border-radius:30px!important;background:rgba(255,255,255,.88)!important;border:1px solid rgba(0,0,0,.08)!important;
@@ -231,7 +210,7 @@
       </div>
 
       <button onclick="openProfileModal('profile')">View profile</button>
-      <button onclick="openProfileModal('edit')">Edit profile</button>
+      <a class="profile-menu-link" href="profile.html">Edit profile</a>
       <button id="profileLoginBtn" onclick="openProfileModal('login')">Log in</button>
       <button id="profileLogoutBtn" onclick="logoutFitBrandUser()" style="display:none;">Log out</button>
     </div>
@@ -326,7 +305,7 @@
               <div class="meal-preview-block"><label>1. Your goal</label><div class="meal-chip-row"><button>Build Muscle</button><button>Lose Fat</button><button>Maintain</button></div></div>
               <div class="meal-preview-block"><label>2. Calories</label><div class="meal-slider-line"><span></span></div><strong>2500 kcal</strong></div>
               <div class="meal-preview-block"><label>3. Preferences</label><div class="meal-chip-row"><button>No Pork</button><button>No Beef</button><button>Low Carb</button><button>Vegetarian</button><button>Gluten Free</button><button>Dairy Free</button></div></div>
-              <div class="meal-preview-block"><label>4. Meals per day</label><div class="meal-chip-row"><button>3 Meals</button><button class="active">5 Meals</button></div><button class="meal-generate-preview-btn" onclick="handleMealPreviewClick()">Generate my meal plan</button></div>
+              <div class="meal-preview-block"><label>4. Meals per day</label><div class="meal-chip-row"><button>3 Meals</button><button class="active">5 Meals</button></div><button class="meal-generate-preview-btn" onclick="handleMealPreviewClick()">Open AI Meal Plan</button></div>
             </div>
           </div>
 

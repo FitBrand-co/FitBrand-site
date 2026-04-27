@@ -1312,23 +1312,49 @@ body{opacity:0;animation:pageFadeIn .65s ease forwards}
   padding:0 5px;
 }
 
-/* Make sure profile system is fully removed/hidden */
-.nav-actions{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.profile-icon-btn,
-.profile-menu,
-.profile-modal-overlay,
-.profile-modal,
-.profile-avatar,
-.profile-google-btn,
-.profile-main-btn{
-  display:none !important;
-}
-
+/* ===== FITBRAND PROFILE SYSTEM - ACTIVE ===== */
+.nav-actions{display:flex;align-items:center;gap:12px;position:relative;}
+.profile-icon-btn{width:46px;height:46px;border-radius:50%;border:1px solid rgba(0,0,0,.12);background:linear-gradient(135deg,#fff,#d7d7d7);color:#050505;font-weight:1000;cursor:pointer;display:flex!important;align-items:center;justify-content:center;box-shadow:0 10px 25px rgba(0,0,0,.10);transition:.22s ease;}
+.profile-icon-btn:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(0,0,0,.14);}
+.profile-menu{position:absolute;top:58px;right:0;width:310px;background:rgba(255,255,255,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(0,0,0,.10);border-radius:22px;box-shadow:0 24px 80px rgba(0,0,0,.22);padding:14px;display:none;z-index:12000;}
+.profile-menu.show{display:block!important;}
+.profile-menu-head{display:flex;gap:12px;align-items:center;padding:12px;border-bottom:1px solid #eee;margin-bottom:8px;}
+.profile-avatar{width:46px;height:46px;border-radius:50%;background:#050505;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:1000;}
+.profile-menu button,.profile-menu a.profile-menu-link{width:100%;border:0;background:transparent;padding:13px 12px;text-align:left;cursor:pointer;border-radius:12px;font-weight:900;text-transform:uppercase;font-size:12px;display:block;color:#050505!important;}
+.profile-menu button:hover,.profile-menu a.profile-menu-link:hover{background:#f0f0f0;}
+.profile-modal-overlay,.fb-welcome-overlay{position:fixed;inset:0;background:rgba(0,0,0,.58);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;z-index:13000;padding:22px;}
+.profile-modal-overlay.show,.fb-welcome-overlay.show{display:flex!important;}
+.profile-modal,.fb-welcome-card{width:min(560px,100%);background:linear-gradient(135deg,#fff,#eee);border-radius:28px;padding:30px;box-shadow:0 30px 100px rgba(0,0,0,.35);position:relative;color:#050505;}
+.profile-modal-close{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:22px;}
+.profile-modal h2,.fb-welcome-card h2{text-transform:uppercase;font-size:clamp(30px,5vw,46px);line-height:1;margin-bottom:10px;}
+.profile-modal p,.fb-welcome-card p{color:rgba(0,0,0,.65);line-height:1.65;margin:0 0 18px;}
+.profile-form,.profile-page-form{display:grid;gap:12px;}
+.profile-form input,.profile-form select,.profile-page-form input,.profile-page-form select{height:54px;border-radius:14px;border:1px solid rgba(0,0,0,.14);padding:0 14px;margin:0;background:white;color:#111;}
+.profile-main-btn,.profile-google-btn,.fb-welcome-primary,.fb-welcome-secondary{height:56px;border-radius:14px;font-weight:1000;cursor:pointer;text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;justify-content:center;text-decoration:none;}
+.profile-main-btn,.fb-welcome-primary{border:0;background:#050505;color:white;}
+.profile-google-btn,.fb-welcome-secondary{border:1px solid #ddd;background:white;color:#050505;}
+.fb-welcome-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;}
+.profile-page{min-height:650px;background:#e8e8e8;padding:95px 30px;}
+.profile-page-card{max-width:920px;margin:0 auto;background:#fff;border-radius:30px;padding:44px;box-shadow:0 28px 90px rgba(0,0,0,.16);}
+.profile-page-card h1{font-size:clamp(38px,6vw,72px);text-transform:uppercase;line-height:1;margin-bottom:12px;}
+.profile-page-card p{color:rgba(0,0,0,.65);line-height:1.7;margin-bottom:24px;}
+.profile-page-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.profile-page-grid .wide{grid-column:span 2;}
+.fb-meal-choice-panel{margin:0 0 28px;padding:24px;border-radius:26px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);}
+.fb-meal-choice-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:18px;}
+.fb-meal-choice-head h3{font-size:26px;line-height:1;margin:0;color:#fff;}
+.fb-meal-choice-head p{margin:7px 0 0!important;color:rgba(255,255,255,.72)!important;font-size:15px!important;}
+.fb-meal-step-pill{background:#fff;color:#050505;border-radius:999px;padding:9px 13px;font-weight:1000;white-space:nowrap;}
+.fb-meal-question{display:none;} .fb-meal-question.active{display:block;animation:mealFadeIn .22s ease;}
+.fb-meal-question h4{font-size:20px;color:#fff;margin:0 0 14px;}
+.fb-meal-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+.fb-meal-option{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.055);color:#fff;border-radius:18px;padding:16px;cursor:pointer;text-align:left;transition:.2s ease;}
+.fb-meal-option:hover,.fb-meal-option.selected{background:#fff;color:#050505;transform:translateY(-2px);}
+.fb-meal-option strong{display:block;margin-bottom:5px;} .fb-meal-option span{font-size:13px;line-height:1.4;color:inherit;opacity:.75;}
+.fb-meal-choice-actions{display:flex;gap:12px;margin-top:18px;} .fb-meal-choice-actions button{height:48px;border-radius:14px;padding:0 18px;font-weight:1000;cursor:pointer;}
+.fb-meal-back{background:rgba(255,255,255,.08);color:white;border:1px solid rgba(255,255,255,.14);} .fb-meal-next{background:#fff;color:#050505;border:0;}
+@keyframes mealFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(max-width:900px){.profile-page-grid,.fb-meal-options,.fb-welcome-actions{grid-template-columns:1fr}.profile-page-grid .wide{grid-column:span 1}.profile-modal,.fb-welcome-card,.profile-page-card{padding:24px}.profile-menu{right:-58px}}
 /* Mobile */
 @media(max-width:950px){
   .nav{
