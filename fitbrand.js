@@ -754,3 +754,86 @@
   document.addEventListener('click', function(e){ const m=document.getElementById('profileMenu'), b=document.querySelector('.profile-icon-btn'); if(m && b && !m.contains(e.target) && !b.contains(e.target)) m.classList.remove('show'); });
   document.addEventListener('DOMContentLoaded', function(){ ensureHeader(); ensureModal(); updateUI(); ensureWelcome(); unlockMealFromUrl(); setupMealWizard(); fillAllGeneratorsFromProfile(); profilePageFix(); checkoutGuard(); cartCount(); });
 })();
+
+/* ===== FITBRAND V6 FIX: keep profile menu complete and readable ===== */
+(function(){
+  function getUser(){
+    try { return JSON.parse(sessionStorage.getItem('fitbrandSessionUser') || localStorage.getItem('fitbrandUser') || 'null'); }
+    catch(e){ return null; }
+  }
+  function getInitials(user){
+    if(!user || !user.name) return '?';
+    const parts = String(user.name).trim().split(/\s+/).filter(Boolean);
+    if(!parts.length) return '?';
+    return ((parts[0][0] || '') + (parts.length > 1 ? (parts[parts.length - 1][0] || '') : '')).toUpperCase();
+  }
+  function normalizeProfileMenu(){
+    const menu = document.getElementById('profileMenu');
+    if(!menu) return;
+    const user = getUser();
+    const initials = getInitials(user);
+    menu.innerHTML = `
+      <div class="profile-menu-head">
+        <div class="profile-avatar"><span id="profileMenuInitial">${initials}</span></div>
+        <div>
+          <strong id="profileMenuName">${user && user.name ? user.name : 'Guest'}</strong>
+          <span id="profileMenuEmail">${user && user.email ? user.email : 'Not logged in'}</span>
+        </div>
+      </div>
+      <button type="button" onclick="openProfileModal('profile')">View profile</button>
+      ${user ? `
+        <div class="profile-menu-account-links">
+          <a class="profile-menu-link" href="profile.html">Edit profile information</a>
+          <a class="profile-menu-link" href="account.html#products">My products / access</a>
+          <a class="profile-menu-link" href="account.html#orders">My orders</a>
+        </div>
+      ` : ''}
+      <button id="profileLoginBtn" type="button" onclick="openProfileModal('login')" style="display:${user ? 'none' : 'block'}">Log in</button>
+      <button id="profileLogoutBtn" type="button" onclick="logoutFitBrandUser()" style="display:${user ? 'block' : 'none'}">Log out</button>
+    `;
+    document.querySelectorAll('#profileInitial,#profileMenuInitial,#profileViewInitial').forEach(el => { if(el) el.textContent = initials; });
+  }
+  const oldUpdate = window.updateFitBrandProfileUI;
+  window.updateFitBrandProfileUI = function(){
+    if(typeof oldUpdate === 'function') oldUpdate();
+    normalizeProfileMenu();
+  };
+  const oldToggle = window.toggleProfileMenu;
+  window.toggleProfileMenu = function(){
+    if(typeof oldToggle === 'function') oldToggle();
+    normalizeProfileMenu();
+    document.getElementById('profileMenu')?.classList.add('show');
+  };
+  document.addEventListener('DOMContentLoaded', function(){
+    setTimeout(function(){
+      normalizeProfileMenu();
+      const btn = document.querySelector('.profile-icon-btn');
+      if(btn && !btn.dataset.v6bound){
+        btn.dataset.v6bound = 'true';
+        btn.addEventListener('click', function(){ setTimeout(normalizeProfileMenu, 0); });
+      }
+    }, 80);
+  });
+})();
+
+/* ===== FITBRAND V6.1 FIX: profile icon toggles open/close correctly ===== */
+(function(){
+  function getUser(){ try{return JSON.parse(sessionStorage.getItem('fitbrandSessionUser') || localStorage.getItem('fitbrandUser') || 'null');}catch(e){return null;} }
+  function initials(u){ if(!u||!u.name)return'?'; const p=String(u.name).trim().split(/\s+/).filter(Boolean); return p.length ? ((p[0][0]||'')+(p.length>1?(p[p.length-1][0]||''):'')).toUpperCase() : '?'; }
+  function normalize(){
+    const menu=document.getElementById('profileMenu'); if(!menu)return;
+    const u=getUser(), ini=initials(u);
+    menu.innerHTML=`<div class="profile-menu-head"><div class="profile-avatar"><span id="profileMenuInitial">${ini}</span></div><div><strong id="profileMenuName">${u?.name||'Guest'}</strong><span id="profileMenuEmail">${u?.email||'Not logged in'}</span></div></div><button type="button" onclick="openProfileModal('profile')">View profile</button>${u?`<div class="profile-menu-account-links"><a class="profile-menu-link" href="profile.html">Edit profile information</a><a class="profile-menu-link" href="account.html#products">My products / access</a><a class="profile-menu-link" href="account.html#orders">My orders</a></div>`:''}<button id="profileLoginBtn" type="button" onclick="openProfileModal('login')" style="display:${u?'none':'block'}">Log in</button><button id="profileLogoutBtn" type="button" onclick="logoutFitBrandUser()" style="display:${u?'block':'none'}">Log out</button>`;
+    document.querySelectorAll('#profileInitial,#profileMenuInitial,#profileViewInitial').forEach(el=>{if(el)el.textContent=ini;});
+  }
+  window.fitbrandNormalizeProfileMenu = normalize;
+  window.toggleProfileMenu = function(){
+    const menu=document.getElementById('profileMenu');
+    const wasOpen=!!menu?.classList.contains('show');
+    if(typeof window.updateFitBrandProfileUI === 'function') window.updateFitBrandProfileUI();
+    normalize();
+    const m=document.getElementById('profileMenu');
+    if(m) m.classList.toggle('show', !wasOpen);
+  };
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(normalize,120));
+})();

@@ -1471,3 +1471,79 @@ body{opacity:0;animation:pageFadeIn .65s ease forwards}
 .fb-meal-generate-final{width:100%!important;height:64px!important;margin-top:18px!important;border:0!important;border-radius:18px!important;background:linear-gradient(135deg,#fff,#d7d7d7)!important;color:#050505!important;font-weight:1000!important;text-transform:uppercase!important;letter-spacing:.08em!important;cursor:pointer!important;}
 .fb-meal-wizard-note{padding:14px 16px!important;border-radius:18px!important;background:rgba(255,255,255,.06)!important;border:1px solid rgba(255,255,255,.10)!important;color:rgba(255,255,255,.78)!important;margin:0 0 14px!important;}
 @media(max-width:900px){.fb-welcome-actions,.fb-meal-mini-form,.fb-meal-mini-form .wide,.fb-meal-options.compact{grid-template-columns:1fr!important;grid-column:span 1!important;}.profile-menu{right:-58px!important;}}
+
+/* ===== FITBRAND V6 FIX: profile menu text fit + visible account shortcuts ===== */
+.profile-menu{
+  width:min(430px, calc(100vw - 28px))!important;
+  max-width:calc(100vw - 28px)!important;
+  right:0!important;
+  overflow:auto!important;
+  max-height:min(82vh, 620px)!important;
+}
+.profile-menu-head{
+  display:grid!important;
+  grid-template-columns:64px minmax(0,1fr)!important;
+  gap:14px!important;
+  align-items:center!important;
+}
+.profile-menu-head > div:last-child{
+  min-width:0!important;
+  max-width:100%!important;
+  overflow:hidden!important;
+}
+#profileMenuName,#profileViewName{
+  display:block!important;
+  max-width:100%!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  word-break:break-word!important;
+  font-size:clamp(18px, 3.4vw, 22px)!important;
+  line-height:1.08!important;
+}
+#profileMenuEmail,#profileViewEmail{
+  display:block!important;
+  max-width:100%!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  word-break:break-all!important;
+  font-size:clamp(13px, 2.7vw, 16px)!important;
+  line-height:1.22!important;
+  color:rgba(0,0,0,.82)!important;
+}
+.profile-menu-account-links{
+  margin:10px 0!important;
+  padding:10px 0!important;
+  border-top:1px solid rgba(0,0,0,.08)!important;
+  border-bottom:1px solid rgba(0,0,0,.08)!important;
+}
+.profile-menu-account-links .profile-menu-link{
+  background:linear-gradient(135deg,#f8f8f8,#eeeeee)!important;
+  margin:6px 0!important;
+  border:1px solid rgba(0,0,0,.07)!important;
+}
+.profile-menu-account-links .profile-menu-link:hover{
+  background:#050505!important;
+  color:#fff!important;
+}
+.profile-icon-btn,
+.profile-avatar,
+.profile-avatar.large{
+  flex:0 0 auto!important;
+  border-radius:50%!important;
+  aspect-ratio:1 / 1!important;
+}
+@media(max-width:520px){
+  .profile-menu{
+    right:-8px!important;
+    width:calc(100vw - 24px)!important;
+  }
+  .profile-menu-head{
+    grid-template-columns:54px minmax(0,1fr)!important;
+  }
+  .profile-avatar{
+    width:54px!important;
+    height:54px!important;
+    min-width:54px!important;
+    min-height:54px!important;
+  }
+}
