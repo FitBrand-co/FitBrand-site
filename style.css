@@ -1,4 +1,3 @@
-
 :root{
   --black:#07080a;
   --dark:#111318;
@@ -1199,111 +1198,22 @@ body{opacity:0;animation:pageFadeIn .65s ease forwards}
 .card,.rec-card,.review-card,.trust-card{transition:transform .28s ease,box-shadow .28s ease}
 @media(max-width:700px){.signup-form{grid-template-columns:1fr}.email-signup-wrap{padding:34px 22px}}
 
-/* Silver transparent header */
-.nav{
-  position: sticky;
-  top:0;
-  z-index:1000;
-
-  background: rgba(245,245,245,0.75);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-
-  border-bottom:1px solid rgba(0,0,0,0.08);
-  box-shadow:0 12px 34px rgba(0,0,0,0.08);
-
-  transition: all .25s ease;
-}
-
-.nav.scrolled{
-  background: rgba(255,255,255,0.92);
-  box-shadow:0 18px 45px rgba(0,0,0,0.12);
-}
-
-.nav a,
-.nav .brand-word{
-  color:#050505;
-}
-/* ===== FITBRAND PREMIUM GLASS HEADER ===== */
-
-.nav{
-  position: sticky;
-  top:0;
-  z-index:1000;
-
-  background: rgba(246,246,246,0.75);
-  backdrop-filter: blur(18px) saturate(160%);
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
-
-  border-bottom:1px solid rgba(255,255,255,0.6);
-  box-shadow:0 14px 40px rgba(0,0,0,0.08);
-
-  transition: all .25s ease;
-}
-
-.nav.scrolled{
-  background: rgba(255,255,255,0.92);
-  box-shadow:0 18px 45px rgba(0,0,0,0.12);
-}
-
-/* text farve */
-
-.nav a,
-.nav .brand-word,
-.nav .cart-svg{
-  color:#050505;
-}
-
-/* hover animation */
-
-.nav nav a{
-  position:relative;
-  font-weight:700;
-  transition:all .2s ease;
-}
-
-.nav nav a:hover{
-  color:#666;
-  transform:translateY(-1px);
-}
-
-.nav nav a::after{
-  content:"";
-  position:absolute;
-  left:0;
-  bottom:-6px;
-  width:0;
-  height:2px;
-  background:linear-gradient(90deg,#111,#aaa);
-  transition:width .25s ease;
-}
-
-.nav nav a:hover::after{
-  width:100%;
-}
-
-/* cart icon */
-
-.cart-icon-btn{
-  background:rgba(255,255,255,0.55);
-  border:1px solid rgba(0,0,0,0.1);
-  box-shadow:0 10px 25px rgba(0,0,0,0.06);
-  transition:.2s;
-}
-
-.cart-icon-btn:hover{
-  transform:translateY(-1px);
-  background:rgba(255,255,255,0.8);
-}
-/* ===== FITBRAND LIQUID GLASS HEADER ===== */
+/* ===== FITBRAND CLEAN LIQUID GLASS HEADER - PROFILE REMOVED ===== */
 
 .nav{
   position:sticky;
   top:0;
   z-index:1000;
-  background:rgba(255,255,255,0.72);
+  height:88px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 46px;
+
+  background:rgba(255,255,255,0.74);
   backdrop-filter:blur(22px) saturate(180%);
   -webkit-backdrop-filter:blur(22px) saturate(180%);
+
   border-bottom:1px solid rgba(255,255,255,0.65);
   box-shadow:0 14px 45px rgba(0,0,0,0.08);
   transition:all .28s ease;
@@ -1312,9 +1222,6 @@ body{opacity:0;animation:pageFadeIn .65s ease forwards}
 .nav.scrolled{
   background:rgba(255,255,255,0.78);
   box-shadow:0 14px 40px rgba(0,0,0,0.10);
-  padding-top:12px;
-  padding-bottom:12px;
-}
 }
 
 .nav a,
@@ -1322,6 +1229,14 @@ body{opacity:0;animation:pageFadeIn .65s ease forwards}
 .nav .brand-word,
 .nav .cart-svg{
   color:#050505 !important;
+}
+
+.nav nav{
+  display:flex;
+  gap:24px;
+  text-transform:uppercase;
+  font-size:12px;
+  font-weight:950;
 }
 
 .nav nav a{
@@ -1333,6 +1248,7 @@ body{opacity:0;animation:pageFadeIn .65s ease forwards}
 .nav nav a:hover{
   color:#666 !important;
   transform:translateY(-1px);
+  opacity:1;
 }
 
 .nav nav a::after{
@@ -1351,11 +1267,25 @@ body{opacity:0;animation:pageFadeIn .65s ease forwards}
   width:100%;
 }
 
+/* Cart button only */
 .cart-icon-btn{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:46px;
+  height:46px;
+  border-radius:12px;
+
   background:rgba(255,255,255,0.65) !important;
+  color:#111;
+  text-decoration:none;
+  font-size:20px;
+
   border:1px solid rgba(0,0,0,0.10) !important;
   box-shadow:0 12px 30px rgba(0,0,0,0.08);
   transition:all .22s ease;
+  cursor:pointer;
 }
 
 .cart-icon-btn:hover{
@@ -1364,178 +1294,53 @@ body{opacity:0;animation:pageFadeIn .65s ease forwards}
   box-shadow:0 16px 38px rgba(0,0,0,0.13);
 }
 
+.cart-icon-btn .cart-count,
 .cart-count{
+  position:absolute;
+  top:-6px;
+  right:-6px;
   background:#050505 !important;
   color:white !important;
+  font-size:10px;
+  font-weight:900;
+  min-width:18px;
+  height:18px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 5px;
 }
 
-@media(max-width:760px){
-  .nav{
-    background:rgba(255,255,255,0.92);
-  }
-
-  .nav nav a{
-    font-size:13px;
-  }
-}
-/* ===== FITBRAND PROFILE SYSTEM ===== */
-
+/* Make sure profile system is fully removed/hidden */
 .nav-actions{
-display:flex;
-align-items:center;
-gap:12px;
-position:relative;
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
 
-.profile-icon-btn{
-width:46px;
-height:46px;
-border-radius:50%;
-border:1px solid rgba(0,0,0,.12);
-background:linear-gradient(135deg,#ffffff,#d7d7d7);
-color:#050505;
-font-weight:1000;
-cursor:pointer;
-display:flex;
-align-items:center;
-justify-content:center;
-box-shadow:0 10px 25px rgba(0,0,0,.10);
-transition:.22s ease;
-}
-
-.profile-icon-btn:hover{
-transform:translateY(-2px);
-box-shadow:0 16px 34px rgba(0,0,0,.14);
-}
-
-.profile-menu{
-position:absolute;
-top:58px;
-right:0;
-width:300px;
-background:rgba(255,255,255,.94);
-backdrop-filter:blur(18px);
-border:1px solid rgba(0,0,0,.10);
-border-radius:22px;
-box-shadow:0 24px 80px rgba(0,0,0,.22);
-padding:14px;
-display:none;
-z-index:12000;
-}
-
-.profile-menu.show{
-display:block;
-}
-
-.profile-menu-head{
-display:flex;
-gap:12px;
-align-items:center;
-padding:12px;
-border-bottom:1px solid #eee;
-margin-bottom:8px;
-}
-
-.profile-avatar{
-width:46px;
-height:46px;
-border-radius:50%;
-background:#050505;
-color:white;
-display:flex;
-align-items:center;
-justify-content:center;
-font-weight:1000;
-}
-
-.profile-menu button{
-width:100%;
-border:0;
-background:transparent;
-padding:13px 12px;
-text-align:left;
-cursor:pointer;
-border-radius:12px;
-font-weight:900;
-text-transform:uppercase;
-font-size:12px;
-}
-
-.profile-menu button:hover{
-background:#f0f0f0;
-}
-
-.profile-modal-overlay{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.55);
-backdrop-filter:blur(10px);
-display:none;
-align-items:center;
-justify-content:center;
-z-index:13000;
-padding:22px;
-}
-
-.profile-modal-overlay.show{
-display:flex;
-}
-
-.profile-modal{
-width:min(520px,100%);
-background:linear-gradient(135deg,#fff,#eee);
-border-radius:28px;
-padding:30px;
-box-shadow:0 30px 100px rgba(0,0,0,.35);
-position:relative;
-}
-
-.profile-modal-close{
-position:absolute;
-top:16px;
-right:16px;
-width:38px;
-height:38px;
-border-radius:50%;
-border:1px solid #ddd;
-background:white;
-cursor:pointer;
-font-size:22px;
-}
-
-.profile-modal h2{
-text-transform:uppercase;
-font-size:34px;
-margin-bottom:10px;
-}
-
-.profile-form{
-display:grid;
-gap:12px;
-}
-
-.profile-form input{
-height:54px;
-border-radius:14px;
-border:1px solid rgba(0,0,0,.14);
-padding:0 14px;
-}
-
+.profile-icon-btn,
+.profile-menu,
+.profile-modal-overlay,
+.profile-modal,
+.profile-avatar,
+.profile-google-btn,
 .profile-main-btn{
-height:56px;
-border:0;
-border-radius:14px;
-background:#050505;
-color:white;
-font-weight:1000;
-cursor:pointer;
+  display:none !important;
 }
 
-.profile-google-btn{
-height:56px;
-border-radius:14px;
-border:1px solid #ddd;
-background:white;
-cursor:pointer;
-font-weight:1000;
+/* Mobile */
+@media(max-width:950px){
+  .nav{
+    padding:0 18px;
+  }
+
+  .nav nav{
+    display:none;
+  }
+
+  .brand-word{
+    font-size:15px;
+    letter-spacing:.22em;
+  }
 }
