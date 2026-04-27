@@ -15,847 +15,132 @@
   <meta name="twitter:card" content="summary_large_image">
 
   <style>
-    html { scroll-behavior: smooth; }
+    html{scroll-behavior:smooth}
+    body{background:#0d0d0f}
 
+    /* ===== HEADER PROFILE ADD-ON ===== */
+    .nav-actions{display:flex;align-items:center;gap:12px;position:relative}
+    .profile-icon-btn{
+      width:46px;height:46px;border-radius:50%;border:1px solid rgba(0,0,0,.12);
+      background:linear-gradient(135deg,#fff,#d7d7d7);color:#050505;font-weight:1000;
+      cursor:pointer;display:flex;align-items:center;justify-content:center;
+      box-shadow:0 10px 25px rgba(0,0,0,.10);transition:.22s ease;
+    }
+    .profile-icon-btn:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(0,0,0,.14)}
+    .profile-menu{
+      position:absolute;top:58px;right:0;width:300px;background:rgba(255,255,255,.94);
+      backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+      border:1px solid rgba(0,0,0,.10);border-radius:22px;box-shadow:0 24px 80px rgba(0,0,0,.22);
+      padding:14px;display:none;z-index:12000;color:#050505;
+    }
+    .profile-menu.show{display:block}
+    .profile-menu-head{display:flex;gap:12px;align-items:center;padding:12px;border-bottom:1px solid #eee;margin-bottom:8px}
+    .profile-avatar{width:46px;height:46px;border-radius:50%;background:#050505;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:1000}
+    .profile-menu button{width:100%;border:0;background:transparent;padding:13px 12px;text-align:left;cursor:pointer;border-radius:12px;font-weight:900;text-transform:uppercase;font-size:12px;color:#050505}
+    .profile-menu button:hover{background:#f0f0f0}
+    .profile-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;z-index:13000;padding:22px}
+    .profile-modal-overlay.show{display:flex}
+    .profile-modal{width:min(520px,100%);background:linear-gradient(135deg,#fff,#eee);border-radius:28px;padding:30px;box-shadow:0 30px 100px rgba(0,0,0,.35);position:relative;color:#050505}
+    .profile-modal-close{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:22px}
+    .profile-modal h2{text-transform:uppercase;font-size:34px;margin-bottom:10px}
+    .profile-form{display:grid;gap:12px}
+    .profile-form input{height:54px;border-radius:14px;border:1px solid rgba(0,0,0,.14);padding:0 14px;margin:0}
+    .profile-main-btn,.profile-google-btn{height:56px;border-radius:14px;font-weight:1000;cursor:pointer;text-transform:uppercase}
+    .profile-main-btn{border:0;background:#050505;color:white}
+    .profile-google-btn{border:1px solid #ddd;background:white;color:#050505}
+
+    /* ===== PRODUCT FINDER ===== */
     .premium-finder-wrap{
-      position: relative;
-      padding: 80px 20px;
-      background:
-        radial-gradient(circle at 10% 10%, rgba(255,255,255,.18), transparent 25%),
-        radial-gradient(circle at 90% 0%, rgba(255,255,255,.10), transparent 20%),
-        linear-gradient(135deg, #030303 0%, #0b0b0b 55%, #111 100%);
-      color: white;
-      overflow: hidden;
+      position:relative;padding:90px 20px;background:
+      radial-gradient(circle at 12% 8%,rgba(255,255,255,.18),transparent 26%),
+      radial-gradient(circle at 90% 0%,rgba(255,255,255,.10),transparent 24%),
+      linear-gradient(135deg,#030303 0%,#0b0b0b 55%,#151515 100%);
+      color:white;overflow:hidden;
     }
-    .premium-finder-wrap::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.03), transparent);
-      pointer-events:none;
-    }
-    .premium-finder-container{
-      max-width: 1180px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
-    .premium-eyebrow{
-      color:#bdbdbd;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      font-size: 12px;
-      font-weight: 800;
-      margin-bottom: 14px;
-    }
-    .premium-finder-head{
-      text-align:center;
-      max-width: 760px;
-      margin: 0 auto 34px;
-    }
-    .premium-finder-head h2{
-      font-size: clamp(34px, 6vw, 64px);
-      line-height: 1;
-      margin: 0 0 14px;
-      letter-spacing: -1.5px;
-    }
-    .premium-finder-head p{
-      color:#cfcfcf;
-      font-size: 18px;
-      line-height: 1.6;
-      margin:0;
-    }
-    .premium-grid{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 26px;
-      align-items: start;
-    }
+    .premium-finder-container{max-width:1180px;margin:0 auto;position:relative;z-index:1}
+    .premium-eyebrow{color:#bdbdbd;text-transform:uppercase;letter-spacing:3px;font-size:12px;font-weight:900;margin-bottom:14px}
+    .premium-finder-head{text-align:center;max-width:800px;margin:0 auto 38px}
+    .premium-finder-head h2{font-size:clamp(38px,6vw,72px);line-height:.95;margin:0 0 16px;letter-spacing:-1.8px;text-transform:uppercase}
+    .premium-finder-head p{color:#cfcfcf;font-size:18px;line-height:1.65;margin:0}
+    .premium-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:26px;align-items:start}
     .glass-card{
-      background: rgba(255,255,255,.065);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 30px;
-      padding: 28px;
-      box-shadow: 0 30px 80px rgba(0,0,0,.35);
-      backdrop-filter: blur(12px);
+      background:rgba(255,255,255,.065);border:1px solid rgba(255,255,255,.12);
+      border-radius:30px;padding:28px;box-shadow:0 30px 80px rgba(0,0,0,.35);backdrop-filter:blur(12px);
     }
-    .glass-card h3{
-      font-size: 28px;
-      margin: 0 0 8px;
-    }
-    .glass-card p{
-      color: #d2d2d2;
-      line-height: 1.6;
-      margin-top: 0;
-    }
-    .finder-progress{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin: 22px 0 18px;
-    }
-    .finder-step{
-      width: 13px;
-      height: 13px;
-      border-radius: 50%;
-      background: rgba(255,255,255,.22);
-      transition: .25s ease;
-    }
-    .finder-step.active{
-      background: white;
-      transform: scale(1.12);
-      box-shadow: 0 0 18px rgba(255,255,255,.5);
-    }
-    .finder-bar{
-      flex:1;
-      height: 7px;
-      background: rgba(255,255,255,.12);
-      border-radius: 999px;
-      overflow:hidden;
-    }
-    .finder-bar span{
-      display:block;
-      height:100%;
-      width:33%;
-      border-radius:999px;
-      background: linear-gradient(90deg, #fff, #bdbdbd);
-      transition: width .28s ease;
-    }
-    .finder-screen{ display:none; }
-    .finder-screen.active{ display:block; animation: fadeIn .25s ease; }
-    @keyframes fadeIn {
-      from{ opacity:0; transform: translateY(6px);}
-      to{ opacity:1; transform: translateY(0);}
-    }
-    .finder-options{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 16px;
-    }
-    .finder-option{
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.04);
-      border-radius: 22px;
-      padding: 18px;
-      cursor:pointer;
-      transition: .22s ease;
-    }
-    .finder-option:hover{
-      transform: translateY(-2px);
-      border-color: rgba(255,255,255,.35);
-      background: rgba(255,255,255,.08);
-    }
-    .finder-option.selected{
-      border-color: white;
-      background: rgba(255,255,255,.12);
-      box-shadow: 0 0 0 2px rgba(255,255,255,.08) inset;
-    }
-    .finder-option strong{
-      display:block;
-      font-size: 18px;
-      margin-bottom: 6px;
-    }
-    .finder-option span{
-      color:#c8c8c8;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-    .finder-nav{
-      display:flex;
-      justify-content:space-between;
-      gap:14px;
-      margin-top: 22px;
-    }
-    .finder-btn, .finder-btn-secondary{
-      border:none;
-      border-radius: 16px;
-      padding: 15px 18px;
-      font-weight: 900;
-      cursor:pointer;
-      transition:.2s ease;
-    }
-    .finder-btn{
-      background: linear-gradient(135deg, #fff, #cfcfcf);
-      color:#060606;
-      flex:1;
-    }
-    .finder-btn-secondary{
-      background: rgba(255,255,255,.08);
-      color: white;
-      flex:1;
-      border: 1px solid rgba(255,255,255,.14);
-    }
-    .finder-btn:hover, .finder-btn-secondary:hover{ transform: translateY(-1px); }
-    .finder-benefits{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-    }
-    .benefit-box{
-      border:1px solid rgba(255,255,255,.12);
-      border-radius:22px;
-      padding:18px;
-      background: rgba(255,255,255,.04);
-    }
-    .benefit-box strong{
-      display:block;
-      margin-bottom: 6px;
-      font-size: 17px;
-    }
-    .benefit-box span{
-      color:#c7c7c7;
-      line-height:1.55;
-      font-size: 14px;
-    }
-    .finder-result{
-      display:none;
-      margin-top: 22px;
-      background: #040404;
-      border: 1px solid rgba(255,255,255,.14);
-      border-radius: 26px;
-      padding: 24px;
-    }
-    .finder-result.show{ display:block; }
-    .finder-result .match-pill{
-      display:inline-block;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.1);
-      color: #fff;
-      font-size: 12px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 14px;
-    }
-    .finder-result h4{
-      font-size: 34px;
-      margin: 0 0 10px;
-    }
-    .finder-result p{
-      color:#d2d2d2;
-      margin: 0 0 18px;
-      line-height:1.6;
-    }
-    .finder-tags{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-bottom: 18px;
-    }
-    .finder-tag{
-      padding: 9px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.07);
-      border: 1px solid rgba(255,255,255,.10);
-      font-size: 13px;
-      color:#f0f0f0;
-    }
-    .finder-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-    }
-    .finder-actions a, .finder-actions button{
-      text-decoration:none;
-      border:none;
-      border-radius:16px;
-      padding:14px 18px;
-      font-weight:900;
-      cursor:pointer;
-    }
-    .finder-actions .primary{
-      background:white;
-      color:black;
-    }
-    .finder-actions .secondary{
-      background: rgba(255,255,255,.08);
-      color:white;
-      border:1px solid rgba(255,255,255,.14);
-    }
+    .glass-card h3{font-size:28px;margin:0 0 8px}.glass-card p{color:#d2d2d2;line-height:1.6;margin-top:0}
+    .finder-progress{display:flex;align-items:center;gap:10px;margin:22px 0 18px}
+    .finder-step{width:13px;height:13px;border-radius:50%;background:rgba(255,255,255,.22);transition:.25s ease}
+    .finder-step.active{background:white;transform:scale(1.12);box-shadow:0 0 18px rgba(255,255,255,.5)}
+    .finder-bar{flex:1;height:7px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden}
+    .finder-bar span{display:block;height:100%;width:33%;border-radius:999px;background:linear-gradient(90deg,#fff,#bdbdbd);transition:width .28s ease}
+    .finder-screen{display:none}.finder-screen.active{display:block;animation:fadeIn .25s ease}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+    .finder-options{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+    .finder-option{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);border-radius:22px;padding:18px;cursor:pointer;transition:.22s ease}
+    .finder-option:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.08)}
+    .finder-option.selected{border-color:white;background:rgba(255,255,255,.12);box-shadow:0 0 0 2px rgba(255,255,255,.08) inset}
+    .finder-option strong{display:block;font-size:18px;margin-bottom:6px}.finder-option span{color:#c8c8c8;font-size:14px;line-height:1.5}
+    .finder-nav{display:flex;justify-content:space-between;gap:14px;margin-top:22px}
+    .finder-btn,.finder-btn-secondary{border:none;border-radius:16px;padding:15px 18px;font-weight:900;cursor:pointer;transition:.2s ease;flex:1}
+    .finder-btn{background:linear-gradient(135deg,#fff,#cfcfcf);color:#060606}.finder-btn-secondary{background:rgba(255,255,255,.08);color:white;border:1px solid rgba(255,255,255,.14)}
+    .finder-btn:hover,.finder-btn-secondary:hover{transform:translateY(-1px)}
+    .finder-benefits{display:grid;grid-template-columns:1fr;gap:14px}.benefit-box{border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:18px;background:rgba(255,255,255,.04)}
+    .benefit-box strong{display:block;margin-bottom:6px;font-size:17px}.benefit-box span{color:#c7c7c7;line-height:1.55;font-size:14px}
+    .finder-result{display:none;margin-top:22px;background:#040404;border:1px solid rgba(255,255,255,.14);border-radius:26px;padding:24px}
+    .finder-result.show{display:block}.match-pill{display:inline-block;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.1);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px}
+    .finder-result h4{font-size:34px;margin:0 0 10px}.finder-tags{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}.finder-tag{padding:9px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.10);font-size:13px;color:#f0f0f0}
+    .finder-actions{display:flex;flex-wrap:wrap;gap:12px}.finder-actions a,.finder-actions button{text-decoration:none;border:none;border-radius:16px;padding:14px 18px;font-weight:900;cursor:pointer}.finder-actions .primary{background:white;color:black}.finder-actions .secondary{background:rgba(255,255,255,.08);color:white;border:1px solid rgba(255,255,255,.14)}
+    .fitbrand-highlight-card{outline:3px solid white!important;box-shadow:0 0 36px rgba(255,255,255,.35)!important;transform:scale(1.02);transition:.25s ease}
 
-    .program-generator{
-      padding: 85px 20px;
-      background: linear-gradient(180deg, #f7f7f7 0%, #ececec 100%);
-      color:#0a0a0a;
-    }
-    .program-generator-container{
-      max-width: 1180px;
-      margin:0 auto;
-    }
-    .generator-card{
-      background:white;
-      border-radius:32px;
-      padding:34px;
-      box-shadow: 0 30px 80px rgba(0,0,0,.10);
-      border:1px solid rgba(0,0,0,.05);
-    }
-    .generator-top{
-      max-width:780px;
-      margin-bottom: 30px;
-    }
-    .generator-top h2{
-      font-size: clamp(34px, 6vw, 56px);
-      line-height: 1;
-      margin: 0 0 12px;
-      letter-spacing: -1.4px;
-    }
-    .generator-top p{
-      margin:0;
-      color:#555;
-      line-height:1.6;
-      font-size:17px;
-    }
-    .generator-note{
-      display:inline-block;
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: #0a0a0a;
-      color: white;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 1.3px;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-    .generator-grid{
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-    }
-    .generator-field{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-    .generator-field label{
-      font-size: 13px;
-      font-weight: 800;
-      color:#111;
-    }
-    .generator-field input, .generator-field select{
-      padding: 15px;
-      border-radius: 16px;
-      border:1px solid #ddd;
-      background:#fafafa;
-      color:#111;
-      outline:none;
-    }
-    .generator-field input:focus, .generator-field select:focus{
-      border-color:#444;
-    }
-    .generator-button-row{
-      display:flex;
-      gap:14px;
-      margin-top: 18px;
-      flex-wrap: wrap;
-    }
-    .generator-button-row button{
-      border:none;
-      border-radius: 16px;
-      padding: 15px 18px;
-      font-weight:900;
-      cursor:pointer;
-    }
-    .generator-main-btn{
-      background:#111;
-      color:white;
-      min-width: 240px;
-    }
-    .generator-alt-btn{
-      background:#ececec;
-      color:#111;
-    }
-    .generator-plan{
-      display:none;
-      margin-top: 28px;
-      background: #0a0a0a;
-      color:white;
-      border-radius: 30px;
-      padding: 28px;
-      overflow:hidden;
-      position:relative;
-    }
-    .generator-plan.show{ display:block; }
-    .generator-plan::before{
-      content:"";
-      position:absolute;
-      top:-80px;
-      right:-80px;
-      width:220px;
-      height:220px;
-      background: radial-gradient(circle, rgba(255,255,255,.18), transparent 70%);
-      pointer-events:none;
-    }
-    .generator-plan-head{
-      display:flex;
-      justify-content:space-between;
-      gap:20px;
-      align-items:flex-start;
-      border-bottom:1px solid rgba(255,255,255,.12);
-      padding-bottom: 20px;
-      margin-bottom: 22px;
-    }
-    .generator-plan-head h3{
-      font-size: 36px;
-      margin: 0 0 8px;
-      line-height: 1;
-    }
-    .generator-plan-head p{
-      color:#d2d2d2;
-      line-height:1.6;
-      margin:0;
-    }
-    .plan-pill{
-      background:white;
-      color:#111;
-      border-radius:999px;
-      padding:10px 14px;
-      font-weight:900;
-      white-space:nowrap;
-    }
-    .plan-summary-grid{
-      display:grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 22px;
-    }
-    .plan-summary-box{
-      background: rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius: 18px;
-      padding: 14px;
-    }
-    .plan-summary-box span{
-      display:block;
-      color:#bbb;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing:1.2px;
-      margin-bottom:6px;
-    }
-    .plan-summary-box strong{
-      font-size:16px;
-    }
-    .plan-days{
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-    }
-    .plan-day{
-      background: rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: 22px;
-      padding: 18px;
-    }
-    .plan-day h4{
-      margin: 0 0 10px;
-      font-size: 21px;
-    }
-    .plan-day ul{
-      padding-left: 18px;
-      margin: 0;
-    }
-    .plan-day li{
-      margin: 7px 0;
-      color:#e0e0e0;
-      line-height:1.45;
-    }
-    .plan-footer{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 18px;
-    }
-    .plan-footer-box{
-      background: rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: 20px;
-      padding: 18px;
-    }
-    .plan-footer-box h5{
-      margin:0 0 8px;
-      font-size:18px;
-    }
-    .plan-footer-box p{
-      margin:0;
-      color:#d2d2d2;
-      line-height:1.55;
-    }
+    /* ===== BUNDLE OFFER ===== */
+    .fitbrand-bundle-offer{margin:34px auto 0;max-width:900px;padding:34px;border-radius:30px;background:linear-gradient(135deg,#080808,#191919);color:white;text-align:center;box-shadow:0 25px 70px rgba(0,0,0,.22)}
+    .fitbrand-bundle-offer p:first-child{letter-spacing:2px;text-transform:uppercase;color:#bdbdbd;font-size:12px;font-weight:900;margin:0 0 10px}
+    .fitbrand-bundle-offer h2{font-size:38px;margin:0 0 10px;text-transform:uppercase}
+    .fitbrand-bundle-offer p{color:#d0d0d0;max-width:650px;margin:0 auto 20px;line-height:1.65}
 
-    .fitbrand-highlight-card{
-      outline: 3px solid white !important;
-      box-shadow: 0 0 36px rgba(255,255,255,.35) !important;
-      transform: scale(1.02);
-      transition: .25s ease;
-    }
+    /* ===== AFTER PURCHASE MODAL ===== */
+    .fb-after-purchase-trigger{position:fixed;right:22px;bottom:22px;z-index:9990;display:none;border:none;border-radius:999px;padding:15px 18px;background:#080808;color:white;font-weight:900;box-shadow:0 18px 50px rgba(0,0,0,.28);cursor:pointer}
+    .fb-after-purchase-trigger.show{display:block}
+    .fb-modal-overlay{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(0,0,0,.72);backdrop-filter:blur(14px)}
+    .fb-modal-overlay.show{display:flex}
+    .fb-generator-modal{width:min(1160px,100%);max-height:92vh;overflow:auto;background:radial-gradient(circle at 50% -10%,rgba(255,255,255,.13),transparent 30%),linear-gradient(145deg,#08090b 0%,#111216 50%,#050506 100%);color:white;border:1px solid rgba(255,255,255,.16);border-radius:30px;box-shadow:0 40px 120px rgba(0,0,0,.65);position:relative}
+    .fb-modal-close{position:absolute;top:20px;right:20px;width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:white;font-size:28px;line-height:1;cursor:pointer}
+    .fb-modal-header{text-align:center;padding:46px 34px 30px;border-bottom:1px solid rgba(255,255,255,.10)}
+    .fb-logo-mark{font-size:36px;font-weight:1000;letter-spacing:-3px;margin-bottom:20px;background:linear-gradient(180deg,#fff,#8f8f8f);-webkit-background-clip:text;color:transparent}
+    .fb-modal-kicker{text-transform:uppercase;letter-spacing:4px;color:#cfcfcf;font-size:13px;font-weight:800;margin-bottom:14px}
+    .fb-modal-header h2{font-size:clamp(30px,5vw,54px);line-height:1;margin:0 0 14px;letter-spacing:-1.4px}
+    .fb-modal-header p{color:#cfcfcf;font-size:17px;max-width:680px;margin:0 auto;line-height:1.6}
+    .fb-modal-body{padding:30px 34px 34px}
+    .fb-form-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 20px;align-items:end}
+    .fb-form-field{display:flex;flex-direction:column;gap:9px;min-width:0}.fb-form-field.fb-wide{grid-column:span 2}
+    .fb-form-field label{text-transform:uppercase;letter-spacing:1.6px;color:#f0f0f0;font-weight:900;font-size:12px;white-space:nowrap}
+    .fb-input-wrap{position:relative}.fb-input-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#e8e8e8;opacity:.88;font-size:18px;pointer-events:none}
+    .fb-form-field input,.fb-form-field select{width:100%;height:58px;box-sizing:border-box;border-radius:13px;border:1px solid rgba(255,255,255,.16);background:linear-gradient(180deg,rgba(255,255,255,.095),rgba(255,255,255,.045));color:white;font-size:15px;outline:none;padding:0 16px 0 48px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+    .fb-form-field option{color:#111;background:white}.fb-form-field input::placeholder{color:#a9a9a9}.fb-form-field input:focus,.fb-form-field select:focus{border-color:rgba(255,255,255,.55);box-shadow:0 0 0 4px rgba(255,255,255,.06)}
+    .fb-divider{display:flex;align-items:center;gap:18px;margin:30px 0 24px;color:#fff;text-transform:uppercase;letter-spacing:1.6px;font-size:13px;font-weight:900}
+    .fb-divider::before,.fb-divider::after{content:"";height:1px;background:rgba(255,255,255,.14);flex:1}
+    .fb-generate-btn{width:100%;height:70px;border:none;border-radius:15px;margin-top:28px;cursor:pointer;font-weight:1000;letter-spacing:2px;text-transform:uppercase;font-size:16px;color:#070707;background:linear-gradient(135deg,#fff,#c9c9c9);box-shadow:0 20px 45px rgba(255,255,255,.10)}
+    .fb-trust-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}.fb-trust-item{display:flex;align-items:center;gap:12px;padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+    .fb-trust-icon{font-size:26px;opacity:.85}.fb-trust-item strong{display:block;font-size:14px;margin-bottom:4px}.fb-trust-item span{display:block;color:#bdbdbd;font-size:12px;line-height:1.35}
+    .fb-plan-output{display:none;margin-top:28px;border-radius:26px;background:radial-gradient(circle at 15% 0%,rgba(255,255,255,.10),transparent 28%),linear-gradient(145deg,#0c0d10,#050506);border:1px solid rgba(255,255,255,.14);padding:26px;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 24px 80px rgba(0,0,0,.45)}
+    .fb-plan-output.show{display:block}.fb-plan-head{display:flex;justify-content:space-between;gap:20px;align-items:center;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:24px}.fb-plan-head h3{margin:0 0 8px;font-size:32px;line-height:1}.fb-plan-head p{margin:0;color:#cfcfcf;line-height:1.55}.fb-plan-pill{background:white;color:#080808;border-radius:999px;padding:10px 14px;font-weight:1000;white-space:nowrap;height:max-content}
+    .fb-plan-days{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.fb-plan-day{background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.035));border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:20px;min-height:210px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}.fb-plan-day h4{font-size:19px;margin:0 0 14px;letter-spacing:-.2px}.fb-plan-day ul{margin:0;padding-left:18px}.fb-plan-day li{font-size:14px;color:#e8e8e8;line-height:1.55;margin:8px 0}
+    #modalPackage{pointer-events:none;opacity:.78}
 
-    @media (max-width: 950px){
-      .premium-grid, .generator-grid, .plan-days, .plan-summary-grid, .plan-footer{
-        grid-template-columns: 1fr;
-      }
-      .generator-plan-head{
-        flex-direction:column;
-      }
-    }
-
-    .fb-modal-overlay{
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 22px;
-      background: rgba(0,0,0,.72);
-      backdrop-filter: blur(14px);
-    }
-    .fb-modal-overlay.show{ display:flex; }
-
-    .fb-generator-modal{
-      width: min(1160px, 100%);
-      max-height: 92vh;
-      overflow: auto;
-      background:
-        radial-gradient(circle at 50% -10%, rgba(255,255,255,.13), transparent 30%),
-        linear-gradient(145deg, #08090b 0%, #111216 50%, #050506 100%);
-      color: white;
-      border: 1px solid rgba(255,255,255,.16);
-      border-radius: 30px;
-      box-shadow: 0 40px 120px rgba(0,0,0,.65);
-      position: relative;
-    }
-    .fb-modal-close{
-      position:absolute;
-      top:20px;
-      right:20px;
-      width:46px;
-      height:46px;
-      border-radius:50%;
-      border:1px solid rgba(255,255,255,.16);
-      background:rgba(255,255,255,.08);
-      color:white;
-      font-size:28px;
-      line-height:1;
-      cursor:pointer;
-    }
-    .fb-modal-header{
-      text-align:center;
-      padding: 46px 34px 30px;
-      border-bottom:1px solid rgba(255,255,255,.10);
-    }
-    .fb-logo-mark{
-      font-size:36px;
-      font-weight:1000;
-      letter-spacing:-3px;
-      margin-bottom:20px;
-      background: linear-gradient(180deg,#fff,#8f8f8f);
-      -webkit-background-clip:text;
-      color:transparent;
-      text-shadow: 0 14px 35px rgba(255,255,255,.12);
-    }
-    .fb-modal-kicker{
-      text-transform:uppercase;
-      letter-spacing:4px;
-      color:#cfcfcf;
-      font-size:13px;
-      font-weight:800;
-      margin-bottom:14px;
-    }
-    .fb-modal-header h2{
-      font-size: clamp(30px, 5vw, 54px);
-      line-height:1;
-      margin:0 0 14px;
-      letter-spacing:-1.4px;
-    }
-    .fb-modal-header p{
-      color:#cfcfcf;
-      font-size:17px;
-      max-width:680px;
-      margin:0 auto;
-      line-height:1.6;
-    }
-    .fb-modal-body{
-      padding: 30px 34px 34px;
-    }
-    .fb-form-grid{
-      display:grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 18px 20px;
-      align-items:end;
-    }
-    .fb-form-field{
-      display:flex;
-      flex-direction:column;
-      gap:9px;
-      min-width:0;
-    }
-    .fb-form-field.fb-wide{ grid-column: span 2; }
-    .fb-form-field label{
-      text-transform:uppercase;
-      letter-spacing:1.6px;
-      color:#f0f0f0;
-      font-weight:900;
-      font-size:12px;
-      white-space:nowrap;
-    }
-    .fb-input-wrap{
-      position:relative;
-    }
-    .fb-input-icon{
-      position:absolute;
-      left:16px;
-      top:50%;
-      transform:translateY(-50%);
-      color:#e8e8e8;
-      opacity:.88;
-      font-size:18px;
-      pointer-events:none;
-    }
-    .fb-form-field input,
-    .fb-form-field select{
-      width:100%;
-      height:58px;
-      box-sizing:border-box;
-      border-radius:13px;
-      border:1px solid rgba(255,255,255,.16);
-      background: linear-gradient(180deg, rgba(255,255,255,.095), rgba(255,255,255,.045));
-      color:white;
-      font-size:15px;
-      outline:none;
-      padding: 0 16px 0 48px;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
-    }
-    .fb-form-field select{
-      appearance:auto;
-      color:white;
-    }
-    .fb-form-field option{
-      color:#111;
-      background:white;
-    }
-    .fb-form-field input::placeholder{ color:#a9a9a9; }
-    .fb-form-field input:focus,
-    .fb-form-field select:focus{
-      border-color:rgba(255,255,255,.55);
-      box-shadow:0 0 0 4px rgba(255,255,255,.06);
-    }
-    .fb-divider{
-      display:flex;
-      align-items:center;
-      gap:18px;
-      margin:30px 0 24px;
-      color:#fff;
-      text-transform:uppercase;
-      letter-spacing:1.6px;
-      font-size:13px;
-      font-weight:900;
-    }
-    .fb-divider::before,
-    .fb-divider::after{
-      content:"";
-      height:1px;
-      background:rgba(255,255,255,.14);
-      flex:1;
-    }
-    .fb-generate-btn{
-      width:100%;
-      height:70px;
-      border:none;
-      border-radius:15px;
-      margin-top:28px;
-      cursor:pointer;
-      font-weight:1000;
-      letter-spacing:2px;
-      text-transform:uppercase;
-      font-size:16px;
-      color:#070707;
-      background: linear-gradient(135deg, #fff, #c9c9c9);
-      box-shadow: 0 20px 45px rgba(255,255,255,.10);
-    }
-    .fb-trust-row{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:16px;
-      margin-top:28px;
-    }
-    .fb-trust-item{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:14px;
-      border-radius:18px;
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.08);
-    }
-    .fb-trust-icon{
-      font-size:26px;
-      opacity:.85;
-    }
-    .fb-trust-item strong{
-      display:block;
-      font-size:14px;
-      margin-bottom:4px;
-    }
-    .fb-trust-item span{
-      display:block;
-      color:#bdbdbd;
-      font-size:12px;
-      line-height:1.35;
-    }
-    .fb-plan-output{
-      display:none;
-      margin-top:28px;
-      border-radius:24px;
-      background:#050505;
-      border:1px solid rgba(255,255,255,.12);
-      padding:24px;
-    }
-    .fb-plan-output.show{ display:block; }
-    .fb-plan-head{
-      display:flex;
-      justify-content:space-between;
-      gap:20px;
-      padding-bottom:18px;
-      border-bottom:1px solid rgba(255,255,255,.12);
-      margin-bottom:20px;
-    }
-    .fb-plan-head h3{
-      margin:0 0 8px;
-      font-size:32px;
-      line-height:1;
-    }
-    .fb-plan-head p{
-      margin:0;
-      color:#cfcfcf;
-      line-height:1.55;
-    }
-    .fb-plan-pill{
-      background:white;
-      color:#080808;
-      border-radius:999px;
-      padding:10px 14px;
-      font-weight:1000;
-      white-space:nowrap;
-      height:max-content;
-    }
-    .fb-plan-days{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0,1fr));
-      gap:14px;
-    }
-    .fb-plan-day{
-      background:rgba(255,255,255,.045);
-      border:1px solid rgba(255,255,255,.09);
-      border-radius:18px;
-      padding:16px;
-    }
-    .fb-plan-day h4{
-      margin:0 0 10px;
-      font-size:18px;
-    }
-    .fb-plan-day ul{
-      margin:0;
-      padding-left:18px;
-    }
-    .fb-plan-day li{
-      margin:7px 0;
-      color:#dfdfdf;
-      line-height:1.4;
-    }
-
-    .fb-after-purchase-trigger{
-      position:fixed;
-      right:22px;
-      bottom:22px;
-      z-index:9990;
-      display:none;
-      border:none;
-      border-radius:999px;
-      padding:15px 18px;
-      background:#080808;
-      color:white;
-      font-weight:900;
-      box-shadow:0 18px 50px rgba(0,0,0,.28);
-      cursor:pointer;
-    }
-    .fb-after-purchase-trigger.show{ display:block; }
-
-    @media(max-width:900px){
-      .fb-form-grid{ grid-template-columns:1fr 1fr; }
-      .fb-form-field.fb-wide{ grid-column:span 2; }
-      .fb-trust-row{ grid-template-columns:1fr; }
-      .fb-plan-days{ grid-template-columns:1fr; }
-      .fb-plan-head{ flex-direction:column; }
+    @media(max-width:950px){
+      .premium-grid,.finder-options,.fb-trust-row{grid-template-columns:1fr}
+      .fb-form-grid{grid-template-columns:1fr 1fr}.fb-form-field.fb-wide{grid-column:span 2}
+      .fb-plan-days{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .fb-plan-head{flex-direction:column;align-items:flex-start}
     }
     @media(max-width:560px){
-      .fb-form-grid{ grid-template-columns:1fr; }
-      .fb-form-field.fb-wide{ grid-column:span 1; }
-      .fb-modal-body{ padding:24px 18px 22px; }
-      .fb-modal-header{ padding:42px 18px 26px; }
+      .fb-form-grid,.fb-plan-days{grid-template-columns:1fr}.fb-form-field.fb-wide{grid-column:span 1}
+      .fb-modal-body{padding:24px 18px 22px}.fb-modal-header{padding:42px 18px 26px}
     }
-
-
-    /* FINAL FIX: hide old generated table section and polish modal plan output */
-    #fitbrand-generator,
-    .program-generator,
-    .email-signup{
-      display:none !important;
-    }
-
-    .fb-plan-output{
-      background:
-        radial-gradient(circle at 15% 0%, rgba(255,255,255,.10), transparent 28%),
-        linear-gradient(145deg, #0c0d10, #050506) !important;
-      border:1px solid rgba(255,255,255,.14) !important;
-      border-radius:26px !important;
-      padding:26px !important;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 24px 80px rgba(0,0,0,.45);
-    }
-    .fb-plan-head{
-      align-items:center;
-      margin-bottom:24px !important;
-    }
-    .fb-plan-days{
-      grid-template-columns: repeat(3, minmax(0,1fr)) !important;
-      gap:16px !important;
-    }
-    .fb-plan-day{
-      background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035)) !important;
-      border:1px solid rgba(255,255,255,.12) !important;
-      border-radius:22px !important;
-      padding:20px !important;
-      min-height:210px;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
-    }
-    .fb-plan-day h4{
-      font-size:19px !important;
-      margin-bottom:14px !important;
-      letter-spacing:-.2px;
-    }
-    .fb-plan-day li{
-      font-size:14px;
-      color:#e8e8e8 !important;
-      line-height:1.55 !important;
-      margin:8px 0 !important;
-    }
-    #modalPackage{
-      pointer-events:none;
-      opacity:.78;
-    }
-
-    @media(max-width:980px){
-      .fb-plan-days{ grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
-    }
-    @media(max-width:650px){
-      .fb-plan-days{ grid-template-columns:1fr !important; }
-    }
-
   </style>
 </head>
-<body>
 
+<body>
 <header class="nav">
   <a href="index.html" class="brand">
     <img class="logo-img" src="assets/fitbrand-logo-real.png" alt="FitBrand logo">
@@ -868,10 +153,31 @@
     <a href="about.html">About us</a>
     <a href="policies.html">Policies</a>
   </nav>
-  <a href="cart.html" class="cart-icon-btn">
-    <span class="cart-svg">🛒</span>
-    <span class="cart-count" id="cart-count-btn">0</span>
-  </a>
+
+  <div class="nav-actions">
+    <a href="cart.html" class="cart-icon-btn">
+      <span class="cart-svg">🛒</span>
+      <span class="cart-count" id="cart-count-btn">0</span>
+    </a>
+
+    <button class="profile-icon-btn" onclick="toggleProfileMenu()" aria-label="Profile">
+      <span id="profileInitial">?</span>
+    </button>
+
+    <div id="profileMenu" class="profile-menu">
+      <div class="profile-menu-head">
+        <div class="profile-avatar"><span id="profileMenuInitial">?</span></div>
+        <div>
+          <strong id="profileMenuName">Guest</strong><br>
+          <span id="profileMenuEmail">Not logged in</span>
+        </div>
+      </div>
+      <button onclick="openProfileModal('profile')">View profile</button>
+      <button onclick="openProfileModal('edit')">Edit profile</button>
+      <button id="profileLoginBtn" onclick="openProfileModal('login')">Log in</button>
+      <button id="profileLogoutBtn" onclick="logoutFitBrandUser()" style="display:none;">Log out</button>
+    </div>
+  </div>
 </header>
 
 <main>
@@ -889,10 +195,7 @@
       <div class="premium-finder-head">
         <div class="premium-eyebrow">Free tool before purchase</div>
         <h2>Find the best program for you</h2>
-        <p>
-          This premium Product Finder helps customers discover the right FitBrand program
-          before they buy. No code. No login. Just a clean recommendation flow.
-        </p>
+        <p>This premium Product Finder helps customers discover the right FitBrand program before they buy.</p>
       </div>
 
       <div class="premium-grid">
@@ -911,18 +214,9 @@
             <h4 style="margin:0 0 8px;">What is your main goal?</h4>
             <p style="margin:0 0 16px;color:#cfcfcf;">Choose the result you care most about right now.</p>
             <div class="finder-options">
-              <div class="finder-option" data-group="goal" data-value="muscle">
-                <strong>Build Muscle</strong>
-                <span>Best for aesthetics, size, upper body shape and a balanced physique.</span>
-              </div>
-              <div class="finder-option" data-group="goal" data-value="fatloss">
-                <strong>Lose Fat</strong>
-                <span>Best for getting leaner, more defined and staying consistent.</span>
-              </div>
-              <div class="finder-option" data-group="goal" data-value="strength">
-                <strong>Get Stronger</strong>
-                <span>Best for power, performance and improving your main lifts.</span>
-              </div>
+              <div class="finder-option" data-group="goal" data-value="muscle"><strong>Build Muscle</strong><span>Best for aesthetics, size and balanced shape.</span></div>
+              <div class="finder-option" data-group="goal" data-value="fatloss"><strong>Lose Fat</strong><span>Best for getting leaner and more defined.</span></div>
+              <div class="finder-option" data-group="goal" data-value="strength"><strong>Get Stronger</strong><span>Best for power, performance and main lifts.</span></div>
             </div>
             <div class="finder-nav">
               <button class="finder-btn-secondary" type="button" disabled>Back</button>
@@ -932,16 +226,10 @@
 
           <div class="finder-screen" id="finderScreen2">
             <h4 style="margin:0 0 8px;">Where do you train?</h4>
-            <p style="margin:0 0 16px;color:#cfcfcf;">We will match the best product and note whether gym or home works best.</p>
+            <p style="margin:0 0 16px;color:#cfcfcf;">We will match the best product for your setup.</p>
             <div class="finder-options">
-              <div class="finder-option" data-group="place" data-value="gym">
-                <strong>Gym</strong>
-                <span>Access to machines, barbells, dumbbells and more equipment.</span>
-              </div>
-              <div class="finder-option" data-group="place" data-value="home">
-                <strong>Home</strong>
-                <span>Bodyweight, dumbbells, resistance bands or minimal equipment.</span>
-              </div>
+              <div class="finder-option" data-group="place" data-value="gym"><strong>Gym</strong><span>Machines, barbells, dumbbells and more equipment.</span></div>
+              <div class="finder-option" data-group="place" data-value="home"><strong>Home</strong><span>Bodyweight, dumbbells or minimal equipment.</span></div>
             </div>
             <div class="finder-nav">
               <button class="finder-btn-secondary" type="button" onclick="nextFinderStep(1)">Back</button>
@@ -953,22 +241,10 @@
             <h4 style="margin:0 0 8px;">How often do you train?</h4>
             <p style="margin:0 0 16px;color:#cfcfcf;">We use this to fine-tune the recommendation.</p>
             <div class="finder-options">
-              <div class="finder-option" data-group="days" data-value="3">
-                <strong>3 days</strong>
-                <span>Simple and realistic schedule.</span>
-              </div>
-              <div class="finder-option" data-group="days" data-value="4">
-                <strong>4 days</strong>
-                <span>Strong balance between results and recovery.</span>
-              </div>
-              <div class="finder-option" data-group="days" data-value="5">
-                <strong>5 days</strong>
-                <span>Great for faster progress and more training volume.</span>
-              </div>
-              <div class="finder-option" data-group="days" data-value="6">
-                <strong>6 days</strong>
-                <span>Best for highly motivated people and maximum structure.</span>
-              </div>
+              <div class="finder-option" data-group="days" data-value="3"><strong>3 days</strong><span>Simple and realistic schedule.</span></div>
+              <div class="finder-option" data-group="days" data-value="4"><strong>4 days</strong><span>Strong balance between results and recovery.</span></div>
+              <div class="finder-option" data-group="days" data-value="5"><strong>5 days</strong><span>Great for faster progress.</span></div>
+              <div class="finder-option" data-group="days" data-value="6"><strong>6 days</strong><span>Best for maximum structure.</span></div>
             </div>
             <div class="finder-nav">
               <button class="finder-btn-secondary" type="button" onclick="nextFinderStep(2)">Back</button>
@@ -989,29 +265,13 @@
         </div>
 
         <div class="glass-card">
-          <h3>Why this is better</h3>
-          <p>
-            This version is designed to feel much more premium. It is cleaner, easier to use,
-            and makes the brand feel more valuable before the customer even buys.
-          </p>
-
+          <h3>Why customers like this</h3>
+          <p>A clean recommendation makes it easier for customers to choose and makes FitBrand feel more premium before they buy.</p>
           <div class="finder-benefits">
-            <div class="benefit-box">
-              <strong>No code needed</strong>
-              <span>The Product Finder is completely open, so everyone can use it before buying.</span>
-            </div>
-            <div class="benefit-box">
-              <strong>Better conversion</strong>
-              <span>Customers get a clear recommendation, which makes it easier for them to choose a product.</span>
-            </div>
-            <div class="benefit-box">
-              <strong>Premium brand feeling</strong>
-              <span>The new layout feels more like a real premium fitness platform than a basic PDF shop.</span>
-            </div>
-            <div class="benefit-box">
-              <strong>After-purchase generator</strong>
-              <span>Once a customer buys, they can fill in personal details and generate a plan based on the package they chose.</span>
-            </div>
+            <div class="benefit-box"><strong>No code needed</strong><span>The Product Finder is open before purchase.</span></div>
+            <div class="benefit-box"><strong>Better conversion</strong><span>Customers get a clear recommendation instead of guessing.</span></div>
+            <div class="benefit-box"><strong>Premium brand feeling</strong><span>The site feels more like a real fitness platform.</span></div>
+            <div class="benefit-box"><strong>After-purchase generator</strong><span>Customers can generate a plan after buying.</span></div>
           </div>
         </div>
       </div>
@@ -1023,20 +283,12 @@
       <h2>Choose your program</h2>
       <p>Clean structure, premium product design and programs made to help people stop guessing and start progressing.</p>
     </div>
+
     <div class="cards">
       <article class="card" id="aesthetic-program">
         <div class="product-visual">
           <span class="product-badge">Best Seller</span>
-          <div class="mockup">
-            <div class="side"></div>
-            <div class="top"></div>
-            <div class="front">
-              <div class="brand-small">FITBRAND</div>
-              <div class="logo-big">FB</div>
-              <div class="title">Aesthetic</div>
-              <div class="sub">Premium guide</div>
-            </div>
-          </div>
+          <div class="mockup"><div class="side"></div><div class="top"></div><div class="front"><div class="brand-small">FITBRAND</div><div class="logo-big">FB</div><div class="title">Aesthetic</div><div class="sub">Premium guide</div></div></div>
         </div>
         <div class="card-body">
           <h3>Aesthetic Program</h3>
@@ -1050,16 +302,7 @@
       <article class="card" id="shred-program">
         <div class="product-visual silver">
           <span class="product-badge">Most Popular</span>
-          <div class="mockup">
-            <div class="side"></div>
-            <div class="top"></div>
-            <div class="front">
-              <div class="brand-small">FITBRAND</div>
-              <div class="logo-big">FB</div>
-              <div class="title">Shred</div>
-              <div class="sub">Premium guide</div>
-            </div>
-          </div>
+          <div class="mockup"><div class="side"></div><div class="top"></div><div class="front"><div class="brand-small">FITBRAND</div><div class="logo-big">FB</div><div class="title">Shred</div><div class="sub">Premium guide</div></div></div>
         </div>
         <div class="card-body">
           <h3>Shred Program</h3>
@@ -1072,16 +315,7 @@
 
       <article class="card" id="strength-program">
         <div class="product-visual">
-          <div class="mockup">
-            <div class="side"></div>
-            <div class="top"></div>
-            <div class="front">
-              <div class="brand-small">FITBRAND</div>
-              <div class="logo-big">FB</div>
-              <div class="title">Strength</div>
-              <div class="sub">Premium guide</div>
-            </div>
-          </div>
+          <div class="mockup"><div class="side"></div><div class="top"></div><div class="front"><div class="brand-small">FITBRAND</div><div class="logo-big">FB</div><div class="title">Strength</div><div class="sub">Premium guide</div></div></div>
         </div>
         <div class="card-body">
           <h3>Strength Program</h3>
@@ -1092,17 +326,17 @@
         </div>
       </article>
     </div>
+
+    <div class="fitbrand-bundle-offer">
+      <p>Best value</p>
+      <h2>Get All 3 Programs</h2>
+      <p>Aesthetic, Shred and Strength in one bundle. Perfect for customers who want the full FitBrand system.</p>
+      <a class="btn-silver" href="checkout.html?product=bundle">Buy Bundle €18.97</a>
+      <button class="btn-outline" onclick="addToCart('bundle')" style="margin-left:10px;">Add to cart</button>
+    </div>
   </section>
 
-  
-<div class="fitbrand-bundle-offer" style="margin:34px auto 0; max-width:900px; padding:30px; border-radius:28px; background:linear-gradient(135deg,#080808,#191919); color:white; text-align:center; box-shadow:0 25px 70px rgba(0,0,0,.22);">
-  <p style="letter-spacing:2px; text-transform:uppercase; color:#bdbdbd; font-size:12px; font-weight:800; margin:0 0 10px;">Best value</p>
-  <h2 style="font-size:34px; margin:0 0 10px;">Get All 3 Programs</h2>
-  <p style="color:#d0d0d0; max-width:650px; margin:0 auto 20px;">Aesthetic, Shred and Strength in one bundle. Perfect for customers who want the full FitBrand system.</p>
-  <a class="btn-silver" href="https://buy.stripe.com/test_14A14h1AX1lZ3kHc033F604" target="_blank" rel="noreferrer" style="display:inline-block; text-decoration:none;">Buy Bundle €18.97</a>
-</div>
-
-<section class="split">
+  <section class="split">
     <div class="split-photo"></div>
     <div class="split-content">
       <p class="eyebrow">Why FitBrand</p>
@@ -1138,41 +372,18 @@
       <div class="review-card"><div class="stars">★★★★★</div><p>“The whole brand looks premium. It actually makes me want to stay disciplined.”</p><strong>Alex, Strength Training</strong></div>
     </div>
   </section>
-
 </main>
 
 <footer>
   <div class="footer-grid">
-    <div>
-      <a class="brand" href="index.html">
-        <img class="logo-img" src="assets/fitbrand-logo-real.png" alt="FitBrand logo">
-      </a>
-      <p>Premium programs. Real results. No excuses.</p>
-    </div>
-    <div>
-      <h4>Support</h4>
-      <a href="policies.html">Our Policies</a>
-      <a href="policies.html#refunds">Refund Policy</a>
-      <a href="policies.html#privacy">Privacy Policy</a>
-      <a href="policies.html#terms">Terms & Conditions</a>
-    </div>
-    <div>
-      <h4>Connect</h4>
-      <a href="https://instagram.com/fitbrand.co" target="_blank" rel="noreferrer">Instagram</a>
-      <a href="https://tiktok.com/@fitbrand.co" target="_blank" rel="noreferrer">TikTok</a>
-      <a href="https://www.facebook.com/profile.php?id=61588721279095" target="_blank" rel="noreferrer">Facebook</a>
-      <a href="mailto:support@fitbrand.co">Email</a>
-    </div>
+    <div><a class="brand" href="index.html"><img class="logo-img" src="assets/fitbrand-logo-real.png" alt="FitBrand logo"></a><p>Premium programs. Real results. No excuses.</p></div>
+    <div><h4>Support</h4><a href="policies.html">Our Policies</a><a href="policies.html#refunds">Refund Policy</a><a href="policies.html#privacy">Privacy Policy</a><a href="policies.html#terms">Terms & Conditions</a></div>
+    <div><h4>Connect</h4><a href="https://instagram.com/fitbrand.co" target="_blank" rel="noreferrer">Instagram</a><a href="https://tiktok.com/@fitbrand.co" target="_blank" rel="noreferrer">TikTok</a><a href="https://www.facebook.com/profile.php?id=61588721279095" target="_blank" rel="noreferrer">Facebook</a><a href="mailto:support@fitbrand.co">Email</a></div>
   </div>
-  <div class="copy">
-    <span>© 2026 FitBrand. All rights reserved.</span>
-    <span>Built for your transformation.</span>
-  </div>
+  <div class="copy"><span>© 2026 FitBrand. All rights reserved.</span><span>Built for your transformation.</span></div>
 </footer>
 
-<div id="cart-toast" class="cart-toast">
-  Added to cart. <a href="cart.html" style="text-decoration:underline;color:white;">View cart</a>
-</div>
+<div id="cart-toast" class="cart-toast">Added to cart. <a href="cart.html" style="text-decoration:underline;color:white;">View cart</a></div>
 
 <div id="drawer-overlay" class="cart-drawer-overlay" onclick="closeCartDrawer()"></div>
 <aside id="cart-drawer" class="cart-drawer">
@@ -1184,10 +395,8 @@
     <div id="drawer-items"></div>
     <div class="upsell-section">
       <h3>Recommended add-ons</h3>
-      <div class="upsell-card">
-        <span>Premium Shaker</span>
-        <button class="remove-item-btn" onclick="addToCart('shaker')">Add</button>
-      </div>
+      <div class="upsell-card"><span>Meal Plan Guide AI</span><button class="remove-item-btn" onclick="addToCart('mealplan')">Add</button></div>
+      <div class="upsell-card"><span>Premium Shaker</span><button class="remove-item-btn" onclick="addToCart('shaker')">Add</button></div>
     </div>
   </div>
   <div class="drawer-footer">
@@ -1213,8 +422,8 @@
 
 <button id="openGeneratorBtn" class="fb-after-purchase-trigger" onclick="openGeneratorModal()">Generate your plan</button>
 
-<div id="fitbrandGeneratorModal" class="fb-modal-overlay">
-  <div class="fb-generator-modal">
+<div id="fitbrandGeneratorModal" class="fb-modal-overlay" onclick="closeGeneratorModal()">
+  <div class="fb-generator-modal" onclick="event.stopPropagation()">
     <button class="fb-modal-close" onclick="closeGeneratorModal()">×</button>
 
     <div class="fb-modal-header">
@@ -1228,8 +437,7 @@
       <div class="fb-form-grid">
         <div class="fb-form-field fb-wide">
           <label>Package you purchased</label>
-          <div class="fb-input-wrap">
-            <span class="fb-input-icon">▣</span>
+          <div class="fb-input-wrap"><span class="fb-input-icon">▣</span>
             <select id="modalPackage">
               <option value="">Select your package</option>
               <option value="aesthetic">Aesthetic Program</option>
@@ -1242,8 +450,7 @@
 
         <div class="fb-form-field fb-wide">
           <label>Training goal</label>
-          <div class="fb-input-wrap">
-            <span class="fb-input-icon">◎</span>
+          <div class="fb-input-wrap"><span class="fb-input-icon">◎</span>
             <select id="modalGoal">
               <option value="">Select goal</option>
               <option value="muscle">Build muscle</option>
@@ -1257,94 +464,14 @@
       <div class="fb-divider">Your information</div>
 
       <div class="fb-form-grid">
-        <div class="fb-form-field">
-          <label>Age</label>
-          <div class="fb-input-wrap">
-            <span class="fb-input-icon">□</span>
-            <input id="modalAge" type="number" placeholder="Enter age">
-          </div>
-        </div>
-
-        <div class="fb-form-field">
-          <label>Gender</label>
-          <div class="fb-input-wrap">
-            <span class="fb-input-icon">○</span>
-            <select id="modalGender">
-              <option value="">Select</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="fb-form-field">
-          <label>Weight (kg)</label>
-          <div class="fb-input-wrap">
-            <span class="fb-input-icon">◈</span>
-            <input id="modalWeight" type="number" placeholder="Weight">
-          </div>
-        </div>
-
-        <div class="fb-form-field">
-          <label>Height (cm)</label>
-          <div class="fb-input-wrap">
-            <span class="fb-input-icon">↕</span>
-            <input id="modalHeight" type="number" placeholder="Height">
-          </div>
-        </div>
-
-        <div class="fb-form-field">
-          <label>Training location</label>
-          <div class="fb-input-wrap">
-            <span class="fb-input-icon">⌂</span>
-            <select id="modalPlace">
-              <option value="">Gym or Home</option>
-              <option value="gym">Gym</option>
-              <option value="home">Home</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="fb-form-field">
-          <label>Days per week</label>
-          <div class="fb-input-wrap">
-            <span class="fb-input-icon">◷</span>
-            <select id="modalDays">
-              <option value="">Select days</option>
-              <option value="3">3 days</option>
-              <option value="4">4 days</option>
-              <option value="5">5 days</option>
-              <option value="6">6 days</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="fb-form-field">
-          <label>Experience level</label>
-          <div class="fb-input-wrap">
-            <span class="fb-input-icon">▥</span>
-            <select id="modalLevel">
-              <option value="">Select level</option>
-              <option value="beginner">Beginner</option>
-              <option value="intermediate">Intermediate</option>
-              <option value="advanced">Advanced</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="fb-form-field">
-          <label>Limitation</label>
-          <div class="fb-input-wrap">
-            <span class="fb-input-icon">♡</span>
-            <select id="modalLimit">
-              <option value="none">No limitation</option>
-              <option value="knees">Knee discomfort</option>
-              <option value="shoulders">Shoulder discomfort</option>
-              <option value="time">Short workouts</option>
-            </select>
-          </div>
-        </div>
+        <div class="fb-form-field"><label>Age</label><div class="fb-input-wrap"><span class="fb-input-icon">□</span><input id="modalAge" type="number" placeholder="Enter age"></div></div>
+        <div class="fb-form-field"><label>Gender</label><div class="fb-input-wrap"><span class="fb-input-icon">○</span><select id="modalGender"><option value="">Select</option><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option></select></div></div>
+        <div class="fb-form-field"><label>Weight (kg)</label><div class="fb-input-wrap"><span class="fb-input-icon">◈</span><input id="modalWeight" type="number" placeholder="Weight"></div></div>
+        <div class="fb-form-field"><label>Height (cm)</label><div class="fb-input-wrap"><span class="fb-input-icon">↕</span><input id="modalHeight" type="number" placeholder="Height"></div></div>
+        <div class="fb-form-field"><label>Training location</label><div class="fb-input-wrap"><span class="fb-input-icon">⌂</span><select id="modalPlace"><option value="">Gym or Home</option><option value="gym">Gym</option><option value="home">Home</option></select></div></div>
+        <div class="fb-form-field"><label>Days per week</label><div class="fb-input-wrap"><span class="fb-input-icon">◷</span><select id="modalDays"><option value="">Select days</option><option value="3">3 days</option><option value="4">4 days</option><option value="5">5 days</option><option value="6">6 days</option></select></div></div>
+        <div class="fb-form-field"><label>Experience level</label><div class="fb-input-wrap"><span class="fb-input-icon">▥</span><select id="modalLevel"><option value="">Select level</option><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select></div></div>
+        <div class="fb-form-field"><label>Limitation</label><div class="fb-input-wrap"><span class="fb-input-icon">♡</span><select id="modalLimit"><option value="none">No limitation</option><option value="knees">Knee discomfort</option><option value="shoulders">Shoulder discomfort</option><option value="time">Short workouts</option></select></div></div>
       </div>
 
       <button class="fb-generate-btn" onclick="generateModalPlan()">Generate my plan</button>
@@ -1369,49 +496,58 @@
   </div>
 </div>
 
+<div id="profileModalOverlay" class="profile-modal-overlay" onclick="closeProfileModal()">
+  <div class="profile-modal" onclick="event.stopPropagation()">
+    <button class="profile-modal-close" onclick="closeProfileModal()">×</button>
+    <h2 id="profileModalTitle">Log in</h2>
+    <div id="profileViewBox" style="display:none;">
+      <div class="profile-menu-head">
+        <div class="profile-avatar"><span id="profileViewInitial">?</span></div>
+        <div><strong id="profileViewName">Guest</strong><br><span id="profileViewEmail">Not logged in</span></div>
+      </div>
+    </div>
+    <form id="profileForm" class="profile-form">
+      <input id="profileNameInput" type="text" placeholder="Your name">
+      <input id="profileEmailInput" type="email" placeholder="your@email.com">
+      <button class="profile-main-btn" type="submit">Save / log in</button>
+      <button class="profile-google-btn" type="button" onclick="fakeGoogleLogin()">Continue with Google</button>
+    </form>
+  </div>
+</div>
 
 <script>
-  const finderAnswers = {
-    goal: "",
-    place: "",
-    days: ""
-  };
+  const finderAnswers = { goal:"", place:"", days:"" };
 
   function updateFinderProgress(step){
-    const widths = {1: "33%", 2: "66%", 3: "100%"};
-    document.querySelectorAll(".finder-step").forEach((dot, index) => {
-      dot.classList.toggle("active", index < step);
-    });
+    const widths = {1:"33%",2:"66%",3:"100%"};
+    document.querySelectorAll(".finder-step").forEach((dot,index)=>dot.classList.toggle("active", index < step));
     document.getElementById("finderBarFill").style.width = widths[step];
   }
 
   function nextFinderStep(step){
-    document.querySelectorAll(".finder-screen").forEach(screen => screen.classList.remove("active"));
-    document.getElementById("finderScreen" + step).classList.add("active");
+    document.querySelectorAll(".finder-screen").forEach(screen=>screen.classList.remove("active"));
+    document.getElementById("finderScreen"+step).classList.add("active");
     updateFinderProgress(step);
   }
 
-  document.querySelectorAll(".finder-option").forEach(option => {
-    option.addEventListener("click", function(){
-      const group = this.dataset.group;
-      const value = this.dataset.value;
-
-      document.querySelectorAll('.finder-option[data-group="' + group + '"]').forEach(el => el.classList.remove("selected"));
+  document.querySelectorAll(".finder-option").forEach(option=>{
+    option.addEventListener("click",function(){
+      const group=this.dataset.group;
+      const value=this.dataset.value;
+      document.querySelectorAll('.finder-option[data-group="'+group+'"]').forEach(el=>el.classList.remove("selected"));
       this.classList.add("selected");
-      finderAnswers[group] = value;
+      finderAnswers[group]=value;
     });
   });
 
-  function resetHighlights(){
-    document.querySelectorAll(".card").forEach(card => card.classList.remove("fitbrand-highlight-card"));
-  }
+  function resetHighlights(){document.querySelectorAll(".card").forEach(card=>card.classList.remove("fitbrand-highlight-card"))}
 
   function highlightProgram(selector){
     resetHighlights();
-    const card = document.querySelector(selector);
+    const card=document.querySelector(selector);
     if(card){
       card.classList.add("fitbrand-highlight-card");
-      card.scrollIntoView({behavior:"smooth", block:"center"});
+      card.scrollIntoView({behavior:"smooth",block:"center"});
     }
   }
 
@@ -1421,48 +557,42 @@
       return;
     }
 
-    let title = "";
-    let text = "";
-    let link = "";
-    let tags = [];
+    let title="", text="", link="", tags=[];
 
-    if(finderAnswers.goal === "muscle"){
-      title = "Aesthetic Program";
-      text = "This is the best match if the customer mainly wants to build muscle, improve aesthetics and create a balanced physique.";
-      link = "#aesthetic-program";
-      tags = ["Best for muscle building", "Aesthetics focus", finderAnswers.place === "home" ? "Home version possible" : "Gym version possible"];
-    } else if(finderAnswers.goal === "fatloss"){
-      title = "Shred Program";
-      text = "This is the best match if the customer wants to get leaner, lose fat and stay consistent with a simple system.";
-      link = "#shred-program";
-      tags = ["Best for fat loss", "Simple structure", finderAnswers.days + " day schedule"];
+    if(finderAnswers.goal==="muscle"){
+      title="Aesthetic Program";
+      text="This is the best match if you want to build muscle, improve aesthetics and create a balanced physique.";
+      link="#aesthetic-program";
+      tags=["Best for muscle building","Aesthetics focus",finderAnswers.place==="home"?"Home version possible":"Gym version possible"];
+    } else if(finderAnswers.goal==="fatloss"){
+      title="Shred Program";
+      text="This is the best match if you want to get leaner, lose fat and stay consistent with a simple system.";
+      link="#shred-program";
+      tags=["Best for fat loss","Simple structure",finderAnswers.days+" day schedule"];
     } else {
-      title = "Strength Program";
-      text = "This is the best match if the customer wants to get stronger, improve performance and use progressive overload.";
-      link = "#strength-program";
-      tags = ["Best for strength", "Performance focus", finderAnswers.place === "home" ? "Home adapted option" : "Gym adapted option"];
+      title="Strength Program";
+      text="This is the best match if you want to get stronger, improve performance and use progressive overload.";
+      link="#strength-program";
+      tags=["Best for strength","Performance focus",finderAnswers.place==="home"?"Home adapted option":"Gym adapted option"];
     }
 
     text += " Recommended setup: " + finderAnswers.days + " training days per week and " + finderAnswers.place + " training.";
 
-    document.getElementById("finderResultTitle").textContent = title;
-    document.getElementById("finderResultText").textContent = text;
-    document.getElementById("finderScrollButton").setAttribute("href", link);
-    document.getElementById("finderTags").innerHTML = tags.map(tag => '<div class="finder-tag">' + tag + '</div>').join("");
+    document.getElementById("finderResultTitle").textContent=title;
+    document.getElementById("finderResultText").textContent=text;
+    document.getElementById("finderScrollButton").setAttribute("href",link);
+    document.getElementById("finderTags").innerHTML=tags.map(tag=>'<div class="finder-tag">'+tag+'</div>').join("");
     document.getElementById("finderResult").classList.add("show");
   }
 
-  document.getElementById("finderScrollButton").addEventListener("click", function(e){
+  document.getElementById("finderScrollButton").addEventListener("click",function(e){
     e.preventDefault();
-    const selector = this.getAttribute("href");
-    highlightProgram(selector);
+    highlightProgram(this.getAttribute("href"));
   });
 
   function resetFinder(){
-    finderAnswers.goal = "";
-    finderAnswers.place = "";
-    finderAnswers.days = "";
-    document.querySelectorAll(".finder-option").forEach(el => el.classList.remove("selected"));
+    finderAnswers.goal=""; finderAnswers.place=""; finderAnswers.days="";
+    document.querySelectorAll(".finder-option").forEach(el=>el.classList.remove("selected"));
     document.getElementById("finderResult").classList.remove("show");
     nextFinderStep(1);
   }
@@ -1470,186 +600,99 @@
   const planLibrary = {
     aesthetic: {
       gym: [
-        ["Day 1 — Chest + Triceps", ["Bench Press — 4x6-8", "Incline DB Press — 3x8-10", "Cable Fly — 3x12-15", "Lateral Raises — 4x12-15", "Tricep Pushdown — 3x10-12"]],
-        ["Day 2 — Back + Biceps", ["Lat Pulldown — 4x8-10", "Barbell Row — 4x8-10", "Seated Cable Row — 3x10-12", "Rear Delt Fly — 3x12-15", "DB Curl — 3x10-12"]],
-        ["Day 3 — Legs", ["Squat — 4x6-8", "Leg Press — 3x10-12", "Romanian Deadlift — 3x8-10", "Leg Curl — 3x12-15", "Calf Raise — 4x12-15"]],
-        ["Day 4 — Upper Aesthetic", ["Incline Press — 4x8", "Chest Supported Row — 4x10", "Machine Shoulder Press — 3x10", "Cable Lateral Raise — 4x15", "Arms Superset — 3x12"]],
-        ["Day 5 — Pump + Core", ["Machine Chest Press — 3x12", "Cable Row — 3x12", "Leg Extension — 3x15", "Hanging Leg Raise — 3x12", "Plank — 3x45 sec"]],
-        ["Day 6 — Weak Point Focus", ["Upper chest — 4 sets", "Back width — 4 sets", "Shoulders — 4 sets", "Arms — 4 sets", "Core — 3 sets"]]
+        ["Day 1 — Chest + Triceps",["Bench Press — 4x6-8","Incline DB Press — 3x8-10","Cable Fly — 3x12-15","Lateral Raises — 4x12-15","Tricep Pushdown — 3x10-12"]],
+        ["Day 2 — Back + Biceps",["Lat Pulldown — 4x8-10","Barbell Row — 4x8-10","Seated Cable Row — 3x10-12","Rear Delt Fly — 3x12-15","DB Curl — 3x10-12"]],
+        ["Day 3 — Legs",["Squat — 4x6-8","Leg Press — 3x10-12","Romanian Deadlift — 3x8-10","Leg Curl — 3x12-15","Calf Raise — 4x12-15"]],
+        ["Day 4 — Upper Aesthetic",["Incline Press — 4x8","Chest Supported Row — 4x10","Machine Shoulder Press — 3x10","Cable Lateral Raise — 4x15","Arms Superset — 3x12"]],
+        ["Day 5 — Pump + Core",["Machine Chest Press — 3x12","Cable Row — 3x12","Leg Extension — 3x15","Hanging Leg Raise — 3x12","Plank — 3x45 sec"]],
+        ["Day 6 — Weak Point Focus",["Upper chest — 4 sets","Back width — 4 sets","Shoulders — 4 sets","Arms — 4 sets","Core — 3 sets"]]
       ],
       home: [
-        ["Day 1 — Push", ["Push Ups — 4xAMRAP", "Feet Elevated Push Ups — 3x10-15", "Band Fly — 3x15", "Pike Push Ups — 4x8-12", "Bench Dips — 3x12"]],
-        ["Day 2 — Pull", ["One Arm DB Row — 4x10", "Band Pulldown — 4x12", "Band Row — 3x15", "Rear Delt Raise — 3x15", "DB Curl — 3x12"]],
-        ["Day 3 — Legs", ["Goblet Squat — 4x12", "Bulgarian Split Squat — 3x10", "Single Leg RDL — 3x10", "Glute Bridge — 3x15", "Calf Raise — 4x15"]],
-        ["Day 4 — Upper Aesthetic", ["Push Ups — 4 sets", "DB Row — 4 sets", "Lateral Raise — 4x15", "Band Pull Apart — 3x20", "Arms Superset — 3x12"]],
-        ["Day 5 — Pump + Core", ["Full body circuit — 4 rounds", "Mountain Climbers — 3x30 sec", "Plank — 3x45 sec", "Leg Raises — 3x12"]],
-        ["Day 6 — Weak Point Focus", ["Shoulders — 4 sets", "Back — 4 sets", "Arms — 4 sets", "Core — 3 sets"]]
+        ["Day 1 — Push",["Push Ups — 4xAMRAP","Feet Elevated Push Ups — 3x10-15","Band Fly — 3x15","Pike Push Ups — 4x8-12","Bench Dips — 3x12"]],
+        ["Day 2 — Pull",["One Arm DB Row — 4x10","Band Pulldown — 4x12","Band Row — 3x15","Rear Delt Raise — 3x15","DB Curl — 3x12"]],
+        ["Day 3 — Legs",["Goblet Squat — 4x12","Bulgarian Split Squat — 3x10","Single Leg RDL — 3x10","Glute Bridge — 3x15","Calf Raise — 4x15"]],
+        ["Day 4 — Upper Aesthetic",["Push Ups — 4 sets","DB Row — 4 sets","Lateral Raise — 4x15","Band Pull Apart — 3x20","Arms Superset — 3x12"]],
+        ["Day 5 — Pump + Core",["Full body circuit — 4 rounds","Mountain Climbers — 3x30 sec","Plank — 3x45 sec","Leg Raises — 3x12"]],
+        ["Day 6 — Weak Point Focus",["Shoulders — 4 sets","Back — 4 sets","Arms — 4 sets","Core — 3 sets"]]
       ]
     },
     shred: {
       gym: [
-        ["Day 1 — Full Body Strength", ["Squat — 4x6-8", "Bench Press — 4x6-8", "Row — 4x8-10", "Lateral Raise — 3x15", "Incline Walk — 20 min"]],
-        ["Day 2 — Conditioning", ["Leg Press — 3x12", "Lat Pulldown — 3x12", "DB Press — 3x12", "Bike Intervals — 10 rounds", "Core Circuit — 3 rounds"]],
-        ["Day 3 — Lower + Cardio", ["Romanian Deadlift — 4x8", "Bulgarian Split Squat — 3x10", "Leg Curl — 3x12", "Calf Raise — 4x15", "Incline Walk — 25 min"]],
-        ["Day 4 — Upper + HIIT", ["Incline Press — 3x10", "Cable Row — 3x10", "Shoulder Press — 3x10", "Curls + Triceps — 3x12", "Bike Intervals — 12 min"]],
-        ["Day 5 — Fat Loss Circuit", ["Goblet Squat — 4x12", "Push Ups — 4xAMRAP", "Cable Row — 4x12", "Walking Lunges — 3x20", "Treadmill — 20 min"]],
-        ["Day 6 — Low Intensity", ["Steps goal — 8k-12k", "Mobility — 15 min", "Core — 10 min", "Stretch — 10 min"]]
+        ["Day 1 — Full Body Strength",["Squat — 4x6-8","Bench Press — 4x6-8","Row — 4x8-10","Lateral Raise — 3x15","Incline Walk — 20 min"]],
+        ["Day 2 — Conditioning",["Leg Press — 3x12","Lat Pulldown — 3x12","DB Press — 3x12","Bike Intervals — 10 rounds","Core Circuit — 3 rounds"]],
+        ["Day 3 — Lower + Cardio",["Romanian Deadlift — 4x8","Bulgarian Split Squat — 3x10","Leg Curl — 3x12","Calf Raise — 4x15","Incline Walk — 25 min"]],
+        ["Day 4 — Upper + HIIT",["Incline Press — 3x10","Cable Row — 3x10","Shoulder Press — 3x10","Curls + Triceps — 3x12","Bike Intervals — 12 min"]],
+        ["Day 5 — Fat Loss Circuit",["Goblet Squat — 4x12","Push Ups — 4xAMRAP","Cable Row — 4x12","Walking Lunges — 3x20","Treadmill — 20 min"]],
+        ["Day 6 — Low Intensity",["Steps goal — 8k-12k","Mobility — 15 min","Core — 10 min","Stretch — 10 min"]]
       ],
       home: [
-        ["Day 1 — Full Body", ["Goblet Squat — 4x12", "Push Ups — 4xAMRAP", "DB Row — 4x12", "Burpees — 3x10", "Fast Walk — 25 min"]],
-        ["Day 2 — Conditioning", ["Jump Squats — 4x12", "Mountain Climbers — 4x30 sec", "Band Row — 4x15", "Plank — 3x45 sec", "Steps — 8k-12k"]],
-        ["Day 3 — Lower Burn", ["Bulgarian Split Squat — 4x10", "Glute Bridge — 4x15", "Single Leg RDL — 3x10", "Calf Raise — 4x20", "Walk — 30 min"]],
-        ["Day 4 — Upper Burn", ["Push Ups — 4 sets", "Pike Push Ups — 3x10", "Band Row — 4x15", "DB Curl — 3x12", "HIIT — 10 min"]],
-        ["Day 5 — Fat Loss Circuit", ["Squat — 20 reps", "Push Ups — AMRAP", "Rows — 15 reps", "Lunges — 20 reps", "Repeat 4 rounds"]],
-        ["Day 6 — Active Recovery", ["Walk — 40 min", "Mobility — 15 min", "Core — 10 min"]]
+        ["Day 1 — Full Body",["Goblet Squat — 4x12","Push Ups — 4xAMRAP","DB Row — 4x12","Burpees — 3x10","Fast Walk — 25 min"]],
+        ["Day 2 — Conditioning",["Jump Squats — 4x12","Mountain Climbers — 4x30 sec","Band Row — 4x15","Plank — 3x45 sec","Steps — 8k-12k"]],
+        ["Day 3 — Lower Burn",["Bulgarian Split Squat — 4x10","Glute Bridge — 4x15","Single Leg RDL — 3x10","Calf Raise — 4x20","Walk — 30 min"]],
+        ["Day 4 — Upper Burn",["Push Ups — 4 sets","Pike Push Ups — 3x10","Band Row — 4x15","DB Curl — 3x12","HIIT — 10 min"]],
+        ["Day 5 — Fat Loss Circuit",["Squat — 20 reps","Push Ups — AMRAP","Rows — 15 reps","Lunges — 20 reps","Repeat 4 rounds"]],
+        ["Day 6 — Active Recovery",["Walk — 40 min","Mobility — 15 min","Core — 10 min"]]
       ]
     },
     strength: {
       gym: [
-        ["Day 1 — Squat Focus", ["Back Squat — 5x3-5", "Paused Squat — 3x5", "Leg Press — 3x8", "Hamstring Curl — 3x10", "Core — 3 sets"]],
-        ["Day 2 — Bench Focus", ["Bench Press — 5x3-5", "Incline DB Press — 3x8", "Barbell Row — 4x8", "Tricep Dips — 3x8", "Face Pull — 3x15"]],
-        ["Day 3 — Deadlift Focus", ["Deadlift — 5x3", "Romanian Deadlift — 3x6-8", "Lat Pulldown — 4x8", "Back Extension — 3x10", "Farmer Carry — 4 rounds"]],
-        ["Day 4 — Overhead Focus", ["Overhead Press — 5x3-5", "Close Grip Bench — 3x6", "Pull Ups — 4xAMRAP", "Lateral Raise — 3x15", "Core — 3 sets"]],
-        ["Day 5 — Volume Strength", ["Front Squat — 4x6", "Paused Bench — 4x6", "Row — 4x8", "Hip Thrust — 3x8", "Arms — 3x10"]],
-        ["Day 6 — Recovery Strength", ["Technique work — 30 min", "Mobility — 15 min", "Light cardio — 20 min"]]
+        ["Day 1 — Squat Focus",["Back Squat — 5x3-5","Paused Squat — 3x5","Leg Press — 3x8","Hamstring Curl — 3x10","Core — 3 sets"]],
+        ["Day 2 — Bench Focus",["Bench Press — 5x3-5","Incline DB Press — 3x8","Barbell Row — 4x8","Tricep Dips — 3x8","Face Pull — 3x15"]],
+        ["Day 3 — Deadlift Focus",["Deadlift — 5x3","Romanian Deadlift — 3x6-8","Lat Pulldown — 4x8","Back Extension — 3x10","Farmer Carry — 4 rounds"]],
+        ["Day 4 — Overhead Focus",["Overhead Press — 5x3-5","Close Grip Bench — 3x6","Pull Ups — 4xAMRAP","Lateral Raise — 3x15","Core — 3 sets"]],
+        ["Day 5 — Volume Strength",["Front Squat — 4x6","Paused Bench — 4x6","Row — 4x8","Hip Thrust — 3x8","Arms — 3x10"]],
+        ["Day 6 — Recovery Strength",["Technique work — 30 min","Mobility — 15 min","Light cardio — 20 min"]]
       ],
       home: [
-        ["Day 1 — Lower Strength", ["Goblet Squat — 5x8", "Bulgarian Split Squat — 4x8", "Single Leg RDL — 4x8", "Wall Sit — 3x45 sec", "Core — 3 sets"]],
-        ["Day 2 — Push Strength", ["Weighted Push Ups — 5x6-10", "Pike Push Ups — 4x8", "Slow Push Ups — 3x8", "Bench Dips — 3x10", "Plank — 3 sets"]],
-        ["Day 3 — Pull Strength", ["Heavy DB Row — 5x8", "Band Row — 4x12", "Towel Row — 4xAMRAP", "DB Curl — 4x10", "Farmer Hold — 4 rounds"]],
-        ["Day 4 — Full Body Strength", ["Goblet Squat — 4x8", "Push Ups — 4xAMRAP", "DB Row — 4x8", "Split Squat — 3x10", "Core — 3 sets"]],
-        ["Day 5 — Volume Strength", ["Tempo Squat — 4x10", "Tempo Push Up — 4x10", "Tempo Row — 4x10", "Glute Bridge — 3x15", "Carries — 4 rounds"]],
-        ["Day 6 — Recovery Strength", ["Mobility — 20 min", "Walk — 30 min", "Technique work — 15 min"]]
+        ["Day 1 — Lower Strength",["Goblet Squat — 5x8","Bulgarian Split Squat — 4x8","Single Leg RDL — 4x8","Wall Sit — 3x45 sec","Core — 3 sets"]],
+        ["Day 2 — Push Strength",["Weighted Push Ups — 5x6-10","Pike Push Ups — 4x8","Slow Push Ups — 3x8","Bench Dips — 3x10","Plank — 3 sets"]],
+        ["Day 3 — Pull Strength",["Heavy DB Row — 5x8","Band Row — 4x12","Towel Row — 4xAMRAP","DB Curl — 4x10","Farmer Hold — 4 rounds"]],
+        ["Day 4 — Full Body Strength",["Goblet Squat — 4x8","Push Ups — 4xAMRAP","DB Row — 4x8","Split Squat — 3x10","Core — 3 sets"]],
+        ["Day 5 — Volume Strength",["Tempo Squat — 4x10","Tempo Push Up — 4x10","Tempo Row — 4x10","Glute Bridge — 3x15","Carries — 4 rounds"]],
+        ["Day 6 — Recovery Strength",["Mobility — 20 min","Walk — 30 min","Technique work — 15 min"]]
       ]
     }
   };
 
-  function generatePlan(){
-    const packageType = document.getElementById("genPackage").value;
-    const age = document.getElementById("genAge").value;
-    const gender = document.getElementById("genGender").value;
-    const weight = document.getElementById("genWeight").value;
-    const height = document.getElementById("genHeight").value;
-    const place = document.getElementById("genPlace").value;
-    const days = parseInt(document.getElementById("genDays").value || "0", 10);
-    const level = document.getElementById("genLevel").value;
-    const limit = document.getElementById("genLimit").value;
-
-    if(!packageType || !age || !gender || !weight || !height || !place || !days || !level || !limit){
-      alert("Please fill in all fields first.");
-      return;
-    }
-
-    const titleMap = {
-      aesthetic: "Aesthetic Program",
-      shred: "Shred Program",
-      strength: "Strength Program",
-      bundle: "Complete Bundle"
-    };
-
-    const selectedDays = planLibrary[actualPackageType][place].slice(0, days);
-
-    document.getElementById("planTitle").textContent = "Your " + titleMap[packageType] + " Plan";
-    document.getElementById("planSubtitle").textContent =
-      "Built for a " + age + "-year-old " + gender + ", " + weight + "kg, " + height + "cm, with a " +
-      level + " training level and " + place + " training setup.";
-    document.getElementById("planPill").textContent = days + " DAYS / " + place.toUpperCase();
-
-    const summaryItems = [
-      ["Package", titleMap[packageType]],
-      ["Goal Focus", packageType === "aesthetic" ? "Muscle & aesthetics" : packageType === "shred" ? "Fat loss & conditioning" : "Strength & performance"],
-      ["Training Place", place === "gym" ? "Gym based" : "Home based"],
-      ["Level", level.charAt(0).toUpperCase() + level.slice(1)]
-    ];
-
-    document.getElementById("planSummaryGrid").innerHTML = summaryItems.map(item => `
-      <div class="plan-summary-box">
-        <span>${item[0]}</span>
-        <strong>${item[1]}</strong>
-      </div>
-    `).join("");
-
-    document.getElementById("planDays").innerHTML = selectedDays.map(day => `
-      <div class="plan-day">
-        <h4>${day[0]}</h4>
-        <ul>${day[1].map(ex => `<li>${ex}</li>`).join("")}</ul>
-      </div>
-    `).join("");
-
-    let rules = "";
-    let notes = "";
-
-    if(packageType === "aesthetic"){
-      rules = "Focus on controlled reps, full range of motion and progressive overload. Rest 60-90 seconds on most movements. Track your lifts weekly.";
-      notes = "This plan is built to improve shape, symmetry, upper body development and overall aesthetics.";
-    } else if(packageType === "shred"){
-      rules = "Stay consistent with daily steps, keep calories under control and use short, focused rest periods. Add 20-30 minutes of cardio 2-4 times per week.";
-      notes = "This plan is built to help you get leaner while still training hard enough to hold onto muscle.";
-    } else {
-      rules = "Prioritize heavy compound lifts, rest 2-3 minutes on key sets and only increase load when technique is clean and stable.";
-      notes = "This plan is built to improve strength, confidence under heavier weights and overall performance.";
-    }
-
-    if(limit === "knees"){
-      notes += " Since knee discomfort was selected, keep leg movements controlled and reduce painful ranges.";
-    } else if(limit === "shoulders"){
-      notes += " Since shoulder discomfort was selected, avoid painful pressing angles and use good control.";
-    } else if(limit === "time"){
-      notes += " Since limited time was selected, keep the sessions efficient and trim accessory volume if needed.";
-    }
-
-    document.getElementById("planRules").textContent = rules;
-    document.getElementById("planNotes").textContent = notes;
-    document.getElementById("generatorPlan").classList.add("show");
-    document.getElementById("generatorPlan").scrollIntoView({behavior: "smooth", block: "start"});
-  }
-
-  function resetGenerator(){
-    ["genPackage","genAge","genGender","genWeight","genHeight","genPlace","genDays","genLevel","genLimit"].forEach(id => {
-      document.getElementById(id).value = "";
-    });
-    document.getElementById("generatorPlan").classList.remove("show");
-  }
-function detectPurchaseAndShowGenerator(){
+  function detectPurchaseAndShowGenerator(){
     const params = new URLSearchParams(window.location.search);
     const purchasedFromUrl = params.get("purchased");
-    const valid = ["aesthetic", "shred", "strength", "bundle"];
+    const productFromUrl = params.get("product");
+    const valid = ["aesthetic","shred","strength","bundle"];
 
-    if(!valid.includes(purchasedFromUrl)){
-      return;
+    const purchased = valid.includes(purchasedFromUrl) ? purchasedFromUrl : "";
+    const productPreview = valid.includes(productFromUrl) ? productFromUrl : "";
+
+    if(purchased){
+      localStorage.setItem("fitbrandPurchasedPackage", purchased);
+      const trigger = document.getElementById("openGeneratorBtn");
+      if(trigger) trigger.classList.add("show");
+      setTimeout(openGeneratorModal, 600);
+    } else if(localStorage.getItem("fitbrandPurchasedPackage")){
+      document.getElementById("openGeneratorBtn")?.classList.add("show");
     }
 
-    localStorage.setItem("fitbrandPurchasedPackage", purchasedFromUrl);
-
-    const trigger = document.getElementById("openGeneratorBtn");
-    if(trigger) trigger.classList.add("show");
-
-    const packageSelect = document.getElementById("modalPackage");
-    if(packageSelect) packageSelect.value = purchasedFromUrl;
-
-    setTimeout(openGeneratorModal, 600);
+    if(productPreview){
+      const select = document.getElementById("modalPackage");
+      if(select) select.value = productPreview;
+    }
   }
 
   function openGeneratorModal(){
     const stored = localStorage.getItem("fitbrandPurchasedPackage");
-    const valid = ["aesthetic", "shred", "strength", "bundle"];
+    const valid = ["aesthetic","shred","strength","bundle"];
 
     if(!valid.includes(stored)){
       alert("This generator is only available after purchasing a program.");
       return;
     }
 
-    const modal = document.getElementById("fitbrandGeneratorModal");
-    if(modal) modal.classList.add("show");
-
+    document.getElementById("fitbrandGeneratorModal")?.classList.add("show");
     const packageSelect = document.getElementById("modalPackage");
     if(packageSelect) packageSelect.value = stored;
   }
 
-  function closeGeneratorModal(){
-    const modal = document.getElementById("fitbrandGeneratorModal");
-    if(modal) modal.classList.remove("show");
-  }
+  function closeGeneratorModal(){document.getElementById("fitbrandGeneratorModal")?.classList.remove("show")}
 
   function generateModalPlan(){
     const packageType = document.getElementById("modalPackage").value;
@@ -1668,7 +711,12 @@ function detectPurchaseAndShowGenerator(){
       return;
     }
 
-    const actualPackageType = packageType === "bundle" ? "aesthetic" : packageType;
+    let actualPackageType = packageType;
+    if(packageType === "bundle"){
+      if(goal === "fatloss") actualPackageType = "shred";
+      else if(goal === "strength") actualPackageType = "strength";
+      else actualPackageType = "aesthetic";
+    }
 
     if(!planLibrary[actualPackageType] || !planLibrary[actualPackageType][place]){
       alert("Something went wrong. Please try again.");
@@ -1676,17 +724,19 @@ function detectPurchaseAndShowGenerator(){
     }
 
     const titleMap = {
-      aesthetic: "Aesthetic Program",
-      shred: "Shred Program",
-      strength: "Strength Program"
+      aesthetic:"Aesthetic Program",
+      shred:"Shred Program",
+      strength:"Strength Program",
+      bundle:"Complete Bundle"
     };
 
-    const selectedDays = planLibrary[packageType][place].slice(0, days);
+    const selectedDays = planLibrary[actualPackageType][place].slice(0, days);
 
     document.getElementById("modalPlanTitle").textContent = "Your " + titleMap[packageType] + " Plan";
     document.getElementById("modalPlanSubtitle").textContent =
       "Built for a " + age + "-year-old " + gender + ", " + weight + "kg, " + height + "cm, " +
-      level + " level, training " + days + " days per week at " + place + ".";
+      level + " level, training " + days + " days per week at " + place + "." +
+      (limit !== "none" ? " Adapted for: " + limit + "." : "");
 
     document.getElementById("modalPlanPill").textContent = days + " DAYS / " + place.toUpperCase();
 
@@ -1701,119 +751,168 @@ function detectPurchaseAndShowGenerator(){
     document.getElementById("modalPlanOutput").scrollIntoView({behavior:"smooth", block:"nearest"});
   }
 
-
   const fitbrandProductData = {
-    aesthetic: {name:"Aesthetic Program", price:4.99},
-    shred: {name:"Shred Program", price:6.99},
-    strength: {name:"Strength Program", price:6.99},
-    bundle: {name:"Complete Bundle", price:18.97},
-    shaker: {name:"Premium Shaker", price:9.99},
-    belt: {name:"Lifting Belt", price:24.99},
-    straps: {name:"Lifting Straps", price:12.99},
+    aesthetic:{name:"Aesthetic Program",price:4.99},
+    shred:{name:"Shred Program",price:6.99},
+    strength:{name:"Strength Program",price:6.99},
+    bundle:{name:"Complete Bundle",price:18.97},
+    mealplan:{name:"Meal Plan Guide AI",price:5.99},
+    shaker:{name:"Premium Shaker",price:9.99},
+    belt:{name:"Lifting Belt",price:24.99},
+    straps:{name:"Lifting Straps",price:12.99}
   };
 
   let fitbrandDiscount = 0;
-
-  function getCart(){
-    return JSON.parse(localStorage.getItem("fitbrandCart") || "[]");
-  }
-
-  function saveCart(cart){
-    localStorage.setItem("fitbrandCart", JSON.stringify(cart));
-  }
-
+  function getCart(){return JSON.parse(localStorage.getItem("fitbrandCart") || "[]")}
+  function saveCart(cart){localStorage.setItem("fitbrandCart", JSON.stringify(cart))}
   function updateCartCount(){
-    const cart = getCart();
-    document.querySelectorAll("#cart-count, #cart-count-btn").forEach(el => {
-      el.textContent = cart.length;
-      el.style.display = cart.length > 0 ? "inline-flex" : "none";
+    const cart=getCart();
+    document.querySelectorAll("#cart-count,#cart-count-btn").forEach(el=>{
+      el.textContent=cart.length;
+      el.style.display=cart.length>0?"inline-flex":"none";
     });
     renderCartDrawer();
   }
-
   function addToCart(product){
-    const cart = getCart();
+    const cart=getCart();
     cart.push(product);
     saveCart(cart);
     updateCartCount();
     showMiniCartPopup();
-    const toast = document.getElementById("cart-toast");
-    if(toast){
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 2200);
-    }
+    const toast=document.getElementById("cart-toast");
+    if(toast){toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),2200)}
   }
-
   function removeDrawerItem(index){
-    const cart = getCart();
-    cart.splice(index, 1);
+    const cart=getCart();
+    cart.splice(index,1);
     saveCart(cart);
     updateCartCount();
   }
-
   function renderCartDrawer(){
-    const drawerItems = document.getElementById("drawer-items");
-    const totalEl = document.getElementById("drawer-total");
+    const drawerItems=document.getElementById("drawer-items");
+    const totalEl=document.getElementById("drawer-total");
     if(!drawerItems || !totalEl) return;
-
-    const cart = getCart();
-
-    if(cart.length === 0){
-      drawerItems.innerHTML = "<p>Your cart is empty.</p>";
-      totalEl.textContent = "€0.00";
+    const cart=getCart();
+    if(cart.length===0){
+      drawerItems.innerHTML="<p>Your cart is empty.</p>";
+      totalEl.textContent="€0.00";
       return;
     }
-
-    let total = 0;
-    drawerItems.innerHTML = cart.map((item, index) => {
-      const p = fitbrandProductData[item] || fitbrandProductData.bundle;
-      total += p.price;
+    let total=0;
+    drawerItems.innerHTML=cart.map((item,index)=>{
+      const p=fitbrandProductData[item] || fitbrandProductData.bundle;
+      total+=p.price;
       return `<div class="drawer-item"><div><strong>${p.name}</strong><span>FitBrand product</span></div><div><strong>€${p.price.toFixed(2)}</strong><br><button class="remove-item-btn" onclick="removeDrawerItem(${index})">Remove</button></div></div>`;
     }).join("");
-
-    const discounted = total * (1 - fitbrandDiscount);
-    totalEl.textContent = "€" + discounted.toFixed(2);
+    totalEl.textContent="€"+(total*(1-fitbrandDiscount)).toFixed(2);
   }
-
   function openCartDrawer(){
     document.getElementById("cart-drawer")?.classList.add("show");
     document.getElementById("drawer-overlay")?.classList.add("show");
     renderCartDrawer();
   }
-
   function closeCartDrawer(){
     document.getElementById("cart-drawer")?.classList.remove("show");
     document.getElementById("drawer-overlay")?.classList.remove("show");
   }
-
   function applyDrawerDiscount(){
-    const code = (document.getElementById("drawer-discount")?.value || "").trim().toUpperCase();
-    const msg = document.getElementById("drawer-discount-message");
-    if(code === "FIT10"){
-      fitbrandDiscount = 0.10;
-      if(msg) msg.textContent = "Discount applied: 10% off.";
+    const code=(document.getElementById("drawer-discount")?.value || "").trim().toUpperCase();
+    const msg=document.getElementById("drawer-discount-message");
+    if(code==="FIT10"){
+      fitbrandDiscount=.10;
+      if(msg) msg.textContent="Discount applied: 10% off.";
     } else {
-      fitbrandDiscount = 0;
-      if(msg) msg.textContent = "Invalid code. Try FIT10.";
+      fitbrandDiscount=0;
+      if(msg) msg.textContent="Invalid code. Try FIT10.";
     }
     renderCartDrawer();
   }
-
   function showMiniCartPopup(){
-    const popup = document.getElementById("mini-cart-popup");
+    const popup=document.getElementById("mini-cart-popup");
     if(!popup) return;
     popup.classList.add("show");
-    setTimeout(() => popup.classList.remove("show"), 3000);
+    setTimeout(()=>popup.classList.remove("show"),3000);
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  /* ===== PROFILE SYSTEM ===== */
+  function getFitBrandUser(){return JSON.parse(localStorage.getItem("fitbrandUser") || "null")}
+  function updateFitBrandProfileUI(){
+    const user=getFitBrandUser();
+    const initial=user?.name ? user.name.trim().charAt(0).toUpperCase() : "?";
+    document.querySelectorAll("#profileInitial,#profileMenuInitial,#profileViewInitial").forEach(el=>{if(el) el.textContent=initial});
+    document.querySelectorAll("#profileMenuName,#profileViewName").forEach(el=>{if(el) el.textContent=user?.name || "Guest"});
+    document.querySelectorAll("#profileMenuEmail,#profileViewEmail").forEach(el=>{if(el) el.textContent=user?.email || "Not logged in"});
+    const login=document.getElementById("profileLoginBtn");
+    const logout=document.getElementById("profileLogoutBtn");
+    if(login) login.style.display=user?"none":"block";
+    if(logout) logout.style.display=user?"block":"none";
+  }
+  function toggleProfileMenu(){document.getElementById("profileMenu")?.classList.toggle("show")}
+  function openProfileModal(mode){
+    document.getElementById("profileMenu")?.classList.remove("show");
+    const modal=document.getElementById("profileModalOverlay");
+    const form=document.getElementById("profileForm");
+    const view=document.getElementById("profileViewBox");
+    const title=document.getElementById("profileModalTitle");
+    const user=getFitBrandUser();
+    if(!modal) return;
+    if(mode==="profile"){
+      title.textContent="Your Profile";
+      form.style.display="none";
+      view.style.display="block";
+    } else {
+      title.textContent=mode==="edit"?"Edit Profile":"Log in";
+      form.style.display="grid";
+      view.style.display="none";
+      document.getElementById("profileNameInput").value=user?.name || "";
+      document.getElementById("profileEmailInput").value=user?.email || "";
+    }
+    updateFitBrandProfileUI();
+    modal.classList.add("show");
+  }
+  function closeProfileModal(){document.getElementById("profileModalOverlay")?.classList.remove("show")}
+  function logoutFitBrandUser(){
+    localStorage.removeItem("fitbrandUser");
+    updateFitBrandProfileUI();
+    document.getElementById("profileMenu")?.classList.remove("show");
+  }
+  function fakeGoogleLogin(){
+    const email=prompt("Enter your Google email:");
+    if(!email) return;
+    const name=email.split("@")[0].replace(/[._-]/g," ");
+    localStorage.setItem("fitbrandUser",JSON.stringify({name:name.charAt(0).toUpperCase()+name.slice(1),email}));
+    updateFitBrandProfileUI();
+    closeProfileModal();
+  }
+
+  document.addEventListener("DOMContentLoaded",()=>{
     updateCartCount();
     detectPurchaseAndShowGenerator();
-    document.querySelectorAll(".cart-icon-btn").forEach(btn => {
-      btn.addEventListener("click", function(e){
+    updateFitBrandProfileUI();
+
+    document.querySelectorAll(".cart-icon-btn").forEach(btn=>{
+      btn.addEventListener("click",function(e){e.preventDefault();openCartDrawer()});
+    });
+
+    const profileForm=document.getElementById("profileForm");
+    if(profileForm){
+      profileForm.addEventListener("submit",function(e){
         e.preventDefault();
-        openCartDrawer();
+        const name=document.getElementById("profileNameInput").value.trim();
+        const email=document.getElementById("profileEmailInput").value.trim();
+        if(!name || !email){alert("Enter name and email");return}
+        localStorage.setItem("fitbrandUser",JSON.stringify({name,email}));
+        updateFitBrandProfileUI();
+        closeProfileModal();
       });
+    }
+
+    document.addEventListener("click",function(e){
+      const menu=document.getElementById("profileMenu");
+      const btn=document.querySelector(".profile-icon-btn");
+      if(menu && btn && !menu.contains(e.target) && !btn.contains(e.target)){
+        menu.classList.remove("show");
+      }
     });
   });
 </script>
