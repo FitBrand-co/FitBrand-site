@@ -37,3 +37,18 @@ window.addEventListener("scroll", function(){
     nav.classList.remove("scrolled");
   }
 });
+(function(){
+  function updateHeader(){
+    const nav = document.querySelector(".nav");
+    if(!nav) return;
+
+    if(window.scrollY > 40){
+      nav.classList.add("scrolled");
+    }else{
+      nav.classList.remove("scrolled");
+    }
+  }
+
+  window.addEventListener("scroll", updateHeader);
+  window.addEventListener("DOMContentLoaded", updateHeader);
+})();
