@@ -1,800 +1,459 @@
-/* FitBrand global system - v12 clean/stable */
+/* FitBrand global system - v13 final repair */
 (function(){
   'use strict';
 
   const USER_KEY = 'fitbrandUser';
-  const SESSION_USER_KEY = 'fitbrandSessionUser';
+  const SESSION_KEY = 'fitbrandSessionUser';
   const CART_KEY = 'fitbrandCart';
   const PURCHASES_KEY = 'fitbrandPurchases';
   const ORDERS_KEY = 'fitbrandOrders';
   const PROGRAM_KEY = 'fitbrandPurchasedPackage';
-  const WELCOME_KEY = 'fitbrandWelcomeSeenV12';
-  const DISCOUNT_KEY = 'fitbrandDiscount';
+  const MEAL_UNLOCK_KEY = 'fitbrandMealPlanUnlocked';
+  const WELCOME_KEY = 'fitbrandWelcomeChoiceSeenV13';
 
   const PRODUCTS = {
-    aesthetic: { name:'Aesthetic Program', price:4.99, type:'digital', open:'index.html?purchased=aesthetic', buy:'checkout.html?product=aesthetic' },
-    shred: { name:'Shred Program', price:6.99, type:'digital', open:'index.html?purchased=shred', buy:'checkout.html?product=shred' },
-    strength: { name:'Strength Program', price:6.99, type:'digital', open:'index.html?purchased=strength', buy:'checkout.html?product=strength' },
-    bundle: { name:'Complete FitBrand Bundle + Meal Plan AI', price:18.97, type:'digital', open:'index.html?purchased=bundle', buy:'checkout.html?product=bundle' },
-    mealplan: { name:'Meal Plan Guide AI', price:5.99, type:'digital', open:'recommended.html?purchased=mealplan#meal-plan-ai', buy:'checkout.html?product=mealplan' },
-    belt: { name:'Lifting Belt', price:24.99, type:'physical', open:'product-belt.html', buy:'checkout.html?product=belt' },
-    straps: { name:'Lifting Straps', price:12.99, type:'physical', open:'product-straps.html', buy:'checkout.html?product=straps' }
+    aesthetic:{name:'Aesthetic Program',price:4.99,type:'digital',buy:'checkout.html?product=aesthetic',open:'index.html?purchased=aesthetic'},
+    shred:{name:'Shred Program',price:6.99,type:'digital',buy:'checkout.html?product=shred',open:'index.html?purchased=shred'},
+    strength:{name:'Strength Program',price:6.99,type:'digital',buy:'checkout.html?product=strength',open:'index.html?purchased=strength'},
+    bundle:{name:'Complete Bundle + Meal Plan AI',price:18.97,type:'digital',buy:'checkout.html?product=bundle',open:'index.html?purchased=bundle'},
+    mealplan:{name:'Meal Plan Guide AI',price:5.99,type:'digital',buy:'checkout.html?product=mealplan',open:'recommended.html?purchased=mealplan#meal-plan-ai'},
+    belt:{name:'Lifting Belt',price:24.99,type:'physical',buy:'checkout.html?product=belt',open:'product-belt.html'},
+    straps:{name:'Lifting Straps',price:12.99,type:'physical',buy:'checkout.html?product=straps',open:'product-straps.html'}
   };
-  const VALID_PRODUCTS = Object.keys(PRODUCTS);
+  const DIGITAL = ['aesthetic','shred','strength','bundle','mealplan'];
   const PROGRAMS = ['aesthetic','shred','strength'];
-  window.fitbrandCatalog = PRODUCTS;
+  const VALID = Object.keys(PRODUCTS);
 
-  const PROGRAM_LIBRARY = {
-    aesthetic: {
-      gym: [
-        ['Day 1 — Chest + Triceps',['Bench Press — 4x6-8','Incline DB Press — 3x8-10','Cable Fly — 3x12-15','Lateral Raises — 4x12-15','Tricep Pushdown — 3x10-12']],
-        ['Day 2 — Back + Biceps',['Lat Pulldown — 4x8-10','Barbell Row — 4x8-10','Seated Cable Row — 3x10-12','Rear Delt Fly — 3x12-15','DB Curl — 3x10-12']],
-        ['Day 3 — Legs',['Squat — 4x6-8','Leg Press — 3x10-12','Romanian Deadlift — 3x8-10','Leg Curl — 3x12-15','Calf Raise — 4x12-15']],
-        ['Day 4 — Upper Aesthetic',['Incline Press — 4x8','Chest Supported Row — 4x10','Machine Shoulder Press — 3x10','Cable Lateral Raise — 4x15','Arms Superset — 3x12']],
-        ['Day 5 — Pump + Core',['Machine Chest Press — 3x12','Cable Row — 3x12','Leg Extension — 3x15','Hanging Leg Raise — 3x12','Plank — 3x45 sec']],
-        ['Day 6 — Weak Point Focus',['Upper chest — 4 sets','Back width — 4 sets','Shoulders — 4 sets','Arms — 4 sets','Core — 3 sets']]
-      ],
-      home: [
-        ['Day 1 — Push',['Push Ups — 4xAMRAP','Feet Elevated Push Ups — 3x10-15','Band Fly — 3x15','Pike Push Ups — 4x8-12','Bench Dips — 3x12']],
-        ['Day 2 — Pull',['One Arm DB Row — 4x10','Band Pulldown — 4x12','Band Row — 3x15','Rear Delt Raise — 3x15','DB Curl — 3x12']],
-        ['Day 3 — Legs',['Goblet Squat — 4x12','Bulgarian Split Squat — 3x10','Single Leg RDL — 3x10','Glute Bridge — 3x15','Calf Raise — 4x15']],
-        ['Day 4 — Upper Aesthetic',['Push Ups — 4 sets','DB Row — 4 sets','Lateral Raise — 4x15','Band Pull Apart — 3x20','Arms Superset — 3x12']],
-        ['Day 5 — Pump + Core',['Full body circuit — 4 rounds','Mountain Climbers — 3x30 sec','Plank — 3x45 sec','Leg Raises — 3x12']],
-        ['Day 6 — Weak Point Focus',['Shoulders — 4 sets','Back — 4 sets','Arms — 4 sets','Core — 3 sets']]
-      ]
+  const PLAN_LIBRARY = {
+    aesthetic:{
+      gym:[['Day 1 — Chest & Shoulders',['Bench Press — 4x6-8','Incline DB Press — 3x8-10','Cable Fly — 3x12-15','Lateral Raise — 4x12-15','Triceps Pushdown — 3x10-12']],['Day 2 — Back & Biceps',['Lat Pulldown — 4x8-10','Barbell Row — 4x8-10','Seated Cable Row — 3x10-12','Rear Delt Fly — 3x12-15','DB Curl — 3x10-12']],['Day 3 — Legs',['Squat — 4x6-8','Leg Press — 3x10-12','Romanian Deadlift — 3x8-10','Leg Curl — 3x12-15','Calf Raise — 4x12-15']],['Day 4 — Upper Aesthetic',['Incline Press — 4x8','Chest Supported Row — 4x10','Machine Shoulder Press — 3x10','Cable Lateral Raise — 4x15','Arms Superset — 3x12']],['Day 5 — Pump & Core',['Machine Chest Press — 3x12','Cable Row — 3x12','Leg Extension — 3x15','Hanging Leg Raise — 3x12','Plank — 3x45 sec']],['Day 6 — Weak Points',['Upper chest — 4 sets','Back width — 4 sets','Side delts — 4 sets','Arms — 4 sets','Core — 3 sets']]],
+      home:[['Day 1 — Push',['Push Ups — 4xAMRAP','Feet Elevated Push Ups — 3x10-15','Band Fly — 3x15','Pike Push Ups — 4x8-12','Bench Dips — 3x12']],['Day 2 — Pull',['One Arm DB Row — 4x10','Band Pulldown — 4x12','Band Row — 3x15','Rear Delt Raise — 3x15','DB Curl — 3x12']],['Day 3 — Legs',['Goblet Squat — 4x12','Bulgarian Split Squat — 3x10','Single Leg RDL — 3x10','Glute Bridge — 3x15','Calf Raise — 4x15']],['Day 4 — Upper Aesthetic',['Push Ups — 4 sets','DB Row — 4 sets','Lateral Raise — 4x15','Band Pull Apart — 3x20','Arms Superset — 3x12']],['Day 5 — Pump & Core',['Full body circuit — 4 rounds','Mountain Climbers — 3x30 sec','Plank — 3x45 sec','Leg Raises — 3x12']],['Day 6 — Weak Points',['Shoulders — 4 sets','Back — 4 sets','Arms — 4 sets','Core — 3 sets']]]
     },
-    shred: {
-      gym: [
-        ['Day 1 — Full Body Strength',['Squat — 4x6-8','Bench Press — 4x6-8','Row — 4x8-10','Lateral Raise — 3x15','Incline Walk — 20 min']],
-        ['Day 2 — Conditioning',['Leg Press — 3x12','Lat Pulldown — 3x12','DB Press — 3x12','Bike Intervals — 10 rounds','Core Circuit — 3 rounds']],
-        ['Day 3 — Lower + Cardio',['Romanian Deadlift — 4x8','Bulgarian Split Squat — 3x10','Leg Curl — 3x12','Calf Raise — 4x15','Incline Walk — 25 min']],
-        ['Day 4 — Upper + HIIT',['Incline Press — 3x10','Cable Row — 3x10','Shoulder Press — 3x10','Curls + Triceps — 3x12','Bike Intervals — 12 min']],
-        ['Day 5 — Fat Loss Circuit',['Goblet Squat — 4x12','Push Ups — 4xAMRAP','Cable Row — 4x12','Walking Lunges — 3x20','Treadmill — 20 min']],
-        ['Day 6 — Low Intensity',['Steps goal — 8k-12k','Mobility — 15 min','Core — 10 min','Stretch — 10 min']]
-      ],
-      home: [
-        ['Day 1 — Full Body',['Goblet Squat — 4x12','Push Ups — 4xAMRAP','DB Row — 4x12','Burpees — 3x10','Fast Walk — 25 min']],
-        ['Day 2 — Conditioning',['Jump Squats — 4x12','Mountain Climbers — 4x30 sec','Band Row — 4x15','Plank — 3x45 sec','Steps — 8k-12k']],
-        ['Day 3 — Lower Burn',['Bulgarian Split Squat — 4x10','Glute Bridge — 4x15','Single Leg RDL — 3x10','Calf Raise — 4x20','Walk — 30 min']],
-        ['Day 4 — Upper Burn',['Push Ups — 4 sets','Pike Push Ups — 3x10','Band Row — 4x15','DB Curl — 3x12','HIIT — 10 min']],
-        ['Day 5 — Fat Loss Circuit',['Squat — 20 reps','Push Ups — AMRAP','Rows — 15 reps','Lunges — 20 reps','Repeat 4 rounds']],
-        ['Day 6 — Active Recovery',['Walk — 40 min','Mobility — 15 min','Core — 10 min']]
-      ]
+    shred:{
+      gym:[['Day 1 — Full Body Strength',['Squat — 4x6-8','Bench Press — 4x6-8','Row — 4x8-10','Lateral Raise — 3x15','Incline Walk — 20 min']],['Day 2 — Conditioning',['Leg Press — 3x12','Lat Pulldown — 3x12','DB Press — 3x12','Bike Intervals — 10 rounds','Core Circuit — 3 rounds']],['Day 3 — Lower + Cardio',['Romanian Deadlift — 4x8','Bulgarian Split Squat — 3x10','Leg Curl — 3x12','Calf Raise — 4x15','Incline Walk — 25 min']],['Day 4 — Upper + HIIT',['Incline Press — 3x10','Cable Row — 3x10','Shoulder Press — 3x10','Curls + Triceps — 3x12','Bike Intervals — 12 min']],['Day 5 — Fat Loss Circuit',['Goblet Squat — 4x12','Push Ups — 4xAMRAP','Cable Row — 4x12','Walking Lunges — 3x20','Treadmill — 20 min']],['Day 6 — Active Recovery',['Steps goal — 8k-12k','Mobility — 15 min','Core — 10 min','Stretch — 10 min']]],
+      home:[['Day 1 — Full Body',['Goblet Squat — 4x12','Push Ups — 4xAMRAP','DB Row — 4x12','Burpees — 3x10','Fast Walk — 25 min']],['Day 2 — Conditioning',['Jump Squats — 4x12','Mountain Climbers — 4x30 sec','Band Row — 4x15','Plank — 3x45 sec','Steps — 8k-12k']],['Day 3 — Lower Burn',['Bulgarian Split Squat — 4x10','Glute Bridge — 4x15','Single Leg RDL — 3x10','Calf Raise — 4x20','Walk — 30 min']],['Day 4 — Upper Burn',['Push Ups — 4 sets','Pike Push Ups — 3x10','Band Row — 4x15','DB Curl — 3x12','HIIT — 10 min']],['Day 5 — Fat Loss Circuit',['Squat — 20 reps','Push Ups — AMRAP','Rows — 15 reps','Lunges — 20 reps','Repeat 4 rounds']],['Day 6 — Active Recovery',['Walk — 40 min','Mobility — 15 min','Core — 10 min']]]
     },
-    strength: {
-      gym: [
-        ['Day 1 — Squat Focus',['Back Squat — 5x3-5','Paused Squat — 3x5','Leg Press — 3x8','Hamstring Curl — 3x10','Core — 3 sets']],
-        ['Day 2 — Bench Focus',['Bench Press — 5x3-5','Incline DB Press — 3x8','Barbell Row — 4x8','Tricep Dips — 3x8','Face Pull — 3x15']],
-        ['Day 3 — Deadlift Focus',['Deadlift — 5x3','Romanian Deadlift — 3x6-8','Lat Pulldown — 4x8','Back Extension — 3x10','Farmer Carry — 4 rounds']],
-        ['Day 4 — Overhead Focus',['Overhead Press — 5x3-5','Close Grip Bench — 3x6','Pull Ups — 4xAMRAP','Lateral Raise — 3x15','Core — 3 sets']],
-        ['Day 5 — Volume Strength',['Front Squat — 4x6','Paused Bench — 4x6','Row — 4x8','Hip Thrust — 3x8','Arms — 3x10']],
-        ['Day 6 — Recovery Strength',['Technique work — 30 min','Mobility — 15 min','Light cardio — 20 min']]
-      ],
-      home: [
-        ['Day 1 — Lower Strength',['Goblet Squat — 5x8','Bulgarian Split Squat — 4x8','Single Leg RDL — 4x8','Wall Sit — 3x45 sec','Core — 3 sets']],
-        ['Day 2 — Push Strength',['Weighted Push Ups — 5x6-10','Pike Push Ups — 4x8','Slow Push Ups — 3x8','Bench Dips — 3x10','Plank — 3 sets']],
-        ['Day 3 — Pull Strength',['Heavy DB Row — 5x8','Band Row — 4x12','Towel Row — 4xAMRAP','DB Curl — 4x10','Farmer Hold — 4 rounds']],
-        ['Day 4 — Full Body Strength',['Goblet Squat — 4x8','Push Ups — 4xAMRAP','DB Row — 4x8','Split Squat — 3x10','Core — 3 sets']],
-        ['Day 5 — Volume Strength',['Tempo Squat — 4x10','Tempo Push Up — 4x10','Tempo Row — 4x10','Glute Bridge — 3x15','Carries — 4 rounds']],
-        ['Day 6 — Recovery Strength',['Mobility — 20 min','Walk — 30 min','Technique work — 15 min']]
-      ]
+    strength:{
+      gym:[['Day 1 — Squat Focus',['Back Squat — 5x3-5','Paused Squat — 3x5','Leg Press — 3x8','Hamstring Curl — 3x10','Core — 3 sets']],['Day 2 — Bench Focus',['Bench Press — 5x3-5','Incline DB Press — 3x8','Barbell Row — 4x8','Tricep Dips — 3x8','Face Pull — 3x15']],['Day 3 — Deadlift Focus',['Deadlift — 5x3','Romanian Deadlift — 3x6-8','Lat Pulldown — 4x8','Back Extension — 3x10','Farmer Carry — 4 rounds']],['Day 4 — Overhead Focus',['Overhead Press — 5x3-5','Close Grip Bench — 3x6','Pull Ups — 4xAMRAP','Lateral Raise — 3x15','Core — 3 sets']],['Day 5 — Volume Strength',['Front Squat — 4x6','Paused Bench — 4x6','Row — 4x8','Hip Thrust — 3x8','Arms — 3x10']],['Day 6 — Recovery Strength',['Technique work — 30 min','Mobility — 15 min','Light cardio — 20 min']]],
+      home:[['Day 1 — Lower Strength',['Goblet Squat — 5x8','Bulgarian Split Squat — 4x8','Single Leg RDL — 4x8','Wall Sit — 3x45 sec','Core — 3 sets']],['Day 2 — Push Strength',['Weighted Push Ups — 5x6-10','Pike Push Ups — 4x8','Slow Push Ups — 3x8','Bench Dips — 3x10','Plank — 3 sets']],['Day 3 — Pull Strength',['Heavy DB Row — 5x8','Band Row — 4x12','Towel Row — 4xAMRAP','DB Curl — 4x10','Farmer Hold — 4 rounds']],['Day 4 — Full Body Strength',['Goblet Squat — 4x8','Push Ups — 4xAMRAP','DB Row — 4x8','Split Squat — 3x10','Core — 3 sets']],['Day 5 — Volume Strength',['Tempo Squat — 4x10','Tempo Push Up — 4x10','Tempo Row — 4x10','Glute Bridge — 3x15','Carries — 4 rounds']],['Day 6 — Recovery Strength',['Mobility — 20 min','Walk — 30 min','Technique work — 15 min']]]
     }
   };
 
   const $ = (id) => document.getElementById(id);
   const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-  function safeParse(raw, fallback){ try { return raw ? JSON.parse(raw) : fallback; } catch { return fallback; } }
-  function money(n){ return '€' + Number(n || 0).toFixed(2); }
-  function productName(key){ return PRODUCTS[key]?.name || key; }
-  function validProduct(key){ return VALID_PRODUCTS.includes(key); }
+  const parse = (raw, fallback) => { try { return raw ? JSON.parse(raw) : fallback; } catch { return fallback; } };
+  const money = (n) => '€' + Number(n || 0).toFixed(2);
+  const valid = (key) => VALID.includes(key);
+  const escapeHtml = (s) => String(s ?? '').replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
 
-  function getPersistentUser(){ return safeParse(localStorage.getItem(USER_KEY), null); }
-  function getSessionUser(){ return safeParse(sessionStorage.getItem(SESSION_USER_KEY), null); }
+  function getPersistentUser(){ return parse(localStorage.getItem(USER_KEY), null); }
+  function getSessionUser(){ return parse(sessionStorage.getItem(SESSION_KEY), null); }
   function getUser(){ return getPersistentUser() || getSessionUser(); }
-  window.getFitBrandUser = getUser;
+  function getCart(){ return parse(localStorage.getItem(CART_KEY), []).filter(valid); }
+  function saveCart(cart){ localStorage.setItem(CART_KEY, JSON.stringify((cart || []).filter(valid))); }
+  function getOrders(){ return parse(localStorage.getItem(ORDERS_KEY), []); }
+  function saveOrders(orders){ localStorage.setItem(ORDERS_KEY, JSON.stringify((orders || []).slice(0,30))); }
 
-  function getInitials(user){
-    if(!user || !user.name) return '?';
-    const parts = String(user.name).trim().split(/\s+/).filter(Boolean);
-    if(!parts.length) return '?';
-    return ((parts[0][0] || '') + (parts.length > 1 ? (parts[parts.length - 1][0] || '') : '')).toUpperCase();
-  }
-
-  function saveFitBrandUser(data, remember){
-    const previous = getUser() || {};
-    const merged = Object.assign({}, previous, data || {});
-    if(remember){
-      localStorage.setItem(USER_KEY, JSON.stringify(merged));
-      sessionStorage.removeItem(SESSION_USER_KEY);
-    } else {
-      sessionStorage.setItem(SESSION_USER_KEY, JSON.stringify(merged));
-    }
-    sessionStorage.setItem(WELCOME_KEY, 'true');
-    updateFitBrandProfileUI();
-    prefillGeneratorsFromProfile(false);
-    return merged;
-  }
-  window.saveFitBrandUser = saveFitBrandUser;
-
-  window.logoutFitBrandUser = function(){
-    localStorage.removeItem(USER_KEY);
-    sessionStorage.removeItem(SESSION_USER_KEY);
-    updateFitBrandProfileUI();
-    closeProfileModal();
-    const menu = $('profileMenu');
-    if(menu) menu.classList.remove('show');
-    showNotice('Logged out');
-  };
-
-  function getCart(){ return safeParse(localStorage.getItem(CART_KEY), []).filter(validProduct); }
-  function saveCart(cart){ localStorage.setItem(CART_KEY, JSON.stringify(cart.filter(validProduct))); }
-  function grouped(items){ return items.reduce((acc, item) => { acc[item] = (acc[item] || 0) + 1; return acc; }, {}); }
-  function getPurchases(){
-    const base = safeParse(localStorage.getItem(PURCHASES_KEY), []).filter(validProduct);
+  function getPurchasesRaw(){
+    const arr = parse(localStorage.getItem(PURCHASES_KEY), []).filter(valid);
     const program = localStorage.getItem(PROGRAM_KEY);
-    if(validProduct(program) && !base.includes(program)) base.push(program);
-    if(localStorage.getItem('fitbrandMealPlanUnlocked') === 'true' && !base.includes('mealplan')) base.push('mealplan');
-    if(base.includes('bundle') && !base.includes('mealplan')) base.push('mealplan');
-    return [...new Set(base)];
+    if(valid(program) && !arr.includes(program)) arr.push(program);
+    if(localStorage.getItem(MEAL_UNLOCK_KEY) === 'true' && !arr.includes('mealplan')) arr.push('mealplan');
+    if(arr.includes('bundle') && !arr.includes('mealplan')) arr.push('mealplan');
+    return [...new Set(arr)];
   }
-  function savePurchases(items){ localStorage.setItem(PURCHASES_KEY, JSON.stringify([...new Set(items.filter(validProduct))])); }
+  function getPurchases(){ return getUser() ? getPurchasesRaw() : []; }
+  function savePurchases(items){ localStorage.setItem(PURCHASES_KEY, JSON.stringify([...new Set((items || []).filter(valid))])); }
   function addPurchase(key){
-    if(!validProduct(key)) return;
-    const purchases = getPurchases();
+    if(!valid(key)) return;
+    const purchases = getPurchasesRaw();
     if(!purchases.includes(key)) purchases.push(key);
     if(key === 'bundle' && !purchases.includes('mealplan')) purchases.push('mealplan');
     savePurchases(purchases);
     if(PROGRAMS.includes(key) || key === 'bundle') localStorage.setItem(PROGRAM_KEY, key);
-    if(key === 'mealplan' || key === 'bundle') localStorage.setItem('fitbrandMealPlanUnlocked','true');
+    if(key === 'mealplan' || key === 'bundle') localStorage.setItem(MEAL_UNLOCK_KEY, 'true');
   }
 
-  function ensureHeader(){
-    const nav = document.querySelector('header.nav');
-    if(!nav) return;
-    let actions = nav.querySelector('.nav-actions');
-    const cart = nav.querySelector('.cart-icon-btn');
-    if(!actions){
-      actions = document.createElement('div');
-      actions.className = 'nav-actions';
-      if(cart){ cart.parentNode.insertBefore(actions, cart); actions.appendChild(cart); }
-      else nav.appendChild(actions);
+  function getInitials(user){
+    if(!user) return '?';
+    const base = (user.name || user.email || '').trim();
+    if(!base) return '?';
+    const parts = base.split(/\s+/).filter(Boolean);
+    if(parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    const beforeAt = base.split('@')[0].replace(/[._-]+/g,' ').trim().split(/\s+/).filter(Boolean);
+    if(beforeAt.length >= 2) return (beforeAt[0][0] + beforeAt[beforeAt.length - 1][0]).toUpperCase();
+    return base.slice(0,2).toUpperCase();
+  }
+  function displayNameFromEmail(email){ return String(email||'').split('@')[0].replace(/[._-]+/g,' ').replace(/\b\w/g, c => c.toUpperCase()); }
+  function validEmail(email){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email||'').trim()); }
+
+  function saveFitBrandUser(data, remember){
+    const prev = getUser() || {};
+    const merged = Object.assign({}, prev, data || {});
+    if(remember === false){
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(merged));
+    } else {
+      localStorage.setItem(USER_KEY, JSON.stringify(merged));
+      sessionStorage.removeItem(SESSION_KEY);
     }
-    if(!actions.querySelector('.profile-icon-btn')){
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'profile-icon-btn';
-      btn.setAttribute('aria-label','Profile');
-      btn.innerHTML = '<span id="profileInitial">?</span>';
-      btn.addEventListener('click', window.toggleProfileMenu);
-      actions.appendChild(btn);
+    sessionStorage.setItem(WELCOME_KEY, 'true');
+    updateFitBrandProfileUI();
+    prefillAllGenerators(false);
+    return merged;
+  }
+
+  function logoutFitBrandUser(){
+    localStorage.removeItem(USER_KEY);
+    sessionStorage.removeItem(SESSION_KEY);
+    updateFitBrandProfileUI();
+    closeProfileModal();
+    $('profileMenu')?.classList.remove('show');
+    // Purchases stay saved locally, but are hidden while logged out.
+    if(location.pathname.endsWith('products-access.html') || location.pathname.endsWith('orders.html')) renderAccountPages();
+    showMiniNotice('Logged out');
+  }
+
+  function ensureProfileUI(){
+    if(!$('profileMenu')){
+      const nav = document.querySelector('.nav');
+      if(nav){
+        let actions = nav.querySelector('.nav-actions');
+        const cart = nav.querySelector('.cart-icon-btn');
+        if(!actions){
+          actions = document.createElement('div'); actions.className = 'nav-actions'; nav.appendChild(actions);
+          if(cart) actions.appendChild(cart);
+        }
+        if(!actions.querySelector('.profile-icon-btn')){
+          actions.insertAdjacentHTML('beforeend', `
+            <button class="profile-icon-btn" onclick="toggleProfileMenu()" aria-label="Profile"><span id="profileInitial">?</span></button>
+            <div id="profileMenu" class="profile-menu">
+              <div class="profile-menu-head"><div class="profile-avatar"><span id="profileMenuInitial">?</span></div><div class="profile-menu-text"><strong id="profileMenuName">Guest</strong><br><span id="profileMenuEmail">Not logged in</span></div></div>
+              <button onclick="openProfileModal('profile')" data-auth-only="1">View profile</button>
+              <a class="profile-menu-link" href="profile.html" data-auth-only="1">Edit profile information</a>
+              <a class="profile-menu-link" href="products-access.html" data-auth-only="1">My products / access</a>
+              <a class="profile-menu-link" href="orders.html" data-auth-only="1">My orders</a>
+              <button id="profileLoginBtn" onclick="openProfileModal('login')">Sign in/up</button>
+              <button id="profileLogoutBtn" onclick="logoutFitBrandUser()" style="display:none;">Log out</button>
+            </div>`);
+        }
+      }
     }
-    let menu = actions.querySelector('#profileMenu');
-    if(!menu){
-      menu = document.createElement('div');
-      menu.id = 'profileMenu';
-      menu.className = 'profile-menu';
-      actions.appendChild(menu);
+    if(!$('profileModal')){
+      document.body.insertAdjacentHTML('beforeend', `
+        <div id="profileModal" class="profile-modal-overlay" onclick="closeProfileModal()">
+          <div class="profile-modal" onclick="event.stopPropagation()">
+            <button class="profile-modal-close" onclick="closeProfileModal()">×</button>
+            <div class="profile-modal-head"><div class="profile-avatar large"><span id="profileModalInitial">?</span></div><h2 id="profileModalTitle">FitBrand Profile</h2><p id="profileModalSubtitle">Sign in or continue as guest.</p></div>
+            <div id="profileView" class="profile-modal-content"><div class="profile-info-box"><strong>Name</strong><span id="profileViewName">Guest</span></div><div class="profile-info-box"><strong>Email</strong><span id="profileViewEmail">Not logged in</span></div><div class="profile-info-box"><strong>Status</strong><span id="profileViewStatus">No active login</span></div></div>
+            <div id="profileLogin" class="profile-modal-content" style="display:none;"><label>Email</label><input id="loginProfileEmail" type="email" placeholder="your@email.com"><label>Name</label><input id="loginProfileName" type="text" placeholder="Your name"><label class="remember-row"><input id="rememberLoginCheck" type="checkbox" checked> <span>Remember my login</span></label><button class="btn-dark" onclick="loginFitBrandUser()">Sign in/up</button><p class="profile-small-note">Demo login: saved on this device. Real customer accounts need a backend/Firebase later.</p></div>
+          </div>
+        </div>`);
     }
   }
 
-  function renderProfileMenu(){
-    ensureHeader();
-    const menu = $('profileMenu');
-    if(!menu) return;
+  function updateFitBrandProfileUI(){
+    ensureProfileUI();
     const user = getUser();
     const initials = getInitials(user);
     const name = user?.name || 'Guest';
     const email = user?.email || 'Not logged in';
-    const loggedInLinks = `
-      <button type="button" onclick="openProfileModal('profile')">View profile</button>
-      <a class="profile-menu-link" href="profile.html">Edit profile information</a>
-      <a class="profile-menu-link" href="products-access.html">My products / access</a>
-      <a class="profile-menu-link" href="orders.html">My orders</a>
-      <button id="profileLogoutBtn" type="button" onclick="logoutFitBrandUser()">Log out</button>
-    `;
-    const guestLinks = `
-      <button id="profileLoginBtn" type="button" onclick="openProfileModal('login')">Sign in/up</button>
-    `;
-    menu.innerHTML = `
-      <div class="profile-menu-head">
-        <div class="profile-avatar"><span id="profileMenuInitial">${initials}</span></div>
-        <div class="profile-menu-id"><strong id="profileMenuName" title="${escapeHtml(name)}">${escapeHtml(name)}</strong><span id="profileMenuEmail" title="${escapeHtml(email)}">${escapeHtml(email)}</span></div>
-      </div>
-      ${user ? loggedInLinks : guestLinks}
-    `;
+    ['profileInitial','profileMenuInitial','profileModalInitial'].forEach(id => { if($(id)) $(id).textContent = initials; });
+    ['profileMenuName','profileViewName'].forEach(id => { if($(id)) $(id).textContent = name; });
+    ['profileMenuEmail','profileViewEmail'].forEach(id => { if($(id)) $(id).textContent = email; });
+    if($('profileViewStatus')) $('profileViewStatus').textContent = user ? 'Logged in on this device' : 'Guest mode';
+    const loginBtn = $('profileLoginBtn'), logoutBtn = $('profileLogoutBtn');
+    if(loginBtn) loginBtn.textContent = 'Sign in/up';
+    if(loginBtn) loginBtn.style.display = user ? 'none' : 'block';
+    if(logoutBtn) logoutBtn.style.display = user ? 'block' : 'none';
+    $$('[data-auth-only]').forEach(el => { el.style.display = user ? 'block' : 'none'; });
+    document.body.classList.toggle('fb-logged-in', !!user);
   }
 
-  function updateFitBrandProfileUI(){
-    ensureHeader();
+  function toggleProfileMenu(){ ensureProfileUI(); $('profileMenu')?.classList.toggle('show'); }
+  function openProfileModal(mode){
+    ensureProfileUI(); $('profileMenu')?.classList.remove('show');
     const user = getUser();
-    const initials = getInitials(user);
-    $$('#profileInitial,#profileMenuInitial,#profileViewInitial,#profileModalInitial').forEach(el => { el.textContent = initials; });
-    $$('#profileMenuName,#profileViewName').forEach(el => { el.textContent = user?.name || 'Guest'; });
-    $$('#profileMenuEmail,#profileViewEmail').forEach(el => { el.textContent = user?.email || 'Not logged in'; });
-    renderProfileMenu();
-  }
-  window.updateFitBrandProfileUI = updateFitBrandProfileUI;
-
-  window.toggleProfileMenu = function(event){
-    if(event) event.stopPropagation();
-    renderProfileMenu();
-    $('profileMenu')?.classList.toggle('show');
-  };
-
-  function ensureProfileModal(){
-    let overlay = $('profileModalOverlay');
-    if(overlay) return overlay;
-    overlay = document.createElement('div');
-    overlay.id = 'profileModalOverlay';
-    overlay.className = 'profile-modal-overlay';
-    overlay.innerHTML = `
-      <div class="profile-modal" onclick="event.stopPropagation()">
-        <button class="profile-modal-close" type="button" onclick="closeProfileModal()">×</button>
-        <div class="profile-modal-top">
-          <div class="profile-avatar large"><span id="profileModalInitial">?</span></div>
-          <div><h2 id="profileModalTitle">Sign in/up</h2><p id="profileModalText">Save your profile, product access and generator details.</p></div>
-        </div>
-        <div id="profileViewBox" style="display:none;">
-          <div class="profile-info-box"><strong>Name</strong><span id="profileViewName">Guest</span></div>
-          <div class="profile-info-box"><strong>Email</strong><span id="profileViewEmail">Not logged in</span></div>
-          <div class="profile-modal-actions"><a class="btn-dark" href="profile.html">Edit information</a><a class="btn-outline" href="products-access.html">My access</a><a class="btn-outline" href="orders.html">My orders</a></div>
-        </div>
-        <form id="profileForm" class="profile-form">
-          <input id="profileNameInput" type="text" placeholder="Full name" autocomplete="name">
-          <input id="profileEmailInput" type="email" placeholder="your@email.com" autocomplete="email">
-          <label class="profile-remember-row"><input id="profileRememberInput" type="checkbox"> Remember my login</label>
-          <button class="profile-main-btn" type="submit">Sign in/up</button>
-          <button class="profile-google-btn" type="button" onclick="fakeGoogleLogin()">Continue with Google</button>
-        </form>
-      </div>
-    `;
-    overlay.addEventListener('click', closeProfileModal);
-    document.body.appendChild(overlay);
-    const form = $('profileForm');
-    if(form){
-      form.addEventListener('submit', function(e){
-        e.preventDefault();
-        const name = $('profileNameInput')?.value.trim();
-        const email = $('profileEmailInput')?.value.trim();
-        const remember = Boolean($('profileRememberInput')?.checked);
-        if(!name || !email || !email.includes('@')){ alert('Enter a valid name and email.'); return; }
-        saveFitBrandUser({ name, email }, remember);
-        closeProfileModal();
-        showNotice('Signed in');
-      });
-    }
-    return overlay;
-  }
-
-  window.openProfileModal = function(mode){
-    const overlay = ensureProfileModal();
-    const user = getUser();
-    $('profileMenu')?.classList.remove('show');
-    const form = $('profileForm');
-    const view = $('profileViewBox');
-    const title = $('profileModalTitle');
-    const text = $('profileModalText');
+    const view = $('profileView'), login = $('profileLogin'), modal = $('profileModal');
+    if(!modal) return;
     if(mode === 'profile' && user){
-      title.textContent = 'Your Profile';
-      text.textContent = 'Your saved FitBrand profile on this device.';
-      if(form) form.style.display = 'none';
-      if(view) view.style.display = 'block';
+      if($('profileModalTitle')) $('profileModalTitle').textContent = 'Your profile';
+      if($('profileModalSubtitle')) $('profileModalSubtitle').textContent = 'Your saved FitBrand account on this device.';
+      if(view) view.style.display = 'block'; if(login) login.style.display = 'none';
     } else {
-      title.textContent = 'Sign in/up';
-      text.textContent = 'Sign in to save your profile, access, orders and generator details.';
-      if(form) form.style.display = 'grid';
-      if(view) view.style.display = 'none';
-      if($('profileNameInput')) $('profileNameInput').value = user?.name || '';
-      if($('profileEmailInput')) $('profileEmailInput').value = user?.email || '';
-      if($('profileRememberInput')) $('profileRememberInput').checked = Boolean(getPersistentUser());
+      if($('profileModalTitle')) $('profileModalTitle').textContent = 'Sign in/up';
+      if($('profileModalSubtitle')) $('profileModalSubtitle').textContent = 'Use your email so orders and access can be connected to your profile.';
+      if(view) view.style.display = 'none'; if(login) login.style.display = 'block';
+      if($('loginProfileEmail') && user?.email) $('loginProfileEmail').value = user.email;
+      if($('loginProfileName') && user?.name) $('loginProfileName').value = user.name;
     }
     updateFitBrandProfileUI();
-    overlay.classList.add('show');
-  };
-  function closeProfileModal(){ $('profileModalOverlay')?.classList.remove('show'); }
-  window.closeProfileModal = closeProfileModal;
-
-  window.fakeGoogleLogin = function(){
-    const email = prompt('Enter your Google email:');
-    if(!email) return;
-    const local = email.split('@')[0].replace(/[._-]+/g,' ').trim();
-    const name = local ? local.replace(/\b\w/g, c => c.toUpperCase()) : 'FitBrand Customer';
-    saveFitBrandUser({ name, email }, true);
+    modal.classList.add('show');
+  }
+  function closeProfileModal(){ $('profileModal')?.classList.remove('show'); }
+  function loginFitBrandUser(){
+    const email = ($('loginProfileEmail')?.value || '').trim();
+    const name = ($('loginProfileName')?.value || '').trim() || displayNameFromEmail(email);
+    const remember = $('rememberLoginCheck') ? $('rememberLoginCheck').checked : true;
+    if(!validEmail(email)){ alert('Please enter a valid email.'); return; }
+    saveFitBrandUser({name,email}, remember);
     closeProfileModal();
-    showNotice('Signed in');
-  };
-
-  function showWelcome(){
-    if(getUser() || sessionStorage.getItem(WELCOME_KEY)) return;
-    let overlay = $('fitbrandWelcomeOverlay');
-    if(!overlay){
-      overlay = document.createElement('div');
-      overlay.id = 'fitbrandWelcomeOverlay';
-      overlay.className = 'fb-welcome-overlay';
-      overlay.innerHTML = `
-        <div class="fb-welcome-card">
-          <div class="premium-badge">FitBrand Account</div>
-          <h2>Welcome to FitBrand</h2>
-          <p>Sign in to save your profile, orders, access and generator details. You can also continue as guest.</p>
-          <div class="fb-welcome-actions">
-            <button class="fb-welcome-primary" type="button" onclick="openProfileFromWelcome()">Sign in/up</button>
-            <button class="fb-welcome-secondary" type="button" onclick="continueAsGuest()">Continue as guest</button>
-          </div>
-        </div>`;
-      document.body.appendChild(overlay);
-    }
-    setTimeout(() => overlay.classList.add('show'), 450);
+    renderAccountPages();
+    showMiniNotice('Signed in');
   }
-  window.openProfileFromWelcome = function(){ sessionStorage.setItem(WELCOME_KEY,'true'); $('fitbrandWelcomeOverlay')?.classList.remove('show'); openProfileModal('login'); };
-  window.continueAsGuest = function(){ sessionStorage.setItem(WELCOME_KEY,'true'); $('fitbrandWelcomeOverlay')?.classList.remove('show'); };
 
-  window.updateCartCount = function(){
+  function showWelcomeChoice(){
+    if(sessionStorage.getItem(WELCOME_KEY) === 'true' || getUser()) return;
+    if(!['/','/index.html'].some(x => location.pathname.endsWith(x)) && !location.pathname.endsWith('recommended.html')) return;
+    sessionStorage.setItem(WELCOME_KEY, 'true');
+    const overlay = document.createElement('div');
+    overlay.className = 'fb-welcome-overlay';
+    overlay.innerHTML = `<div class="fb-welcome-card"><div class="fb-logo-mark">FB</div><h2>Welcome to FitBrand</h2><p>Sign in to save your orders, profile information and product access. You can also continue as guest.</p><div class="fb-welcome-actions"><button class="btn-dark" id="welcomeLoginBtn">Sign in/up</button><button class="btn-outline" id="welcomeGuestBtn">Continue as guest</button></div></div>`;
+    document.body.appendChild(overlay);
+    $('welcomeLoginBtn').onclick = () => { overlay.remove(); openProfileModal('login'); };
+    $('welcomeGuestBtn').onclick = () => overlay.remove();
+  }
+
+  function updateCartCount(){
     const cart = getCart();
-    $$('#cart-count,#cart-count-btn').forEach(el => { el.textContent = cart.length; el.style.display = cart.length > 0 ? 'inline-flex' : 'none'; });
+    $$('#cart-count,#cart-count-btn').forEach(el => { el.textContent = cart.length; el.style.display = cart.length ? 'inline-flex' : 'none'; });
     renderCartDrawer();
-  };
-
-  window.addToCart = function(product){
-    if(!validProduct(product)) return;
-    const cart = getCart();
-    cart.push(product);
-    saveCart(cart);
-    updateCartCount();
-    showMiniCartPopup();
-  };
-
-  window.showMiniCartPopup = function(){ showMiniCartPopup(); };
-  function showMiniCartPopup(){
-    const popup = $('mini-cart-popup');
-    if(!popup) return;
-    popup.classList.add('show');
-    setTimeout(() => popup.classList.remove('show'), 2600);
   }
-
+  function addToCart(key){ if(!valid(key)) return; const cart = getCart(); cart.push(key); saveCart(cart); updateCartCount(); showMiniCartPopup(); }
+  function removeDrawerItem(index){ const cart = getCart(); cart.splice(index,1); saveCart(cart); updateCartCount(); }
   function renderCartDrawer(){
-    const drawerItems = $('drawer-items');
-    const totalEl = $('drawer-total');
-    if(!drawerItems || !totalEl) return;
+    const drawerItems = $('drawer-items'), totalEl = $('drawer-total'); if(!drawerItems || !totalEl) return;
     const cart = getCart();
-    if(!cart.length){ drawerItems.innerHTML = '<p>Your cart is empty.</p>'; totalEl.textContent = money(0); return; }
+    if(!cart.length){ drawerItems.innerHTML = '<p>Your cart is empty.</p>'; totalEl.textContent = '€0.00'; return; }
     let total = 0;
-    drawerItems.innerHTML = cart.map((item, index) => {
-      const p = PRODUCTS[item] || PRODUCTS.bundle;
-      total += p.price;
-      return `<div class="drawer-item"><div><strong>${escapeHtml(p.name)}</strong><span>FitBrand product</span></div><div><strong>${money(p.price)}</strong><br><button class="remove-item-btn" onclick="removeDrawerItem(${index})">Remove</button></div></div>`;
-    }).join('');
-    const discount = localStorage.getItem(DISCOUNT_KEY) === 'FIT10' ? 0.10 : 0;
-    totalEl.textContent = money(total * (1 - discount));
+    drawerItems.innerHTML = cart.map((key,i) => { const p = PRODUCTS[key]; total += p.price; return `<div class="drawer-item"><div><strong>${escapeHtml(p.name)}</strong><span>FitBrand product</span></div><div><strong>${money(p.price)}</strong><br><button class="remove-item-btn" onclick="removeDrawerItem(${i})">Remove</button></div></div>`; }).join('');
+    totalEl.textContent = money(total);
   }
-  window.renderCartDrawer = renderCartDrawer;
-  window.removeDrawerItem = function(index){ const cart = getCart(); cart.splice(index,1); saveCart(cart); updateCartCount(); };
-  window.openCartDrawer = function(){ $('cart-drawer')?.classList.add('show'); $('drawer-overlay')?.classList.add('show'); renderCartDrawer(); };
-  window.closeCartDrawer = function(){ $('cart-drawer')?.classList.remove('show'); $('drawer-overlay')?.classList.remove('show'); };
-  window.applyDrawerDiscount = function(){
-    const code = ($('drawer-discount')?.value || '').trim().toUpperCase();
-    const msg = $('drawer-discount-message');
-    if(code === 'FIT10'){ localStorage.setItem(DISCOUNT_KEY,'FIT10'); if(msg) msg.textContent = 'Discount applied: 10% off.'; }
-    else { localStorage.removeItem(DISCOUNT_KEY); if(msg) msg.textContent = 'Invalid code. Try FIT10.'; }
-    renderCartDrawer();
-  };
-
-  function wireCartIcon(){
-    $$('.cart-icon-btn').forEach(btn => {
-      if(btn.dataset.fitbrandWired) return;
-      btn.dataset.fitbrandWired = '1';
-      btn.addEventListener('click', function(e){
-        if($('cart-drawer')){ e.preventDefault(); openCartDrawer(); }
-      });
-    });
+  function openCartDrawer(){ $('cart-drawer')?.classList.add('show'); $('drawer-overlay')?.classList.add('show'); renderCartDrawer(); }
+  function closeCartDrawer(){ $('cart-drawer')?.classList.remove('show'); $('drawer-overlay')?.classList.remove('show'); }
+  function applyDrawerDiscount(){ const msg = $('drawer-discount-message'); if(msg) msg.textContent = (($('drawer-discount')?.value || '').trim().toUpperCase() === 'FIT10') ? 'Discount applied: 10% off.' : 'Invalid code. Try FIT10.'; }
+  function showMiniCartPopup(){ const p = $('mini-cart-popup'); if(!p) return; p.classList.add('show'); setTimeout(() => p.classList.remove('show'), 2500); }
+  function showMiniNotice(text){
+    let n = $('fb-mini-notice');
+    if(!n){ n = document.createElement('div'); n.id = 'fb-mini-notice'; n.className = 'fb-mini-notice'; document.body.appendChild(n); }
+    n.textContent = text; n.classList.add('show'); setTimeout(() => n.classList.remove('show'), 1800);
   }
 
-  function unlockFromUrl(){
+  function itemsForCheckout(){
     const params = new URLSearchParams(location.search);
-    const purchased = params.get('purchased') || params.get('product_access');
-    if(validProduct(purchased)){ addPurchase(purchased); }
-    if(params.get('product') === 'mealplan' || params.get('purchased') === 'mealplan') localStorage.setItem('fitbrandMealPlanUnlocked','true');
+    if(params.get('cart') === 'true' && getCart().length) return getCart();
+    const key = params.get('product') || 'bundle';
+    return [valid(key) ? key : 'bundle'];
   }
-
-  function setupConfirmation(){
-    if(!document.querySelector('.success-card')) return;
-    const pending = safeParse(localStorage.getItem('fitbrandPendingOrder'), null);
-    if(pending && validProduct(pending.product)){
-      addPurchase(pending.product);
-      const orders = safeParse(localStorage.getItem(ORDERS_KEY), []);
-      if(!orders.some(o => o.id === pending.id)){
-        orders.push({ id: pending.id, product: pending.product, email: pending.email, total: pending.total || PRODUCTS[pending.product].price, date: new Date().toISOString(), status: 'Confirmed demo' });
-        localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
-      }
-      localStorage.removeItem('fitbrandPendingOrder');
-    }
-  }
-
+  function checkoutLink(){ const key = (new URLSearchParams(location.search).get('product') || 'bundle'); return 'confirmation.html?product=' + encodeURIComponent(valid(key) ? key : 'bundle'); }
   function setupCheckout(){
-    const payButton = $('stripe-link');
-    const emailInput = document.querySelector('.checkout-right input[type="email"], input[type="email"]');
-    const policy = $('accept-policies');
-    if(!payButton || !emailInput || !policy) return;
-
-    function getCheckoutProduct(){
-      const params = new URLSearchParams(location.search);
-      if(params.get('cart') === 'true') return 'bundle';
-      const p = params.get('product') || 'bundle';
-      return validProduct(p) ? p : 'bundle';
+    if(!$('stripe-link')) return;
+    const emailInput = $('checkout-email'), policy = $('accept-policies'), pay = $('stripe-link');
+    function update(){
+      const okEmail = validEmail(emailInput?.value); const ok = okEmail && (!policy || policy.checked);
+      pay.classList.toggle('btn-disabled', !ok); pay.href = ok ? checkoutLink() : '#';
+      if($('checkout-email-message')) $('checkout-email-message').textContent = okEmail ? 'Email ready. Your account will be saved with this email.' : 'Enter your email before payment.';
     }
-
-    function validate(){
-      const ok = emailInput.value.trim().includes('@') && policy.checked;
-      payButton.classList.toggle('btn-disabled', !ok);
-      return ok;
-    }
-    emailInput.addEventListener('input', validate);
-    policy.addEventListener('change', validate);
-    validate();
-
-    payButton.addEventListener('click', function(e){
-      if(!validate()){
-        e.preventDefault();
-        alert('Please enter your email and accept the policies first.');
-        return;
-      }
-      const email = emailInput.value.trim();
-      const user = getUser();
-      if(!user){
-        const name = email.split('@')[0].replace(/[._-]+/g,' ').replace(/\b\w/g, c => c.toUpperCase());
-        saveFitBrandUser({ name, email }, true);
-      } else if(!user.email){
-        saveFitBrandUser(Object.assign({}, user, { email }), true);
-      }
-      const product = getCheckoutProduct();
-      const pending = { id:'FB-' + Date.now(), product, email, date:new Date().toISOString(), total: PRODUCTS[product]?.price || 0 };
-      localStorage.setItem('fitbrandPendingOrder', JSON.stringify(pending));
+    if(emailInput){ const u = getUser(); if(u?.email && !emailInput.value) emailInput.value = u.email; emailInput.addEventListener('input', update); }
+    if(policy) policy.addEventListener('change', update);
+    pay.addEventListener('click', function(e){
+      const email = (emailInput?.value || '').trim();
+      if(!validEmail(email) || (policy && !policy.checked)){ e.preventDefault(); alert('Please enter your email and accept the policies first.'); return; }
+      const u = getUser(); saveFitBrandUser({email, name:u?.name || displayNameFromEmail(email)}, true);
+      const items = itemsForCheckout(); sessionStorage.setItem('fitbrandPendingCheckout', JSON.stringify(items));
+      if(pay.href.endsWith('#')){ e.preventDefault(); location.href = checkoutLink(); }
     });
+    update();
+  }
+  function processConfirmation(){
+    if(!location.pathname.endsWith('confirmation.html')) return;
+    const params = new URLSearchParams(location.search);
+    let product = params.get('product') || params.get('purchased');
+    const pending = parse(sessionStorage.getItem('fitbrandPendingCheckout'), []);
+    const items = pending.length ? pending.filter(valid) : (valid(product) ? [product] : []);
+    items.forEach(addPurchase);
+    if(items.length){
+      const orders = getOrders();
+      orders.unshift({date:new Date().toISOString(), items, status:'Confirmed'}); saveOrders(orders);
+      sessionStorage.removeItem('fitbrandPendingCheckout'); localStorage.removeItem(CART_KEY); updateCartCount();
+      const main = items.includes('bundle') ? 'bundle' : (items.find(x => DIGITAL.includes(x)) || items[0]);
+      const btn = $('accessButton');
+      if(btn){ btn.href = (main === 'mealplan') ? PRODUCTS.mealplan.open : PROGRAMS.includes(main) || main === 'bundle' ? 'index.html?purchased=' + main : 'recommended.html'; btn.textContent = DIGITAL.includes(main) ? 'Open your access' : 'Continue shopping'; }
+      if($('confirmationText')) $('confirmationText').textContent = 'Your order is confirmed. Your access is saved to this device and will be visible when you are logged in.';
+    }
   }
 
-  function setupProfilePage(){
-    const form = $('fullProfileForm');
-    if(!form || form.dataset.fitbrandWired) return;
-    form.dataset.fitbrandWired = '1';
-    const user = getUser() || {};
-    const map = {
-      pfName:'name', pfEmail:'email', pfPhone:'phone', pfAddress:'address', pfGender:'gender', pfAge:'age', pfWeight:'weight', pfHeight:'height', pfLevel:'level', pfTrainingLocation:'trainingLocation', pfTrainingDays:'trainingDays', pfEquipment:'equipment', pfAllergies:'allergies', pfGoal:'goal'
-    };
-    Object.entries(map).forEach(([id, key]) => { const el = $(id); if(el && user[key]) el.value = user[key]; });
-    form.addEventListener('submit', function(e){
-      e.preventDefault();
-      const data = {};
-      Object.entries(map).forEach(([id, key]) => { const el = $(id); if(el) data[key] = el.value.trim(); });
-      if(!data.name || !data.email || !data.email.includes('@')){ alert('Please add a valid name and email.'); return; }
-      saveFitBrandUser(data, true);
-      location.href = 'index.html';
-    });
-  }
-
-  function setupAccountPages(){
-    const accessGrid = $('accessGrid');
-    const ordersList = $('ordersList');
-    if(!accessGrid && !ordersList) return;
+  function renderAccountPages(){
     const user = getUser();
     const locked = $('accountLocked');
     if(locked) locked.style.display = user ? 'none' : 'grid';
-    const intro = $('accountIntro');
-    if(intro) intro.textContent = user ? `Logged in as ${user.email || user.name}.` : 'Log in to see your saved product access and orders on this device.';
-    if(accessGrid){
-      const purchases = getPurchases();
-      accessGrid.innerHTML = Object.entries(PRODUCTS).filter(([key]) => key !== 'belt' && key !== 'straps').map(([key,p]) => {
-        const has = purchases.includes(key) || (key === 'mealplan' && purchases.includes('bundle'));
-        return `<div class="access-card ${has ? '' : 'locked'}"><strong>${escapeHtml(p.name)}</strong><span>${has ? 'You have access.' : 'You do not have access yet.'}</span><a href="${has ? p.open : p.buy}">${has ? 'Open' : 'Buy access'}</a></div>`;
+    const productsSection = $('products'), ordersSection = $('orders');
+    if(productsSection) productsSection.style.display = user ? 'block' : 'none';
+    if(ordersSection) ordersSection.style.display = user ? 'block' : 'none';
+    if($('accountIntro')) $('accountIntro').textContent = user ? `Signed in as ${user.email || user.name}.` : 'Sign in to see saved access and orders on this device.';
+
+    if($('accessGrid')){
+      const owned = getPurchases();
+      $('accessGrid').innerHTML = ['aesthetic','shred','strength','bundle','mealplan','belt','straps'].map(key => {
+        const p = PRODUCTS[key], has = owned.includes(key);
+        return `<article class="access-card ${has?'owned':''}"><div><span>${has?'Unlocked':'Locked'}</span><h3>${escapeHtml(p.name)}</h3><p>${has?'You have access on this device.':'Buy to unlock this product.'}</p></div><a class="${has?'btn-dark':'btn-outline'}" href="${has?p.open:p.buy}">${has?'Open':'Buy access'}</a></article>`;
       }).join('');
     }
-    if(ordersList){
-      const orders = safeParse(localStorage.getItem(ORDERS_KEY), []);
-      ordersList.innerHTML = orders.length ? orders.map(o => `<div class="order-row"><div><strong>${escapeHtml(productName(o.product))}</strong><br><span>${new Date(o.date).toLocaleString()} • ${escapeHtml(o.status || 'Confirmed')}</span></div><a class="btn-outline" href="${PRODUCTS[o.product]?.open || 'index.html'}">Open</a></div>`).join('') : '<p>No orders saved on this device yet.</p>';
+    if($('ordersList')){
+      const orders = user ? getOrders() : [];
+      $('ordersList').innerHTML = orders.length ? orders.map(o => `<div class="order-card"><strong>${escapeHtml((o.items||[o.product]).map(k=>PRODUCTS[k]?.name||k).join(', '))}</strong><span>${new Date(o.date).toLocaleString()} • ${escapeHtml(o.status || 'Confirmed')}</span></div>`).join('') : '<p>No orders saved yet.</p>';
     }
   }
 
-  function prefillGeneratorsFromProfile(showNoticeOnUse){
-    const user = getUser();
-    if(!user) return;
-    const pairs = [
-      ['mealAge','age'], ['mealGender','gender'], ['mealWeight','weight'], ['mealHeight','height'], ['mealTrainingDays','trainingDays'], ['mealAvoid','allergies'], ['mealGoal','goal'],
-      ['modalAge','age'], ['modalGender','gender'], ['modalWeight','weight'], ['modalHeight','height'], ['modalPlace','trainingLocation'], ['modalDays','trainingDays'], ['modalLevel','level']
-    ];
-    pairs.forEach(([id, key]) => { const el = $(id); if(el && user[key] && !el.value) el.value = user[key]; });
-    if(showNoticeOnUse) showNotice('Profile details filled in');
-  }
-  window.prefillGeneratorsFromProfile = prefillGeneratorsFromProfile;
-
-  function ensureMealUnlocked(){
-    if(getPurchases().includes('mealplan') || getPurchases().includes('bundle')) localStorage.setItem('fitbrandMealPlanUnlocked','true');
-    const unlocked = localStorage.getItem('fitbrandMealPlanUnlocked') === 'true';
-    if(unlocked){
-      $('meal-plan-ai')?.classList.add('unlocked');
-      $('mealGenerator')?.classList.add('show');
+  function hasMealAccess(){ const p = getPurchases(); return p.includes('mealplan') || p.includes('bundle'); }
+  function unlockMealIfUrl(){ const q = new URLSearchParams(location.search); if(q.get('purchased') === 'mealplan' || q.get('purchased') === 'bundle' || q.get('product') === 'mealplan'){ addPurchase(q.get('purchased') || 'mealplan'); } }
+  function handleMealPreviewClick(){
+    unlockMealIfUrl();
+    if(!getUser()){ openProfileModal('login'); return; }
+    if(hasMealAccess()){
+      $('meal-plan-ai')?.classList.add('unlocked'); $('mealGenerator')?.classList.add('show'); setupMealWizard(); $('meal-plan-ai')?.scrollIntoView({behavior:'smooth',block:'start'});
+    } else {
+      const buy = document.querySelector('a[href="checkout.html?product=mealplan"]');
+      buy?.scrollIntoView({behavior:'smooth',block:'center'}); if(buy){ buy.classList.add('fb-pulse'); setTimeout(()=>buy.classList.remove('fb-pulse'),1500); }
     }
-    return unlocked;
   }
-
-  window.handleMealPreviewClick = function(){
-    if(ensureMealUnlocked()) openMealPlanGenerator();
-    else { $('meal-plan-guide-ai')?.scrollIntoView({ behavior:'smooth', block:'start' }); showNotice('Meal Plan AI unlocks after purchase'); }
-  };
-  window.openMealPlanGenerator = function(){
-    const box = $('meal-plan-ai');
-    if(!box) return;
-    box.classList.add('unlocked');
-    $('mealGenerator')?.classList.add('show');
-    setupMealWizard();
-    prefillGeneratorsFromProfile(false);
-    box.scrollIntoView({ behavior:'smooth', block:'start' });
-  };
-
-  function setValue(id, value){ const el = $(id); if(el) el.value = value; }
-  function getValue(id){ return ($(id)?.value || '').trim(); }
-
+  function syncMealHidden(vals){ Object.entries(vals).forEach(([id,v]) => { if($(id)) $(id).value = v ?? ''; }); }
   function setupMealWizard(){
-    const gen = $('mealGenerator');
-    const realGrid = gen?.querySelector('.meal-grid');
-    if(!gen || !realGrid || $('fitbrandMealWizard')) return;
-    realGrid.style.display = 'none';
-    const oldBtn = gen.querySelector('.meal-generate-btn');
-    if(oldBtn) oldBtn.style.display = 'none';
-
-    const user = getUser();
-    const wizard = document.createElement('div');
-    wizard.id = 'fitbrandMealWizard';
-    wizard.className = 'fb-meal-wizard';
+    const gen = $('mealGenerator'); if(!gen || $('fitbrandMealWizard')) return;
+    const grid = gen.querySelector('.meal-grid'); if(grid) grid.style.display = 'none';
+    const oldBtn = gen.querySelector('.meal-generate-btn'); if(oldBtn) oldBtn.style.display = 'none';
+    const u = getUser() || {};
+    const wizard = document.createElement('div'); wizard.id = 'fitbrandMealWizard'; wizard.className = 'fb-meal-wizard';
     wizard.innerHTML = `
-      <div class="fb-meal-profile-summary">
-        <div><strong>${user ? 'Profile connected' : 'No profile connected'}</strong><span>${user ? 'You can use your saved profile details or change them for this plan.' : 'You can still create a meal plan, or sign in to save details for next time.'}</span></div>
-        <div class="fb-meal-profile-actions"><button type="button" id="mealUseProfile" ${user ? '' : 'disabled'}>Use profile</button><a href="profile.html">Change information</a></div>
-      </div>
-      <div class="fb-meal-wizard-head"><div><h3>Meal Plan Builder</h3><p>Click through the steps. No long messy form.</p></div><span id="mealStepPill">1 / 6</span></div>
-      <div class="fb-meal-progress"><span id="mealProgressFill"></span></div>
-      <div class="fb-meal-step active" data-step="1"><h4>What is your goal?</h4><div class="fb-meal-options"><button data-field="mealGoal" data-value="fatloss" type="button"><strong>Lose fat</strong><span>Lower calories and high protein.</span></button><button data-field="mealGoal" data-value="muscle" type="button"><strong>Build muscle</strong><span>More calories for growth.</span></button><button data-field="mealGoal" data-value="maintenance" type="button"><strong>Maintain</strong><span>Clean eating and stable weight.</span></button></div></div>
-      <div class="fb-meal-step" data-step="2"><h4>Your details</h4><div class="fb-meal-mini-form"><input id="wizAge" type="number" placeholder="Age"><select id="wizGender"><option value="">Gender</option><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option></select><input id="wizWeight" type="number" placeholder="Weight kg"><input id="wizHeight" type="number" placeholder="Height cm"></div></div>
-      <div class="fb-meal-step" data-step="3"><h4>Training activity</h4><div class="fb-meal-options"><button data-field="mealTrainingDays" data-value="0" type="button"><strong>0-1 days</strong><span>Light activity</span></button><button data-field="mealTrainingDays" data-value="3" type="button"><strong>2-3 days</strong><span>Moderate routine</span></button><button data-field="mealTrainingDays" data-value="5" type="button"><strong>4-5 days</strong><span>Consistent gym routine</span></button><button data-field="mealTrainingDays" data-value="6" type="button"><strong>6+ days</strong><span>Very active</span></button></div></div>
-      <div class="fb-meal-step" data-step="4"><h4>Food style</h4><div class="fb-meal-options"><button data-field="mealDiet" data-value="normal" type="button"><strong>Balanced</strong><span>Flexible normal food.</span></button><button data-field="mealDiet" data-value="highprotein" type="button"><strong>High protein</strong><span>Protein-focused meals.</span></button><button data-field="mealDiet" data-value="budget" type="button"><strong>Budget</strong><span>Cheap and simple.</span></button><button data-field="mealDiet" data-value="easy" type="button"><strong>Fast meals</strong><span>Low cooking time.</span></button><button data-field="mealDiet" data-value="vegetarian" type="button"><strong>Vegetarian</strong><span>No meat.</span></button></div></div>
-      <div class="fb-meal-step" data-step="5"><h4>Meals per day</h4><div class="fb-meal-options"><button data-field="mealMeals" data-value="3" type="button"><strong>3 meals</strong><span>Simple structure</span></button><button data-field="mealMeals" data-value="4" type="button"><strong>4 meals</strong><span>Balanced day</span></button><button data-field="mealMeals" data-value="5" type="button"><strong>5 meals</strong><span>More planned meals</span></button></div></div>
-      <div class="fb-meal-step" data-step="6"><h4>Final details</h4><div class="fb-meal-mini-form"><select id="wizStyle"><option value="balanced">Balanced</option><option value="lowcalorie">Low calorie</option><option value="bulking">Bulking</option><option value="simple">Very simple</option></select><select id="wizTime"><option value="normal">Normal cooking</option><option value="fast">Under 15 min</option><option value="prep">Meal prep friendly</option></select><input id="wizAvoid" class="wide" placeholder="Foods to avoid / allergies"></div><button id="mealFinalGenerate" type="button" class="fb-meal-generate-final">Generate my 7-day meal plan</button></div>
-      <div class="fb-meal-choice-actions"><button id="mealBackBtn" type="button">Back</button><button id="mealNextBtn" type="button">Next</button></div>
-    `;
-    gen.insertBefore(wizard, realGrid);
-    let step = 1;
-
-    function useProfile(){
-      const u = getUser() || {};
-      const map = { wizAge:'age', wizGender:'gender', wizWeight:'weight', wizHeight:'height', wizAvoid:'allergies' };
-      Object.entries(map).forEach(([id,key]) => { if($(id) && u[key]) $(id).value = u[key]; });
-      if(u.goal) selectOption('mealGoal', u.goal);
-      if(u.trainingDays) selectOption('mealTrainingDays', u.trainingDays);
-      sync();
-    }
-    function selectOption(field, value){
-      setValue(field, value);
-      $$('#fitbrandMealWizard [data-field="'+field+'"]').forEach(btn => btn.classList.toggle('selected', btn.dataset.value === String(value)));
-    }
-    function sync(){
-      setValue('mealAge', getValue('wizAge'));
-      setValue('mealGender', getValue('wizGender'));
-      setValue('mealWeight', getValue('wizWeight'));
-      setValue('mealHeight', getValue('wizHeight'));
-      setValue('mealAvoid', getValue('wizAvoid'));
-      setValue('mealStyle', getValue('wizStyle') || 'balanced');
-      setValue('mealTime', getValue('wizTime') || 'normal');
-      if(!getValue('mealDiet')) setValue('mealDiet','normal');
-      if(!getValue('mealMeals')) setValue('mealMeals','4');
-      setValue('mealActivity','normal');
-      setValue('mealDifficulty','easy');
-    }
-    function render(){
-      $$('#fitbrandMealWizard .fb-meal-step').forEach(panel => panel.classList.toggle('active', Number(panel.dataset.step) === step));
-      $('mealStepPill').textContent = `${step} / 6`;
-      $('mealProgressFill').style.width = (step / 6 * 100) + '%';
-      $('mealBackBtn').style.visibility = step === 1 ? 'hidden' : 'visible';
-      $('mealNextBtn').style.display = step === 6 ? 'none' : 'inline-flex';
-      sync();
-    }
-    wizard.addEventListener('click', function(e){
-      const btn = e.target.closest('button');
-      if(!btn) return;
-      if(btn.id === 'mealUseProfile'){ useProfile(); step = 2; render(); return; }
-      if(btn.dataset.field){ selectOption(btn.dataset.field, btn.dataset.value); return; }
-      if(btn.id === 'mealFinalGenerate'){
-        sync();
-        if(typeof window.generateMealPlan === 'function') window.generateMealPlan();
-        else alert('Meal generator is missing.');
-      }
-    });
-    $('mealBackBtn').addEventListener('click', () => { if(step > 1){ step--; render(); } });
-    $('mealNextBtn').addEventListener('click', () => { sync(); if(step < 6){ step++; render(); } });
-    useProfile();
-    render();
+      <div class="fb-meal-wizard-head"><div><h3>Meal Plan Builder</h3><p>Step-by-step, clean and fast.</p></div><span id="mealStepPill">1 / 6</span></div><div class="fb-meal-progress"><span id="mealProgressFill"></span></div>
+      <div class="fb-meal-profile-row"><button type="button" id="mealUseProfile">Use saved profile info</button><a href="profile.html">Change information</a></div>
+      <section class="fb-meal-step active" data-step="1"><h4>Choose your goal</h4><div class="fb-meal-options"><button data-field="goal" data-value="fatloss" type="button"><strong>Lose fat</strong><span>High protein and controlled calories.</span></button><button data-field="goal" data-value="muscle" type="button"><strong>Build muscle</strong><span>Fuel growth and performance.</span></button><button data-field="goal" data-value="maintenance" type="button"><strong>Maintain</strong><span>Clean eating and stable weight.</span></button></div></section>
+      <section class="fb-meal-step" data-step="2"><h4>Your body details</h4><div class="fb-meal-mini-form"><input id="wizAge" type="number" placeholder="Age"><select id="wizGender"><option value="">Gender</option><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option></select><input id="wizWeight" type="number" placeholder="Weight kg"><input id="wizHeight" type="number" placeholder="Height cm"></div></section>
+      <section class="fb-meal-step" data-step="3"><h4>Training activity</h4><div class="fb-meal-options"><button data-field="trainingDays" data-value="0" type="button"><strong>0-1 days</strong><span>Light routine</span></button><button data-field="trainingDays" data-value="3" type="button"><strong>2-3 days</strong><span>Moderate routine</span></button><button data-field="trainingDays" data-value="5" type="button"><strong>4-5 days</strong><span>Consistent training</span></button><button data-field="trainingDays" data-value="6" type="button"><strong>6+ days</strong><span>Very active</span></button></div></section>
+      <section class="fb-meal-step" data-step="4"><h4>Food style</h4><div class="fb-meal-options"><button data-field="diet" data-value="normal" type="button"><strong>Balanced</strong><span>Normal flexible foods.</span></button><button data-field="diet" data-value="highprotein" type="button"><strong>High protein</strong><span>More protein focused.</span></button><button data-field="diet" data-value="budget" type="button"><strong>Budget</strong><span>Cheap and simple.</span></button><button data-field="diet" data-value="easy" type="button"><strong>Fast meals</strong><span>Low cooking time.</span></button><button data-field="diet" data-value="vegetarian" type="button"><strong>Vegetarian</strong><span>No meat.</span></button></div></section>
+      <section class="fb-meal-step" data-step="5"><h4>Meals per day</h4><div class="fb-meal-options"><button data-field="meals" data-value="3" type="button"><strong>3 meals</strong><span>Simple</span></button><button data-field="meals" data-value="4" type="button"><strong>4 meals</strong><span>Balanced</span></button><button data-field="meals" data-value="5" type="button"><strong>5 meals</strong><span>Structured</span></button></div></section>
+      <section class="fb-meal-step" data-step="6"><h4>Final preferences</h4><div class="fb-meal-mini-form"><select id="wizStyle"><option value="balanced">Balanced</option><option value="lowcalorie">Low calorie</option><option value="bulking">Bulking</option><option value="simple">Very simple</option></select><select id="wizTime"><option value="normal">Normal cooking</option><option value="fast">Under 15 min</option><option value="prep">Meal prep friendly</option></select><input id="wizAvoid" class="wide" placeholder="Foods to avoid / allergies"></div><button type="button" id="mealFinalGenerate" class="fb-meal-generate-final">Generate my 7-day meal plan</button></section>
+      <div class="fb-meal-choice-actions"><button type="button" id="mealBackBtn">Back</button><button type="button" id="mealNextBtn">Next</button></div>`;
+    gen.insertBefore(wizard, gen.firstChild);
+    const state = {goal:u.goal || '', trainingDays:u.trainingDays || '', diet:'normal', meals:'4'}; let step = 1;
+    function fillProfile(){ ['Age','Gender','Weight','Height'].forEach(k => { const map={Age:'age',Gender:'gender',Weight:'weight',Height:'height'}; const el=$('wiz'+k); if(el && u[map[k]]) el.value = u[map[k]]; }); if($('wizAvoid') && u.allergies) $('wizAvoid').value = u.allergies; }
+    function choose(field,value){ state[field]=String(value); $$(`#fitbrandMealWizard [data-field="${field}"]`).forEach(b => b.classList.toggle('selected', b.dataset.value === String(value))); }
+    function sync(){ syncMealHidden({mealGoal:state.goal, mealTrainingDays:state.trainingDays, mealDiet:state.diet, mealMeals:state.meals, mealAge:$('wizAge')?.value, mealGender:$('wizGender')?.value, mealWeight:$('wizWeight')?.value, mealHeight:$('wizHeight')?.value, mealAvoid:$('wizAvoid')?.value, mealStyle:$('wizStyle')?.value||'balanced', mealTime:$('wizTime')?.value||'normal', mealActivity:'normal', mealDifficulty:'easy'}); }
+    function render(){ $$('#fitbrandMealWizard .fb-meal-step').forEach(s => s.classList.toggle('active', Number(s.dataset.step)===step)); $('mealStepPill').textContent = `${step} / 6`; $('mealProgressFill').style.width = (step/6*100)+'%'; $('mealBackBtn').style.visibility = step===1?'hidden':'visible'; $('mealNextBtn').style.display = step===6?'none':'inline-flex'; sync(); }
+    wizard.addEventListener('click', e => { const btn=e.target.closest('button'); if(!btn) return; if(btn.id==='mealUseProfile'){ fillProfile(); render(); return; } if(btn.dataset.field){ choose(btn.dataset.field, btn.dataset.value); } if(btn.id==='mealBackBtn' && step>1){ step--; render(); } if(btn.id==='mealNextBtn' && step<6){ step++; render(); } if(btn.id==='mealFinalGenerate'){ sync(); generateMealPlan(); } });
+    fillProfile(); if(state.goal) choose('goal',state.goal); if(state.trainingDays) choose('trainingDays',state.trainingDays); choose('diet','normal'); choose('meals','4'); render();
   }
 
-  function availableProgramTracks(){
-    const p = getPurchases();
-    if(p.includes('bundle')) return PROGRAMS.slice();
-    const owned = PROGRAMS.filter(x => p.includes(x));
-    return owned.length ? owned : [];
+  function estimateCalories(weight,height,age,gender,goal,trainingDays){
+    let bmr = gender === 'female' ? 10*weight + 6.25*height - 5*age - 161 : 10*weight + 6.25*height - 5*age + 5;
+    let activity = trainingDays >= 5 ? 1.65 : trainingDays >= 3 ? 1.50 : 1.30;
+    let calories = Math.round(bmr * activity); if(goal==='fatloss') calories -= 400; if(goal==='muscle') calories += 250;
+    return Math.max(1400, Math.round(calories/50)*50);
+  }
+  function generateMealPlan(){
+    const goal=$('mealGoal')?.value, gender=$('mealGender')?.value, age=Number($('mealAge')?.value), weight=Number($('mealWeight')?.value), height=Number($('mealHeight')?.value), trainingDays=Number($('mealTrainingDays')?.value), meals=Number($('mealMeals')?.value||4), diet=$('mealDiet')?.value||'normal', avoid=$('mealAvoid')?.value||'';
+    if(!goal || !gender || !age || !weight || !height || $('mealTrainingDays')?.value===''){ alert('Please complete the meal plan steps first.'); return; }
+    const calories=estimateCalories(weight,height,age,gender,goal,trainingDays), protein=Math.round(weight*(goal==='fatloss'?2.1:1.8)), fat=Math.round((calories*.25)/9), carbs=Math.max(80,Math.round((calories-protein*4-fat*9)/4));
+    const banks={normal:[['Breakfast',['Oats with Greek yogurt','Berries','Protein source']],['Lunch',['Chicken rice bowl','Mixed vegetables','Fruit']],['Dinner',['Lean protein','Rice or potatoes','Green vegetables']],['Snack',['Skyr/protein yogurt','Banana','Rice cakes']],['Extra Meal',['Wholegrain wrap','Turkey/chicken/tofu','Salad']]],vegetarian:[['Breakfast',['Oats','Greek yogurt','Berries']],['Lunch',['Tofu rice bowl','Beans','Vegetables']],['Dinner',['Eggs or tofu','Potatoes','Salad']],['Snack',['Skyr','Fruit','Protein shake']],['Extra Meal',['Lentil pasta','Tomato sauce','Salad']]],highprotein:[['Breakfast',['Eggs or skyr','Oats','Protein shake']],['Lunch',['Chicken bowl','Extra chicken','Vegetables']],['Dinner',['Lean beef/chicken/salmon','Rice','Cottage cheese']],['Snack',['Protein yogurt','Protein bar','Fruit']],['Extra Meal',['Tuna/chicken wrap','Salad','Water']]],budget:[['Breakfast',['Oats','Banana','Milk/yogurt']],['Lunch',['Rice','Eggs/chicken','Frozen vegetables']],['Dinner',['Potatoes','Tuna/eggs/chicken','Vegetables']],['Snack',['Yogurt','Rice cakes','Apple']],['Extra Meal',['Pasta','Eggs/tuna','Tomato sauce']]],easy:[['Breakfast',['Protein yogurt','Granola','Fruit']],['Lunch',['Ready rice','Pre-cooked chicken/tofu','Bagged salad']],['Dinner',['Wrap bowl','Lean protein','Microwave rice/potatoes']],['Snack',['Protein shake','Banana','Rice cakes']],['Extra Meal',['Cottage cheese','Toast','Fruit']]]};
+    const bank=banks[diet]||banks.normal, days=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+    const weekly=days.map((d,i)=>({day:d, meals:bank.map((_,j)=>bank[(i+j)%bank.length]).slice(0,meals)}));
+    if($('mealOutputTitle')) $('mealOutputTitle').textContent='Your 7-Day FitBrand Meal Plan';
+    if($('mealOutputSubtitle')) $('mealOutputSubtitle').textContent=`Built for ${goal}, ${weight}kg, ${height}cm, training ${trainingDays} days per week.`;
+    if($('mealOutputPill')) $('mealOutputPill').textContent=`${meals} MEALS / ${diet.toUpperCase()}`;
+    if($('macroGrid')) $('macroGrid').innerHTML=[['Calories',calories],['Protein',protein+'g'],['Carbs',carbs+'g'],['Fat',fat+'g']].map(x=>`<div class="macro-box"><span>${x[0]}</span><strong>${x[1]}</strong></div>`).join('');
+    if($('mealDays')) $('mealDays').innerHTML=weekly[0].meals.map(m=>`<div class="meal-day-card"><h4>${m[0]}</h4><ul>${m[1].map(i=>`<li>${i}</li>`).join('')}</ul></div>`).join('');
+    if($('mealWeekPlan')) $('mealWeekPlan').innerHTML=weekly.map(d=>`<div class="meal-week-day"><h4>${d.day}</h4><div class="meal-week-meals">${d.meals.map(m=>`<div class="meal-mini"><strong>${m[0]}</strong><span>${m[1].join(' • ')}</span></div>`).join('')}</div></div>`).join('');
+    const notes=`Follow this for 7-14 days, then adjust calories based on progress. ${goal==='fatloss'?'If weight is not moving after 2 weeks, reduce 150-200 calories or add steps. ':''}${goal==='muscle'?'If weight is not increasing slowly, add 150-250 calories. ':''}${avoid?'Avoid these foods: '+avoid+'. ':''}This is general fitness guidance, not medical nutrition advice.`;
+    if($('mealNotes')) $('mealNotes').textContent=notes;
+    window.latestMealPlanText = 'FITBRAND 7-DAY MEAL PLAN\n\n' + weekly.map(d=>d.day+'\n'+d.meals.map(m=>'- '+m[0]+': '+m[1].join(', ')).join('\n')).join('\n\n') + '\n\nCalories: '+calories+' | Protein: '+protein+'g | Carbs: '+carbs+'g | Fat: '+fat+'g\n\n'+notes;
+    $('mealOutput')?.classList.add('show'); $('mealOutput')?.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function downloadMealPlanPDF(){ printText('FitBrand Meal Plan', window.latestMealPlanText || 'Generate your meal plan first.'); }
+  function resetMealPlan(){ $('mealOutput')?.classList.remove('show'); if($('mealWeekPlan')) $('mealWeekPlan').innerHTML=''; }
+
+  function unlockedPrograms(){ const p=getPurchases(); return p.includes('bundle') ? PROGRAMS : PROGRAMS.filter(x=>p.includes(x)); }
+  function openGeneratorModal(){
+    if(!getUser()){ openProfileModal('login'); return; }
+    const allowed = unlockedPrograms(); if(!allowed.length){ alert('This generator unlocks after purchasing a program or bundle.'); return; }
+    $('fitbrandGeneratorModal')?.classList.add('show'); buildProgramTrackPanel(allowed); prefillAllGenerators(false);
+  }
+  function closeGeneratorModal(){ $('fitbrandGeneratorModal')?.classList.remove('show'); }
+  function buildProgramTrackPanel(allowed){
+    const body=document.querySelector('#fitbrandGeneratorModal .fb-modal-body'); if(!body) return; $('fbProgramTrackPanel')?.remove();
+    const copy={aesthetic:['Aesthetic AI','Hypertrophy, symmetry and visual proportions.'],shred:['Shred AI','Fat loss, conditioning and muscle retention.'],strength:['Strength AI','Strength progression, main lifts and performance.']};
+    const panel=document.createElement('div'); panel.id='fbProgramTrackPanel'; panel.className='fb-program-track-panel';
+    panel.innerHTML=`<h3>${allowed.length>1?'Choose your unlocked AI':'Your unlocked program AI'}</h3><p>${allowed.length>1?'Bundle access lets you choose between all three program AIs.':'This generator is customized to the program you bought.'}</p><div class="fb-program-track-options">${allowed.map((k,i)=>`<button type="button" data-track="${k}" class="${i===0?'selected':''}"><strong>${copy[k][0]}</strong><span>${copy[k][1]}</span></button>`).join('')}</div>`;
+    body.insertBefore(panel, body.firstChild); setTrainingTrack(allowed[0]);
+    panel.addEventListener('click',e=>{ const b=e.target.closest('[data-track]'); if(!b) return; panel.querySelectorAll('button').forEach(x=>x.classList.remove('selected')); b.classList.add('selected'); setTrainingTrack(b.dataset.track); });
+  }
+  function setTrainingTrack(track){
+    if($('modalPackage')) $('modalPackage').value=track;
+    if($('modalGoal')) $('modalGoal').value = track==='shred'?'fatloss':track==='strength'?'strength':'muscle';
+    const fields = {aesthetic:['Upper chest focus','Shoulder width','Arm detail','Balanced proportions'],shred:['Fat loss speed','Daily steps','Cardio level','Meal consistency'],strength:['Squat focus','Bench focus','Deadlift focus','Overall power']};
+    let box=$('fbTrackSpecificOptions');
+    if(!box){ box=document.createElement('div'); box.id='fbTrackSpecificOptions'; box.className='fb-track-specific-options'; const divider=document.querySelector('#fitbrandGeneratorModal .fb-divider'); divider?.insertAdjacentElement('afterend',box); }
+    box.innerHTML=`<h4>${track.charAt(0).toUpperCase()+track.slice(1)} settings</h4><div>${fields[track].map((x,i)=>`<label><input type="radio" name="trackFocus" value="${escapeHtml(x)}" ${i===0?'checked':''}> ${escapeHtml(x)}</label>`).join('')}</div>`;
+  }
+  function generateModalPlan(){
+    const allowed=unlockedPrograms(); if(!allowed.length){ alert('This generator unlocks after purchase.'); return; }
+    let track=$('modalPackage')?.value || allowed[0]; if(!allowed.includes(track)) track=allowed[0];
+    const u=getUser()||{}, place=$('modalPlace')?.value || u.trainingLocation || 'gym', days=Math.max(3,Math.min(6,Number($('modalDays')?.value || u.trainingDays || 4))), level=$('modalLevel')?.value || u.level || 'beginner';
+    const lib=(PLAN_LIBRARY[track][place] || PLAN_LIBRARY[track].gym).slice(0,days);
+    const focus=document.querySelector('input[name="trackFocus"]:checked')?.value || 'balanced progress';
+    if($('modalPlanTitle')) $('modalPlanTitle').textContent=`Your ${PRODUCTS[track].name} Plan`;
+    if($('modalPlanSubtitle')) $('modalPlanSubtitle').textContent=`Customized for ${place} training, ${days} days per week, ${level} level. Focus: ${focus}.`;
+    if($('modalPlanPill')) $('modalPlanPill').textContent=`${days} DAYS / ${place.toUpperCase()}`;
+    if($('modalPlanDays')) $('modalPlanDays').innerHTML=lib.map(d=>`<div class="fb-plan-day"><h4>${d[0]}</h4><ul>${d[1].map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('');
+    $('modalPlanOutput')?.classList.add('show');
+    const text=`FITBRAND ${PRODUCTS[track].name.toUpperCase()} PLAN\n\n${lib.map(d=>d[0]+'\n'+d[1].map(x=>'- '+x).join('\n')).join('\n\n')}\n\nFocus: ${focus}`;
+    window.latestTrainingPlanText=text;
+    addDownloadButtonsToProgramOutput(); $('modalPlanOutput')?.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+  function addDownloadButtonsToProgramOutput(){
+    const out=$('modalPlanOutput'); if(!out || $('fbPlanDownloadRow')) return;
+    out.insertAdjacentHTML('beforeend',`<div id="fbPlanDownloadRow" class="fb-plan-download-row"><button type="button" onclick="downloadTrainingPlanPDF()">Download PDF</button><button type="button" onclick="downloadTrainingPlanPNG()">Download PNG</button></div>`);
+  }
+  function printText(title,text){
+    const w=window.open('','_blank'); if(!w) return; w.document.write(`<html><head><title>${escapeHtml(title)}</title><style>body{font-family:Arial,sans-serif;padding:40px;line-height:1.55;color:#111}h1{font-size:34px}.brand{font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#555}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style></head><body><div class="brand">FitBrand</div><h1>${escapeHtml(title)}</h1><pre>${escapeHtml(text)}</pre><script>window.print();<\/script></body></html>`); w.document.close();
+  }
+  function downloadTrainingPlanPDF(){ printText('Your FitBrand Training Plan', window.latestTrainingPlanText || 'Generate your plan first.'); }
+  function downloadTrainingPlanPNG(){
+    const text=window.latestTrainingPlanText || 'Generate your plan first.'; const canvas=document.createElement('canvas'), ctx=canvas.getContext('2d'); canvas.width=1200; canvas.height=1600; ctx.fillStyle='#0b0b0b'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.fillStyle='#fff'; ctx.font='bold 42px Arial'; ctx.fillText('FITBRAND TRAINING PLAN',70,85); ctx.font='24px Arial'; const lines=text.split('\n'); let y=145; lines.forEach(line=>{ if(y>1540) return; ctx.fillText(line.slice(0,82),70,y); y+=34; }); const a=document.createElement('a'); a.href=canvas.toDataURL('image/png'); a.download='fitbrand-training-plan.png'; a.click();
   }
 
-  function setupProgramTrackPanel(){
-    const body = document.querySelector('#fitbrandGeneratorModal .fb-modal-body');
-    if(!body) return;
-    let panel = $('fbProgramTrackPanel');
-    if(panel) panel.remove();
-    const allowed = availableProgramTracks();
-    const current = allowed[0] || 'aesthetic';
-    const copy = {
-      aesthetic:['Aesthetic AI','For symmetry, upper body shape, hypertrophy and visual proportions.'],
-      shred:['Shred AI','For fat loss, conditioning, steps and muscle retention.'],
-      strength:['Strength AI','For heavier lifts, progression, performance and strength skill.']
-    };
-    panel = document.createElement('div');
-    panel.id = 'fbProgramTrackPanel';
-    panel.className = 'fb-program-track-panel';
-    panel.innerHTML = `<h3>Choose your unlocked AI track</h3><p>${allowed.length > 1 ? 'Bundle unlocked: choose which program AI you want to generate.' : 'This AI is customized to the program you purchased.'}</p><div class="fb-program-track-options">${allowed.map(key => `<button type="button" data-track="${key}" class="${key === current ? 'selected' : ''}"><strong>${copy[key][0]}</strong><span>${copy[key][1]}</span></button>`).join('')}</div>`;
-    body.insertBefore(panel, body.firstChild);
-    setValue('modalPackage', current);
-    const goal = $('modalGoal');
-    if(goal) goal.value = current === 'shred' ? 'fatloss' : current === 'strength' ? 'strength' : 'muscle';
-    panel.addEventListener('click', function(e){
-      const btn = e.target.closest('[data-track]');
-      if(!btn) return;
-      panel.querySelectorAll('[data-track]').forEach(x => x.classList.remove('selected'));
-      btn.classList.add('selected');
-      const track = btn.dataset.track;
-      setValue('modalPackage', track);
-      const g = $('modalGoal');
-      if(g) g.value = track === 'shred' ? 'fatloss' : track === 'strength' ? 'strength' : 'muscle';
-    });
+  function prefillAllGenerators(){
+    const u=getUser(); if(!u) return;
+    const maps={modalAge:'age',modalGender:'gender',modalWeight:'weight',modalHeight:'height',modalPlace:'trainingLocation',modalDays:'trainingDays',modalLevel:'level',mealAge:'age',mealGender:'gender',mealWeight:'weight',mealHeight:'height',mealTrainingDays:'trainingDays',mealAvoid:'allergies'};
+    Object.entries(maps).forEach(([id,k])=>{ if($(id) && u[k] && !$(id).value) $(id).value=u[k]; });
+  }
+  function detectPurchaseUrls(){
+    const q=new URLSearchParams(location.search); const p=q.get('purchased') || q.get('product'); if(valid(p)) addPurchase(p);
+    if(p==='bundle') addPurchase('mealplan');
+    if(PROGRAMS.includes(p) || p==='bundle') $('openGeneratorBtn')?.classList.add('show');
+    if(getPurchases().some(x=>PROGRAMS.includes(x)||x==='bundle')) $('openGeneratorBtn')?.classList.add('show');
+    if($('openGeneratorBtn')){ const canTrain = !!getUser() && getPurchases().some(x=>PROGRAMS.includes(x)||x==='bundle'); $('openGeneratorBtn').classList.toggle('show', canTrain); }
+    if(location.pathname.endsWith('recommended.html')){ const mealBox=$('meal-plan-ai'); if(mealBox){ if(getUser() && hasMealAccess()){ mealBox.classList.add('unlocked'); setupMealWizard(); } else { mealBox.classList.remove('unlocked'); } } }
   }
 
-  window.openGeneratorModal = function(){
-    const allowed = availableProgramTracks();
-    if(!allowed.length){ alert('This generator unlocks after purchasing a FitBrand program or bundle.'); return; }
-    $('fitbrandGeneratorModal')?.classList.add('show');
-    prefillGeneratorsFromProfile(false);
-    setupProgramTrackPanel();
-  };
-  window.closeGeneratorModal = function(){ $('fitbrandGeneratorModal')?.classList.remove('show'); };
-
-  window.generateModalPlan = function(){
-    const allowed = availableProgramTracks();
-    if(!allowed.length){ alert('This generator unlocks after purchase.'); return; }
-    let pkg = getValue('modalPackage') || allowed[0];
-    if(pkg === 'bundle' || !allowed.includes(pkg)) pkg = allowed[0];
-    const place = getValue('modalPlace') || getUser()?.trainingLocation || 'gym';
-    const days = Math.max(3, Math.min(6, parseInt(getValue('modalDays') || getUser()?.trainingDays || '4', 10)));
-    const level = getValue('modalLevel') || getUser()?.level || 'beginner';
-    const library = PROGRAM_LIBRARY[pkg][place] || PROGRAM_LIBRARY[pkg].gym;
-    const selected = library.slice(0, days);
-    const titles = { aesthetic:'Aesthetic Program AI', shred:'Shred Program AI', strength:'Strength Program AI' };
-    if($('modalPlanTitle')) $('modalPlanTitle').textContent = `Your ${titles[pkg]} Plan`;
-    if($('modalPlanSubtitle')) $('modalPlanSubtitle').textContent = `Customized for your unlocked ${productName(pkg)}: ${days} days/week, ${place} training, ${level} level.`;
-    if($('modalPlanPill')) $('modalPlanPill').textContent = `${days} DAYS / ${place.toUpperCase()}`;
-    if($('modalPlanDays')) $('modalPlanDays').innerHTML = selected.map(day => `<div class="fb-plan-day"><h4>${escapeHtml(day[0])}</h4><ul>${day[1].map(x => `<li>${escapeHtml(x)}</li>`).join('')}</ul></div>`).join('');
-    const out = $('modalPlanOutput');
-    if(out){
-      out.classList.add('show');
-      if(!$('programDownloadActions')){
-        const actions = document.createElement('div');
-        actions.id = 'programDownloadActions';
-        actions.className = 'program-download-actions';
-        actions.innerHTML = '<button type="button" onclick="downloadProgramPDF()">Download PDF</button><button type="button" onclick="downloadProgramPNG()">Download PNG</button>';
-        out.appendChild(actions);
-      }
-      out.scrollIntoView({ behavior:'smooth', block:'nearest' });
-    }
-  };
-
-  window.downloadProgramPDF = function(){
-    const title = $('modalPlanTitle')?.textContent || 'FitBrand Training Plan';
-    const subtitle = $('modalPlanSubtitle')?.textContent || '';
-    const days = $$('.fb-plan-day').map(day => `${day.querySelector('h4')?.textContent || ''}\n${$$('li', day).map(li => '- ' + li.textContent).join('\n')}`).join('\n\n');
-    const w = window.open('', '_blank');
-    if(!w) return;
-    w.document.write(`<html><head><title>${escapeHtml(title)}</title><style>body{font-family:Arial,sans-serif;padding:40px;line-height:1.55;color:#111}h1{font-size:34px;margin-bottom:8px}.brand{letter-spacing:2px;text-transform:uppercase;font-weight:900;color:#555}pre{white-space:pre-wrap;font-family:Arial,sans-serif;font-size:14px}</style></head><body><div class="brand">FitBrand</div><h1>${escapeHtml(title)}</h1><p>${escapeHtml(subtitle)}</p><pre>${escapeHtml(days)}</pre><script>window.print();<\/script></body></html>`);
-    w.document.close();
-  };
-  window.downloadProgramPNG = function(){
-    alert('PNG export needs a screenshot/export library. PDF print/export is ready now.');
-  };
-
-  function enhanceBundleCard(){
-    const card = document.querySelector('.fitbrand-bundle-offer');
-    if(!card || card.dataset.fitbrandEnhanced) return;
-    card.dataset.fitbrandEnhanced = '1';
-    card.classList.add('bundle-offer-premium');
-    const p = card.querySelector('p:nth-of-type(2)');
-    if(p) p.textContent = 'Get Aesthetic, Shred, Strength and Meal Plan Guide AI in one bundle. Best value for customers who want the full FitBrand training and nutrition system.';
-    if(!card.querySelector('.bundle-feature-grid')){
-      const grid = document.createElement('div');
-      grid.className = 'bundle-feature-grid';
-      grid.innerHTML = '<span>3 premium programs</span><span>Meal Plan AI included</span><span>Best total value</span>';
-      const actions = card.querySelector('a')?.parentElement || card;
-      card.insertBefore(grid, card.querySelector('a'));
-    }
+  function initProfilePage(){
+    const form=$('fullProfileForm'); if(!form) return;
+    const u=getUser() || {};
+    const map={pfName:'name',pfEmail:'email',pfPhone:'phone',pfAddress:'address',pfGender:'gender',pfAge:'age',pfWeight:'weight',pfHeight:'height',pfLevel:'level',pfTrainingLocation:'trainingLocation',pfTrainingDays:'trainingDays',pfEquipment:'equipment',pfAllergies:'allergies',pfGoal:'goal'};
+    Object.entries(map).forEach(([id,k])=>{ if($(id) && u[k]) $(id).value=u[k]; });
+    form.onsubmit=function(e){ e.preventDefault(); const data={}; Object.entries(map).forEach(([id,k])=>{ if($(id)) data[k]=$(id).value.trim ? $(id).value.trim() : $(id).value; }); if(!data.name || !validEmail(data.email)){ alert('Please add at least a valid name and email.'); return; } saveFitBrandUser(data,true); location.href='index.html'; };
+  }
+  function enhanceBundleBox(){
+    const box=document.querySelector('.fitbrand-bundle-offer'); if(!box) return;
+    box.classList.add('fb-bundle-super');
+    if(!box.querySelector('.fb-bundle-benefits')) box.insertAdjacentHTML('beforeend',`<div class="fb-bundle-benefits"><span>All 3 programs</span><span>Meal Plan Guide AI included</span><span>Best value</span><span>Training generator access</span></div>`);
   }
 
-  function setupCartPage(){
-    const container = $('cart-items');
-    const totalEl = $('cart-total');
-    if(!container || !totalEl) return;
-    function render(){
-      const cart = getCart();
-      const groups = grouped(cart);
-      const keys = Object.keys(groups);
-      if(!keys.length){ container.innerHTML = '<p>Your cart is empty.</p>'; totalEl.textContent = money(0); return; }
-      let subtotal = 0;
-      container.innerHTML = keys.map(key => {
-        const p = PRODUCTS[key];
-        const qty = groups[key];
-        subtotal += p.price * qty;
-        return `<div class="cart-item"><div><strong>${escapeHtml(p.name)}</strong><br><span>FitBrand product</span><div class="qty-controls"><button class="qty-btn" onclick="changeQty('${key}',-1)">−</button><strong>${qty}</strong><button class="qty-btn" onclick="changeQty('${key}',1)">+</button></div></div><div class="cart-item-actions"><strong>${money(p.price * qty)}</strong><button class="remove-item-btn" onclick="removeProduct('${key}')">Remove</button></div></div>`;
-      }).join('');
-      const discount = localStorage.getItem(DISCOUNT_KEY) === 'FIT10' ? 0.10 : 0;
-      totalEl.textContent = money(subtotal * (1 - discount));
-      const link = $('checkout-link');
-      if(link) link.href = 'checkout.html?cart=true';
-    }
-    window.changeQty = function(product, delta){
-      const cart = getCart();
-      if(delta > 0) cart.push(product);
-      else {
-        const i = cart.indexOf(product);
-        if(i >= 0) cart.splice(i, 1);
-      }
-      saveCart(cart); render(); updateCartCount();
-    };
-    window.removeProduct = function(product){ saveCart(getCart().filter(x => x !== product)); render(); updateCartCount(); };
-    window.applyCartDiscount = function(){
-      const code = ($('cart-discount')?.value || '').trim().toUpperCase();
-      const msg = $('cart-discount-message');
-      if(code === 'FIT10'){ localStorage.setItem(DISCOUNT_KEY,'FIT10'); if(msg) msg.textContent = 'Discount applied: 10% off.'; }
-      else { localStorage.removeItem(DISCOUNT_KEY); if(msg) msg.textContent = 'Invalid code. Try FIT10.'; }
-      render();
-    };
-    render();
+  function boot(){
+    ensureProfileUI(); updateFitBrandProfileUI(); updateCartCount(); setupCheckout(); processConfirmation(); renderAccountPages(); initProfilePage(); detectPurchaseUrls(); enhanceBundleBox(); prefillAllGenerators(false); showWelcomeChoice();
+    $$('.cart-icon-btn').forEach(btn => { btn.onclick = function(e){ e.preventDefault(); openCartDrawer(); }; });
+    document.addEventListener('click', e => { const m=$('profileMenu'), b=document.querySelector('.profile-icon-btn'); if(m && b && !m.contains(e.target) && !b.contains(e.target)) m.classList.remove('show'); });
+    setTimeout(()=>{ updateFitBrandProfileUI(); renderAccountPages(); },50);
   }
 
-  function showNotice(text){
-    let n = $('fitbrandNotice');
-    if(!n){ n = document.createElement('div'); n.id = 'fitbrandNotice'; n.className = 'fitbrand-notice'; document.body.appendChild(n); }
-    n.textContent = text;
-    n.classList.add('show');
-    setTimeout(() => n.classList.remove('show'), 2200);
-  }
-
-  function escapeHtml(value){
-    return String(value == null ? '' : value).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
-  }
-
-  function init(){
-    ensureHeader();
-    ensureProfileModal();
-    unlockFromUrl();
-    setupConfirmation();
-    updateFitBrandProfileUI();
-    updateCartCount();
-    wireCartIcon();
-    setupCheckout();
-    setupProfilePage();
-    setupAccountPages();
-    setupCartPage();
-    ensureMealUnlocked();
-    if($('mealGenerator') && ensureMealUnlocked()) setupMealWizard();
-    prefillGeneratorsFromProfile(false);
-    enhanceBundleCard();
-    showWelcome();
-
-    document.addEventListener('click', function(e){
-      const menu = $('profileMenu');
-      const btn = document.querySelector('.profile-icon-btn');
-      if(menu && btn && !menu.contains(e.target) && !btn.contains(e.target)) menu.classList.remove('show');
-    });
-  }
-
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-  else init();
+  Object.assign(window,{getFitBrandUser:getUser,saveFitBrandUser,logoutFitBrandUser,updateFitBrandProfileUI,updateProfileUI:updateFitBrandProfileUI,toggleProfileMenu,openProfileModal,closeProfileModal,loginFitBrandUser,updateCartCount,addToCart,removeDrawerItem,renderCartDrawer,openCartDrawer,closeCartDrawer,applyDrawerDiscount,handleMealPreviewClick,generateMealPlan,downloadMealPlanPDF,resetMealPlan,openGeneratorModal,closeGeneratorModal,generateModalPlan,downloadTrainingPlanPDF,downloadTrainingPlanPNG});
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();
