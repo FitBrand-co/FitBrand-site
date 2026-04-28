@@ -582,3 +582,127 @@ window.loginFitBrandUser = window.loginFitBrandUser || function(){
   function init(){ ensureHeader(); ensureProfileModal(); unlockFromUrl(); setupConfirmation(); updateFitBrandProfileUI(); prefillGeneratorsFromProfile(false); setupMealUnlock(); setupProgramModalAccess(); setupCheckout(); setupProfilePage(); setupAccountPages(); updateCartCount(); wireButtons(); showWelcome(); }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
+
+/* ===== FITBRAND FINAL CUSTOMER POLISH PATCH v11 ===== */
+(function(){
+  'use strict';
+  const USER_KEY='fitbrandUser';
+  const SESSION_KEY='fitbrandSessionUser';
+  const PURCHASES_KEY='fitbrandPurchases';
+  const PROGRAM_KEY='fitbrandPurchasedPackage';
+  const VALID=['aesthetic','shred','strength','bundle','mealplan','belt','straps'];
+  const PROGRAMS=['aesthetic','shred','strength'];
+  const $=(id)=>document.getElementById(id);
+  const read=(key, fallback)=>{try{return JSON.parse(localStorage.getItem(key)||'')||fallback}catch(e){return fallback}};
+  const write=(key, val)=>localStorage.setItem(key, JSON.stringify(val));
+  const getUser=()=>{try{return JSON.parse(sessionStorage.getItem(SESSION_KEY)||localStorage.getItem(USER_KEY)||'null')}catch(e){return null}};
+  const getInitials=(u)=>{if(!u||!u.name)return'?'; const parts=String(u.name).trim().split(/\s+/).filter(Boolean); if(!parts.length)return'?'; return ((parts[0][0]||'')+(parts.length>1?(parts[parts.length-1][0]||''):'')).toUpperCase();};
+  const getPurchases=()=>{let p=read(PURCHASES_KEY,[]).filter(x=>VALID.includes(x)); const pkg=localStorage.getItem(PROGRAM_KEY); if(pkg&&!p.includes(pkg))p.push(pkg); if(p.includes('bundle')&&!p.includes('mealplan'))p.push('mealplan'); if(localStorage.getItem('fitbrandMealPlanUnlocked')==='true'&&!p.includes('mealplan'))p.push('mealplan'); return [...new Set(p)];};
+  const saveUser=(data, remember=true)=>{const merged=Object.assign({}, getUser()||{}, data||{}); if(remember){localStorage.setItem(USER_KEY, JSON.stringify(merged)); sessionStorage.removeItem(SESSION_KEY);}else{sessionStorage.setItem(SESSION_KEY, JSON.stringify(merged));} return merged;};
+  const catalog={aesthetic:{name:'Aesthetic Program'},shred:{name:'Shred Program'},strength:{name:'Strength Program'},bundle:{name:'Complete Bundle'},mealplan:{name:'Meal Plan Guide AI'}};
+
+  const LIB={
+    aesthetic:{
+      gym:[['Day 1 — Upper Chest & Shoulders',['Incline Bench Press — 4x6-8','Machine Shoulder Press — 3x8-10','Cable Fly — 3x12-15','Cable Lateral Raise — 4x15','Triceps Rope Pushdown — 3x12']],['Day 2 — Back Width & Arms',['Lat Pulldown — 4x8-10','Chest Supported Row — 4x10','Single Arm Cable Row — 3x12','Rear Delt Fly — 3x15','DB Curl — 3x12']],['Day 3 — Legs & Core',['Squat or Hack Squat — 4x6-10','Romanian Deadlift — 3x8-10','Leg Press — 3x12','Leg Curl — 3x12-15','Hanging Leg Raise — 3x12']],['Day 4 — Aesthetic Upper Pump',['Incline DB Press — 3x10','Cable Row — 3x12','Lateral Raise — 5x12-20','Face Pull — 3x15','Arms Superset — 4 rounds']],['Day 5 — Weak Point Detail',['Upper chest focus — 4 sets','Back width focus — 4 sets','Side delts — 5 sets','Calves — 4 sets','Core finisher — 8 min']],['Day 6 — Full Body Pump',['Machine Chest Press — 3x12','Pulldown — 3x12','Leg Extension — 3x15','DB Shoulder Press — 3x10','Arms — 4 sets']] ],
+      home:[['Day 1 — Push Aesthetic',['Feet Elevated Push Ups — 4xAMRAP','DB Shoulder Press — 4x10','DB Fly — 3x15','Lateral Raises — 5x15','Bench Dips — 3x12']],['Day 2 — Pull Shape',['One Arm DB Row — 4x10','Band Pulldown — 4x12','Band Row — 3x15','Rear Delt Raise — 4x15','DB Curl — 3x12']],['Day 3 — Legs & Core',['Goblet Squat — 4x12','Bulgarian Split Squat — 3x10','Single Leg RDL — 3x10','Glute Bridge — 4x15','Leg Raises — 3x12']],['Day 4 — Upper Pump',['Push Ups — 4 sets','DB Row — 4 sets','Lateral Raise — 5x15','Band Pull Apart — 3x20','Arms Superset — 3 rounds']],['Day 5 — Detail Day',['Shoulders — 5 sets','Arms — 5 sets','Core — 4 sets','Calves — 4 sets','Mobility — 10 min']],['Day 6 — Full Body',['DB Squat — 3x12','Push Up — 3xAMRAP','DB Row — 3x12','Pike Push Up — 3x10','Plank — 3 sets']] ]
+    },
+    shred:{
+      gym:[['Day 1 — Full Body + Steps',['Squat — 4x6-8','Bench Press — 3x8','Cable Row — 4x10','Lateral Raise — 3x15','Incline Walk — 25 min']],['Day 2 — Conditioning Upper',['Lat Pulldown — 3x12','DB Press — 3x12','Seated Row — 3x12','Battle Ropes — 8 rounds','Core Circuit — 3 rounds']],['Day 3 — Lower Burn',['Romanian Deadlift — 4x8','Leg Press — 3x15','Walking Lunges — 3x20','Leg Curl — 3x15','Bike Intervals — 12 min']],['Day 4 — Upper Definition',['Incline Press — 3x10','Cable Row — 3x10','Shoulder Press — 3x10','Curls + Triceps — 3x12','Incline Walk — 20 min']],['Day 5 — Fat Loss Circuit',['Goblet Squat — 4x12','Push Ups — 4xAMRAP','Cable Row — 4x12','Sled Push or Bike — 10 rounds','Steps target — 10k']],['Day 6 — Active Recovery',['Zone 2 cardio — 35 min','Mobility — 15 min','Core — 10 min','Stretch — 10 min']] ],
+      home:[['Day 1 — Full Body Burn',['Goblet Squat — 4x12','Push Ups — 4xAMRAP','DB Row — 4x12','Burpees — 3x10','Fast Walk — 30 min']],['Day 2 — Conditioning',['Jump Squats — 4x12','Mountain Climbers — 4x30 sec','Band Row — 4x15','Plank — 3x45 sec','Steps — 10k']],['Day 3 — Lower Burn',['Bulgarian Split Squat — 4x10','Glute Bridge — 4x15','Single Leg RDL — 3x10','Calf Raise — 4x20','Walk — 35 min']],['Day 4 — Upper Burn',['Push Ups — 4 sets','Pike Push Ups — 3x10','Band Row — 4x15','DB Curl — 3x12','HIIT — 10 min']],['Day 5 — Fat Loss Circuit',['Squat — 20 reps','Push Ups — AMRAP','Rows — 15 reps','Lunges — 20 reps','Repeat 4 rounds']],['Day 6 — Active Recovery',['Walk — 45 min','Mobility — 15 min','Core — 10 min']] ]
+    },
+    strength:{
+      gym:[['Day 1 — Squat Strength',['Back Squat — 5x3-5','Paused Squat — 3x5','Leg Press — 3x8','Hamstring Curl — 3x10','Weighted Plank — 3 sets']],['Day 2 — Bench Strength',['Bench Press — 5x3-5','Close Grip Bench — 3x6','Barbell Row — 4x8','Weighted Dips — 3x8','Face Pull — 3x15']],['Day 3 — Deadlift Strength',['Deadlift — 5x3','Romanian Deadlift — 3x6-8','Lat Pulldown — 4x8','Back Extension — 3x10','Farmer Carry — 4 rounds']],['Day 4 — Overhead Strength',['Overhead Press — 5x3-5','Paused Bench — 4x5','Pull Ups — 4xAMRAP','Lateral Raise — 3x15','Core — 3 sets']],['Day 5 — Volume Strength',['Front Squat — 4x6','Bench Variation — 4x6','Heavy Row — 4x8','Hip Thrust — 3x8','Arms — 3x10']],['Day 6 — Technique & Recovery',['Light technique work — 30 min','Mobility — 15 min','Zone 2 cardio — 20 min']] ],
+      home:[['Day 1 — Lower Strength',['Heavy Goblet Squat — 5x8','Bulgarian Split Squat — 4x8','Single Leg RDL — 4x8','Wall Sit — 3x45 sec','Core — 3 sets']],['Day 2 — Push Strength',['Weighted Push Ups — 5x6-10','Pike Push Ups — 4x8','Slow Push Ups — 3x8','Bench Dips — 3x10','Plank — 3 sets']],['Day 3 — Pull Strength',['Heavy DB Row — 5x8','Band Row — 4x12','Towel Row — 4xAMRAP','DB Curl — 4x10','Farmer Hold — 4 rounds']],['Day 4 — Full Body Strength',['Goblet Squat — 4x8','Push Ups — 4xAMRAP','DB Row — 4x8','Split Squat — 3x10','Core — 3 sets']],['Day 5 — Volume Strength',['Tempo Squat — 4x10','Tempo Push Up — 4x10','Tempo Row — 4x10','Glute Bridge — 3x15','Carries — 4 rounds']],['Day 6 — Recovery Strength',['Mobility — 20 min','Walk — 30 min','Technique work — 15 min']] ]
+    }
+  };
+
+  function showNotice(text){let n=$('fitbrandNotice'); if(!n){n=document.createElement('div'); n.id='fitbrandNotice'; n.className='fitbrand-notice'; document.body.appendChild(n);} n.textContent=text; n.classList.add('show'); setTimeout(()=>n.classList.remove('show'),2200);}
+
+  function finalRenderProfileMenu(){
+    const menu=$('profileMenu'); if(!menu) return;
+    const u=getUser(); const ini=getInitials(u);
+    menu.innerHTML=`<div class="profile-menu-head"><div class="profile-avatar"><span id="profileMenuInitial">${ini}</span></div><div class="profile-menu-id"><strong id="profileMenuName" title="${u?.name||'Guest'}">${u?.name||'Guest'}</strong><span id="profileMenuEmail" title="${u?.email||'Not logged in'}">${u?.email||'Not logged in'}</span></div></div>
+      <button type="button" onclick="openProfileModal('profile')">View profile</button>
+      ${u?`<a class="profile-menu-link" href="profile.html">Edit profile information</a><div class="profile-menu-account-links"><a class="profile-menu-link" href="products-access.html">My products / access</a><a class="profile-menu-link" href="orders.html">My orders</a></div><button id="profileLogoutBtn" type="button" onclick="logoutFitBrandUser()">Log out</button>`:`<button id="profileLoginBtn" type="button" onclick="openProfileModal('login')">Log in</button>`}`;
+    document.querySelectorAll('#profileInitial,#profileMenuInitial').forEach(el=>{el.textContent=ini;});
+  }
+  const oldUpdate=window.updateFitBrandProfileUI;
+  window.updateFitBrandProfileUI=function(){ if(typeof oldUpdate==='function') oldUpdate(); finalRenderProfileMenu(); const u=getUser(); document.querySelectorAll('#profileInitial').forEach(el=>el.textContent=getInitials(u)); };
+  const oldToggle=window.toggleProfileMenu;
+  window.toggleProfileMenu=function(e){ if(e)e.stopPropagation(); if(typeof oldToggle==='function') oldToggle(e); finalRenderProfileMenu(); $('profileMenu')?.classList.add('show'); };
+  window.logoutFitBrandUser=function(){localStorage.removeItem(USER_KEY);sessionStorage.removeItem(SESSION_KEY);finalRenderProfileMenu();window.updateFitBrandProfileUI?.();$('profileMenu')?.classList.remove('show');showNotice('Logged out');};
+
+  function enhanceBundleCard(){
+    const box=document.querySelector('.fitbrand-bundle-offer'); if(!box || box.dataset.v11) return; box.dataset.v11='1';
+    const h=box.querySelector('h2'); if(h) h.textContent='Complete FitBrand Bundle';
+    const p=box.querySelector('p:not(:first-child)'); if(p) p.textContent='Get Aesthetic, Shred, Strength and Meal Plan Guide AI in one premium package. Best value for customers who want both training and nutrition structure.';
+    const includes=document.createElement('div'); includes.className='bundle-includes'; includes.innerHTML='<span>Aesthetic</span><span>Shred</span><span>Strength</span><span>Meal Plan AI</span>';
+    if(!box.querySelector('.bundle-includes')){ const firstBtn=box.querySelector('a,button'); box.insertBefore(includes, firstBtn?.parentElement || firstBtn || null); }
+    if(!box.querySelector('.bundle-save-pill')){ const pill=document.createElement('div'); pill.className='bundle-save-pill'; pill.textContent='Best value bundle'; const title=box.querySelector('h2'); title?.after(pill); }
+  }
+
+  function setHidden(id,val){const el=$(id); if(el) el.value=val;}
+  function setupMealWizardV11(){
+    const gen=$('mealGenerator'); const grid=document.querySelector('#meal-plan-ai .meal-grid'); if(!gen||!grid) return;
+    grid.classList.add('fb-meal-grid-collapsed');
+    const old=$('fbMealWizard'); if(old) old.remove();
+    const u=getUser();
+    const panel=document.createElement('div'); panel.id='fbMealWizard'; panel.className='fb-meal-wizard fb-final-wizard';
+    panel.innerHTML=`<div class="fb-meal-choice-head"><div><h3>Personal Meal Plan AI</h3><p>Click through a clean step-by-step setup. Your saved profile can fill the boring details automatically.</p></div><div id="fbMealStepPill" class="fb-meal-step-pill">1 / 6</div></div><div class="fb-final-progress"><span id="fbMealProgressFill"></span></div>
+      <div class="fb-meal-profile-summary"><div><strong>${u?'Profile ready':'Profile optional'}</strong><span>${u?'Use your saved body information or change it before generating.':'You can continue manually, or create a profile so the AI can prefill your details later.'}</span></div><div class="fb-meal-profile-actions"><button type="button" id="mealUseProfile" ${u?'':'disabled'}>Use profile</button><a href="profile.html">Change information</a></div></div>
+      <div class="fb-meal-question active" data-step="1"><h4>Choose your main goal</h4><div class="fb-meal-options"><button type="button" data-field="mealGoal" data-value="muscle"><strong>Build muscle</strong><span>Higher calories, high protein and training fuel.</span></button><button type="button" data-field="mealGoal" data-value="fatloss"><strong>Lose fat</strong><span>Simple deficit, filling meals and high protein.</span></button><button type="button" data-field="mealGoal" data-value="maintenance"><strong>Maintain</strong><span>Balanced nutrition and easy consistency.</span></button></div></div>
+      <div class="fb-meal-question" data-step="2"><h4>Your body info</h4><div class="fb-meal-mini-form"><input id="wizAge" type="number" placeholder="Age"><select id="wizGender"><option value="">Gender</option><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option></select><input id="wizWeight" type="number" placeholder="Weight (kg)"><input id="wizHeight" type="number" placeholder="Height (cm)"></div></div>
+      <div class="fb-meal-question" data-step="3"><h4>Training activity</h4><div class="fb-meal-options"><button type="button" data-field="mealTrainingDays" data-value="0"><strong>0-1 days</strong><span>Light activity.</span></button><button type="button" data-field="mealTrainingDays" data-value="3"><strong>2-3 days</strong><span>Moderate training.</span></button><button type="button" data-field="mealTrainingDays" data-value="5"><strong>4-5 days</strong><span>Consistent gym routine.</span></button><button type="button" data-field="mealTrainingDays" data-value="6"><strong>6+ days</strong><span>High activity and recovery needs.</span></button></div></div>
+      <div class="fb-meal-question" data-step="4"><h4>Food style</h4><div class="fb-meal-options"><button type="button" data-field="mealDiet" data-value="normal"><strong>Balanced</strong><span>Flexible normal meals.</span></button><button type="button" data-field="mealDiet" data-value="highprotein"><strong>High protein</strong><span>Maximum protein focus.</span></button><button type="button" data-field="mealDiet" data-value="budget"><strong>Budget</strong><span>Cheap, simple foods.</span></button><button type="button" data-field="mealDiet" data-value="easy"><strong>Fast meals</strong><span>Low cooking time.</span></button><button type="button" data-field="mealDiet" data-value="vegetarian"><strong>Vegetarian</strong><span>No meat meal ideas.</span></button></div></div>
+      <div class="fb-meal-question" data-step="5"><h4>Daily structure</h4><div class="fb-meal-options"><button type="button" data-field="mealMeals" data-value="3"><strong>3 meals</strong><span>Simple structure.</span></button><button type="button" data-field="mealMeals" data-value="4"><strong>4 meals</strong><span>Balanced day.</span></button><button type="button" data-field="mealMeals" data-value="5"><strong>5 meals</strong><span>More planned meals.</span></button></div></div>
+      <div class="fb-meal-question" data-step="6"><h4>Final details</h4><div class="fb-meal-mini-form"><select id="wizStyle"><option value="balanced">Balanced</option><option value="lowcalorie">Low calorie</option><option value="bulking">Bulking</option><option value="simple">Very simple</option></select><select id="wizTime"><option value="normal">Normal cooking</option><option value="fast">Under 15 min</option><option value="prep">Meal prep friendly</option></select><input id="wizAvoid" class="wide" placeholder="Foods to avoid / allergies"></div><button id="wizGenerate" type="button" class="fb-meal-generate-final">Generate my 7-day meal plan</button></div>
+      <div class="fb-meal-choice-actions"><button id="wizBack" type="button">Back</button><button id="wizNext" type="button">Next</button></div>`;
+    gen.insertBefore(panel, grid);
+    let step=1;
+    function copyProfile(){const x=getUser()||{}; [['wizAge','age'],['wizGender','gender'],['wizWeight','weight'],['wizHeight','height'],['wizAvoid','allergies']].forEach(([id,k])=>{if($(id)&&x[k])$(id).value=x[k];}); [['mealGoal','goal'],['mealTrainingDays','trainingDays']].forEach(([id,k])=>{if($(id)&&x[k])$(id).value=x[k];});}
+    function sync(){[['mealAge','wizAge'],['mealGender','wizGender'],['mealWeight','wizWeight'],['mealHeight','wizHeight'],['mealAvoid','wizAvoid'],['mealStyle','wizStyle'],['mealTime','wizTime']].forEach(([hid,wid])=>{if($(hid)&&$(wid))$(hid).value=$(wid).value;}); if(!$('mealDiet')?.value)setHidden('mealDiet','normal'); if(!$('mealMeals')?.value)setHidden('mealMeals','4'); setHidden('mealActivity','normal'); setHidden('mealDifficulty','easy');}
+    function render(){panel.querySelectorAll('.fb-meal-question').forEach(q=>q.classList.toggle('active',Number(q.dataset.step)===step)); $('fbMealStepPill').textContent=step+' / 6'; $('fbMealProgressFill').style.width=(step/6*100)+'%'; $('wizBack').style.visibility=step===1?'hidden':'visible'; $('wizNext').style.display=step===6?'none':'inline-flex'; sync();}
+    panel.addEventListener('click',function(e){const b=e.target.closest('button'); if(!b)return; if(b.id==='mealUseProfile'){copyProfile(); sync(); step=2; render(); return;} if(b.dataset.field){setHidden(b.dataset.field,b.dataset.value); b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('selected')); b.classList.add('selected'); return;} if(b.id==='wizGenerate'){sync(); if(typeof window.generateMealPlan==='function')window.generateMealPlan(); else alert('Meal plan generator is missing on this page.');}});
+    $('wizBack').addEventListener('click',()=>{if(step>1){step--;render();}}); $('wizNext').addEventListener('click',()=>{sync(); if(step<6){step++;render();}});
+    copyProfile(); render();
+  }
+  window.openMealPlanGenerator=function(){const g=$('meal-plan-ai'); if(!g)return; g.classList.add('unlocked'); $('mealGenerator')?.classList.add('show'); setupMealWizardV11(); g.scrollIntoView({behavior:'smooth',block:'start'});};
+  window.handleMealPreviewClick=function(){const p=getPurchases(); if(p.includes('mealplan')||p.includes('bundle')||localStorage.getItem('fitbrandMealPlanUnlocked')==='true'){window.openMealPlanGenerator();}else{$('meal-plan-guide-ai')?.scrollIntoView({behavior:'smooth',block:'start'}); showNotice('Meal Plan AI unlocks after purchase');}};
+
+  function availableProgramTracks(){const p=getPurchases(); if(p.includes('bundle'))return PROGRAMS; const owned=PROGRAMS.filter(x=>p.includes(x)); return owned.length?owned:['aesthetic'];}
+  function setupProgramTrackPanel(){
+    const body=document.querySelector('#fitbrandGeneratorModal .fb-modal-body'); if(!body) return;
+    let panel=$('fbProgramTrackPanel'); if(panel) panel.remove();
+    const allowed=availableProgramTracks();
+    const current=allowed[0];
+    panel=document.createElement('div'); panel.id='fbProgramTrackPanel'; panel.className='fb-program-track-panel';
+    const copy={aesthetic:['Aesthetic AI','Focus on proportions, upper body shape and hypertrophy details.'],shred:['Shred AI','Focus on fat loss, conditioning, steps and muscle retention.'],strength:['Strength AI','Focus on heavier lifts, progression and performance.']};
+    panel.innerHTML=`<h3>Choose your unlocked AI track</h3><p>${allowed.length>1?'Bundle unlocked: choose which program generator you want to use.':'This generator is customized to the program you purchased.'}</p><div class="fb-program-track-options">${allowed.map(k=>`<button type="button" data-track="${k}" class="${k===current?'selected':''}"><strong>${copy[k][0]}</strong><span>${copy[k][1]}</span></button>`).join('')}</div>`;
+    body.insertBefore(panel, body.firstChild);
+    const pkg=$('modalPackage'); if(pkg) pkg.value=current;
+    panel.addEventListener('click',function(e){const b=e.target.closest('[data-track]'); if(!b)return; panel.querySelectorAll('[data-track]').forEach(x=>x.classList.remove('selected')); b.classList.add('selected'); const track=b.dataset.track; if(pkg)pkg.value=track; const goal=$('modalGoal'); if(goal) goal.value=track==='shred'?'fatloss':track==='strength'?'strength':'muscle';});
+  }
+  window.openGeneratorModal=function(){const p=getPurchases(); const has=p.includes('bundle')||PROGRAMS.some(x=>p.includes(x)); if(!has){alert('This generator unlocks after purchasing a FitBrand program or bundle.');return;} $('fitbrandGeneratorModal')?.classList.add('show'); setupProgramTrackPanel();};
+  window.generateModalPlan=function(){
+    let pkg=$('modalPackage')?.value||availableProgramTracks()[0]||'aesthetic'; if(pkg==='bundle')pkg=availableProgramTracks()[0]||'aesthetic';
+    const allowed=availableProgramTracks(); if(!allowed.includes(pkg))pkg=allowed[0]||'aesthetic';
+    const place=$('modalPlace')?.value||getUser()?.trainingLocation||'gym';
+    const days=Math.max(3,Math.min(6,parseInt($('modalDays')?.value||getUser()?.trainingDays||4,10)));
+    const level=$('modalLevel')?.value||getUser()?.level||'beginner';
+    const selected=(LIB[pkg][place]||LIB[pkg].gym).slice(0,days);
+    const titles={aesthetic:'Aesthetic Program AI',shred:'Shred Program AI',strength:'Strength Program AI'};
+    if($('modalPlanTitle'))$('modalPlanTitle').textContent='Your '+titles[pkg]+' Plan';
+    if($('modalPlanSubtitle'))$('modalPlanSubtitle').textContent=`Customized for your unlocked ${catalog[pkg].name}: ${days} days/week, ${place} training, ${level} level.`;
+    if($('modalPlanPill'))$('modalPlanPill').textContent=days+' DAYS / '+place.toUpperCase();
+    if($('modalPlanDays'))$('modalPlanDays').innerHTML=selected.map(day=>`<div class="fb-plan-day"><h4>${day[0]}</h4><ul>${day[1].map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('');
+    const out=$('modalPlanOutput'); if(out){out.classList.add('show'); if(typeof window.downloadProgramPDF!=='function'){}; out.scrollIntoView({behavior:'smooth',block:'nearest'});} 
+    if(typeof window.downloadProgramPDF==='function' && !$('programDownloadActions')){ const row=document.createElement('div'); row.id='programDownloadActions'; row.className='program-download-actions'; row.innerHTML='<button type="button" onclick="downloadProgramPDF()">Download PDF</button><button type="button" onclick="downloadProgramPNG()">Download PNG</button>'; $('modalPlanOutput')?.appendChild(row); }
+  };
+
+  function initV11(){
+    enhanceBundleCard(); finalRenderProfileMenu(); window.updateFitBrandProfileUI?.();
+    if(localStorage.getItem('fitbrandMealPlanUnlocked')==='true' || getPurchases().includes('mealplan') || getPurchases().includes('bundle')) setupMealWizardV11();
+    document.querySelectorAll('.profile-icon-btn').forEach(btn=>{btn.style.background='linear-gradient(145deg,#fff,#f4f4f4,#d7d7d7)';btn.style.color='#050505';});
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initV11); else initV11();
+})();

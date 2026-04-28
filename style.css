@@ -1667,3 +1667,93 @@ body{opacity:0;animation:pageFadeIn .65s ease forwards}
 .account-page{min-height:650px;padding:95px 30px;background:#e8e8e8;}.account-card{max-width:1100px;margin:0 auto;background:#fff;border-radius:30px;padding:46px;box-shadow:0 28px 90px rgba(0,0,0,.18);}.account-card h1{font-size:clamp(38px,6vw,72px);text-transform:uppercase;line-height:1;margin:12px 0 16px;}.account-section{margin-top:32px;}.account-section h2{text-transform:uppercase;letter-spacing:.06em;margin-bottom:18px;}.access-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}.access-card,.order-row{border-radius:22px;border:1px solid rgba(0,0,0,.08);background:#f7f7f7;padding:20px;display:flex;flex-direction:column;gap:10px;}.access-card.locked{opacity:.72;}.access-card strong{font-size:18px;text-transform:uppercase;}.access-card span,.order-row span{color:#666;line-height:1.45;}.access-card a{margin-top:auto;min-height:44px;border-radius:14px;background:#050505;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:1000;text-transform:uppercase;}.orders-list{display:grid;gap:14px;}.order-row{display:grid;grid-template-columns:1fr auto;align-items:center;}
 .checkout input:invalid{box-shadow:none;}
 @media(max-width:900px){.profile-menu{left:auto!important;right:-10px!important;width:min(430px,calc(100vw - 22px))!important;}.profile-menu-head{grid-template-columns:72px minmax(0,1fr)!important;}.profile-avatar{width:72px!important;height:72px!important;min-width:72px!important;min-height:72px!important;}.profile-menu-id strong,#profileMenuName{font-size:22px!important;}.profile-menu-id span,#profileMenuEmail{font-size:16px!important;}.fb-welcome-actions,.fb-meal-profile-summary,.fb-meal-options,.fb-meal-mini-form,.access-grid,.order-row,.profile-page-grid{grid-template-columns:1fr!important;}.fb-meal-mini-form .wide,.profile-page-grid .wide{grid-column:span 1!important;}.fb-meal-choice-head{flex-direction:column!important;}.account-card,.profile-page-card{padding:28px!important;}}
+
+/* ===== CUSTOMER READY POLISH PATCH v11 ===== */
+.profile-icon-btn{
+  background:linear-gradient(145deg,#ffffff 0%,#f4f4f4 42%,#d7d7d7 100%)!important;
+  color:#050505!important;
+  border:1px solid rgba(0,0,0,.12)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 12px 30px rgba(0,0,0,.10)!important;
+}
+.profile-icon-btn:hover{background:linear-gradient(145deg,#fff,#ececec)!important;transform:translateY(-2px) scale(1.03)!important;box-shadow:0 18px 42px rgba(0,0,0,.16)!important;}
+.profile-menu{
+  background:rgba(248,248,248,.86)!important;
+  backdrop-filter:blur(30px) saturate(180%)!important;
+  -webkit-backdrop-filter:blur(30px) saturate(180%)!important;
+  border:1px solid rgba(255,255,255,.85)!important;
+  box-shadow:0 34px 110px rgba(0,0,0,.24)!important;
+}
+.profile-menu button,.profile-menu-link{
+  min-height:54px!important;
+  border-radius:18px!important;
+  padding:0 18px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+  transition:transform .22s ease, background .22s ease, box-shadow .22s ease, padding .22s ease!important;
+}
+.profile-menu button:hover,.profile-menu-link:hover{
+  background:rgba(255,255,255,.82)!important;
+  transform:translateX(4px)!important;
+  box-shadow:0 12px 34px rgba(0,0,0,.08)!important;
+  padding-left:18px!important;
+  color:#050505!important;
+}
+.profile-menu button::before,.profile-menu-link::before{font-size:17px;line-height:1;width:20px;text-align:center;opacity:.88;}
+.profile-menu button:nth-of-type(1)::before{content:'◉';}
+.profile-menu .profile-menu-link[href="profile.html"]::before{content:'✎';}
+.profile-menu .profile-menu-link[href="products-access.html"]::before{content:'▣';}
+.profile-menu .profile-menu-link[href="orders.html"]::before{content:'◎';}
+#profileLoginBtn::before{content:'→';}
+#profileLogoutBtn::before{content:'⏻';}
+.profile-avatar{background:linear-gradient(145deg,#fff,#e6e6e6)!important;color:#050505!important;border:1px solid rgba(0,0,0,.13)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.9)!important;}
+.profile-modal .profile-avatar{background:#050505!important;color:#fff!important;}
+.profile-menu-id strong,#profileMenuName{font-size:clamp(22px,2.8vw,28px)!important;}
+.profile-menu-id span,#profileMenuEmail{font-size:clamp(14px,2.1vw,18px)!important;}
+
+.fitbrand-bundle-offer{
+  position:relative!important;
+  max-width:1180px!important;
+  padding:56px 42px!important;
+  border-radius:42px!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(circle at 18% 10%,rgba(255,255,255,.18),transparent 26%),
+    radial-gradient(circle at 85% 5%,rgba(255,255,255,.12),transparent 30%),
+    linear-gradient(135deg,#050505 0%,#161616 55%,#070707 100%)!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+  box-shadow:0 36px 120px rgba(0,0,0,.28)!important;
+  transform:translateZ(0)!important;
+}
+.fitbrand-bundle-offer::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,.12) 48%,transparent 56%);transform:translateX(-120%);animation:bundleShine 6s ease-in-out infinite;pointer-events:none;}
+.fitbrand-bundle-offer::after{content:"BEST SELLER • 4 PRODUCTS INCLUDED";position:absolute;right:34px;top:28px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;border-radius:999px;padding:10px 14px;font-size:12px;font-weight:1000;letter-spacing:.16em;}
+@keyframes bundleShine{0%,55%{transform:translateX(-120%)}75%,100%{transform:translateX(120%)}}
+.fitbrand-bundle-offer h2{font-size:clamp(42px,7vw,92px)!important;letter-spacing:.045em!important;line-height:.92!important;margin-top:8px!important;}
+.fitbrand-bundle-offer p{font-size:clamp(17px,2.2vw,24px)!important;max-width:900px!important;color:rgba(255,255,255,.78)!important;}
+.fitbrand-bundle-offer .btn-silver,.fitbrand-bundle-offer .btn-outline{min-height:68px!important;border-radius:20px!important;padding:0 34px!important;font-size:15px!important;box-shadow:0 18px 46px rgba(255,255,255,.13)!important;}
+.fitbrand-bundle-offer .bundle-includes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:28px auto 30px;max-width:920px;}
+.fitbrand-bundle-offer .bundle-includes span{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.075);border-radius:18px;padding:14px 12px;color:white;font-weight:950;text-transform:uppercase;font-size:12px;letter-spacing:.08em;}
+.fitbrand-bundle-offer .bundle-save-pill{display:inline-flex;margin:8px auto 0;background:#fff;color:#050505;border-radius:999px;padding:10px 16px;font-weight:1000;text-transform:uppercase;letter-spacing:.12em;font-size:12px;}
+
+/* Meal wizard clean Apple-like layout */
+#meal-plan-ai .meal-grid.fb-meal-grid-collapsed{display:none!important;}
+.fb-meal-wizard.fb-final-wizard{border-radius:38px!important;background:linear-gradient(145deg,#111,#060606)!important;border:1px solid rgba(255,255,255,.16)!important;padding:30px!important;box-shadow:0 30px 90px rgba(0,0,0,.42)!important;}
+.fb-final-progress{height:8px;border-radius:999px;background:rgba(255,255,255,.10);overflow:hidden;margin:18px 0 26px;}
+.fb-final-progress span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#fff,#aaa);transition:width .28s ease;}
+.fb-meal-options{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:16px!important;}
+.fb-meal-options button{position:relative;min-height:126px!important;border-radius:26px!important;background:rgba(255,255,255,.055)!important;border:1px solid rgba(255,255,255,.12)!important;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;}
+.fb-meal-options button:hover{transform:translateY(-3px)!important;background:rgba(255,255,255,.10)!important;}
+.fb-meal-options button.selected{background:#fff!important;color:#050505!important;box-shadow:0 18px 50px rgba(255,255,255,.13)!important;}
+.fb-meal-mini-form{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:16px!important;}
+.fb-meal-mini-form input,.fb-meal-mini-form select{height:68px!important;border-radius:22px!important;background:rgba(255,255,255,.075)!important;border:1px solid rgba(255,255,255,.14)!important;}
+.fb-meal-choice-actions button,.fb-meal-generate-final{min-height:64px!important;border-radius:22px!important;}
+
+/* Program generator product-specific polish */
+.fb-program-track-panel{margin:0 0 28px;padding:22px;border-radius:26px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);}
+.fb-program-track-panel h3{margin:0 0 10px;font-size:24px;color:#fff;}
+.fb-program-track-panel p{margin:0 0 16px;color:#cfcfcf;line-height:1.55;}
+.fb-program-track-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+.fb-program-track-options button{min-height:100px;border-radius:22px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;text-align:left;padding:16px;cursor:pointer;transition:.22s ease;}
+.fb-program-track-options button:hover,.fb-program-track-options button.selected{background:#fff;color:#050505;transform:translateY(-2px);}
+.fb-program-track-options strong{display:block;margin-bottom:6px;font-size:16px;}.fb-program-track-options span{display:block;opacity:.72;line-height:1.35;font-size:13px;}
+@media(max-width:900px){.fitbrand-bundle-offer::after{position:static;display:inline-flex;margin-bottom:14px}.fitbrand-bundle-offer .bundle-includes,.fb-meal-options,.fb-meal-mini-form,.fb-program-track-options{grid-template-columns:1fr!important}.fitbrand-bundle-offer{padding:38px 22px!important}.fitbrand-bundle-offer .btn-silver,.fitbrand-bundle-offer .btn-outline{width:100%!important;margin:8px 0!important}}
