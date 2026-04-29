@@ -487,3 +487,215 @@
     boot();
   }
 })();
+
+/* ===== FITBRAND AUTH UI FINAL FIX: Supabase session -> profile popup ===== */
+(function(){
+  "use strict";
+
+  const cfg = window.FITBRAND_CONFIG || {};
+  let clientPromise = null;
+  let client = null;
+
+  function configured(){
+    return Boolean(cfg.supabaseUrl && cfg.supabaseAnonKey && !String(cfg.supabaseAnonKey).includes("PASTE_"));
+  }
+
+  function loadClient(){
+    if(!configured()) return Promise.resolve(null);
+    if(client) return Promise.resolve(client);
+    if(window.__fitbrandSupabaseClient) {
+      client = window.__fitbrandSupabaseClient;
+      return Promise.resolve(client);
+    }
+    if(window.supabase && window.supabase.createClient){
+      client = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
+      window.__fitbrandSupabaseClient = client;
+      return Promise.resolve(client);
+    }
+    if(clientPromise) return clientPromise;
+    clientPromise = new Promise((resolve) => {
+      const existing = document.querySelector('script[src*="supabase-js"]');
+      const finish = () => {
+        try {
+          if(window.supabase && window.supabase.createClient){
+            client = window.__fitbrandSupabaseClient || window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
+            window.__fitbrandSupabaseClient = client;
+          }
+        } catch(e){ console.warn("Supabase client init failed", e); }
+        resolve(client || null);
+      };
+      if(existing){ existing.addEventListener('load', finish, { once:true }); setTimeout(finish, 1200); return; }
+      const script = document.createElement("script");
+      script.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+      script.async = true;
+      script.onload = finish;
+      script.onerror = () => resolve(null);
+      document.head.appendChild(script);
+    });
+    return clientPromise;
+  }
+
+  function cleanNameFromEmail(email){
+    return String(email || "")
+      .split("@")[0]
+      .replace(/[._-]+/g, " ")
+      .replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  function initialsFrom(name, email){
+    const base = String(name || email || "FitBrand").trim();
+    const parts = base.split(/\s+/).filter(Boolean);
+    if(parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    return base.slice(0,2).toUpperCase();
+  }
+
+  function getStoredProfile(){
+    try { return JSON.parse(localStorage.getItem("fitbrandUser") || "null"); }
+    catch { return null; }
+  }
+
+  function saveProfileFromSession(session){
+    const user = session && session.user;
+    if(!user || !user.email) return null;
+    const old = getStoredProfile() || {};
+    const profile = {
+      ...old,
+      email: user.email,
+      name: old.name && old.email === user.email ? old.name : (user.user_metadata?.full_name || user.user_metadata?.name || old.name || cleanNameFromEmail(user.email)),
+      supabaseId: user.id,
+      backend: "supabase"
+    };
+    localStorage.setItem("fitbrandUser", JSON.stringify(profile));
+    sessionStorage.removeItem("fitbrandSessionUser");
+    return profile;
+  }
+
+  function forceProfileUI(profile){
+    if(!profile || !profile.email) return;
+    const initials = initialsFrom(profile.name, profile.email);
+
+    document.body.classList.add("fb-is-logged-in");
+    document.body.classList.remove("fb-is-logged-out");
+
+    ["profileInitial","profileMenuInitial","profileModalInitial","profileViewInitial"].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.textContent = initials;
+    });
+
+    ["profileMenuName","profileViewName"].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.textContent = profile.name || cleanNameFromEmail(profile.email);
+    });
+
+    ["profileMenuEmail","profileViewEmail"].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.textContent = profile.email;
+    });
+
+    const status = document.getElementById("profileViewStatus");
+    if(status) status.textContent = "Logged in with Supabase";
+
+    document.querySelectorAll('[data-auth-only], #profileLogoutBtn').forEach(el => { el.style.display = "flex"; });
+    document.querySelectorAll('[data-guest-only], #profileLoginBtn').forEach(el => { el.style.display = "none"; });
+
+    const modal1 = document.getElementById("profileModal");
+    const modal2 = document.getElementById("profileModalOverlay");
+    const isAnyModalOpen = modal1?.classList.contains("show") || modal2?.classList.contains("show");
+    if(isAnyModalOpen){
+      const title = document.getElementById("profileModalTitle");
+      const subtitle = document.getElementById("profileModalSubtitle");
+      if(title) title.textContent = "Your Profile";
+      if(subtitle) subtitle.textContent = "Your FitBrand account is connected with Supabase.";
+
+      const viewA = document.getElementById("profileView");
+      const loginA = document.getElementById("profileLogin");
+      if(viewA) viewA.style.display = "grid";
+      if(loginA) loginA.style.display = "none";
+
+      const viewB = document.getElementById("profileViewBox");
+      const formB = document.getElementById("profileForm");
+      if(viewB) viewB.style.display = "block";
+      if(formB) formB.style.display = "none";
+    }
+  }
+
+  async function syncNow(){
+    const sb = await loadClient();
+    if(!sb) return null;
+
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get("code");
+    if(code){
+      try {
+        await sb.auth.exchangeCodeForSession(code);
+        url.searchParams.delete("code");
+        window.history.replaceState({}, document.title, url.pathname + url.search + url.hash);
+      } catch(e){ console.warn("Supabase code exchange failed/skipped", e); }
+    }
+
+    const { data } = await sb.auth.getSession();
+    if(data && data.session){
+      const profile = saveProfileFromSession(data.session);
+      forceProfileUI(profile);
+      return profile;
+    }
+    return null;
+  }
+
+  function patchProfileFunctions(){
+    const oldOpen = window.openProfileModal;
+    if(typeof oldOpen === "function" && !oldOpen.__fitbrandSupabasePatched){
+      const patched = function(mode){
+        const result = oldOpen.apply(this, arguments);
+        setTimeout(syncNow, 0);
+        setTimeout(syncNow, 150);
+        setTimeout(syncNow, 600);
+        return result;
+      };
+      patched.__fitbrandSupabasePatched = true;
+      window.openProfileModal = patched;
+    }
+
+    const oldUpdate = window.updateFitBrandProfileUI || window.updateProfileUI;
+    if(typeof oldUpdate === "function" && !oldUpdate.__fitbrandSupabasePatched){
+      const patchedUpdate = function(){
+        const result = oldUpdate.apply(this, arguments);
+        const stored = getStoredProfile();
+        if(stored && stored.email) forceProfileUI(stored);
+        setTimeout(syncNow, 60);
+        return result;
+      };
+      patchedUpdate.__fitbrandSupabasePatched = true;
+      window.updateFitBrandProfileUI = patchedUpdate;
+      window.updateProfileUI = patchedUpdate;
+    }
+  }
+
+  async function boot(){
+    patchProfileFunctions();
+    await syncNow();
+    setTimeout(syncNow, 250);
+    setTimeout(syncNow, 1000);
+    setTimeout(syncNow, 2500);
+
+    document.addEventListener("click", (e) => {
+      if(e.target.closest(".profile-icon-btn, #profileLoginBtn, [onclick*='openProfileModal']")){
+        setTimeout(syncNow, 0);
+        setTimeout(syncNow, 200);
+      }
+    }, true);
+
+    const sb = await loadClient();
+    if(sb){
+      sb.auth.onAuthStateChange((_event, session) => {
+        if(session){
+          const profile = saveProfileFromSession(session);
+          forceProfileUI(profile);
+        }
+      });
+    }
+  }
+
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
