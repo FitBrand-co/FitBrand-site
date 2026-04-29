@@ -277,3 +277,145 @@
     if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
     else boot();
   })();
+/* ===== FITBRAND SUPABASE SESSION SYNC FIX ===== */
+(function(){
+  "use strict";
+
+  const cfg = window.FITBRAND_CONFIG || {};
+  let clientPromise = null;
+
+  function configured(){
+    return Boolean(
+      cfg.supabaseUrl &&
+      cfg.supabaseAnonKey &&
+      !String(cfg.supabaseAnonKey).includes("PASTE_")
+    );
+  }
+
+  function loadClient(){
+    if(!configured()) return Promise.resolve(null);
+
+    if(window.supabase && window.supabase.createClient){
+      return Promise.resolve(
+        window.__fitbrandSupabaseClient ||
+        (window.__fitbrandSupabaseClient = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey))
+      );
+    }
+
+    if(clientPromise) return clientPromise;
+
+    clientPromise = new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+      script.async = true;
+      script.onload = () => {
+        try {
+          window.__fitbrandSupabaseClient =
+            window.__fitbrandSupabaseClient ||
+            window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
+          resolve(window.__fitbrandSupabaseClient);
+        } catch(e) {
+          console.error("Supabase client failed:", e);
+          resolve(null);
+        }
+      };
+      script.onerror = () => resolve(null);
+      document.head.appendChild(script);
+    });
+
+    return clientPromise;
+  }
+
+  function nameFromEmail(email){
+    return String(email || "")
+      .split("@")[0]
+      .replace(/[._-]+/g, " ")
+      .replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  function syncFitBrandUser(session){
+    const user = session && session.user;
+    if(!user || !user.email) return;
+
+    const profile = {
+      email: user.email,
+      name: user.user_metadata?.full_name || user.user_metadata?.name || nameFromEmail(user.email),
+      supabaseId: user.id,
+      backend: "supabase"
+    };
+
+    localStorage.setItem("fitbrandUser", JSON.stringify(profile));
+    sessionStorage.removeItem("fitbrandSessionUser");
+
+    document.body.classList.add("fb-is-logged-in");
+    document.body.classList.remove("fb-is-logged-out");
+
+    const initials = profile.name
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map(x => x[0])
+      .join("")
+      .toUpperCase() || "FB";
+
+    ["profileInitial", "profileMenuInitial", "profileModalInitial"].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.textContent = initials;
+    });
+
+    ["profileMenuName", "profileViewName"].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.textContent = profile.name;
+    });
+
+    ["profileMenuEmail", "profileViewEmail"].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.textContent = profile.email;
+    });
+
+    const status = document.getElementById("profileViewStatus");
+    if(status) status.textContent = "Logged in with Supabase";
+
+    if(typeof window.updateFitBrandProfileUI === "function"){
+      window.updateFitBrandProfileUI();
+    }
+
+    if(window.FitBrandBackend){
+      window.FitBrandBackend.renderOrders?.();
+      window.FitBrandBackend.renderAccess?.();
+    }
+  }
+
+  async function boot(){
+    const sb = await loadClient();
+    if(!sb) return;
+
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get("code");
+
+    if(code){
+      try {
+        await sb.auth.exchangeCodeForSession(code);
+        url.searchParams.delete("code");
+        window.history.replaceState({}, document.title, url.pathname + url.search + url.hash);
+      } catch(e) {
+        console.warn("Supabase code exchange skipped/failed:", e);
+      }
+    }
+
+    const { data } = await sb.auth.getSession();
+    if(data && data.session){
+      syncFitBrandUser(data.session);
+    }
+
+    sb.auth.onAuthStateChange((_event, session) => {
+      if(session) syncFitBrandUser(session);
+    });
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
+})();
