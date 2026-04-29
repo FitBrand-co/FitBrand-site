@@ -847,3 +847,87 @@
 
   window.addEventListener("storage", updateProfileAuthUI);
 })();
+/* ===== FITBRAND FINAL LOGGED OUT MENU FIX ===== */
+(function(){
+  "use strict";
+
+  function getUser(){
+    try {
+      return JSON.parse(localStorage.getItem("fitbrandUser") || "null");
+    } catch {
+      return null;
+    }
+  }
+
+  function isRealLoggedIn(){
+    const user = getUser();
+    return Boolean(user && user.email && user.supabaseId && user.backend === "supabase");
+  }
+
+  function forceMenuState(){
+    const loggedIn = isRealLoggedIn();
+
+    document.body.classList.toggle("fb-is-logged-in", loggedIn);
+    document.body.classList.toggle("fb-is-logged-out", !loggedIn);
+
+    if(!loggedIn){
+      localStorage.removeItem("fitbrandUser");
+      sessionStorage.removeItem("fitbrandSessionUser");
+
+      ["profileInitial", "profileMenuInitial", "profileModalInitial"].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.textContent = "?";
+      });
+
+      ["profileMenuName", "profileViewName"].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.textContent = "Guest";
+      });
+
+      ["profileMenuEmail", "profileViewEmail"].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.textContent = "Not logged in";
+      });
+
+      const status = document.getElementById("profileViewStatus");
+      if(status) status.textContent = "Not logged in";
+    }
+
+    const protectedLinks = [
+      '.profile-menu a[href="profile.html"]',
+      '.profile-menu a[href="products-access.html"]',
+      '.profile-menu a[href="orders.html"]',
+      '.profile-menu [data-auth-only]',
+      '#profileLogoutBtn'
+    ];
+
+    protectedLinks.forEach(selector => {
+      document.querySelectorAll(selector).forEach(el => {
+        el.style.setProperty("display", loggedIn ? "flex" : "none", "important");
+        el.style.setProperty("visibility", loggedIn ? "visible" : "hidden", "important");
+        el.style.setProperty("pointer-events", loggedIn ? "auto" : "none", "important");
+      });
+    });
+
+    document.querySelectorAll("#profileLoginBtn, .profile-menu [data-guest-only]").forEach(el => {
+      el.style.setProperty("display", loggedIn ? "none" : "flex", "important");
+      el.style.setProperty("visibility", loggedIn ? "hidden" : "visible", "important");
+      el.style.setProperty("pointer-events", loggedIn ? "none" : "auto", "important");
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function(){
+    forceMenuState();
+    setTimeout(forceMenuState, 300);
+    setTimeout(forceMenuState, 1000);
+    setTimeout(forceMenuState, 2000);
+  });
+
+  document.addEventListener("click", function(){
+    setTimeout(forceMenuState, 50);
+  });
+
+  window.addEventListener("storage", forceMenuState);
+
+  window.fitbrandForceMenuState = forceMenuState;
+})();
