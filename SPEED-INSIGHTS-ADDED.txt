@@ -1,0 +1,22 @@
+Vercel Speed Insights has been added to all main HTML pages.
+
+Patched pages:
+- index.html
+- about.html
+- account.html
+- cart.html
+- checkout.html
+- confirmation.html
+- orders.html
+- policies.html
+- product-belt.html
+- product-shaker.html
+- product-straps.html
+- products-access.html
+- profile.html
+- programs.html
+- recommended.html
+
+header.html was not patched because it is a partial file and has no <head> section.
+
+After uploading/committing this version, Vercel will redeploy. Open the live site and click around, then check Vercel Speed Insights after a little time.
