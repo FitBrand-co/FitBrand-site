@@ -50,6 +50,8 @@
   <div class="copy"><span>© 2026 FitBrand. All rights reserved.</span><span>Built for your transformation.</span></div>
 </footer>
 <script src="fitbrand.js"></script>
+<script src="fitbrand-config.js"></script>
+<script src="supabase-integration.js"></script>
 <script>
 function updateCartCount(){const cart=JSON.parse(localStorage.getItem('fitbrandCart')||'[]');document.querySelectorAll('#cart-count-btn').forEach(el=>{el.textContent=cart.length;el.style.display=cart.length>0?'inline-flex':'none';});}
 function loadProfile(){const u=getFitBrandUser()||{};const map={pfName:u.name,pfEmail:u.email,pfPhone:u.phone,pfAddress:u.address,pfGender:u.gender,pfAge:u.age,pfWeight:u.weight,pfHeight:u.height,pfLevel:u.level,pfTrainingLocation:u.trainingLocation,pfTrainingDays:u.trainingDays,pfEquipment:u.equipment,pfAllergies:u.allergies,pfGoal:u.goal};Object.entries(map).forEach(([id,v])=>{const el=document.getElementById(id); if(el&&v) el.value=v;});}

@@ -1,0 +1,16 @@
+FITBRAND BACKEND-READY VERSION
+
+Start here:
+
+1. Open README-BACKEND-SETUP.md
+2. Run supabase/schema.sql in your Supabase project
+3. Paste your Supabase anon key into fitbrand-config.js
+4. Add Stripe keys and price IDs in Vercel environment variables
+5. Deploy to Vercel
+6. Add Stripe webhook endpoint:
+   https://your-domain.com/api/stripe-webhook
+
+Supabase project URL already inserted:
+https://xlwctuqnsiycqametagq.supabase.co
+
+The site can still load without keys, but real login/payment/orders require setup.

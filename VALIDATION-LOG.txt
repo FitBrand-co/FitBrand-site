@@ -1,0 +1,21 @@
+FitBrand v23 backend-ready validation
+
+Completed checks:
+- JavaScript syntax check passed:
+  - fitbrand.js
+  - fitbrand-config.js
+  - supabase-integration.js
+  - api/create-checkout-session.js
+  - api/stripe-webhook.js
+- Runtime-load smoke test passed for:
+  - fitbrand.js
+  - fitbrand-config.js
+  - supabase-integration.js
+- Internal HTML links/assets checked:
+  - 0 broken internal references found
+- index.html is in the ZIP root folder
+- Supabase project URL prefilled:
+  https://xlwctuqnsiycqametagq.supabase.co
+
+Important:
+Real login, real Stripe checkout, cloud orders and cloud product access require you to paste real keys and deploy serverless API functions.
