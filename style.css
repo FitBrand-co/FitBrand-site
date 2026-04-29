@@ -2052,3 +2052,737 @@ body{background:#f2f2ef!important;}
   .profile-menu-id strong,#profileMenuName{font-size:21px!important;}
   .profile-menu button,.profile-menu-link{min-height:50px!important;font-size:13px!important;}
 }
+
+
+/* ===== FITBRAND v17 FOOTER + GENERATOR + ORDERS POLISH ===== */
+footer{
+  background:linear-gradient(180deg,#15171b 0%, #1b1d22 100%) !important;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+footer a,footer p{color:rgba(255,255,255,.82)!important;}
+footer h4{color:#fff!important;}
+.copy{
+  border-top:1px solid rgba(255,255,255,.14)!important;
+  color:rgba(255,255,255,.7)!important;
+}
+.footer-grid{
+  gap:48px!important;
+}
+
+/* Generator modal cleanup */
+.fb-generator-modal{
+  width:min(1180px,calc(100vw - 28px))!important;
+  max-height:min(92vh,1200px)!important;
+  overflow:auto!important;
+  padding:30px!important;
+  border-radius:34px!important;
+}
+.fb-modal-header{
+  padding:2px 2px 14px!important;
+}
+.fb-modal-header h2{
+  letter-spacing:-.04em!important;
+  line-height:1.02!important;
+}
+.fb-modal-header p{
+  max-width:760px!important;
+  color:rgba(255,255,255,.74)!important;
+}
+.fb-modal-body{
+  display:grid!important;
+  gap:20px!important;
+}
+#fbProgramTrackPanel,.fb-track-specific-options{
+  border-radius:28px!important;
+}
+#fbProgramTrackPanel h3,.fb-track-specific-options h4{
+  text-transform:uppercase!important;
+  letter-spacing:.08em!important;
+  font-size:14px!important;
+  margin:0 0 14px!important;
+}
+.fb-divider{
+  display:flex!important;
+  align-items:center!important;
+  gap:16px!important;
+  color:#fff!important;
+  text-transform:uppercase!important;
+  letter-spacing:.14em!important;
+  font-size:13px!important;
+  margin:4px 0!important;
+}
+.fb-divider::before,.fb-divider::after{
+  content:'';
+  height:1px;
+  background:rgba(255,255,255,.18);
+  flex:1;
+}
+.fb-form-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:18px!important;
+}
+.fb-form-field.fb-wide{
+  grid-column:span 2!important;
+}
+.fb-form-field{
+  display:grid!important;
+  gap:10px!important;
+  align-content:start!important;
+}
+.fb-form-field label{
+  font-size:13px!important;
+  letter-spacing:.14em!important;
+  text-transform:uppercase!important;
+  font-weight:900!important;
+  color:rgba(255,255,255,.92)!important;
+}
+.fb-input-wrap{
+  min-height:74px!important;
+  padding:0 18px!important;
+  border-radius:22px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.06))!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05), 0 10px 28px rgba(0,0,0,.12)!important;
+}
+.fb-input-icon{
+  width:22px!important;
+  height:22px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  color:rgba(255,255,255,.92)!important;
+  font-size:0!important;
+  flex:0 0 auto!important;
+}
+.fb-input-icon svg{
+  width:22px!important;
+  height:22px!important;
+  stroke:currentColor!important;
+  fill:none!important;
+  stroke-width:2!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+.fb-input-wrap input,.fb-input-wrap select{
+  min-height:72px!important;
+  font-size:16px!important;
+  font-weight:700!important;
+  color:#fff!important;
+}
+.fb-input-wrap input::placeholder{color:rgba(255,255,255,.58)!important;}
+.fb-program-track-options,
+#fbTrackSpecificOptions .fb-track-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:14px!important;
+}
+#fbTrackSpecificOptions .fb-track-option{
+  position:relative!important;
+  min-height:116px!important;
+  padding:18px 18px 18px 54px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  border-radius:24px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.07))!important;
+  border:1px solid rgba(255,255,255,.14)!important;
+  color:#fff!important;
+  font-weight:800!important;
+  line-height:1.15!important;
+}
+#fbTrackSpecificOptions .fb-track-option input{
+  position:absolute!important;
+  left:18px!important;
+  top:50%!important;
+  transform:translateY(-50%) scale(1.2)!important;
+}
+#fbTrackSpecificOptions .fb-track-option span{display:block!important;font-size:16px!important;}
+.fb-generate-btn{
+  margin-top:4px!important;
+  min-height:62px!important;
+  border-radius:20px!important;
+  font-size:16px!important;
+}
+.fb-trust-row{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:14px!important;
+}
+.fb-trust-item{
+  border-radius:22px!important;
+  background:rgba(255,255,255,.08)!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+}
+
+/* Orders page */
+.orders-empty{color:rgba(0,0,0,.62);font-weight:600;}
+.orders-list{gap:16px!important;}
+.order-card-clean{
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:18px!important;
+  padding:20px 22px!important;
+  border-radius:22px!important;
+}
+.order-card-main{display:grid;gap:8px;}
+.order-card-main strong{font-size:18px!important;letter-spacing:-.02em!important;}
+.order-card-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;color:rgba(0,0,0,.65);font-weight:600;}
+.order-status-pill,.order-count-pill{
+  display:inline-flex;align-items:center;justify-content:center;
+  border-radius:999px;padding:8px 12px;
+  font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;
+}
+.order-status-pill{background:rgba(17,18,20,.08);color:#111214;}
+.order-count-pill{background:rgba(17,18,20,.06);color:#111214;}
+
+@media (max-width: 1100px){
+  .fb-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  .fb-form-field.fb-wide{grid-column:span 2!important;}
+  .fb-program-track-options,
+  #fbTrackSpecificOptions .fb-track-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+}
+@media (max-width: 760px){
+  footer{padding:42px 22px!important;}
+  .copy{flex-direction:column;gap:8px!important;}
+  .fb-generator-modal{padding:20px!important;width:min(100vw - 16px,1000px)!important;}
+  .fb-form-grid,.fb-program-track-options,#fbTrackSpecificOptions .fb-track-grid,.fb-trust-row{
+    grid-template-columns:1fr!important;
+  }
+  .fb-form-field.fb-wide{grid-column:auto!important;}
+  .fb-input-wrap{min-height:64px!important;}
+  .fb-input-wrap input,.fb-input-wrap select{min-height:62px!important;font-size:15px!important;}
+  .order-card-clean{align-items:flex-start!important;}
+}
+
+
+/* ===== FITBRAND v18 LUXURY POLISH ===== */
+.nav{
+  background:rgba(255,255,255,.82)!important;
+  backdrop-filter:blur(12px)!important;
+  border:1px solid rgba(17,18,20,.08)!important;
+  box-shadow:0 14px 40px rgba(17,18,20,.06)!important;
+}
+.nav nav a{color:#111214!important;opacity:.78;}
+.nav nav a:hover{opacity:1!important;}
+section, .hero, .programs-section, .rec-section, .account-page, .cart-page, .profile-page{position:relative;}
+.fb-training-profile-card{
+  display:flex!important;align-items:center!important;justify-content:space-between!important;gap:18px!important;
+  padding:18px 20px!important;border-radius:24px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.08))!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06)!important;
+}
+.fb-training-profile-card strong{display:block!important;font-size:17px!important;color:#fff!important;}
+.fb-training-profile-card span{display:block!important;margin-top:4px!important;color:rgba(255,255,255,.72)!important;font-weight:600!important;}
+.fb-training-profile-actions{display:flex!important;align-items:center!important;gap:12px!important;flex-wrap:wrap!important;}
+#fbUseSavedProfile,.fb-training-profile-actions a{
+  min-height:46px!important;border-radius:16px!important;padding:0 16px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  font-weight:800!important;text-decoration:none!important;
+}
+#fbUseSavedProfile{
+  background:linear-gradient(135deg,#ffffff,#e5e5e1)!important;color:#111214!important;border:1px solid rgba(255,255,255,.6)!important;
+}
+.fb-training-profile-actions a{
+  background:rgba(255,255,255,.08)!important;color:#fff!important;border:1px solid rgba(255,255,255,.12)!important;
+}
+.profile-page-card,.account-card,.success-card,.checkout-card,.cart-container{
+  border-radius:28px!important;
+}
+footer .brand img{filter:none!important;}
+footer a:hover{color:#fff!important;}
+@media(max-width:760px){
+  .fb-training-profile-card{flex-direction:column!important;align-items:flex-start!important;}
+  .fb-training-profile-actions{width:100%!important;}
+  #fbUseSavedProfile,.fb-training-profile-actions a{width:100%!important;}
+}
+
+
+/* ===== FITBRAND v19 SHOPIFY-LIKE FINISH ===== */
+html{scroll-behavior:smooth;}
+body{
+  background:linear-gradient(180deg,#f7f7f6 0%, #ececea 100%)!important;
+  color:#111214!important;
+}
+main,section{position:relative;}
+.hero{
+  min-height:760px!important;
+  border-bottom-left-radius:34px;
+  border-bottom-right-radius:34px;
+  overflow:hidden!important;
+  box-shadow:0 25px 80px rgba(0,0,0,.18);
+}
+.hero::after{
+  content:'';
+  position:absolute;
+  inset:auto 0 0 0;
+  height:140px;
+  background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.18));
+  pointer-events:none;
+}
+.hero-content{
+  padding-top:110px!important;
+  padding-bottom:110px!important;
+}
+.hero h1,.section-head h2,.split-content h2,.program-text h2,.cta h2,.account-card h1,.profile-page-card h1,.product-info h1{
+  letter-spacing:-.04em!important;
+}
+.hero p,.section-head p,.split-content p,.program-text p,.card p,.rec-card p,.product-info p{
+  font-size:17px!important;
+}
+.section-head,.split-content,.program-text,.cta,.about-story,.email-signup-wrap{
+  position:relative;
+}
+.fb-section-line{
+  width:88px;height:4px;border-radius:999px;margin-top:14px;
+  background:linear-gradient(90deg,#111214,#8b8c91);
+}
+.cards,.rec-grid,.footer-grid,.access-grid,.profile-page-grid,.fb-program-track-options,.fb-form-grid{
+  gap:22px!important;
+}
+.card,.rec-card,.program-row,.access-card,.order-card,.product-main,.checkout-card,.success-card,.account-card,.profile-page-card{
+  border:1px solid rgba(17,18,20,.08)!important;
+  box-shadow:0 18px 55px rgba(17,18,20,.08)!important;
+}
+.card,.rec-card,.access-card,.order-card{
+  background:linear-gradient(180deg,#ffffff 0%, #f7f7f7 100%)!important;
+}
+.card-body,.rec-card .body,.program-text{padding:30px!important;}
+.card h3,.rec-card h3,.access-card h3{letter-spacing:-.02em!important;}
+.card .btn-dark,.card .btn-outline,.rec-card .btn-dark,.rec-card .btn-outline,.access-card .btn-dark,.access-card .btn-outline,
+.related-card a,.fitbrand-sticky-buy a,.fitbrand-sticky-buy button{
+  min-height:50px!important;
+  border-radius:16px!important;
+}
+.btn-dark,.btn-outline,.cart-checkout,.drawer-checkout-btn,.remove-item-btn{
+  min-height:52px!important;
+  border-radius:16px!important;
+}
+.btn-outline{
+  border-color:rgba(17,18,20,.14)!important;
+  background:rgba(255,255,255,.8)!important;
+}
+.btn-outline:hover{background:#fff!important;}
+.card:hover,.rec-card:hover,.access-card:hover,.order-card:hover{
+  transform:translateY(-6px)!important;
+  box-shadow:0 28px 70px rgba(17,18,20,.12)!important;
+}
+.fb-card-eyebrow{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  width:max-content!important;padding:8px 12px!important;border-radius:999px!important;
+  background:rgba(17,18,20,.06)!important;color:#111214!important;
+  font-size:11px!important;font-weight:900!important;text-transform:uppercase!important;letter-spacing:.1em!important;
+  margin-bottom:14px!important;
+}
+.program-row{
+  overflow:hidden!important;
+}
+.program-img,.product-media,.hero,.rec-img,.product-visual{position:relative;overflow:hidden;}
+.program-photo,.rec-img,.product-visual,.product-hero-image,.product-media img{
+  transition:transform .55s ease!important;
+}
+.program-row:hover .program-photo,.rec-card:hover .rec-img,.card:hover .product-visual,.product-main:hover .product-media img{
+  transform:scale(1.04)!important;
+}
+footer{
+  margin-top:40px;
+  border-top-left-radius:28px;
+  border-top-right-radius:28px;
+}
+.copy{padding-bottom:6px!important;}
+
+/* Product page polish */
+.product-main{
+  background:linear-gradient(180deg,#ffffff,#f8f8f8)!important;
+  border-radius:30px!important;
+}
+.product-info .price,.product-price,
+.product-info strong.price{font-size:clamp(32px,5vw,48px)!important;letter-spacing:-.04em!important;}
+.mini-review,.related-card{
+  box-shadow:0 16px 38px rgba(17,18,20,.08)!important;
+}
+.related-products-section{
+  background:linear-gradient(180deg,#121317,#1b1d22)!important;
+}
+
+/* Mobile nav */
+.fb-mobile-menu-btn{
+  display:none;
+  width:46px;height:46px;border-radius:16px;border:1px solid rgba(17,18,20,.10);
+  background:rgba(255,255,255,.92);box-shadow:0 14px 30px rgba(17,18,20,.08);
+  align-items:center;justify-content:center;gap:4px;flex-direction:column;cursor:pointer;
+}
+.fb-mobile-menu-btn span{display:block;width:18px;height:2px;border-radius:999px;background:#111214;}
+.fb-mobile-nav-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.46);backdrop-filter:blur(10px);
+  display:none;z-index:14000;padding:18px;
+}
+.fb-mobile-nav-overlay.show{display:block;}
+.fb-mobile-nav-panel{
+  width:min(440px,100%);height:100%;margin-left:auto;background:linear-gradient(180deg,#ffffff,#f2f2f2);
+  border-radius:30px;border:1px solid rgba(17,18,20,.08);box-shadow:0 26px 90px rgba(0,0,0,.24);
+  padding:22px;display:flex;flex-direction:column;
+}
+.fb-mobile-nav-top{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-bottom:18px;border-bottom:1px solid rgba(17,18,20,.08);}
+.fb-mobile-nav-brand{text-transform:uppercase;font-size:26px;font-weight:1000;letter-spacing:-.05em;}
+.fb-mobile-nav-close{
+  width:42px;height:42px;border-radius:14px;border:1px solid rgba(17,18,20,.10);background:#fff;cursor:pointer;font-size:28px;line-height:1;
+}
+.fb-mobile-nav-links{display:grid;gap:10px;padding:22px 0;}
+.fb-mobile-nav-links a{
+  min-height:54px;border-radius:18px;background:rgba(17,18,20,.05);border:1px solid rgba(17,18,20,.06);
+  display:flex;align-items:center;padding:0 18px;text-decoration:none;color:#111214;font-weight:900;text-transform:uppercase;letter-spacing:.05em;
+}
+.fb-mobile-nav-links a:hover{background:rgba(17,18,20,.08);}
+.fb-mobile-nav-bottom{margin-top:auto;padding-top:16px;border-top:1px solid rgba(17,18,20,.08);color:rgba(17,18,20,.6);line-height:1.6;}
+body.fb-mobile-menu-open{overflow:hidden;}
+
+/* Better mobile layout */
+@media(max-width:950px){
+  .nav nav{display:none!important;}
+  .fb-mobile-menu-btn{display:flex!important;}
+  .nav{padding:0 18px!important;gap:10px!important;height:80px!important;}
+  .brand-word{font-size:20px!important;}
+  .hero{min-height:620px!important;border-bottom-left-radius:24px;border-bottom-right-radius:24px;}
+  .hero-content{padding:88px 22px 82px!important;}
+  .hero h1{font-size:clamp(38px,11vw,64px)!important;line-height:.94!important;}
+  .hero p{font-size:16px!important;line-height:1.65!important;max-width:100%!important;}
+  .section{padding-left:20px!important;padding-right:20px!important;}
+  .cards,.rec-grid,.related-products-grid,.split,.program-row,.access-grid{grid-template-columns:1fr!important;}
+  .card-body,.rec-card .body,.program-text,.product-info,.checkout-left,.checkout-right{padding:24px!important;}
+  .product-main,.program-row,.account-card,.profile-page-card,.success-card,.checkout-card{border-radius:24px!important;}
+  .fitbrand-sticky-buy{width:min(100vw - 20px,900px)!important;grid-template-columns:1fr!important;bottom:12px!important;}
+}
+@media(max-width:640px){
+  .section-head h2,.split-content h2,.program-text h2,.cta h2{font-size:clamp(30px,10vw,44px)!important;}
+  .section-head p,.split-content p,.program-text p,.card p,.rec-card p{font-size:15px!important;line-height:1.65!important;}
+  .cards,.rec-grid,.related-products-grid{gap:16px!important;}
+  footer{border-top-left-radius:22px;border-top-right-radius:22px;}
+}
+
+
+/* ===== FITBRAND v20 FINAL CUSTOMER-READY POLISH ===== */
+:root{
+  --fb-v20-bg:#f4f3f0;
+  --fb-v20-card:#ffffff;
+  --fb-v20-card2:#f8f8f6;
+  --fb-v20-text:#111214;
+  --fb-v20-muted:rgba(17,18,20,.64);
+  --fb-v20-line:rgba(17,18,20,.10);
+  --fb-v20-dark:#191b20;
+  --fb-v20-dark2:#25272d;
+  --fb-v20-silver:#e8e6df;
+  --fb-v20-radius:28px;
+  --fb-v20-shadow:0 24px 70px rgba(17,18,20,.10);
+  --fb-v20-shadow-strong:0 34px 100px rgba(17,18,20,.16);
+}
+*{box-sizing:border-box;}
+body{
+  background:
+    radial-gradient(circle at 12% 2%, rgba(255,255,255,.92), transparent 34%),
+    linear-gradient(180deg,#f7f7f5 0%,#efeeeb 42%,#e9e8e4 100%)!important;
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+}
+a,button,input,select{font-family:inherit;}
+button,a{touch-action:manipulation;}
+img{max-width:100%;}
+
+/* Top-level premium rhythm */
+.section{padding-top:92px!important;padding-bottom:92px!important;}
+.section-head{margin-bottom:42px!important;}
+.eyebrow,.premium-badge,.label,.premium-eyebrow{
+  letter-spacing:.16em!important;
+  font-weight:1000!important;
+}
+.hero{
+  isolation:isolate;
+  min-height:760px!important;
+}
+.hero::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:
+    radial-gradient(circle at 24% 28%,rgba(255,255,255,.16),transparent 30%),
+    linear-gradient(90deg,rgba(0,0,0,.88),rgba(0,0,0,.62) 52%,rgba(0,0,0,.20));
+  pointer-events:none;
+}
+.hero-content{z-index:3!important;}
+.hero .btn-silver,.hero .btn-dark,.hero .btn-outline{
+  min-width:180px;
+  min-height:58px!important;
+  border-radius:18px!important;
+  box-shadow:0 16px 44px rgba(0,0,0,.18)!important;
+}
+
+/* Conversion/trust strips */
+.fb-v20-trustbar{
+  max-width:1240px;
+  margin:-42px auto 52px;
+  position:relative;
+  z-index:8;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  padding:14px;
+  border-radius:30px;
+  background:rgba(255,255,255,.82);
+  border:1px solid rgba(255,255,255,.78);
+  box-shadow:var(--fb-v20-shadow);
+  backdrop-filter:blur(18px) saturate(140%);
+  -webkit-backdrop-filter:blur(18px) saturate(140%);
+}
+.fb-v20-trustbar > div{
+  border-radius:20px;
+  padding:16px 18px;
+  background:linear-gradient(180deg,rgba(255,255,255,.86),rgba(248,248,246,.78));
+  border:1px solid var(--fb-v20-line);
+}
+.fb-v20-trustbar strong{
+  display:block;
+  font-size:14px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.fb-v20-trustbar span{
+  display:block;
+  margin-top:5px;
+  font-size:13px;
+  color:var(--fb-v20-muted);
+  line-height:1.35;
+}
+.fb-v20-hero-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+  align-items:center;
+}
+.fb-v20-hero-mini{
+  margin-top:22px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.fb-v20-hero-mini span{
+  display:inline-flex;
+  min-height:36px;
+  align-items:center;
+  border-radius:999px;
+  padding:0 13px;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.18);
+  color:rgba(255,255,255,.88);
+  font-size:12px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+/* Cards/products */
+.card,.rec-card,.program-row,.account-card,.profile-page-card,.success-card,.cart-box,.checkout-card,.product-main,.meal-product-card,.meal-generator-preview{
+  border-radius:var(--fb-v20-radius)!important;
+  border:1px solid rgba(17,18,20,.08)!important;
+  box-shadow:var(--fb-v20-shadow)!important;
+}
+.card,.rec-card,.meal-product-card,.cart-box,.checkout-card,.account-card,.profile-page-card,.success-card,.product-main{
+  background:linear-gradient(180deg,#fff 0%,#f8f8f6 100%)!important;
+}
+.card,.rec-card,.program-row,.product-main{
+  transition:transform .28s ease, box-shadow .28s ease, border-color .28s ease!important;
+}
+.card:hover,.rec-card:hover,.program-row:hover,.product-main:hover{
+  transform:translateY(-7px)!important;
+  box-shadow:var(--fb-v20-shadow-strong)!important;
+  border-color:rgba(17,18,20,.14)!important;
+}
+.product-badge,.fb-card-eyebrow{
+  box-shadow:0 8px 22px rgba(17,18,20,.08);
+}
+.price,.product-price{
+  letter-spacing:-.04em!important;
+}
+.benefits,.checkout-trust,.recommended-sales-strip,.programs-premium-strip{
+  gap:14px!important;
+}
+.benefit,.checkout-benefit,.sales-pill,.programs-premium-pill{
+  border-radius:22px!important;
+  border:1px solid rgba(17,18,20,.08)!important;
+  box-shadow:0 14px 36px rgba(17,18,20,.06)!important;
+}
+
+/* CTA consistency */
+.btn-dark,.btn-outline,.btn-silver,.profile-main-btn,.cart-checkout,.drawer-checkout-btn,.fb-generate-btn,.finder-btn,.finder-btn-secondary{
+  border-radius:17px!important;
+  min-height:54px!important;
+  font-weight:1000!important;
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease!important;
+}
+.btn-dark,.profile-main-btn,.cart-checkout,.drawer-checkout-btn,.fb-generate-btn,.finder-btn{
+  background:linear-gradient(135deg,#282a30 0%,#121317 100%)!important;
+  color:#fff!important;
+  border:1px solid rgba(255,255,255,.10)!important;
+}
+.btn-dark:hover,.profile-main-btn:hover,.cart-checkout:hover,.drawer-checkout-btn:hover,.fb-generate-btn:hover,.finder-btn:hover{
+  transform:translateY(-2px)!important;
+  box-shadow:0 20px 50px rgba(17,18,20,.22)!important;
+}
+.btn-outline,.finder-btn-secondary{
+  background:linear-gradient(180deg,#fff,#f4f3f0)!important;
+  border:1px solid rgba(17,18,20,.14)!important;
+  color:#111214!important;
+}
+.btn-outline:hover,.finder-btn-secondary:hover{
+  transform:translateY(-2px)!important;
+  box-shadow:0 16px 38px rgba(17,18,20,.10)!important;
+}
+
+/* Forms and inputs */
+input,select,textarea{
+  outline:none!important;
+}
+input:focus,select:focus,textarea:focus,.fb-input-wrap:focus-within{
+  border-color:rgba(17,18,20,.34)!important;
+  box-shadow:0 0 0 4px rgba(17,18,20,.08)!important;
+}
+.profile-page-grid input,.profile-page-grid select,
+.checkout-right input,.checkout-right select,
+.discount-box input,.checkout-discount input{
+  min-height:58px!important;
+  border-radius:16px!important;
+  background:#fff!important;
+  border:1px solid rgba(17,18,20,.12)!important;
+}
+
+/* Cart and checkout */
+.cart-page,.checkout,.account-page,.profile-page{
+  background:
+    radial-gradient(circle at 12% 0%,rgba(255,255,255,.95),transparent 34%),
+    linear-gradient(180deg,#f6f5f2,#ebeae6)!important;
+}
+.cart-box,.checkout-card{
+  max-width:1180px!important;
+}
+.cart-body,.checkout-right{
+  background:rgba(255,255,255,.62);
+  border-radius:24px;
+}
+.fb-v20-checkout-steps{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin:0 0 22px;
+}
+.fb-v20-checkout-steps span{
+  display:flex;align-items:center;gap:8px;
+  min-height:42px;
+  border-radius:999px;
+  padding:0 12px;
+  background:rgba(17,18,20,.06);
+  color:#111214;
+  font-size:12px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+.fb-v20-secure-note,.fb-v20-cart-note{
+  margin-top:14px;
+  padding:14px 16px;
+  border-radius:18px;
+  background:rgba(17,18,20,.05);
+  border:1px solid rgba(17,18,20,.08);
+  color:rgba(17,18,20,.66);
+  font-weight:700;
+  line-height:1.45;
+}
+.cart-item,.drawer-item{
+  border-radius:20px!important;
+  background:#fff!important;
+  border:1px solid rgba(17,18,20,.08)!important;
+}
+
+/* Generator premium */
+.fb-generator-modal{
+  background:
+    radial-gradient(circle at 50% -12%,rgba(255,255,255,.20),transparent 34%),
+    linear-gradient(145deg,#2d2f35 0%,#1d1f25 52%,#26282f 100%)!important;
+}
+.fb-modal-header{
+  display:grid!important;
+  grid-template-columns:auto 1fr!important;
+  column-gap:16px!important;
+  align-items:center!important;
+}
+.fb-modal-header .fb-logo-mark{grid-row:1 / span 3;}
+.fb-modal-kicker{margin:0!important;}
+.fb-form-field label{
+  margin-left:2px!important;
+}
+#fbTrackSpecificOptions .fb-track-option:has(input:checked),
+.fb-choice-grid button.selected,.fb-program-track-options button.selected,.fb-meal-options button.selected{
+  background:linear-gradient(135deg,#fff,#e8e7e2)!important;
+  color:#111214!important;
+  border-color:rgba(255,255,255,.74)!important;
+}
+
+/* Footer final */
+footer{
+  background:
+    radial-gradient(circle at 18% 0%,rgba(255,255,255,.12),transparent 28%),
+    linear-gradient(180deg,#202229,#17191e)!important;
+  border-top:1px solid rgba(255,255,255,.12)!important;
+}
+footer .brand{display:flex!important;align-items:center!important;}
+footer h4{font-size:13px!important;}
+footer a{
+  text-decoration:none!important;
+  transition:color .18s ease, transform .18s ease!important;
+}
+footer a:hover{
+  transform:translateX(3px);
+}
+
+/* Mobile fixes */
+@media(max-width:950px){
+  .fb-v20-trustbar{
+    margin:-28px 16px 34px;
+    grid-template-columns:1fr 1fr;
+    border-radius:24px;
+  }
+  .hero{min-height:650px!important;}
+  .hero-content{padding-left:22px!important;padding-right:22px!important;}
+  .fb-modal-header{
+    grid-template-columns:1fr!important;
+  }
+  .fb-modal-header .fb-logo-mark{grid-row:auto;}
+  .checkout-card,.product-main{
+    grid-template-columns:1fr!important;
+  }
+  .product-gallery,.product-info{min-width:0!important;}
+}
+@media(max-width:680px){
+  .section{padding-top:64px!important;padding-bottom:64px!important;}
+  .fb-v20-trustbar{
+    grid-template-columns:1fr;
+    padding:10px;
+  }
+  .fb-v20-hero-actions{
+    display:grid;
+    grid-template-columns:1fr;
+  }
+  .hero .btn-silver,.hero .btn-dark,.hero .btn-outline{
+    width:100%;
+  }
+  .cart-actions,.program-cart-actions,.fb-v20-checkout-steps{
+    grid-template-columns:1fr!important;
+  }
+  .profile-menu{
+    right:-8px!important;
+    width:min(380px,calc(100vw - 18px))!important;
+  }
+  .cart-box,.checkout-card,.account-card,.profile-page-card,.success-card{
+    padding:24px!important;
+  }
+  .fb-mobile-nav-overlay{padding:10px;}
+  .fb-mobile-nav-panel{border-radius:24px;padding:18px;}
+}

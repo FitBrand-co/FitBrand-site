@@ -13,6 +13,7 @@
 <meta property="og:type" content="website">
 <meta property="og:image" content="assets/fitbrand-logo-real.png">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f4f3f0">
 </head>
 
 <body>
@@ -231,9 +232,21 @@ function saveConfirmationAccess(){
     const purchases = JSON.parse(localStorage.getItem("fitbrandPurchases") || "[]");
     if(!purchases.includes(product)) purchases.push(product);
     localStorage.setItem("fitbrandPurchases", JSON.stringify(purchases));
-    const orders = JSON.parse(localStorage.getItem("fitbrandOrders") || "[]");
-    orders.unshift({product, date:new Date().toISOString(), status:"Confirmed"});
-    localStorage.setItem("fitbrandOrders", JSON.stringify(orders.slice(0,20)));
+
+    const orderGuardKey = "fitbrandConfirmationInlineDone:" + product;
+    if(!sessionStorage.getItem(orderGuardKey)){
+      const user = JSON.parse(localStorage.getItem("fitbrandUser") || "null") || JSON.parse(sessionStorage.getItem("fitbrandSessionUser") || "null");
+      const orders = JSON.parse(localStorage.getItem("fitbrandOrders") || "[]");
+      const entry = {product, date:new Date().toISOString(), status:"Confirmed"};
+      if(user && user.email) entry.email = user.email;
+      const last = orders[0];
+      const duplicate = last && (last.product === product || (Array.isArray(last.items) && last.items.length===1 && last.items[0]===product)) && Math.abs(new Date(entry.date) - new Date(last.date || 0)) < 60000;
+      if(!duplicate){
+        orders.unshift(entry);
+        localStorage.setItem("fitbrandOrders", JSON.stringify(orders.slice(0,20)));
+      }
+      sessionStorage.setItem(orderGuardKey, "1");
+    }
   }
 
   if(product === "mealplan"){

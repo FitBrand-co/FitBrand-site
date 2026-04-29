@@ -272,8 +272,17 @@
     const items = pending.length ? pending.filter(valid) : (valid(product) ? [product] : []);
     items.forEach(addPurchase);
     if(items.length){
-      const orders = getOrders();
-      orders.unshift({date:new Date().toISOString(), items, status:'Confirmed'}); saveOrders(orders);
+      const confirmationKey = 'fitbrandProcessConfirmation:' + items.join('|');
+      if(!sessionStorage.getItem(confirmationKey)){
+        const orders = getOrders();
+        const current = getUser();
+        const entry = {date:new Date().toISOString(), items, status:'Confirmed'};
+        if(current?.email) entry.email = current.email;
+        const last = orders[0];
+        const duplicate = last && JSON.stringify(last.items||[last.product])===JSON.stringify(items) && Math.abs(new Date(entry.date)-new Date(last.date||0)) < 60000;
+        if(!duplicate){ orders.unshift(entry); saveOrders(orders); }
+        sessionStorage.setItem(confirmationKey,'1');
+      }
       sessionStorage.removeItem('fitbrandPendingCheckout'); localStorage.removeItem(CART_KEY); updateCartCount();
       const main = items.includes('bundle') ? 'bundle' : (items.find(x => DIGITAL.includes(x)) || items[0]);
       const btn = $('accessButton');
@@ -631,4 +640,428 @@
   }
   Object.assign(window,{toggleProfileMenu,openProfileModal,closeProfileModal,loginFitBrandUser,logoutFitBrandUser,updateFitBrandProfileUI:updateAuthUI,updateProfileUI:updateAuthUI,getFitBrandUser:user,saveFitBrandUser:saveUser});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+})();
+
+
+/* ===== FITBRAND v17 UX + ORDERS FIX PATCH ===== */
+(function(){
+  'use strict';
+  const ORDERS_KEY='fitbrandOrders';
+  const CART_KEY='fitbrandCart';
+  const USER_KEY='fitbrandUser';
+  const SESSION_KEY='fitbrandSessionUser';
+  const PRODUCTS={
+    aesthetic:{name:'Aesthetic Program'},
+    shred:{name:'Shred Program'},
+    strength:{name:'Strength Program'},
+    bundle:{name:'Complete Bundle + Meal Plan AI'},
+    mealplan:{name:'Meal Plan Guide AI'},
+    belt:{name:'Lifting Belt'},
+    straps:{name:'Lifting Straps'}
+  };
+  const $=(id)=>document.getElementById(id);
+  const $$=(sel,root=document)=>Array.from(root.querySelectorAll(sel));
+  const parse=(v,f)=>{try{return v?JSON.parse(v):f}catch{return f}};
+  const esc=(s)=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+
+  function getUser(){return parse(localStorage.getItem(USER_KEY),null)||parse(sessionStorage.getItem(SESSION_KEY),null)}
+  function getOrders(){return parse(localStorage.getItem(ORDERS_KEY),[])}
+  function setOrders(orders){localStorage.setItem(ORDERS_KEY,JSON.stringify((orders||[]).slice(0,50)))}
+  function namesFromItems(items){return (items||[]).map(k=>PRODUCTS[k]?.name||k)}
+  function normalizeOrder(o){
+    const items=Array.isArray(o?.items)&&o.items.length?o.items.filter(Boolean):(o?.product?[o.product]:[]);
+    return {date:o?.date||new Date().toISOString(),items,status:o?.status||'Confirmed'};
+  }
+  function orderSignature(o){
+    const items=[...(o.items||[])].sort().join('|');
+    const minute=(new Date(o.date).toISOString()).slice(0,16);
+    return items+'__'+(o.status||'Confirmed')+'__'+minute;
+  }
+  function compactOrders(){
+    const raw=getOrders().map(normalizeOrder);
+    const seen=new Map();
+    for(const order of raw){
+      if(!order.items.length) continue;
+      const sig=orderSignature(order);
+      if(!seen.has(sig)) seen.set(sig,{...order,count:1});
+      else {
+        const prev=seen.get(sig);
+        prev.count=(prev.count||1)+1;
+        if(new Date(order.date)<new Date(prev.date)) prev.date=order.date;
+      }
+    }
+    const result=[...seen.values()].sort((a,b)=>new Date(b.date)-new Date(a.date));
+    const sanitized=result.map(({count,...rest})=>({ ...rest, count: count||1, email: rest.email || '' }));
+    setOrders(sanitized);
+    return sanitized;
+  }
+  function ensureOrderOnceOnConfirmation(){
+    if(!/confirmation\.html$/.test(location.pathname)) return;
+    const already=sessionStorage.getItem('fitbrandConfirmationNormalized');
+    compactOrders();
+    if(already) return;
+    sessionStorage.setItem('fitbrandConfirmationNormalized','1');
+    // prevent stale cart count on confirmation
+    try{localStorage.removeItem(CART_KEY)}catch{}
+  }
+  function renderOrdersBetter(){
+    const list=$('ordersList');
+    if(!list) return;
+    const user=getUser();
+    const orders=user?compactOrders().filter(o=>!o.email || String(o.email).toLowerCase()===String(user.email||'').toLowerCase()):[];
+    if(!orders.length){
+      list.innerHTML='<p class="orders-empty">No orders saved yet.</p>';
+      return;
+    }
+    list.innerHTML=orders.map(o=>{
+      const names=namesFromItems(o.items);
+      const when=new Date(o.date).toLocaleString();
+      const qty=o.count&&o.count>1?`<span class="order-count-pill">${o.count} duplicate${o.count>1?'s':''} merged</span>`:'';
+      return `<article class="order-card order-card-clean"><div class="order-card-main"><strong>${esc(names.join(', '))}</strong><div class="order-card-meta"><span>${esc(when)}</span><span>•</span><span>${esc(o.status||'Confirmed')}</span>${qty}</div></div><div class="order-status-pill">Saved</div></article>`;
+    }).join('');
+  }
+
+  const svgIcons={
+    modalPackage:"<svg viewBox='0 0 24 24' aria-hidden='true'><path d='M4 7h16l-2 11H6L4 7Z'/><path d='M9 7V5a3 3 0 0 1 6 0v2'/></svg>",
+    modalGoal:"<svg viewBox='0 0 24 24' aria-hidden='true'><path d='M12 21s-6.7-4.4-8.8-8.2A5.2 5.2 0 0 1 12 5a5.2 5.2 0 0 1 8.8 7.8C18.7 16.6 12 21 12 21Z'/></svg>",
+    modalAge:"<svg viewBox='0 0 24 24' aria-hidden='true'><path d='M7 3v3'/><path d='M17 3v3'/><rect x='4' y='5' width='16' height='15' rx='3'/><path d='M4 10h16'/></svg>",
+    modalGender:"<svg viewBox='0 0 24 24' aria-hidden='true'><circle cx='10' cy='10' r='5'/><path d='M15 5l4-4'/><path d='M16 1h3v3'/></svg>",
+    modalWeight:"<svg viewBox='0 0 24 24' aria-hidden='true'><path d='M7 5h10l4 6-4 8H7l-4-8 4-6Z'/><path d='M12 9v4'/><path d='M10 11h4'/></svg>",
+    modalHeight:"<svg viewBox='0 0 24 24' aria-hidden='true'><path d='M12 3v18'/><path d='M9 6l3-3 3 3'/><path d='M9 18l3 3 3-3'/></svg>",
+    modalPlace:"<svg viewBox='0 0 24 24' aria-hidden='true'><path d='M4 11 12 4l8 7'/><path d='M6 10v10h12V10'/></svg>",
+    modalDays:"<svg viewBox='0 0 24 24' aria-hidden='true'><circle cx='12' cy='12' r='8'/><path d='M12 8v5l3 2'/></svg>",
+    modalLevel:"<svg viewBox='0 0 24 24' aria-hidden='true'><path d='M5 18V9'/><path d='M10 18V6'/><path d='M15 18v-4'/><path d='M20 18V3'/></svg>",
+    modalLimit:"<svg viewBox='0 0 24 24' aria-hidden='true'><path d='M12 21s-6.7-4.4-8.8-8.2A5.2 5.2 0 0 1 12 5a5.2 5.2 0 0 1 8.8 7.8C18.7 16.6 12 21 12 21Z'/></svg>"
+  };
+  function patchGeneratorIcons(){
+    Object.entries(svgIcons).forEach(([id,svg])=>{
+      const input=$(id); if(!input) return;
+      const wrap=input.closest('.fb-input-wrap');
+      const icon=wrap?.querySelector('.fb-input-icon');
+      if(icon){ icon.classList.add('fb-svg-icon'); icon.innerHTML=svg; }
+    });
+  }
+  function tidyGeneratorSection(){
+    const box=$('fbTrackSpecificOptions');
+    if(!box) return;
+    const inner=box.querySelector('div');
+    if(inner) inner.classList.add('fb-track-grid');
+    $$('label', box).forEach(label=>{
+      if(label.classList.contains('fb-track-option')) return;
+      const input=label.querySelector('input');
+      const txt=label.textContent.replace(/\s+/g,' ').trim();
+      label.classList.add('fb-track-option');
+      label.innerHTML=`${input?.outerHTML||''}<span>${esc(txt)}</span>`;
+    });
+  }
+  function watchGenerator(){
+    patchGeneratorIcons(); tidyGeneratorSection();
+    const target=$('fitbrandGeneratorModal');
+    if(!target || target.dataset.v17Observed) return;
+    target.dataset.v17Observed='1';
+    const mo=new MutationObserver(()=>{patchGeneratorIcons();tidyGeneratorSection();});
+    mo.observe(target,{childList:true,subtree:true});
+  }
+  function boot(){
+    ensureOrderOnceOnConfirmation();
+    renderOrdersBetter();
+    setTimeout(renderOrdersBetter,80);
+    setTimeout(renderOrdersBetter,400);
+    patchGeneratorIcons();
+    watchGenerator();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
+})();
+
+
+/* ===== FITBRAND v18 PREMIUM UX + CONFIRMATION GUARD PATCH ===== */
+(function(){
+  'use strict';
+  const USER_KEY='fitbrandUser', SESSION_KEY='fitbrandSessionUser', ORDERS_KEY='fitbrandOrders';
+  const $=id=>document.getElementById(id), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+  const parse=(v,f)=>{try{return v?JSON.parse(v):f}catch{return f}};
+  function currentUser(){ return parse(localStorage.getItem(USER_KEY),null) || parse(sessionStorage.getItem(SESSION_KEY),null); }
+  function allOrders(){ return parse(localStorage.getItem(ORDERS_KEY),[]); }
+  function saveAllOrders(list){ localStorage.setItem(ORDERS_KEY, JSON.stringify((list||[]).slice(0,50))); }
+  function orderBelongsToUser(order, user){
+    if(!user) return false;
+    if(order && order.email) return String(order.email).toLowerCase() === String(user.email||'').toLowerCase();
+    return true;
+  }
+  function dedupeOrders(){
+    const list=allOrders();
+    const seen=new Map();
+    for(const raw of list){
+      const items=Array.isArray(raw?.items) && raw.items.length ? raw.items : (raw?.product ? [raw.product] : []);
+      if(!items.length) continue;
+      const minute = new Date(raw?.date || Date.now()).toISOString().slice(0,16);
+      const email = String(raw?.email || '').toLowerCase();
+      const key = `${items.slice().sort().join('|')}__${raw?.status||'Confirmed'}__${email}__${minute}`;
+      if(!seen.has(key)) seen.set(key, {...raw, items, count:1});
+      else {
+        const prev=seen.get(key);
+        prev.count=(prev.count||1)+1;
+        if(new Date(raw.date||0) < new Date(prev.date||0)) prev.date=raw.date;
+      }
+    }
+    const cleaned=[...seen.values()].sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
+    saveAllOrders(cleaned);
+    return cleaned;
+  }
+  function saveConfirmationOnce(){
+    if(!/confirmation\.html$/.test(location.pathname)) return;
+    const params=new URLSearchParams(location.search);
+    const product=params.get('product') || params.get('purchased');
+    if(!product) return;
+    const key=`fitbrandConfirmationProcessed:${product}`;
+    dedupeOrders();
+    if(sessionStorage.getItem(key)) return;
+    const list=dedupeOrders();
+    sessionStorage.setItem(key,'1');
+    saveAllOrders(list);
+  }
+  function insertTrainingProfileCard(){
+    const modal=document.querySelector('#fitbrandGeneratorModal .fb-modal-body');
+    if(!modal || $('fbTrainingProfileCard')) return;
+    const user=currentUser();
+    if(!user) return;
+    const anchor=modal.querySelector('.fb-divider');
+    const card=document.createElement('div');
+    card.id='fbTrainingProfileCard';
+    card.className='fb-training-profile-card';
+    card.innerHTML=`<div><strong>${user.name || 'Saved profile'}</strong><span>${user.weight || '—'} kg • ${user.height || '—'} cm • ${user.trainingDays || '—'} days/week • ${user.level || 'No level saved'}</span></div><div class="fb-training-profile-actions"><button type="button" id="fbUseSavedProfile">Use saved profile</button><a href="profile.html">Edit profile</a></div>`;
+    if(anchor) modal.insertBefore(card, anchor); else modal.prepend(card);
+    card.querySelector('#fbUseSavedProfile')?.addEventListener('click', ()=>{
+      const map={modalAge:'age',modalGender:'gender',modalWeight:'weight',modalHeight:'height',modalPlace:'trainingLocation',modalDays:'trainingDays',modalLevel:'level'};
+      Object.entries(map).forEach(([id,key])=>{ if($(id) && user[key]) $(id).value=user[key]; });
+      $('modalLimit') && !$('modalLimit').value && ($('modalLimit').value='none');
+    });
+  }
+  function generatorPremiumCleanup(){
+    insertTrainingProfileCard();
+    const track=document.getElementById('fbTrackSpecificOptions');
+    if(track){
+      const title=track.querySelector('h4');
+      if(title){ title.textContent = title.textContent.replace(/settings/i,'preferences'); }
+    }
+  }
+  function boot(){
+    saveConfirmationOnce();
+    generatorPremiumCleanup();
+    setTimeout(generatorPremiumCleanup, 80);
+    setTimeout(generatorPremiumCleanup, 300);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+})();
+
+
+/* ===== FITBRAND v19 MOBILE NAV + PREMIUM PAGE POLISH ===== */
+(function(){
+  'use strict';
+  const d=document;
+  function createMobileNav(){
+    const header=d.querySelector('.nav');
+    const desktopNav=header?.querySelector('nav');
+    if(!header || !desktopNav || d.getElementById('fbMobileMenuBtn')) return;
+
+    const btn=d.createElement('button');
+    btn.id='fbMobileMenuBtn';
+    btn.className='fb-mobile-menu-btn';
+    btn.setAttribute('type','button');
+    btn.setAttribute('aria-label','Open menu');
+    btn.innerHTML='<span></span><span></span><span></span>';
+    const navActions=header.querySelector('.nav-actions');
+    (navActions || header).appendChild(btn);
+
+    const overlay=d.createElement('div');
+    overlay.id='fbMobileNavOverlay';
+    overlay.className='fb-mobile-nav-overlay';
+    const links=Array.from(desktopNav.querySelectorAll('a')).map(a=>`<a href="${a.getAttribute('href')||'#'}">${a.textContent}</a>`).join('');
+    overlay.innerHTML=`<div class="fb-mobile-nav-panel"><div class="fb-mobile-nav-top"><div class="fb-mobile-nav-brand">FitBrand</div><button type="button" class="fb-mobile-nav-close" aria-label="Close menu">×</button></div><div class="fb-mobile-nav-links">${links}</div><div class="fb-mobile-nav-bottom"><p>Premium programs, gear and better customer experience.</p></div></div>`;
+    d.body.appendChild(overlay);
+
+    const close=()=>{overlay.classList.remove('show'); d.body.classList.remove('fb-mobile-menu-open');};
+    const open=()=>{overlay.classList.add('show'); d.body.classList.add('fb-mobile-menu-open');};
+    btn.addEventListener('click', ()=> overlay.classList.contains('show') ? close() : open());
+    overlay.querySelector('.fb-mobile-nav-close')?.addEventListener('click', close);
+    overlay.addEventListener('click', e=>{ if(e.target===overlay) close(); });
+    overlay.querySelectorAll('a').forEach(a=>a.addEventListener('click', close));
+    window.addEventListener('resize', ()=>{ if(window.innerWidth>950) close(); });
+  }
+
+  function addCardEyebrows(){
+    const add=(sel,text)=>{
+      d.querySelectorAll(sel).forEach((card,i)=>{
+        if(card.querySelector('.fb-card-eyebrow')) return;
+        const label=d.createElement('div');
+        label.className='fb-card-eyebrow';
+        label.textContent=Array.isArray(text)?(text[i%text.length]):text;
+        const target=card.querySelector('.card-body, .body, .program-text, .split-content, .product-info') || card;
+        target.prepend(label);
+      });
+    };
+    add('.card',['Best seller','Most popular','Premium result']);
+    add('.rec-card',['Gear pick','Recommended','Athlete choice']);
+    add('.program-row',['Tailored training','Pro-level structure','Built for results']);
+  }
+
+  function premiumSectionSpacing(){
+    d.querySelectorAll('.section-head').forEach(head=>{
+      if(head.querySelector('.fb-section-line')) return;
+      const line=d.createElement('div');
+      line.className='fb-section-line';
+      head.appendChild(line);
+    });
+  }
+
+  function boot(){
+    createMobileNav();
+    addCardEyebrows();
+    premiumSectionSpacing();
+  }
+  if(d.readyState==='loading') d.addEventListener('DOMContentLoaded', boot); else boot();
+})();
+
+
+/* ===== FITBRAND v20 FINAL CUSTOMER EXPERIENCE PATCH ===== */
+(function(){
+  'use strict';
+  const d=document;
+  const $=(id)=>d.getElementById(id);
+  const $$=(s,r=d)=>Array.from(r.querySelectorAll(s));
+  const parse=(v,f)=>{try{return v?JSON.parse(v):f}catch{return f}};
+  const USER_KEY='fitbrandUser', SESSION_KEY='fitbrandSessionUser', ORDERS_KEY='fitbrandOrders', CART_KEY='fitbrandCart';
+  function user(){return parse(localStorage.getItem(USER_KEY),null)||parse(sessionStorage.getItem(SESSION_KEY),null)}
+  function safeText(s){return String(s||'').replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]));}
+
+  function improveHero(){
+    const hero=d.querySelector('.hero .hero-content');
+    if(!hero || hero.querySelector('.fb-v20-hero-mini')) return;
+    const currentBtn=hero.querySelector('.btn-silver,.btn-dark,.btn-outline');
+    if(currentBtn && !currentBtn.parentElement.classList.contains('fb-v20-hero-actions')){
+      const wrap=d.createElement('div');
+      wrap.className='fb-v20-hero-actions';
+      currentBtn.parentNode.insertBefore(wrap,currentBtn);
+      wrap.appendChild(currentBtn);
+      const second=d.createElement('a');
+      second.className='btn-outline';
+      second.href='recommended.html';
+      second.textContent='View gear';
+      wrap.appendChild(second);
+    }
+    const mini=d.createElement('div');
+    mini.className='fb-v20-hero-mini';
+    mini.innerHTML='<span>Instant digital access</span><span>Training + nutrition</span><span>Mobile ready</span>';
+    hero.appendChild(mini);
+  }
+
+  function insertTrustbar(){
+    const main=d.querySelector('main');
+    if(!main || d.querySelector('.fb-v20-trustbar')) return;
+    const trust=d.createElement('div');
+    trust.className='fb-v20-trustbar';
+    trust.innerHTML=[
+      ['Instant access','Digital products unlock after checkout.'],
+      ['Customer profile','Save orders, access and generator details.'],
+      ['Premium layout','Clean shopping flow across devices.'],
+      ['Built for results','Programs, gear and AI tools in one place.']
+    ].map(x=>`<div><strong>${x[0]}</strong><span>${x[1]}</span></div>`).join('');
+    const firstHero=main.querySelector('.hero');
+    if(firstHero && firstHero.nextSibling) main.insertBefore(trust, firstHero.nextSibling);
+  }
+
+  function polishCheckout(){
+    const checkoutRight=d.querySelector('.checkout-right');
+    if(checkoutRight && !checkoutRight.querySelector('.fb-v20-checkout-steps')){
+      const steps=d.createElement('div');
+      steps.className='fb-v20-checkout-steps';
+      steps.innerHTML='<span>1. Review</span><span>2. Email</span><span>3. Payment</span>';
+      checkoutRight.prepend(steps);
+      checkoutRight.insertAdjacentHTML('beforeend','<div class="fb-v20-secure-note">Your email is used to connect product access, order history and generators to your FitBrand profile on this device.</div>');
+    }
+    const cartBody=d.querySelector('.cart-body');
+    if(cartBody && !cartBody.querySelector('.fb-v20-cart-note')){
+      cartBody.insertAdjacentHTML('beforeend','<div class="fb-v20-cart-note">Tip: Digital products unlock instantly after confirmation. Use code FIT10 for 10% off.</div>');
+    }
+    const email=$('checkout-email');
+    if(email){
+      email.setAttribute('autocomplete','email');
+      email.setAttribute('inputmode','email');
+    }
+  }
+
+  function profileFormUX(){
+    const map={
+      pfName:['autocomplete','name'],
+      pfEmail:['autocomplete','email'],
+      pfPhone:['autocomplete','tel'],
+      pfAddress:['autocomplete','street-address'],
+      pfAge:['min','16'],
+      pfWeight:['min','30'],
+      pfHeight:['min','120'],
+      modalAge:['min','16'],
+      wizAge:['min','16']
+    };
+    Object.entries(map).forEach(([id,[attr,val]])=>{ const el=$(id); if(el) el.setAttribute(attr,val); });
+    ['pfEmail','checkout-email','loginProfileEmail'].forEach(id=>{const el=$(id); if(el){el.setAttribute('inputmode','email'); el.setAttribute('autocomplete','email');}});
+  }
+
+  function compactOrdersFinal(){
+    const u=user();
+    const raw=parse(localStorage.getItem(ORDERS_KEY),[]);
+    const seen=new Map();
+    for(const order of raw){
+      const items=Array.isArray(order?.items) && order.items.length ? order.items : (order?.product?[order.product]:[]);
+      if(!items.length) continue;
+      const email=(order.email || u?.email || '').toLowerCase();
+      const minute=new Date(order.date || Date.now()).toISOString().slice(0,16);
+      const key=items.slice().sort().join('|')+'__'+email+'__'+(order.status||'Confirmed')+'__'+minute;
+      if(!seen.has(key)){
+        seen.set(key,{...order,items,email,count:order.count||1,status:order.status||'Confirmed',date:order.date||new Date().toISOString()});
+      }else{
+        const prev=seen.get(key);
+        prev.count=(prev.count||1)+(order.count||1);
+      }
+    }
+    const cleaned=[...seen.values()].sort((a,b)=>new Date(b.date)-new Date(a.date));
+    localStorage.setItem(ORDERS_KEY,JSON.stringify(cleaned.slice(0,50)));
+  }
+
+  function cartGuard(){
+    const cart=parse(localStorage.getItem(CART_KEY),[]);
+    if(Array.isArray(cart)){
+      const clean=[...new Set(cart.filter(Boolean))];
+      if(clean.length!==cart.length) localStorage.setItem(CART_KEY,JSON.stringify(clean));
+    }
+  }
+
+  function markCurrentNav(){
+    const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
+    $$('.nav nav a,.fb-mobile-nav-links a').forEach(a=>{
+      const href=(a.getAttribute('href')||'').split('#')[0].split('?')[0].toLowerCase();
+      if(href===page || (page==='' && href==='index.html')) a.classList.add('active');
+    });
+  }
+
+  function generatorLabels(){
+    const modal=$('fitbrandGeneratorModal');
+    if(!modal) return;
+    const title=modal.querySelector('.fb-modal-header h2');
+    if(title) title.textContent='Build your personal training plan';
+    const p=modal.querySelector('.fb-modal-header p');
+    if(p) p.textContent='Choose your unlocked program, use saved profile details and generate a clean plan in seconds.';
+  }
+
+  function boot(){
+    improveHero();
+    insertTrustbar();
+    polishCheckout();
+    profileFormUX();
+    compactOrdersFinal();
+    cartGuard();
+    markCurrentNav();
+    generatorLabels();
+    setTimeout(()=>{improveHero();insertTrustbar();polishCheckout();profileFormUX();markCurrentNav();generatorLabels();},250);
+  }
+  if(d.readyState==='loading') d.addEventListener('DOMContentLoaded',boot); else boot();
 })();
