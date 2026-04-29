@@ -1,8 +1,10 @@
 <header class="nav">
-<a class="brand" href="index.html">
-<img alt="FitBrand logo" class="logo-img" src="assets/fitbrand-logo-real.png"/>
+
+<a href="index.html" class="brand">
+<img class="logo-img" src="assets/fitbrand-logo-real.png" alt="FitBrand logo">
 <span class="brand-word">FITBRAND</span>
 </a>
+
 <nav>
 <a href="index.html">Home</a>
 <a href="programs.html">Programs</a>
@@ -10,35 +12,49 @@
 <a href="about.html">About us</a>
 <a href="policies.html">Policies</a>
 </nav>
+
 <div class="nav-actions">
-<a class="cart-icon-btn" href="cart.html">
+
+<a href="cart.html" class="cart-icon-btn">
 <span class="cart-svg">🛒</span>
 <span class="cart-count" id="cart-count-btn">0</span>
 </a>
+
 <button class="profile-icon-btn" onclick="toggleProfileMenu()">
 <span id="profileInitial">?</span>
 </button>
-<div class="profile-menu" id="profileMenu">
+
+<div id="profileMenu" class="profile-menu">
+
 <div class="profile-menu-head">
+
 <div class="profile-avatar">
 <span id="profileMenuInitial">?</span>
 </div>
+
 <div>
-<strong id="profileMenuName">Guest</strong><br/>
+<strong id="profileMenuName">Guest</strong><br>
 <span id="profileMenuEmail">Not logged in</span>
 </div>
+
 </div>
+
 <button onclick="openProfileModal('profile')">
 View profile
 </button>
+
 <a class="profile-menu-link" href="profile.html">Edit profile</a>
+
 <button id="profileLoginBtn" onclick="openProfileModal('login')">
 Log in
 </button>
+
 <button id="profileLogoutBtn" onclick="logoutFitBrandUser()" style="display:none;">
 Log out
 </button>
+
 </div>
+
 </div>
+
 </header>
-<script src="fitbrand.js"></script>

@@ -1,197 +1,681 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Checkout | FitBrand</title>
-<link href="style.css" rel="stylesheet"/>
-<meta content="Complete your FitBrand order through a clean and secure checkout flow." name="description"/>
-<meta content="FitBrand" name="author"/>
-<meta content="Checkout | FitBrand" property="og:title"/>
-<meta content="Complete your FitBrand order through a clean and secure checkout flow." property="og:description"/>
-<meta content="website" property="og:type"/>
-<meta content="assets/fitbrand-logo-real.png" property="og:image"/>
-<meta content="summary_large_image" name="twitter:card"/>
+<link rel="stylesheet" href="style.css">
+
+<meta name="description" content="Complete your FitBrand order through a clean and secure checkout flow.">
+<meta name="author" content="FitBrand">
+<meta property="og:title" content="Checkout | FitBrand">
+<meta property="og:description" content="Complete your FitBrand order through a clean and secure checkout flow.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/fitbrand-logo-real.png">
+<meta name="twitter:card" content="summary_large_image">
 </head>
+
 <body>
 <button class="back-button-global" onclick="history.back()">← Back</button>
+
 <header class="nav">
-<a class="brand" href="index.html">
-<img alt="FitBrand logo" class="logo-img" src="assets/fitbrand-logo-real.png"/>
-<span class="brand-word">FITBRAND</span>
-</a>
-<nav>
-<a href="index.html">Home</a>
-<a href="programs.html">Programs</a>
-<a href="recommended.html">Recommended Products</a>
-<a href="about.html">About us</a>
-<a href="policies.html">Policies</a>
-</nav>
-<div class="nav-actions">
-<a class="cart-icon-btn" href="cart.html">
-<span class="cart-svg">🛒</span>
-<span class="cart-count" id="cart-count-btn">0</span>
-</a>
-<button class="profile-icon-btn" onclick="toggleProfileMenu()">
-<span id="profileInitial">?</span>
-</button>
-<div class="profile-menu" id="profileMenu">
-<div class="profile-menu-head">
-<div class="profile-avatar">
-<span id="profileMenuInitial">?</span>
-</div>
-<div>
-<strong id="profileMenuName">Guest</strong><br/>
-<span id="profileMenuEmail">Not logged in</span>
-</div>
-</div>
-<button onclick="openProfileModal('profile')">View profile</button>
-<a class="profile-menu-link" href="profile.html">Edit profile</a>
-<button id="profileLoginBtn" onclick="openProfileModal('login')">Log in</button>
-<button id="profileLogoutBtn" onclick="logoutFitBrandUser()" style="display:none;">Log out</button>
-</div>
-</div>
+
+  <a href="index.html" class="brand">
+    <img class="logo-img" src="assets/fitbrand-logo-real.png" alt="FitBrand logo">
+    <span class="brand-word">FITBRAND</span>
+  </a>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="programs.html">Programs</a>
+    <a href="recommended.html">Recommended Products</a>
+    <a href="about.html">About us</a>
+    <a href="policies.html">Policies</a>
+  </nav>
+
+  <div class="nav-actions">
+
+    <a href="cart.html" class="cart-icon-btn">
+      <span class="cart-svg">🛒</span>
+      <span class="cart-count" id="cart-count-btn">0</span>
+    </a>
+
+    <button class="profile-icon-btn" onclick="toggleProfileMenu()">
+      <span id="profileInitial">?</span>
+    </button>
+
+    <div id="profileMenu" class="profile-menu">
+
+      <div class="profile-menu-head">
+
+        <div class="profile-avatar">
+          <span id="profileMenuInitial">?</span>
+        </div>
+
+        <div>
+          <strong id="profileMenuName">Guest</strong><br>
+          <span id="profileMenuEmail">Not logged in</span>
+        </div>
+
+      </div>
+
+      <button onclick="openProfileModal('profile')">View profile</button>
+      <a class="profile-menu-link" href="profile.html">Edit profile</a>
+      <button id="profileLoginBtn" onclick="openProfileModal('login')">Log in</button>
+      <button id="profileLogoutBtn" onclick="logoutFitBrandUser()" style="display:none;">Log out</button>
+
+    </div>
+
+  </div>
+
 </header>
+
 <main class="checkout">
-<div class="checkout-card">
-<div class="checkout-left">
-<p class="eyebrow">Checkout</p>
-<h1>Complete your FitBrand order.</h1>
-<p>Review your order, accept the policies and continue to payment. After confirmation, digital products unlock automatically on this device.</p>
-</div>
-<div class="checkout-right">
-<h2 id="product-title">FitBrand Checkout</h2>
-<div class="checkout-summary">
-<h3>Order Summary</h3>
-<div id="checkout-items"></div>
-<div class="summary-line"><span>Subtotal</span><strong id="subtotal-value">€0.00</strong></div>
-<div class="summary-line"><span>Discount</span><strong id="discount-value">€0.00</strong></div>
-<div class="summary-line"><span>Shipping estimate</span><strong id="shipping-value">€0.00</strong></div>
-<div class="summary-line summary-total"><span>Total</span><strong id="product-price">€0.00</strong></div>
-</div>
-<div class="shipping-box">
-<label>Shipping region</label>
-<select id="shipping-region">
-<option value="digital">Digital only / No shipping</option>
-<option value="dk">Denmark - €4.99</option>
-<option value="eu">Europe - €7.99</option>
-</select>
-</div>
-<div class="checkout-discount">
-<input id="checkout-discount-code" placeholder="Discount code"/>
-<button onclick="applyCheckoutDiscount()">Apply</button>
-</div>
-<div class="discount-message" id="checkout-discount-message">Try code FIT10 for 10% off.</div>
-<input id="checkout-email" placeholder="Email for order confirmation" required="" type="email"/>
-<div class="discount-message" id="checkout-email-message">Email is required before payment. We use it to create/save your FitBrand account on this device.</div>
-<label class="policy-check">
-<input id="accept-policies" type="checkbox"/>
-<span>I have read and accept FitBrand's <a href="policies.html" target="_blank">policies</a>, including the no-refund policy for digital products.</span>
-</label>
-<div class="checkout-methods">
-<div class="payment-pill"><span>Accepted payment methods</span><strong>Stripe / Card</strong></div>
-<div class="payment-pill"><span>Secure checkout</span><strong>Ready to connect</strong></div>
-</div>
-<a class="btn-dark btn-disabled" href="#" id="stripe-link" style="margin-top:10px;">Continue to payment</a>
-<div class="checkout-trust">
-<div class="checkout-benefit"><strong>Secure checkout</strong><span>Your order flow is prepared for secure Stripe/Card payment.</span></div>
-<div class="checkout-benefit"><strong>Instant access</strong><span>Digital programs unlock on the confirmation page.</span></div>
-<div class="checkout-benefit"><strong>Protected order</strong><span>Clear policies and order details before purchase.</span></div>
-<div class="trust-payment-grid">
-<div class="payment-badge">VISA</div>
-<div class="payment-badge">MC</div>
-<div class="payment-badge">Apple Pay</div>
-<div class="payment-badge">PayPal</div>
-</div>
-</div>
-<div class="stripe-note">Stripe-ready: replace links in <strong>stripe-config.js</strong> with real Stripe Payment Links.</div>
-<div class="order-note">Demo mode sends customers to the confirmation page and unlocks digital access on this browser.</div>
-</div>
-</div>
+  <div class="checkout-card">
+
+    <div class="checkout-left">
+      <p class="eyebrow">Checkout</p>
+      <h1>Complete your FitBrand order.</h1>
+      <p>Review your order, accept the policies and continue to payment. After confirmation, digital products unlock automatically on this device.</p>
+    </div>
+
+    <div class="checkout-right">
+      <h2 id="product-title">FitBrand Checkout</h2>
+
+      <div class="checkout-summary">
+        <h3>Order Summary</h3>
+        <div id="checkout-items"></div>
+        <div class="summary-line"><span>Subtotal</span><strong id="subtotal-value">€0.00</strong></div>
+        <div class="summary-line"><span>Discount</span><strong id="discount-value">€0.00</strong></div>
+        <div class="summary-line"><span>Shipping estimate</span><strong id="shipping-value">€0.00</strong></div>
+        <div class="summary-line summary-total"><span>Total</span><strong id="product-price">€0.00</strong></div>
+      </div>
+
+      <div class="shipping-box">
+        <label>Shipping region</label>
+        <select id="shipping-region">
+          <option value="digital">Digital only / No shipping</option>
+          <option value="dk">Denmark - €4.99</option>
+          <option value="eu">Europe - €7.99</option>
+        </select>
+      </div>
+
+      <div class="checkout-discount">
+        <input id="checkout-discount-code" placeholder="Discount code">
+        <button onclick="applyCheckoutDiscount()">Apply</button>
+      </div>
+
+      <div id="checkout-discount-message" class="discount-message">Try code FIT10 for 10% off.</div>
+
+      <input id="checkout-email" type="email" placeholder="Email for order confirmation" required>
+      <div id="checkout-email-message" class="discount-message">Email is required before payment. We use it to create/save your FitBrand account on this device.</div>
+
+      <label class="policy-check">
+        <input type="checkbox" id="accept-policies">
+        <span>I have read and accept FitBrand's <a href="policies.html" target="_blank">policies</a>, including the no-refund policy for digital products.</span>
+      </label>
+
+      <div class="checkout-methods">
+        <div class="payment-pill"><span>Accepted payment methods</span><strong>Stripe / Card</strong></div>
+        <div class="payment-pill"><span>Secure checkout</span><strong>Ready to connect</strong></div>
+      </div>
+
+      <a id="stripe-link" style="margin-top:10px;" class="btn-dark btn-disabled" href="#">Continue to payment</a>
+
+      <div class="checkout-trust">
+        <div class="checkout-benefit"><strong>Secure checkout</strong><span>Your order flow is prepared for secure Stripe/Card payment.</span></div>
+        <div class="checkout-benefit"><strong>Instant access</strong><span>Digital programs unlock on the confirmation page.</span></div>
+        <div class="checkout-benefit"><strong>Protected order</strong><span>Clear policies and order details before purchase.</span></div>
+
+        <div class="trust-payment-grid">
+          <div class="payment-badge">VISA</div>
+          <div class="payment-badge">MC</div>
+          <div class="payment-badge">Apple Pay</div>
+          <div class="payment-badge">PayPal</div>
+        </div>
+      </div>
+
+      <div class="stripe-note">Stripe-ready: replace links in <strong>stripe-config.js</strong> with real Stripe Payment Links.</div>
+      <div class="order-note">Demo mode sends customers to the confirmation page and unlocks digital access on this browser.</div>
+    </div>
+
+  </div>
 </main>
-<div class="cart-drawer-overlay" id="drawer-overlay" onclick="closeCartDrawer()"></div>
-<aside class="cart-drawer" id="cart-drawer">
-<div class="drawer-head">
-<h2>Your cart</h2>
-<button class="drawer-close" onclick="closeCartDrawer()">×</button>
-</div>
-<div class="drawer-body">
-<div id="drawer-items"></div>
-<div class="upsell-section">
-<h3>Recommended add-ons</h3>
-<div class="upsell-card">
-<span>Meal Plan Guide AI</span>
-<button class="remove-item-btn" onclick="addToCart('mealplan')">Add</button>
-</div>
-<div class="upsell-card">
-</div>
-</div>
-</div>
-<div class="drawer-footer">
-<div class="discount-box">
-<input id="drawer-discount" placeholder="Discount code"/>
-<button onclick="applyDrawerDiscount()">Apply</button>
-</div>
-<div class="discount-message" id="drawer-discount-message">Try code FIT10 for 10% off.</div>
-<div class="cart-total">
-<span>Total</span>
-<span id="drawer-total">€0.00</span>
-</div>
-<a class="btn-dark" href="checkout.html?cart=true" style="width:100%;">Continue to checkout</a>
-<a class="btn-outline" href="programs.html" style="width:100%;margin-top:10px;">Continue shopping</a>
-</div>
+
+<div id="drawer-overlay" class="cart-drawer-overlay" onclick="closeCartDrawer()"></div>
+
+<aside id="cart-drawer" class="cart-drawer">
+  <div class="drawer-head">
+    <h2>Your cart</h2>
+    <button class="drawer-close" onclick="closeCartDrawer()">×</button>
+  </div>
+
+  <div class="drawer-body">
+    <div id="drawer-items"></div>
+
+    <div class="upsell-section">
+      <h3>Recommended add-ons</h3>
+      <div class="upsell-card">
+        <span>Meal Plan Guide AI</span>
+        <button class="remove-item-btn" onclick="addToCart('mealplan')">Add</button>
+      </div>
+      <div class="upsell-card">
+      </div>
+    </div>
+  </div>
+
+  <div class="drawer-footer">
+    <div class="discount-box">
+      <input id="drawer-discount" placeholder="Discount code">
+      <button onclick="applyDrawerDiscount()">Apply</button>
+    </div>
+
+    <div id="drawer-discount-message" class="discount-message">Try code FIT10 for 10% off.</div>
+
+    <div class="cart-total">
+      <span>Total</span>
+      <span id="drawer-total">€0.00</span>
+    </div>
+
+    <a class="btn-dark" style="width:100%;" href="checkout.html?cart=true">Continue to checkout</a>
+    <a class="btn-outline" style="width:100%;margin-top:10px;" href="programs.html">Continue shopping</a>
+  </div>
 </aside>
-<div class="mini-cart-popup" id="mini-cart-popup">
-<h3>Added to cart</h3>
-<p>Your product has been added to your FitBrand cart.</p>
-<div class="mini-cart-actions">
-<a class="btn-outline" href="programs.html">Keep shopping</a>
-<a class="btn-dark" href="cart.html">View cart</a>
+
+<div id="mini-cart-popup" class="mini-cart-popup">
+  <h3>Added to cart</h3>
+  <p>Your product has been added to your FitBrand cart.</p>
+  <div class="mini-cart-actions">
+    <a class="btn-outline" href="programs.html">Keep shopping</a>
+    <a class="btn-dark" href="cart.html">View cart</a>
+  </div>
 </div>
+
+<div id="profileModal" class="profile-modal-overlay">
+  <div class="profile-modal">
+    <button class="profile-modal-close" onclick="closeProfileModal()">×</button>
+
+    <div class="profile-modal-head">
+      <div class="profile-avatar large">
+        <span id="profileModalInitial">?</span>
+      </div>
+      <h2 id="profileModalTitle">FitBrand Profile</h2>
+      <p id="profileModalSubtitle">Log in to save your FitBrand experience on this device.</p>
+    </div>
+
+    <div id="profileView" class="profile-modal-content">
+      <div class="profile-info-box">
+        <strong>Name</strong>
+        <span id="profileViewName">Guest</span>
+      </div>
+      <div class="profile-info-box">
+        <strong>Email</strong>
+        <span id="profileViewEmail">Not logged in</span>
+      </div>
+      <div class="profile-info-box">
+        <strong>Status</strong>
+        <span id="profileViewStatus">No active login</span>
+      </div>
+    </div>
+
+    <div id="profileEdit" class="profile-modal-content" style="display:none;">
+      <label>Name</label>
+      <input id="editProfileName" type="text" placeholder="Your name">
+
+      <label>Email</label>
+      <input id="editProfileEmail" type="email" placeholder="your@email.com">
+
+      <button class="btn-dark" onclick="saveFitBrandProfile()">Save profile</button>
+    </div>
+
+    <div id="profileLogin" class="profile-modal-content" style="display:none;">
+      <label>Email</label>
+      <input id="loginProfileEmail" type="email" placeholder="your@email.com">
+
+      <label>Name</label>
+      <input id="loginProfileName" type="text" placeholder="Your name">
+
+      <button class="btn-dark" onclick="loginFitBrandUser()">Log in</button>
+      <p class="profile-small-note">This is a simple local login for now. Real Google login needs Firebase or another login system.</p>
+    </div>
+  </div>
 </div>
-<div class="profile-modal-overlay" id="profileModal">
-<div class="profile-modal">
-<button class="profile-modal-close" onclick="closeProfileModal()">×</button>
-<div class="profile-modal-head">
-<div class="profile-avatar large">
-<span id="profileModalInitial">?</span>
-</div>
-<h2 id="profileModalTitle">FitBrand Profile</h2>
-<p id="profileModalSubtitle">Log in to save your FitBrand experience on this device.</p>
-</div>
-<div class="profile-modal-content" id="profileView">
-<div class="profile-info-box">
-<strong>Name</strong>
-<span id="profileViewName">Guest</span>
-</div>
-<div class="profile-info-box">
-<strong>Email</strong>
-<span id="profileViewEmail">Not logged in</span>
-</div>
-<div class="profile-info-box">
-<strong>Status</strong>
-<span id="profileViewStatus">No active login</span>
-</div>
-</div>
-<div class="profile-modal-content" id="profileEdit" style="display:none;">
-<label>Name</label>
-<input id="editProfileName" placeholder="Your name" type="text"/>
-<label>Email</label>
-<input id="editProfileEmail" placeholder="your@email.com" type="email"/>
-<button class="btn-dark" onclick="saveFitBrandProfile()">Save profile</button>
-</div>
-<div class="profile-modal-content" id="profileLogin" style="display:none;">
-<label>Email</label>
-<input id="loginProfileEmail" placeholder="your@email.com" type="email"/>
-<label>Name</label>
-<input id="loginProfileName" placeholder="Your name" type="text"/>
-<button class="btn-dark" onclick="loginFitBrandUser()">Log in</button>
-<p class="profile-small-note">This is a simple local login for now. Real Google login needs Firebase or another login system.</p>
-</div>
-</div>
-</div>
+
 <script src="stripe-config.js"></script>
+
+<script>
+const productData = {
+  aesthetic: {name:"Aesthetic Program", price:4.99, type:"digital"},
+  shred: {name:"Shred Program", price:6.99, type:"digital"},
+  strength: {name:"Strength Program", price:6.99, type:"digital"},
+  bundle: {name:"Complete Bundle + Meal Plan AI", price:18.97, type:"digital"},
+  mealplan: {name:"Meal Plan Guide AI", price:5.99, type:"digital"},
+  belt: {name:"Lifting Belt", price:24.99, type:"physical"},
+  straps: {name:"Lifting Straps", price:12.99, type:"physical"}
+};
+
+const fitbrandProductData = {
+  aesthetic: {name:"Aesthetic Program", price:4.99},
+  shred: {name:"Shred Program", price:6.99},
+  strength: {name:"Strength Program", price:6.99},
+  bundle: {name:"Complete Bundle + Meal Plan AI", price:18.97},
+  mealplan: {name:"Meal Plan Guide AI", price:5.99},
+  belt: {name:"Lifting Belt", price:24.99},
+  straps: {name:"Lifting Straps", price:12.99}
+};
+
+let checkoutDiscount = localStorage.getItem("fitbrandDiscount") === "FIT10" ? 0.10 : 0;
+let fitbrandDiscount = 0;
+
+function money(n){
+  return "€" + n.toFixed(2);
+}
+
+function getCart(){
+  return JSON.parse(localStorage.getItem("fitbrandCart") || "[]");
+}
+
+function saveCart(cart){
+  localStorage.setItem("fitbrandCart", JSON.stringify(cart));
+}
+
+function groupedCart(cart){
+  const groups = {};
+  cart.forEach(item => groups[item] = (groups[item] || 0) + 1);
+  return groups;
+}
+
+function getCheckoutItems(){
+  const params = new URLSearchParams(location.search);
+
+  if(params.get("cart") === "true"){
+    const cart = getCart();
+    if(cart.length > 0) return cart;
+  }
+
+  return [params.get("product") || "bundle"];
+}
+
+function hasPhysical(items){
+  return items.some(key => (productData[key] || productData.bundle).type === "physical");
+}
+
+function getMainCheckoutProduct(){
+  const items = getCheckoutItems();
+
+  if(items.includes("mealplan")) return "mealplan";
+  if(items.includes("bundle")) return "bundle";
+  if(items.includes("aesthetic")) return "aesthetic";
+  if(items.includes("shred")) return "shred";
+  if(items.includes("strength")) return "strength";
+  if(items.includes("belt")) return "belt";
+  if(items.includes("straps")) return "straps";
+
+  return items[0] || "bundle";
+}
+
+function getConfirmationLink(){
+  const product = getMainCheckoutProduct();
+  return "confirmation.html?product=" + encodeURIComponent(product);
+}
+
+function renderCheckout(){
+  const items = getCheckoutItems();
+  const groups = groupedCart(items);
+  const keys = Object.keys(groups);
+  const list = document.getElementById("checkout-items");
+
+  let subtotal = 0;
+
+  list.innerHTML = keys.map(key => {
+    const p = productData[key] || productData.bundle;
+    const qty = groups[key];
+    subtotal += p.price * qty;
+
+    return `
+      <div class="summary-line">
+        <span>${qty} × ${p.name}</span>
+        <strong>€${(p.price * qty).toFixed(2)}</strong>
+      </div>
+    `;
+  }).join("");
+
+  const physical = hasPhysical(items);
+  const region = document.getElementById("shipping-region");
+
+  if(!physical){
+    region.value = "digital";
+    region.disabled = true;
+  } else {
+    region.disabled = false;
+    if(region.value === "digital") region.value = "dk";
+  }
+
+  let shipping = 0;
+
+  if(physical){
+    if(region.value === "dk") shipping = 4.99;
+    if(region.value === "eu") shipping = 7.99;
+  }
+
+  const discountAmount = subtotal * checkoutDiscount;
+  const total = Math.max(0, subtotal - discountAmount + shipping);
+
+  document.getElementById("product-title").textContent =
+    keys.length > 1 || groups[keys[0]] > 1
+      ? "FitBrand Cart Checkout"
+      : (productData[keys[0]] || productData.bundle).name;
+
+  document.getElementById("subtotal-value").textContent = money(subtotal);
+  document.getElementById("discount-value").textContent = "- " + money(discountAmount);
+  document.getElementById("shipping-value").textContent = money(shipping);
+  document.getElementById("product-price").textContent = money(total);
+
+  updatePaymentLink();
+}
+
+function applyCheckoutDiscount(){
+  const code = (document.getElementById("checkout-discount-code")?.value || "").trim().toUpperCase();
+  const msg = document.getElementById("checkout-discount-message");
+
+  if(code === "FIT10"){
+    checkoutDiscount = 0.10;
+    localStorage.setItem("fitbrandDiscount", "FIT10");
+    msg.textContent = "Discount applied: 10% off.";
+  } else {
+    checkoutDiscount = 0;
+    localStorage.removeItem("fitbrandDiscount");
+    msg.textContent = "Invalid code. Try FIT10.";
+  }
+
+  renderCheckout();
+}
+
+function updatePaymentLink(){
+  const acceptPolicies = document.getElementById("accept-policies");
+  const payButton = document.getElementById("stripe-link");
+  const emailInput = document.getElementById("checkout-email");
+  const email = (emailInput?.value || "").trim();
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const msg = document.getElementById("checkout-email-message");
+
+  if(msg){
+    msg.textContent = emailOk ? "Email ready. Your FitBrand account will be saved with this email." : "Email is required before payment. We use it to create/save your FitBrand account on this device.";
+  }
+
+  if(!acceptPolicies.checked || !emailOk){
+    payButton.classList.add("btn-disabled");
+    payButton.href = "#";
+    return;
+  }
+
+  const product = getMainCheckoutProduct();
+  const params = new URLSearchParams(location.search);
+  const cartMode = params.get("cart") === "true";
+  const stripeLinks = typeof FITBRAND_STRIPE_LINKS !== "undefined" ? FITBRAND_STRIPE_LINKS : {};
+  const stripeUrl = cartMode ? stripeLinks.cart : stripeLinks[product];
+  payButton.classList.remove("btn-disabled");
+  payButton.href = (stripeUrl && !stripeUrl.startsWith("#")) ? stripeUrl : getConfirmationLink();
+}
+
+function updateCartCount(){
+  const cart = getCart();
+
+  document.querySelectorAll("#cart-count, #cart-count-btn").forEach(el => {
+    el.textContent = cart.length;
+    el.style.display = cart.length > 0 ? "inline-flex" : "none";
+  });
+
+  renderCartDrawer();
+}
+
+function addToCart(product){
+  const cart = getCart();
+  cart.push(product);
+  saveCart(cart);
+  updateCartCount();
+  showMiniCartPopup();
+
+  const toast = document.getElementById("cart-toast");
+  if(toast){
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2200);
+  }
+}
+
+function removeDrawerItem(index){
+  const cart = getCart();
+  cart.splice(index, 1);
+  saveCart(cart);
+  updateCartCount();
+  renderCheckout();
+}
+
+function renderCartDrawer(){
+  const drawerItems = document.getElementById("drawer-items");
+  const totalEl = document.getElementById("drawer-total");
+
+  if(!drawerItems || !totalEl) return;
+
+  const cart = getCart();
+
+  if(cart.length === 0){
+    drawerItems.innerHTML = "<p>Your cart is empty.</p>";
+    totalEl.textContent = "€0.00";
+    return;
+  }
+
+  let total = 0;
+
+  drawerItems.innerHTML = cart.map((item, index) => {
+    const p = fitbrandProductData[item] || fitbrandProductData.bundle;
+    total += p.price;
+
+    return `
+      <div class="drawer-item">
+        <div>
+          <strong>${p.name}</strong>
+          <span>FitBrand product</span>
+        </div>
+        <div>
+          <strong>€${p.price.toFixed(2)}</strong><br>
+          <button class="remove-item-btn" onclick="removeDrawerItem(${index})">Remove</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  const discounted = total * (1 - fitbrandDiscount);
+  totalEl.textContent = "€" + discounted.toFixed(2);
+}
+
+function openCartDrawer(){
+  document.getElementById("cart-drawer")?.classList.add("show");
+  document.getElementById("drawer-overlay")?.classList.add("show");
+  renderCartDrawer();
+}
+
+function closeCartDrawer(){
+  document.getElementById("cart-drawer")?.classList.remove("show");
+  document.getElementById("drawer-overlay")?.classList.remove("show");
+}
+
+function applyDrawerDiscount(){
+  const code = (document.getElementById("drawer-discount")?.value || "").trim().toUpperCase();
+  const msg = document.getElementById("drawer-discount-message");
+
+  if(code === "FIT10"){
+    fitbrandDiscount = 0.10;
+    if(msg) msg.textContent = "Discount applied: 10% off.";
+  } else {
+    fitbrandDiscount = 0;
+    if(msg) msg.textContent = "Invalid code. Try FIT10.";
+  }
+
+  renderCartDrawer();
+}
+
+function showMiniCartPopup(){
+  const popup = document.getElementById("mini-cart-popup");
+  if(!popup) return;
+
+  popup.classList.add("show");
+  setTimeout(() => popup.classList.remove("show"), 3000);
+}
+
+function getFitBrandUser(){
+  return JSON.parse(localStorage.getItem("fitbrandUser") || "null");
+}
+
+function saveFitBrandUser(user){
+  localStorage.setItem("fitbrandUser", JSON.stringify(user));
+  updateProfileUI();
+}
+
+function updateProfileUI(){
+  const user = getFitBrandUser();
+
+  const name = user?.name || "Guest";
+  const email = user?.email || "Not logged in";
+  const initial = user?.name ? user.name.charAt(0).toUpperCase() : user?.email ? user.email.charAt(0).toUpperCase() : "?";
+
+  document.querySelectorAll("#profileInitial, #profileMenuInitial, #profileModalInitial").forEach(el => {
+    if(el) el.textContent = initial;
+  });
+
+  const profileMenuName = document.getElementById("profileMenuName");
+  const profileMenuEmail = document.getElementById("profileMenuEmail");
+  const profileViewName = document.getElementById("profileViewName");
+  const profileViewEmail = document.getElementById("profileViewEmail");
+  const profileViewStatus = document.getElementById("profileViewStatus");
+  const loginBtn = document.getElementById("profileLoginBtn");
+  const logoutBtn = document.getElementById("profileLogoutBtn");
+
+  if(profileMenuName) profileMenuName.textContent = name;
+  if(profileMenuEmail) profileMenuEmail.textContent = email;
+  if(profileViewName) profileViewName.textContent = name;
+  if(profileViewEmail) profileViewEmail.textContent = email;
+  if(profileViewStatus) profileViewStatus.textContent = user ? "Logged in on this device" : "No active login";
+
+  if(loginBtn) loginBtn.style.display = user ? "none" : "block";
+  if(logoutBtn) logoutBtn.style.display = user ? "block" : "none";
+}
+
+function toggleProfileMenu(){
+  const menu = document.getElementById("profileMenu");
+  if(menu) menu.classList.toggle("show");
+}
+
+function openProfileModal(mode){
+  const modal = document.getElementById("profileModal");
+  const view = document.getElementById("profileView");
+  const edit = document.getElementById("profileEdit");
+  const login = document.getElementById("profileLogin");
+  const title = document.getElementById("profileModalTitle");
+  const subtitle = document.getElementById("profileModalSubtitle");
+
+  if(!modal) return;
+
+  modal.classList.add("show");
+
+  if(view) view.style.display = mode === "profile" ? "block" : "none";
+  if(edit) edit.style.display = mode === "edit" ? "block" : "none";
+  if(login) login.style.display = mode === "login" ? "block" : "none";
+
+  if(mode === "profile"){
+    title.textContent = "Your Profile";
+    subtitle.textContent = "View your FitBrand profile details.";
+  }
+
+  if(mode === "edit"){
+    title.textContent = "Edit Profile";
+    subtitle.textContent = "Update your name and email.";
+    const user = getFitBrandUser();
+    document.getElementById("editProfileName").value = user?.name || "";
+    document.getElementById("editProfileEmail").value = user?.email || "";
+  }
+
+  if(mode === "login"){
+    title.textContent = "Log in";
+    subtitle.textContent = "Use your email to save your FitBrand experience on this device.";
+  }
+
+  const menu = document.getElementById("profileMenu");
+  if(menu) menu.classList.remove("show");
+}
+
+function closeProfileModal(){
+  const modal = document.getElementById("profileModal");
+  if(modal) modal.classList.remove("show");
+}
+
+function saveFitBrandProfile(){
+  const name = document.getElementById("editProfileName").value.trim();
+  const email = document.getElementById("editProfileEmail").value.trim();
+
+  if(!name || !email){
+    alert("Please enter your name and email.");
+    return;
+  }
+
+  saveFitBrandUser({name, email});
+  closeProfileModal();
+}
+
+function loginFitBrandUser(){
+  const email = document.getElementById("loginProfileEmail").value.trim();
+  const name = document.getElementById("loginProfileName").value.trim();
+
+  if(!email || !name){
+    alert("Please enter your name and email.");
+    return;
+  }
+
+  saveFitBrandUser({name, email});
+  closeProfileModal();
+}
+
+function logoutFitBrandUser(){
+  localStorage.removeItem("fitbrandUser");
+  updateProfileUI();
+
+  const menu = document.getElementById("profileMenu");
+  if(menu) menu.classList.remove("show");
+}
+
+document.addEventListener("click", function(e){
+  const menu = document.getElementById("profileMenu");
+  const profileBtn = document.querySelector(".profile-icon-btn");
+
+  if(menu && profileBtn && !menu.contains(e.target) && !profileBtn.contains(e.target)){
+    menu.classList.remove("show");
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  updateCartCount();
+  updateProfileUI();
+  renderCheckout();
+
+  document.getElementById("shipping-region").addEventListener("change", renderCheckout);
+  document.getElementById("accept-policies").addEventListener("change", updatePaymentLink);
+  document.getElementById("checkout-email").addEventListener("input", updatePaymentLink);
+  document.getElementById("stripe-link").addEventListener("click", function(e){
+    const email = (document.getElementById("checkout-email")?.value || "").trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ e.preventDefault(); alert("Please enter your email first."); return; }
+    const existing = typeof getFitBrandUser === "function" ? getFitBrandUser() : JSON.parse(localStorage.getItem("fitbrandUser") || "null");
+    const name = existing?.name || email.split("@")[0].replace(/[._-]/g," ").replace(/\b\w/g, ch => ch.toUpperCase());
+    if(typeof saveFitBrandUser === "function") saveFitBrandUser({name,email}, true); else localStorage.setItem("fitbrandUser", JSON.stringify({name,email}));
+  });
+
+  document.querySelectorAll(".cart-icon-btn").forEach(btn => {
+    btn.addEventListener("click", function(e){
+      e.preventDefault();
+      openCartDrawer();
+    });
+  });
+});
+</script>
 
 <script src="fitbrand.js"></script>
 </body>
