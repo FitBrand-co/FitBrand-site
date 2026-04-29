@@ -47,6 +47,56 @@
       setTimeout(()=>n.classList.remove('show'), 2800);
     }
 
+    function ensureAuthMessage(){
+      let box = document.getElementById('fbAuthMessage');
+      if(box) return box;
+      box = document.createElement('div');
+      box.id = 'fbAuthMessage';
+      box.className = 'fb-auth-message';
+      box.innerHTML = `
+        <div class="fb-auth-message-card">
+          <button type="button" class="fb-auth-message-close" aria-label="Close">×</button>
+          <div class="fb-auth-message-icon" id="fbAuthMessageIcon">✓</div>
+          <h3 id="fbAuthMessageTitle">Check your email</h3>
+          <p id="fbAuthMessageText">We sent you a secure login link.</p>
+          <button type="button" class="fb-auth-message-ok">Got it</button>
+        </div>`;
+      document.body.appendChild(box);
+      box.addEventListener('click', (e)=>{
+        if(e.target === box || e.target.closest('.fb-auth-message-close') || e.target.closest('.fb-auth-message-ok')){
+          box.classList.remove('show');
+        }
+      });
+      return box;
+    }
+
+    function showAuthMessage(type, title, message){
+      const box = ensureAuthMessage();
+      const icon = document.getElementById('fbAuthMessageIcon');
+      const titleEl = document.getElementById('fbAuthMessageTitle');
+      const textEl = document.getElementById('fbAuthMessageText');
+      box.classList.toggle('error', type === 'error');
+      box.classList.toggle('success', type !== 'error');
+      if(icon) icon.textContent = type === 'error' ? '!' : '✓';
+      if(titleEl) titleEl.textContent = title;
+      if(textEl) textEl.textContent = message;
+      box.classList.add('show');
+    }
+
+    function friendlyAuthError(message){
+      const raw = String(message || '').toLowerCase();
+      if(raw.includes('rate limit') || raw.includes('too many') || raw.includes('email rate')){
+        return {
+          title: 'Too many login emails',
+          message: 'For security, Supabase blocks too many login emails in a short time. Wait 5–10 minutes, then try again. If you already clicked the email link, refresh the page instead.'
+        };
+      }
+      return {
+        title: 'Login link could not be sent',
+        message: message || 'Something went wrong. Check the email address and try again.'
+      };
+    }
+
     function loadSupabase(){
       if(!isConfigured()) return Promise.resolve(null);
       if(window.supabase && window.supabase.createClient){
@@ -98,16 +148,33 @@
         options: { emailRedirectTo: redirectTo }
       });
       if(error){
-        alert(error.message || 'Login failed.');
+        const friendly = friendlyAuthError(error.message);
+        showAuthMessage('error', friendly.title, friendly.message);
         return false;
       }
-      showNotice('Check your email for the FitBrand login link.');
+      showAuthMessage('success', 'Check your email', 'We sent you a secure FitBrand login link. Open your email and click the confirmation link to sign in.');
       return true;
     }
 
     async function logoutBackend(){
       const sb = await loadSupabase();
       if(sb) await sb.auth.signOut();
+    }
+
+
+
+    function polishAuthCopy(){
+      document.querySelectorAll('.profile-small-note').forEach(el => {
+        if(/demo login|firebase|backend/i.test(el.textContent || '')){
+          el.textContent = 'We will send a secure login link to your email. No password needed.';
+        }
+      });
+      const subtitle = document.getElementById('profileModalSubtitle');
+      if(subtitle && /orders and product access connect/i.test(subtitle.textContent || '')){
+        subtitle.textContent = 'Use your email to receive a secure login link and connect your orders to your profile.';
+      }
+      const btn = document.querySelector('#profileLogin button, button[onclick*="loginFitBrandUser"]');
+      if(btn && /sign in\/up|log in/i.test(btn.textContent || '')) btn.textContent = 'Send login link';
     }
 
     function patchLoginButtons(){
@@ -254,6 +321,7 @@
     }
 
     function boot(){
+      polishAuthCopy();
       patchLoginButtons();
       patchCheckout();
       renderOrders();
