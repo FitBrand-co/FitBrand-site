@@ -9,7 +9,7 @@
 window.FITBRAND_CONFIG = {
   backendEnabled: true,
   supabaseUrl: "https://xlwctuqnsiycqametagq.supabase.co",
-  supabaseAnonKey: "PASTE_SUPABASE_ANON_KEY_HERE",
+  supabaseAnonKey: "sb_publishable_asnOknbDtN5OHUqur0dYdw_Eaivn_M8",
   functionsBaseUrl: "",
 
   // Use your real Stripe Price IDs here after creating products/prices in Stripe.
