@@ -2210,3 +2210,20 @@ body{background:#f2f2ef!important;}
   .fb-auth-message-card{padding:34px 22px 24px;border-radius:26px;}
   .fb-auth-message-icon{width:64px;height:64px;font-size:30px;}
 }
+/* ===== FITBRAND FORCE HIDE LOGGED-OUT ACCOUNT LINKS ===== */
+body.fb-is-logged-out .profile-menu a[href="profile.html"],
+body.fb-is-logged-out .profile-menu a[href="products-access.html"],
+body.fb-is-logged-out .profile-menu a[href="orders.html"],
+body.fb-is-logged-out .profile-menu [data-auth-only],
+body.fb-is-logged-out #profileLogoutBtn {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+body.fb-is-logged-out #profileLoginBtn,
+body.fb-is-logged-out .profile-menu [data-guest-only] {
+  display: flex !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
