@@ -1885,3 +1885,170 @@ body{opacity:0;animation:pageFadeIn .65s ease forwards}
 .fb-age-error{border-color:#d93636!important;box-shadow:0 0 0 4px rgba(217,54,54,.12)!important;}
 .fb-ai-warning{margin-top:14px;padding:14px 16px;border-radius:16px;background:#fff3f3;border:1px solid rgba(217,54,54,.20);color:#8b1c1c;font-weight:800;line-height:1.45;}
 .fb-access-logged-out .access-card.owned{opacity:.55;filter:grayscale(.2)}
+
+/* ===== FITBRAND v16 CUSTOMER UX + ICON POLISH PATCH ===== */
+:root{
+  --fb-ink:#111214;
+  --fb-charcoal:#1b1c20;
+  --fb-soft-charcoal:#24252a;
+  --fb-panel:#f6f6f4;
+  --fb-panel-2:#ececea;
+  --fb-line:rgba(17,18,20,.12);
+}
+body{background:#f2f2ef!important;}
+.btn-dark,.cart-checkout,.drawer-checkout-btn,.remove-item-btn,.coming-soon-pill{
+  background:linear-gradient(135deg,#24252a,#141518)!important;
+  color:#fff!important;
+  border:1px solid rgba(255,255,255,.10)!important;
+  box-shadow:0 14px 34px rgba(17,18,20,.18)!important;
+}
+.btn-dark:hover,.cart-checkout:hover,.drawer-checkout-btn:hover{background:linear-gradient(135deg,#303137,#1b1c20)!important;transform:translateY(-2px)!important;}
+
+/* Premium customer profile menu */
+.profile-icon-btn{
+  background:linear-gradient(145deg,#fff,#f4f4f2 50%,#d9d9d5)!important;
+  border:1px solid rgba(17,18,20,.12)!important;
+  box-shadow:0 12px 26px rgba(17,18,20,.12),inset 0 1px 0 rgba(255,255,255,.95)!important;
+}
+.profile-menu{
+  width:min(390px,calc(100vw - 24px))!important;
+  padding:22px!important;
+  border-radius:34px!important;
+  background:rgba(249,249,247,.92)!important;
+  border:1px solid rgba(255,255,255,.82)!important;
+  box-shadow:0 28px 90px rgba(17,18,20,.22)!important;
+  color:var(--fb-ink)!important;
+}
+.profile-menu-head{
+  grid-template-columns:68px minmax(0,1fr)!important;
+  gap:16px!important;
+  padding:4px 0 18px!important;
+  margin-bottom:12px!important;
+  border-bottom:1px solid rgba(17,18,20,.10)!important;
+}
+.profile-avatar,.profile-avatar.large{
+  width:68px!important;height:68px!important;min-width:68px!important;min-height:68px!important;
+  background:linear-gradient(145deg,#fff,#eeeeeb)!important;
+  border:1px solid rgba(17,18,20,.12)!important;
+  box-shadow:0 10px 24px rgba(17,18,20,.08),inset 0 1px 0 rgba(255,255,255,.95)!important;
+}
+.profile-avatar span,.profile-avatar.large span{font-size:24px!important;color:#050505!important;}
+.profile-menu-id strong,#profileMenuName{font-size:24px!important;line-height:1.05!important;letter-spacing:-.02em!important;}
+.profile-menu-id span,#profileMenuEmail{font-size:15px!important;line-height:1.25!important;color:rgba(17,18,20,.62)!important;}
+.profile-menu button,.profile-menu-link{
+  min-height:52px!important;
+  padding:0 12px!important;
+  margin:4px 0!important;
+  border-radius:17px!important;
+  background:transparent!important;
+  color:var(--fb-ink)!important;
+  font-size:15px!important;
+  font-weight:950!important;
+  letter-spacing:.02em!important;
+  text-transform:uppercase!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+}
+.profile-menu button:hover,.profile-menu-link:hover{
+  background:rgba(17,18,20,.055)!important;
+  transform:translateX(3px)!important;
+  box-shadow:none!important;
+}
+.profile-menu button::before,.profile-menu-link::before{
+  content:""!important;
+  width:34px!important;height:34px!important;min-width:34px!important;
+  border-radius:12px!important;
+  background:rgba(17,18,20,.075)!important;
+  background-position:center!important;background-repeat:no-repeat!important;background-size:18px 18px!important;
+  opacity:1!important;
+}
+.profile-menu button:nth-of-type(1)::before{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='%23111214' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M4 21c1.7-4.2 5-6 8-6s6.3 1.8 8 6'/%3E%3C/svg%3E")!important;
+}
+.profile-menu .profile-menu-link[href='profile.html']::before{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='%23111214' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 20h9'/%3E%3Cpath d='M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z'/%3E%3C/svg%3E")!important;
+}
+.profile-menu .profile-menu-link[href='products-access.html']::before{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='%23111214' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 3h12l2 6H4Z'/%3E%3Cpath d='M5 9v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9'/%3E%3Cpath d='M9 13h6'/%3E%3C/svg%3E")!important;
+}
+.profile-menu .profile-menu-link[href='orders.html']::before{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='%23111214' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 6h13'/%3E%3Cpath d='M8 12h13'/%3E%3Cpath d='M8 18h13'/%3E%3Cpath d='M3 6h.01'/%3E%3Cpath d='M3 12h.01'/%3E%3Cpath d='M3 18h.01'/%3E%3C/svg%3E")!important;
+}
+#profileLoginBtn::before{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='%23111214' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4'/%3E%3Cpath d='M10 17l5-5-5-5'/%3E%3Cpath d='M15 12H3'/%3E%3C/svg%3E")!important;
+}
+#profileLogoutBtn::before{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='%23111214' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18.4 6.6a9 9 0 1 1-12.8 0'/%3E%3Cpath d='M12 2v10'/%3E%3C/svg%3E")!important;
+}
+
+/* Lighter, cleaner AI generators */
+.fb-premium-ai-wizard,.fb-meal-wizard.fb-final-wizard,.fb-generator-modal,.meal-output{
+  background:radial-gradient(circle at 12% 0%,rgba(255,255,255,.16),transparent 30%),linear-gradient(145deg,#26272c,#17181c 58%,#222328)!important;
+  border:1px solid rgba(255,255,255,.18)!important;
+  box-shadow:0 26px 75px rgba(17,18,20,.34)!important;
+}
+.fb-ai-top,.fb-meal-choice-head{align-items:center!important;}
+.fb-ai-top h3,.fb-meal-choice-head h3{letter-spacing:-.04em!important;}
+.fb-ai-top p,.fb-meal-choice-head p{max-width:720px!important;color:rgba(255,255,255,.76)!important;}
+.fb-ai-top>strong,#mealStepPill,.fb-meal-step-pill{
+  background:linear-gradient(135deg,#fff,#e6e6e1)!important;
+  color:#111214!important;
+  border:1px solid rgba(255,255,255,.65)!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.12)!important;
+}
+.fb-ai-profile-card,.fb-program-track-panel,.fb-track-specific-options,.fb-meal-profile-summary{
+  background:rgba(255,255,255,.09)!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06)!important;
+}
+.fb-choice-grid,.fb-program-track-options,.fb-meal-options{gap:14px!important;}
+.fb-choice-grid button,.fb-program-track-options button,.fb-track-specific-options label,.fb-meal-options button{
+  background:rgba(255,255,255,.09)!important;
+  border:1px solid rgba(255,255,255,.14)!important;
+  border-radius:24px!important;
+  box-shadow:0 10px 30px rgba(0,0,0,.10)!important;
+}
+.fb-choice-grid button:hover,.fb-program-track-options button:hover,.fb-meal-options button:hover{
+  background:rgba(255,255,255,.16)!important;
+  border-color:rgba(255,255,255,.32)!important;
+}
+.fb-choice-grid button.selected,.fb-program-track-options button.selected,.fb-meal-options button.selected{
+  background:linear-gradient(135deg,#fff,#ecece8)!important;
+  color:#111214!important;
+  box-shadow:0 18px 42px rgba(0,0,0,.20)!important;
+}
+.fb-ai-form-grid input,.fb-ai-form-grid select,.fb-meal-mini-form input,.fb-meal-mini-form select{
+  background:rgba(255,255,255,.12)!important;
+  border:1px solid rgba(255,255,255,.18)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06)!important;
+}
+.fb-ai-actions button:first-child,#wizBack{background:rgba(255,255,255,.10)!important;border:1px solid rgba(255,255,255,.18)!important;}
+.fb-ai-actions button:last-child,.fb-ai-generate,#wizNext,.fb-meal-generate-final{
+  background:linear-gradient(135deg,#ffffff,#ddddda)!important;
+  color:#111214!important;
+  box-shadow:0 14px 34px rgba(0,0,0,.18)!important;
+}
+
+/* Softer cards across customer pages */
+.product-card,.access-card,.order-card,.account-card,.profile-page-card,.cart-container,.checkout-card,.summary-card,.upsell-card{
+  background:linear-gradient(180deg,#fff,#f8f8f6)!important;
+  border:1px solid rgba(17,18,20,.10)!important;
+  box-shadow:0 18px 55px rgba(17,18,20,.08)!important;
+}
+.access-card.owned{
+  background:linear-gradient(145deg,#2b2c31,#1b1c20)!important;
+  border:1px solid rgba(255,255,255,.14)!important;
+  box-shadow:0 18px 50px rgba(17,18,20,.18)!important;
+}
+.fitbrand-bundle-offer,.fb-bundle-super{
+  background:radial-gradient(circle at 18% 10%,rgba(255,255,255,.18),transparent 26%),linear-gradient(135deg,#2a2b31 0%,#1b1c20 60%,#25262b 100%)!important;
+}
+@media(max-width:900px){
+  .profile-menu{right:-8px!important;padding:18px!important;border-radius:28px!important;}
+  .profile-menu-head{grid-template-columns:58px minmax(0,1fr)!important;gap:14px!important;}
+  .profile-avatar,.profile-avatar.large{width:58px!important;height:58px!important;min-width:58px!important;min-height:58px!important;}
+  .profile-avatar span,.profile-avatar.large span{font-size:21px!important;}
+  .profile-menu-id strong,#profileMenuName{font-size:21px!important;}
+  .profile-menu button,.profile-menu-link{min-height:50px!important;font-size:13px!important;}
+}
