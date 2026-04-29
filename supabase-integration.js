@@ -699,3 +699,151 @@
   if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();
 })();
+/* ===== FITBRAND REAL AUTH GATE FIX ===== */
+(function(){
+  "use strict";
+
+  function readUser(){
+    try {
+      return JSON.parse(localStorage.getItem("fitbrandUser") || "null");
+    } catch {
+      return null;
+    }
+  }
+
+  function isRealSupabaseUser(){
+    const user = readUser();
+    return Boolean(
+      user &&
+      user.email &&
+      user.supabaseId &&
+      user.backend === "supabase"
+    );
+  }
+
+  function clearFakeLoginIfNeeded(){
+    const user = readUser();
+
+    // If profile was saved locally but not connected to Supabase, it is not a real login.
+    if(user && (!user.supabaseId || user.backend !== "supabase")){
+      localStorage.removeItem("fitbrandUser");
+      sessionStorage.removeItem("fitbrandSessionUser");
+    }
+  }
+
+  function setText(id, value){
+    const el = document.getElementById(id);
+    if(el) el.textContent = value;
+  }
+
+  function initialsFrom(user){
+    if(!user || !user.email) return "?";
+    const base = user.name || user.email.split("@")[0];
+    const parts = base.replace(/[._-]+/g, " ").trim().split(/\s+/).filter(Boolean);
+    if(parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+    return base.slice(0, 2).toUpperCase();
+  }
+
+  function updateProfileAuthUI(){
+    clearFakeLoginIfNeeded();
+
+    const user = readUser();
+    const loggedIn = isRealSupabaseUser();
+
+    document.body.classList.toggle("fb-is-logged-in", loggedIn);
+    document.body.classList.toggle("fb-is-logged-out", !loggedIn);
+
+    if(loggedIn){
+      const initials = initialsFrom(user);
+
+      ["profileInitial", "profileMenuInitial", "profileModalInitial"].forEach(id => {
+        setText(id, initials);
+      });
+
+      ["profileMenuName", "profileViewName"].forEach(id => {
+        setText(id, user.name || user.email.split("@")[0]);
+      });
+
+      ["profileMenuEmail", "profileViewEmail"].forEach(id => {
+        setText(id, user.email);
+      });
+
+      setText("profileViewStatus", "Logged in with Supabase");
+      setText("profileModalTitle", "Your Profile");
+      setText("profileModalSubtitle", "Your FitBrand account is connected.");
+
+    } else {
+      ["profileInitial", "profileMenuInitial", "profileModalInitial"].forEach(id => {
+        setText(id, "?");
+      });
+
+      ["profileMenuName", "profileViewName"].forEach(id => {
+        setText(id, "Guest");
+      });
+
+      ["profileMenuEmail", "profileViewEmail"].forEach(id => {
+        setText(id, "Not logged in");
+      });
+
+      setText("profileViewStatus", "Not logged in");
+      setText("profileModalTitle", "Sign in/up");
+      setText("profileModalSubtitle", "Sign in to save orders, product access and profile information.");
+    }
+
+    // Hide protected profile links when logged out
+    const protectedSelectors = [
+      'a[href="profile.html"]',
+      'a[href="products-access.html"]',
+      'a[href="orders.html"]',
+      '[data-auth-only]',
+      '#profileLogoutBtn'
+    ];
+
+    protectedSelectors.forEach(selector => {
+      document.querySelectorAll(selector).forEach(el => {
+        el.style.display = loggedIn ? "" : "none";
+      });
+    });
+
+    // Show login button only when logged out
+    document.querySelectorAll("#profileLoginBtn, [data-guest-only]").forEach(el => {
+      el.style.display = loggedIn ? "none" : "";
+    });
+  }
+
+  function protectProfilePage(){
+    const isProfilePage = location.pathname.endsWith("profile.html");
+    if(!isProfilePage) return;
+
+    if(!isRealSupabaseUser()){
+      const form = document.getElementById("fullProfileForm");
+      if(form){
+        form.addEventListener("submit", function(e){
+          e.preventDefault();
+          alert("Please sign in first before saving profile information.");
+          if(typeof window.openProfileModal === "function"){
+            window.openProfileModal("login");
+          }
+        }, true);
+      }
+    }
+  }
+
+  const oldUpdate = window.updateFitBrandProfileUI;
+  window.updateFitBrandProfileUI = function(){
+    if(typeof oldUpdate === "function"){
+      try { oldUpdate(); } catch(e) {}
+    }
+    updateProfileAuthUI();
+  };
+
+  document.addEventListener("DOMContentLoaded", function(){
+    updateProfileAuthUI();
+    protectProfilePage();
+
+    setTimeout(updateProfileAuthUI, 300);
+    setTimeout(updateProfileAuthUI, 1000);
+  });
+
+  window.addEventListener("storage", updateProfileAuthUI);
+})();
