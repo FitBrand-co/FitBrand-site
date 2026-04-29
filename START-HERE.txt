@@ -1,0 +1,10 @@
+FITBRAND v22 GUARANTEED-LOAD
+
+Open index.html directly.
+
+For hosting:
+1. Unzip this ZIP.
+2. Upload the CONTENTS of this folder, not the folder itself, unless your host supports folder root.
+3. index.html, style.css, fitbrand.js and the assets folder must be in the same root directory.
+
+This build removes inline scripts and uses one small stable fitbrand.js file to avoid loading/freezing errors.

@@ -1,59 +1,56 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Profile | FitBrand</title>
-<link rel="stylesheet" href="style.css">
-<meta name="description" content="Edit your FitBrand profile and saved fitness information.">
+<link href="style.css" rel="stylesheet"/>
+<meta content="Edit your FitBrand profile and saved fitness information." name="description"/>
 </head>
 <body>
 <button class="back-button-global" onclick="history.back()">← Back</button>
 <header class="nav">
-  <a href="index.html" class="brand"><img class="logo-img" src="assets/fitbrand-logo-real.png" alt="FitBrand logo"><span class="brand-word">FITBRAND</span></a>
-  <nav><a href="index.html">Home</a><a href="programs.html">Programs</a><a href="recommended.html">Recommended Products</a><a href="about.html">About us</a><a href="policies.html">Policies</a></nav>
-  <div class="nav-actions"><a href="cart.html" class="cart-icon-btn"><span class="cart-svg">🛒</span><span class="cart-count" id="cart-count-btn">0</span></a></div>
+<a class="brand" href="index.html"><img alt="FitBrand logo" class="logo-img" src="assets/fitbrand-logo-real.png"/><span class="brand-word">FITBRAND</span></a>
+<nav><a href="index.html">Home</a><a href="programs.html">Programs</a><a href="recommended.html">Recommended Products</a><a href="about.html">About us</a><a href="policies.html">Policies</a></nav>
+<div class="nav-actions"><a class="cart-icon-btn" href="cart.html"><span class="cart-svg">🛒</span><span class="cart-count" id="cart-count-btn">0</span></a></div>
 </header>
 <main class="profile-page">
-  <div class="profile-page-card">
-    <div class="premium-badge">FitBrand Account</div>
-    <h1>Your profile</h1>
-    <p>Save your details here. The meal plan and training generators can use these values to auto-fill or suggest your information next time.</p>
-    <form id="fullProfileForm" class="profile-page-form">
-      <div class="profile-page-grid">
-        <input id="pfName" class="wide" placeholder="Full name">
-        <input id="pfEmail" class="wide" type="email" placeholder="Email">
-        <input id="pfPhone" placeholder="Phone number">
-        <input id="pfAddress" placeholder="Address">
-        <select id="pfGender"><option value="">Gender</option><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option></select>
-        <input id="pfAge" type="number" placeholder="Age">
-        <input id="pfWeight" type="number" placeholder="Weight (kg)">
-        <input id="pfHeight" type="number" placeholder="Height (cm)">
-        <select id="pfLevel"><option value="">Fitness level</option><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select>
-        <select id="pfTrainingLocation"><option value="">Training location</option><option value="gym">Gym</option><option value="home">Home</option></select>
-        <select id="pfTrainingDays"><option value="">Workout days per week</option><option value="3">3 days</option><option value="4">4 days</option><option value="5">5 days</option><option value="6">6+ days</option></select>
-        <input id="pfEquipment" placeholder="Equipment available, e.g. gym, dumbbells, bands">
-        <input id="pfAllergies" placeholder="Foods to avoid / allergies">
-        <select id="pfGoal"><option value="">Main goal</option><option value="muscle">Build muscle</option><option value="fatloss">Lose fat</option><option value="strength">Get stronger</option><option value="maintenance">Maintain</option></select>
-      </div>
-      <button class="profile-main-btn" type="submit" style="margin-top:18px;">Save profile</button>
-      <button class="profile-google-btn" type="button" onclick="logoutFitBrandUser()">Log out</button>
-    </form>
-  </div>
+<div class="profile-page-card">
+<div class="premium-badge">FitBrand Account</div>
+<h1>Your profile</h1>
+<p>Save your details here. The meal plan and training generators can use these values to auto-fill or suggest your information next time.</p>
+<form class="profile-page-form" id="fullProfileForm">
+<div class="profile-page-grid">
+<input class="wide" id="pfName" placeholder="Full name"/>
+<input class="wide" id="pfEmail" placeholder="Email" type="email"/>
+<input id="pfPhone" placeholder="Phone number"/>
+<input id="pfAddress" placeholder="Address"/>
+<select id="pfGender"><option value="">Gender</option><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option></select>
+<input id="pfAge" placeholder="Age" type="number"/>
+<input id="pfWeight" placeholder="Weight (kg)" type="number"/>
+<input id="pfHeight" placeholder="Height (cm)" type="number"/>
+<select id="pfLevel"><option value="">Fitness level</option><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select>
+<select id="pfTrainingLocation"><option value="">Training location</option><option value="gym">Gym</option><option value="home">Home</option></select>
+<select id="pfTrainingDays"><option value="">Workout days per week</option><option value="3">3 days</option><option value="4">4 days</option><option value="5">5 days</option><option value="6">6+ days</option></select>
+<input id="pfEquipment" placeholder="Equipment available, e.g. gym, dumbbells, bands"/>
+<input id="pfAllergies" placeholder="Foods to avoid / allergies"/>
+<select id="pfGoal"><option value="">Main goal</option><option value="muscle">Build muscle</option><option value="fatloss">Lose fat</option><option value="strength">Get stronger</option><option value="maintenance">Maintain</option></select>
+</div>
+<button class="profile-main-btn" style="margin-top:18px;" type="submit">Save profile</button>
+<button class="profile-google-btn" onclick="logoutFitBrandUser()" type="button">Log out</button>
+</form>
+</div>
 </main>
 <footer>
-  <div class="footer-grid">
-    <div><a class="brand" href="index.html"><img class="logo-img" src="assets/fitbrand-logo-real.png" alt="FitBrand logo"></a><p>Premium programs. Real results. No excuses.</p></div>
-    <div><h4>Support</h4><a href="policies.html">Our Policies</a><a href="policies.html#refunds">Refund Policy</a><a href="policies.html#privacy">Privacy Policy</a><a href="policies.html#terms">Terms & Conditions</a></div>
-    <div><h4>Connect</h4><a href="https://instagram.com/fitbrand.co" target="_blank" rel="noreferrer">Instagram</a><a href="https://tiktok.com/@fitbrand.co" target="_blank" rel="noreferrer">TikTok</a><a href="https://www.facebook.com/profile.php?id=61588721279095" target="_blank" rel="noreferrer">Facebook</a><a href="mailto:support@fitbrand.co">Email</a></div>
-  </div>
-  <div class="copy"><span>© 2026 FitBrand. All rights reserved.</span><span>Built for your transformation.</span></div>
+<div class="footer-grid">
+<div><a class="brand" href="index.html"><img alt="FitBrand logo" class="logo-img" src="assets/fitbrand-logo-real.png"/></a><p>Premium programs. Real results. No excuses.</p></div>
+<div><h4>Support</h4><a href="policies.html">Our Policies</a><a href="policies.html#refunds">Refund Policy</a><a href="policies.html#privacy">Privacy Policy</a><a href="policies.html#terms">Terms &amp; Conditions</a></div>
+<div><h4>Connect</h4><a href="https://instagram.com/fitbrand.co" rel="noreferrer" target="_blank">Instagram</a><a href="https://tiktok.com/@fitbrand.co" rel="noreferrer" target="_blank">TikTok</a><a href="https://www.facebook.com/profile.php?id=61588721279095" rel="noreferrer" target="_blank">Facebook</a><a href="mailto:support@fitbrand.co">Email</a></div>
+</div>
+<div class="copy"><span>© 2026 FitBrand. All rights reserved.</span><span>Built for your transformation.</span></div>
 </footer>
 <script src="fitbrand.js"></script>
-<script>
-function updateCartCount(){const cart=JSON.parse(localStorage.getItem('fitbrandCart')||'[]');document.querySelectorAll('#cart-count-btn').forEach(el=>{el.textContent=cart.length;el.style.display=cart.length>0?'inline-flex':'none';});}
-function loadProfile(){const u=getFitBrandUser()||{};const map={pfName:u.name,pfEmail:u.email,pfPhone:u.phone,pfAddress:u.address,pfGender:u.gender,pfAge:u.age,pfWeight:u.weight,pfHeight:u.height,pfLevel:u.level,pfTrainingLocation:u.trainingLocation,pfTrainingDays:u.trainingDays,pfEquipment:u.equipment,pfAllergies:u.allergies,pfGoal:u.goal};Object.entries(map).forEach(([id,v])=>{const el=document.getElementById(id); if(el&&v) el.value=v;});}
-document.addEventListener('DOMContentLoaded',()=>{updateCartCount();loadProfile();document.getElementById('fullProfileForm').addEventListener('submit',e=>{e.preventDefault();const user={name:pfName.value.trim(),email:pfEmail.value.trim(),phone:pfPhone.value.trim(),address:pfAddress.value.trim(),gender:pfGender.value,age:pfAge.value,weight:pfWeight.value,height:pfHeight.value,level:pfLevel.value,trainingLocation:pfTrainingLocation.value,trainingDays:pfTrainingDays.value,equipment:pfEquipment.value.trim(),allergies:pfAllergies.value.trim(),goal:pfGoal.value};if(!user.name||!user.email){alert('Please add at least name and email.');return;}saveFitBrandUser(user, true); window.location.href='index.html';});});
-</script>
+
 </body>
 </html>
