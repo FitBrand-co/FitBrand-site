@@ -931,3 +931,50 @@
 
   window.fitbrandForceMenuState = forceMenuState;
 })();
+
+/* FITBRAND_VERSION_MARKER:v26-force-github-update-2026-05-04 */
+
+
+/* ===== FITBRAND v26 SUPABASE AUTH STABILITY PATCH ===== */
+(function(){
+  'use strict';
+  function readUser(){try{return JSON.parse(localStorage.getItem('fitbrandUser')||'null')}catch{return null}}
+  function isReal(){const u=readUser();return !!(u&&u.email&&u.supabaseId&&u.backend==='supabase')}
+  function notice(t,m,type){ if(window.fitbrandNotice) window.fitbrandNotice(t,m,type); else alert((t?t+'\n':'')+(m||'')); }
+  function updateMenu(){
+    const logged=isReal();
+    document.body.classList.toggle('fb-is-logged-in',logged);document.body.classList.toggle('fb-is-logged-out',!logged);
+    document.querySelectorAll('[data-auth-only], #profileLogoutBtn, .profile-menu a[href="profile.html"], .profile-menu a[href="products-access.html"], .profile-menu a[href="orders.html"]').forEach(el=>el.style.setProperty('display',logged?'flex':'none','important'));
+    document.querySelectorAll('[data-guest-only], #profileLoginBtn').forEach(el=>el.style.setProperty('display',logged?'none':'flex','important'));
+    if(!logged){
+      ['profileInitial','profileMenuInitial','profileModalInitial'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='?'});
+      ['profileMenuName','profileViewName'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='Guest'});
+      ['profileMenuEmail','profileViewEmail'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='Not logged in'});
+      const st=document.getElementById('profileViewStatus'); if(st) st.textContent='Not logged in';
+    }
+  }
+  const oldLogout=window.logoutFitBrandUser;
+  window.logoutFitBrandUser=async function(){
+    try{const sb=window.__fitbrandSupabaseClient||window.FitBrandSupabaseClient;if(sb&&sb.auth)await sb.auth.signOut();}catch(e){}
+    localStorage.removeItem('fitbrandUser'); sessionStorage.removeItem('fitbrandSessionUser');
+    updateMenu(); document.querySelectorAll('.profile-menu,.profile-modal-overlay').forEach(x=>x.classList.remove('show'));
+    notice('Logged out','You have been signed out successfully.','success');
+  };
+  const oldLogin=window.loginFitBrandUser;
+  window.loginFitBrandUser=async function(){
+    try{return await oldLogin.apply(this,arguments)}catch(e){
+      const msg=String(e&&e.message||e||'');
+      if(/rate|limit/i.test(msg)) notice('Please wait','Too many login links were requested. Wait a few minutes, then request a new link.','warning');
+      else notice('Login issue','We could not send the login link. Please try again or contact support@fitbrand.fit.','warning');
+    }
+  };
+  function checkExpired(){
+    const raw=decodeURIComponent((location.hash||'')+(location.search||''));
+    if(/error=access_denied|expired|invalid|otp_expired|link/i.test(raw)){
+      notice('Login link expired','This sign-in link is invalid, already used or expired. Please request a new link.','warning');
+      history.replaceState({},document.title,location.pathname);
+    }
+  }
+  document.addEventListener('DOMContentLoaded',()=>{updateMenu();checkExpired();setTimeout(updateMenu,300);setTimeout(updateMenu,1200)});
+  document.addEventListener('click',()=>setTimeout(updateMenu,50));
+})();

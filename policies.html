@@ -1,317 +1,840 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Policies | FitBrand</title>
-<link rel="stylesheet" href="style.css">
-<meta name="description" content="FitBrand terms, subscription terms, refund policy, privacy policy, cookie policy, health disclaimer and customer rules.">
-<meta name="keywords" content="FitBrand policies, terms and conditions, subscription terms, refund policy, privacy policy, cookies, fitness disclaimer">
-<meta name="author" content="FitBrand">
-<meta property="og:title" content="Policies | FitBrand">
-<meta property="og:description" content="FitBrand customer terms, privacy, subscription and refund policies.">
-<meta property="og:type" content="website">
-<meta property="og:image" content="assets/fitbrand-logo-real.png">
-<meta name="twitter:card" content="summary_large_image">
+<link href="style.css" rel="stylesheet"/>
+<meta content="FitBrand terms, refund policy, privacy policy and customer rules." name="description"/>
+<meta content="FitBrand, policies, refund policy, privacy policy, terms and conditions, fitness programs" name="keywords"/>
+<meta content="FitBrand" name="author"/>
+<meta content="Policies | FitBrand" property="og:title"/>
+<meta content="FitBrand terms, refund policy, privacy policy and customer rules." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="assets/fitbrand-logo-real.png" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
 <style>
-body{background:#ececec!important;color:#111;}
-.policy-hero{min-height:520px!important;position:relative;overflow:hidden;background:linear-gradient(90deg,rgba(0,0,0,.96),rgba(0,0,0,.72),rgba(0,0,0,.22)),url('assets/policies-graphic.jpg');background-size:cover;background-position:center;}
-.policy-hero::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 18% 12%,rgba(255,255,255,.17),transparent 34%),linear-gradient(180deg,transparent 0%,rgba(0,0,0,.32) 100%);pointer-events:none;}
+/* ===== FITBRAND LEGENDARY POLICIES PAGE ===== */
+body{background:#ececec!important;}
+
+.policy-hero{
+  min-height:560px!important;
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(90deg,rgba(0,0,0,.96),rgba(0,0,0,.72),rgba(0,0,0,.18)),
+    url('assets/policies-graphic.jpg');
+  background-size:cover;
+  background-position:center;
+}
+.policy-hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 22% 15%,rgba(255,255,255,.18),transparent 32%),
+    linear-gradient(180deg,transparent 0%,rgba(0,0,0,.28) 100%);
+  pointer-events:none;
+}
 .policy-hero .hero-content{position:relative;z-index:2;}
-.policy-hero h1{max-width:980px!important;}
-.policy-hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:26px;}
-.policy-hero-actions a{min-height:54px;border-radius:14px;}
-.policies-page{background:linear-gradient(180deg,#f5f5f5,#e8e8e8)!important;padding:86px 30px!important;}
-.policy-shell{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:330px 1fr;gap:28px;align-items:start;}
-.policy-sidebar{position:sticky;top:118px;background:rgba(255,255,255,.88);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);border:1px solid rgba(0,0,0,.08);border-radius:28px;padding:22px;box-shadow:0 24px 80px rgba(0,0,0,.10);}
-.policy-sidebar h3{text-transform:uppercase;letter-spacing:.1em;font-size:14px;margin-bottom:14px;}
-.policy-sidebar a{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 12px;border-radius:15px;color:#111;font-weight:900;text-transform:uppercase;letter-spacing:.08em;font-size:12px;border:1px solid transparent;transition:.22s ease;}
-.policy-sidebar a:hover{background:#f3f3f3;border-color:rgba(0,0,0,.08);transform:translateX(3px);}
-.policy-sidebar a span{color:#9a9a9a;}
-.policies-wrap{max-width:none!important;margin:0!important;border-radius:34px!important;padding:0!important;overflow:hidden;border:1px solid rgba(0,0,0,.08);background:white!important;box-shadow:0 30px 100px rgba(0,0,0,.12)!important;}
-.policy-top-card{padding:46px 48px;background:radial-gradient(circle at 20% 0%,rgba(255,255,255,.9),transparent 34%),linear-gradient(135deg,#ffffff,#eeeeee);border-bottom:1px solid rgba(0,0,0,.08);}
-.policy-top-card h1{font-size:clamp(34px,5vw,64px);line-height:.95;text-transform:uppercase;letter-spacing:.02em;margin:0 0 18px;}
-.policy-top-card p{max-width:900px;color:rgba(0,0,0,.70);line-height:1.75;font-size:17px;}
-.policy-trust-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px;}
-.policy-trust-item{border-radius:18px;background:rgba(255,255,255,.72);border:1px solid rgba(0,0,0,.08);padding:18px;}
-.policy-trust-item strong{display:block;text-transform:uppercase;letter-spacing:.08em;font-size:13px;margin-bottom:6px;}
-.policy-trust-item span{display:block;color:rgba(0,0,0,.62);font-size:13px;line-height:1.45;}
-.policy-content{padding:18px 48px 48px;}
-.policy-section{padding:32px 0;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:120px;}
+.policy-hero h1{max-width:900px!important;}
+.policy-hero-actions{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-top:26px;
+}
+.policy-hero-actions a{
+  min-height:54px;
+  border-radius:14px;
+}
+
+.policies-page{
+  background:linear-gradient(180deg,#f5f5f5,#e8e8e8)!important;
+  padding:86px 30px!important;
+}
+.policy-shell{
+  max-width:1240px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:330px 1fr;
+  gap:28px;
+  align-items:start;
+}
+.policy-sidebar{
+  position:sticky;
+  top:118px;
+  background:rgba(255,255,255,.84);
+  backdrop-filter:blur(18px) saturate(150%);
+  -webkit-backdrop-filter:blur(18px) saturate(150%);
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:28px;
+  padding:22px;
+  box-shadow:0 24px 80px rgba(0,0,0,.10);
+}
+.policy-sidebar h3{
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  font-size:14px;
+  margin-bottom:14px;
+}
+.policy-sidebar a{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  padding:14px 12px;
+  border-radius:15px;
+  color:#111;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-size:12px;
+  border:1px solid transparent;
+  transition:.22s ease;
+}
+.policy-sidebar a:hover{
+  background:#f3f3f3;
+  border-color:rgba(0,0,0,.08);
+  transform:translateX(3px);
+}
+.policy-sidebar a span{
+  color:#9a9a9a;
+}
+
+.policies-wrap{
+  max-width:none!important;
+  margin:0!important;
+  border-radius:34px!important;
+  padding:0!important;
+  overflow:hidden;
+  border:1px solid rgba(0,0,0,.08);
+  background:white!important;
+  box-shadow:0 30px 100px rgba(0,0,0,.12)!important;
+}
+.policy-top-card{
+  padding:46px 48px;
+  background:
+    radial-gradient(circle at 20% 0%,rgba(255,255,255,.9),transparent 34%),
+    linear-gradient(135deg,#ffffff,#eeeeee);
+  border-bottom:1px solid rgba(0,0,0,.08);
+}
+.policy-top-card h1{
+  font-size:clamp(36px,5vw,66px);
+  line-height:.95;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  margin:0 0 18px;
+}
+.policy-top-card p{
+  max-width:850px;
+  color:rgba(0,0,0,.68);
+  line-height:1.75;
+  font-size:17px;
+}
+.policy-trust-row{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin-top:26px;
+}
+.policy-trust-item{
+  border-radius:18px;
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(0,0,0,.08);
+  padding:18px;
+}
+.policy-trust-item strong{
+  display:block;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-size:13px;
+  margin-bottom:6px;
+}
+.policy-trust-item span{
+  display:block;
+  color:rgba(0,0,0,.62);
+  font-size:13px;
+  line-height:1.45;
+}
+
+.policy-content{
+  padding:18px 48px 48px;
+}
+.policy-section{
+  padding:32px 0;
+  border-bottom:1px solid rgba(0,0,0,.08);
+}
 .policy-section:last-child{border-bottom:0;}
-.policy-section h2{margin:0 0 14px!important;text-transform:uppercase;letter-spacing:.08em;font-size:24px!important;display:flex;align-items:center;gap:12px;}
-.policy-section h2::before{content:"";width:11px;height:34px;border-radius:999px;background:linear-gradient(180deg,#050505,#bcbcbc);flex:0 0 auto;}
-.policy-section h3{margin:24px 0 10px;font-size:18px;text-transform:uppercase;letter-spacing:.08em;}
-.policy-section p,.policy-section li{color:rgba(0,0,0,.70)!important;line-height:1.78!important;font-size:16px;}
-.policy-section ul{margin-top:14px;padding-left:0!important;display:grid;gap:10px;list-style:none;}
-.policy-section li{padding:14px 16px 14px 44px;border-radius:16px;background:#f7f7f7;border:1px solid rgba(0,0,0,.07);position:relative;}
-.policy-section li::before{content:"✓";position:absolute;left:16px;top:14px;width:20px;height:20px;border-radius:999px;background:#050505;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;}
-.policy-warning{margin-top:18px;padding:18px;border-radius:20px;background:#0b0b0c;color:white;border:1px solid rgba(255,255,255,.12);}
-.policy-warning strong{display:block;text-transform:uppercase;letter-spacing:.1em;font-size:13px;margin-bottom:7px;}
-.policy-warning p{color:rgba(255,255,255,.78)!important;margin:0!important;}
-.policy-grid-two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
-.policy-mini-card{border:1px solid rgba(0,0,0,.08);background:#fafafa;border-radius:18px;padding:18px;}
-.policy-mini-card strong{display:block;text-transform:uppercase;letter-spacing:.08em;font-size:13px;margin-bottom:6px;}
-.policy-mini-card span{display:block;color:rgba(0,0,0,.62);line-height:1.55;font-size:14px;}
-.policy-cta{margin-top:36px;border-radius:28px;padding:34px;background:radial-gradient(circle at 15% 0%,rgba(255,255,255,.14),transparent 30%),linear-gradient(135deg,#08090b,#191b20);color:white;display:grid;grid-template-columns:1fr auto;gap:22px;align-items:center;}
-.policy-cta h2{margin:0 0 8px!important;font-size:30px!important;letter-spacing:.04em;}
+.policy-section h2{
+  margin:0 0 14px!important;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-size:24px!important;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.policy-section h2::before{
+  content:"";
+  width:11px;
+  height:34px;
+  border-radius:999px;
+  background:linear-gradient(180deg,#050505,#bcbcbc);
+  flex:0 0 auto;
+}
+.policy-section p,
+.policy-section li{
+  color:rgba(0,0,0,.68)!important;
+  line-height:1.78!important;
+  font-size:16px;
+}
+.policy-section ul{
+  margin-top:14px;
+  padding-left:0!important;
+  display:grid;
+  gap:10px;
+  list-style:none;
+}
+.policy-section li{
+  padding:14px 16px 14px 44px;
+  border-radius:16px;
+  background:#f7f7f7;
+  border:1px solid rgba(0,0,0,.07);
+  position:relative;
+}
+.policy-section li::before{
+  content:"✓";
+  position:absolute;
+  left:16px;
+  top:14px;
+  width:20px;
+  height:20px;
+  border-radius:999px;
+  background:#050505;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:900;
+}
+.policy-warning{
+  margin-top:18px;
+  padding:18px;
+  border-radius:20px;
+  background:#0b0b0c;
+  color:white;
+  border:1px solid rgba(255,255,255,.12);
+}
+.policy-warning strong{
+  display:block;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  font-size:13px;
+  margin-bottom:7px;
+}
+.policy-warning p{
+  color:rgba(255,255,255,.76)!important;
+  margin:0!important;
+}
+
+.policy-cta{
+  margin-top:36px;
+  border-radius:28px;
+  padding:34px;
+  background:
+    radial-gradient(circle at 15% 0%,rgba(255,255,255,.14),transparent 30%),
+    linear-gradient(135deg,#08090b,#191b20);
+  color:white;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:22px;
+  align-items:center;
+}
+.policy-cta h2{
+  margin:0 0 8px!important;
+  font-size:30px!important;
+  letter-spacing:.04em;
+}
 .policy-cta h2::before{display:none;}
 .policy-cta p{color:rgba(255,255,255,.72)!important;margin:0!important;}
-.policy-cta a{min-height:54px;border-radius:14px;padding:0 22px;background:white;color:#050505;display:flex;align-items:center;justify-content:center;font-weight:950;text-transform:uppercase;letter-spacing:.1em;}
-@media(max-width:980px){.policy-shell{grid-template-columns:1fr}.policy-sidebar{position:static}.policy-trust-row,.policy-cta,.policy-grid-two{grid-template-columns:1fr}.policy-content,.policy-top-card{padding-left:28px;padding-right:28px}.policies-page{padding-left:18px!important;padding-right:18px!important}.policy-sidebar a{font-size:11px}.policy-section h2{font-size:20px!important}}
+.policy-cta a{
+  min-height:54px;
+  border-radius:14px;
+  padding:0 22px;
+  background:white;
+  color:#050505;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+}
+
+/* ===== PROFILE HEADER ===== */
+.nav-actions{display:flex;align-items:center;gap:12px;position:relative;}
+.profile-icon-btn{
+  width:46px;height:46px;border-radius:50%;border:1px solid rgba(0,0,0,.12);
+  background:linear-gradient(135deg,#fff,#d7d7d7);color:#050505;font-weight:1000;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 25px rgba(0,0,0,.10);transition:.22s ease;
+}
+.profile-icon-btn:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(0,0,0,.14);}
+.profile-menu{
+  position:absolute;top:58px;right:0;width:300px;background:rgba(255,255,255,.94);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border:1px solid rgba(0,0,0,.10);border-radius:22px;box-shadow:0 24px 80px rgba(0,0,0,.22);
+  padding:14px;display:none;z-index:12000;color:#050505;
+}
+.profile-menu.show{display:block;}
+.profile-menu-head{display:flex;gap:12px;align-items:center;padding:12px;border-bottom:1px solid #eee;margin-bottom:8px;}
+.profile-avatar{width:46px;height:46px;border-radius:50%;background:#050505;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:1000;}
+.profile-menu button{width:100%;border:0;background:transparent;padding:13px 12px;text-align:left;cursor:pointer;border-radius:12px;font-weight:900;text-transform:uppercase;font-size:12px;color:#050505;}
+.profile-menu button:hover{background:#f0f0f0;}
+.profile-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;z-index:13000;padding:22px;}
+.profile-modal-overlay.show{display:flex;}
+.profile-modal{width:min(520px,100%);background:linear-gradient(135deg,#fff,#eee);border-radius:28px;padding:30px;box-shadow:0 30px 100px rgba(0,0,0,.35);position:relative;color:#050505;}
+.profile-modal-close{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:22px;}
+.profile-modal h2{text-transform:uppercase;font-size:34px;margin-bottom:10px;}
+.profile-form{display:grid;gap:12px;}
+.profile-form input{height:54px;border-radius:14px;border:1px solid rgba(0,0,0,.14);padding:0 14px;margin:0;}
+.profile-main-btn,.profile-google-btn{height:56px;border-radius:14px;font-weight:1000;cursor:pointer;text-transform:uppercase;}
+.profile-main-btn{border:0;background:#050505;color:white;}
+.profile-google-btn{border:1px solid #ddd;background:white;color:#050505;}
+
+.reveal-on-scroll{
+  opacity:0;
+  transform:translateY(24px);
+  transition:opacity .7s ease, transform .7s ease;
+}
+.reveal-on-scroll.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+@media(max-width:980px){
+  .policy-shell{grid-template-columns:1fr;}
+  .policy-sidebar{position:static;}
+  .policy-trust-row,.policy-cta{grid-template-columns:1fr;}
+  .policy-content,.policy-top-card{padding-left:28px;padding-right:28px;}
+}
 </style>
-<script>window.si=window.si||function(){(window.siq=window.siq||[]).push(arguments);};</script>
-<script defer src="/_vercel/speed-insights/script.js"></script>
+<!-- Vercel Speed Insights for static HTML -->
+<script>
+  window.si = window.si || function () {
+    (window.siq = window.siq || []).push(arguments);
+  };
+</script>
+<script defer="" src="/_vercel/speed-insights/script.js"></script>
 </head>
 <body>
 <button class="back-button-global" onclick="history.back()">← Back</button>
 <header class="nav">
-  <a href="index.html" class="brand"><img class="logo-img" src="assets/fitbrand-logo-real.png" alt="FitBrand logo"><span class="brand-word">FITBRAND</span></a>
-  <nav><a href="index.html">Home</a><a href="programs.html">Programs</a><a href="recommended.html">Recommended Products</a><a href="about.html">About us</a><a href="policies.html">Policies</a></nav>
-  <div class="nav-actions">
-    <a href="cart.html" class="cart-icon-btn"><span class="cart-svg">🛒</span><span class="cart-count" id="cart-count-btn">0</span></a>
-    <button class="profile-icon-btn" onclick="toggleProfileMenu()" aria-label="Profile"><span id="profileInitial">?</span></button>
-    <div id="profileMenu" class="profile-menu"></div>
-  </div>
+<a class="brand" href="index.html">
+<img alt="FitBrand logo" class="logo-img" src="assets/fitbrand-logo-real.png"/>
+<span class="brand-word">FITBRAND</span>
+</a>
+<nav>
+<a href="index.html">Home</a>
+<a href="programs.html">Programs</a>
+<a href="recommended.html">Recommended Products</a>
+<a href="about.html">About us</a>
+<a href="policies.html">Policies</a>
+</nav>
+<div class="nav-actions">
+<a class="cart-icon-btn" href="cart.html">
+<span class="cart-svg">🛒</span>
+<span class="cart-count" id="cart-count-btn">0</span>
+</a>
+<button aria-label="Profile" class="profile-icon-btn" onclick="toggleProfileMenu()">
+<span id="profileInitial">?</span>
+</button>
+<div class="profile-menu" id="profileMenu">
+<div class="profile-menu-head">
+<div class="profile-avatar"><span id="profileMenuInitial">?</span></div>
+<div>
+<strong id="profileMenuName">Guest</strong><br/>
+<span id="profileMenuEmail">Not logged in</span>
+</div>
+</div>
+<button onclick="openProfileModal('profile')">View profile</button>
+<a class="profile-menu-link" href="profile.html">Edit profile</a>
+<button id="profileLoginBtn" onclick="openProfileModal('login')">Log in</button>
+<button id="profileLogoutBtn" onclick="logoutFitBrandUser()" style="display:none;">Log out</button>
+</div>
+</div>
 </header>
 <main>
 <section class="hero policy-hero">
-  <div class="hero-content">
-    <p class="eyebrow">FitBrand Legal Center</p>
-    <h1>Terms, Privacy & Customer Policies</h1>
-    <p>Everything customers should know before using FitBrand, buying digital subscriptions, using AI tools or purchasing products.</p>
-    <div class="policy-hero-actions">
-      <a class="btn-silver" href="#subscriptions">Subscriptions</a>
-      <a class="btn-outline" href="#privacy">Privacy</a>
-      <a class="btn-outline" href="#refunds">Refunds</a>
-    </div>
-  </div>
+<div class="hero-content">
+<p class="eyebrow">FitBrand Policies</p>
+<h1>Clear rules. Premium experience.</h1>
+<p>Please read our policies before purchasing. By placing an order, you agree to these terms.</p>
+<div class="policy-hero-actions">
+<a class="btn-silver" href="#refunds">Refund policy</a>
+<a class="btn-outline" href="#privacy">Privacy policy</a>
+</div>
+</div>
 </section>
 <section class="policies-page">
-  <div class="policy-shell">
-    <aside class="policy-sidebar">
-      <h3>Policy navigation</h3>
-      <a href="#summary">Summary <span>01</span></a>
-      <a href="#terms">Terms <span>02</span></a>
-      <a href="#subscriptions">Subscriptions <span>03</span></a>
-      <a href="#refunds">Refunds <span>04</span></a>
-      <a href="#digital">Digital access <span>05</span></a>
-      <a href="#health">Health safety <span>06</span></a>
-      <a href="#ai">AI tools <span>07</span></a>
-      <a href="#age">Age rules <span>08</span></a>
-      <a href="#privacy">Privacy <span>09</span></a>
-      <a href="#cookies">Cookies <span>10</span></a>
-      <a href="#physical">Physical goods <span>11</span></a>
-      <a href="#complaints">Complaints <span>12</span></a>
-    </aside>
-    <div class="policies-wrap">
-      <div class="policy-top-card" id="summary">
-        <h1>FitBrand Policies</h1>
-        <p>These policies explain how FitBrand works, what customers agree to, how subscriptions and digital access work, how personal data is handled, and what safety rules apply. By creating an account, using our AI tools or buying from FitBrand, you agree to the policies on this page.</p>
-        <div class="policy-trust-row">
-          <div class="policy-trust-item"><strong>Contact</strong><span>Questions, access help, cancellations and complaints: support@fitbrand.fit</span></div>
-          <div class="policy-trust-item"><strong>Before launch</strong><span>Company name, legal address, CVR/VAT and final payment provider details must be added before full public sale.</span></div>
-          <div class="policy-trust-item"><strong>Important</strong><span>This page is a practical policy template and should be reviewed before scaling sales.</span></div>
-        </div>
-      </div>
-      <div class="policy-content">
-        <section id="terms" class="policy-section">
-          <h2>Terms & Conditions</h2>
-          <p>FitBrand provides digital fitness programs, digital meal and training tools, AI-assisted planning, recommended products and, when available, physical fitness accessories. These terms apply to all visitors, customers and account users.</p>
-          <ul>
-            <li>Customers must provide accurate email, account, billing and delivery information.</li>
-            <li>Orders are only confirmed after successful payment and fraud/security checks.</li>
-            <li>FitBrand may update products, bundles, prices, content, features, offers and website design at any time before purchase.</li>
-            <li>Customers must not misuse the website, attempt fraud, copy content, resell digital products or share private access links.</li>
-            <li>If any part of these terms is unenforceable, the remaining terms still apply.</li>
-          </ul>
-        </section>
-        <section id="subscriptions" class="policy-section">
-          <h2>Subscription Policy</h2>
-          <p>FitBrand programs and AI tools may be sold as monthly subscriptions. Subscription details, price, renewal date and included access will be shown before checkout.</p>
-          <ul>
-            <li>Subscriptions renew automatically every month until cancelled.</li>
-            <li>The customer authorises FitBrand and its payment provider to charge the saved payment method on each renewal date.</li>
-            <li>Customers can cancel future renewals by contacting support@fitbrand.fit or by using account/billing tools when available.</li>
-            <li>Cancellation stops future renewals; it does not automatically refund previous paid periods unless required by law or stated in a specific offer.</li>
-            <li>Access normally continues until the end of the paid billing period after cancellation.</li>
-            <li>If payment fails, access may pause, downgrade or cancel until the payment issue is fixed.</li>
-            <li>FitBrand may change subscription features or pricing. Customers will be informed where required before a material change affects them.</li>
-          </ul>
-          <div class="policy-warning"><strong>Monthly billing</strong><p>Subscriptions are not one-time purchases. Customers should only subscribe if they understand that the plan renews monthly until cancelled.</p></div>
-        </section>
-        <section id="refunds" class="policy-section">
-          <h2>Refunds, Cancellation & Withdrawal</h2>
-          <p>Refund and cancellation rights depend on product type, delivery status, subscription status and mandatory consumer law.</p>
-          <ul>
-            <li>For digital content and digital services, customers may be asked to consent to immediate access and acknowledge that withdrawal rights may be lost once delivery/access begins.</li>
-            <li>If a customer has not accessed a digital product or if mandatory law gives a right to withdraw, FitBrand will handle the request according to applicable consumer rules.</li>
-            <li>For physical goods, customers may have withdrawal, return and legal warranty rights as required by applicable consumer law.</li>
-            <li>Refunds are not normally given for lack of results, not using the content, forgetting to cancel a subscription, or personal preference after access has been delivered, unless required by law.</li>
-            <li>If an order, file, AI access or subscription access fails because of a technical issue, contact support first so we can fix access.</li>
-            <li>Chargebacks should not be used before contacting support, unless required for fraud or an unauthorised payment issue.</li>
-          </ul>
-        </section>
-        <section id="digital" class="policy-section">
-          <h2>Digital Access & Licence</h2>
-          <p>FitBrand digital products are licensed for personal use only. Buying a program does not transfer ownership of FitBrand content.</p>
-          <ul>
-            <li>Customers may use purchased/subscribed content for their own training and planning.</li>
-            <li>Sharing, reselling, uploading, copying, rebranding, scraping or distributing FitBrand programs, guides, AI outputs or templates is not allowed.</li>
-            <li>Digital access may be linked to the customer email, account, subscription status or payment provider record.</li>
-            <li>FitBrand may remove access if there is fraud, misuse, chargeback abuse, content theft or breach of these policies.</li>
-          </ul>
-        </section>
-        <section id="health" class="policy-section">
-          <h2>Health, Training & Nutrition Disclaimer</h2>
-          <p>FitBrand content is general fitness and nutrition information. It is not medical advice, diagnosis, treatment or a replacement for a doctor, physiotherapist, dietitian or other qualified professional.</p>
-          <ul>
-            <li>Speak to a healthcare professional before starting if you have injuries, medical conditions, medication use, pregnancy, eating disorder history or other concerns.</li>
-            <li>Stop training immediately if you feel chest pain, dizziness, faintness, severe pain or unusual symptoms.</li>
-            <li>Meal plans, calories and macros are estimates and may not fit every person.</li>
-            <li>FitBrand does not guarantee weight loss, muscle gain, strength results, health outcomes or any specific transformation.</li>
-            <li>Customers are responsible for using safe form, suitable loads, proper equipment and reasonable judgement.</li>
-          </ul>
-        </section>
-        <section id="ai" class="policy-section">
-          <h2>AI Tool Policy</h2>
-          <p>FitBrand AI tools generate plans based on customer inputs. AI output can be useful, but it can be incomplete, unsuitable or inaccurate if the inputs are wrong or if the user has special needs.</p>
-          <ul>
-            <li>Customers must enter accurate information, including age, weight, height, goal, allergies, limitations and training level.</li>
-            <li>AI outputs must be reviewed by the customer before use and adjusted for injuries, equipment, recovery, schedule and health status.</li>
-            <li>Do not follow AI meal guidance that conflicts with allergies, medical guidance, religious/dietary restrictions or personal safety.</li>
-            <li>FitBrand may update, limit, improve, remove or change AI features at any time.</li>
-          </ul>
-        </section>
-        <section id="age" class="policy-section">
-          <h2>Age, Minors & Parent Permission</h2>
-          <p>FitBrand is not intended for children under 13. Users aged 13–17 may only use FitBrand with permission and supervision from a parent or legal guardian.</p>
-          <ul>
-            <li>13+ users need parent/guardian permission to create an account, use FitBrand tools or purchase subscriptions/products.</li>
-            <li>Parents/guardians are responsible for checking whether FitBrand content is suitable for the minor.</li>
-            <li>Where privacy or consumer law requires parent/guardian consent for a minor’s personal data or purchases, the parent/guardian must provide that consent.</li>
-            <li>FitBrand may refuse or remove access if age, permission or safety concerns are unclear.</li>
-            <li>AI fitness/nutrition tools should be used with extra caution by minors and should not be used to create extreme dieting or unsafe training plans.</li>
-          </ul>
-        </section>
-        <section id="privacy" class="policy-section">
-          <h2>Privacy Policy</h2>
-          <p>FitBrand uses customer information to provide accounts, orders, subscriptions, digital access, support, personalization and website security. We do not sell personal information.</p>
-          <h3>Information we may collect</h3>
-          <ul>
-            <li>Account information such as name, email and login details.</li>
-            <li>Order and subscription information such as product, payment status, billing details, checkout email and access status.</li>
-            <li>Profile/generator information such as age, gender, height, weight, goals, training level, limitations, equipment, food preferences and allergies.</li>
-            <li>Technical information such as browser storage, IP/device data, analytics events and security logs.</li>
-          </ul>
-          <h3>How we use information</h3>
-          <ul>
-            <li>To create accounts, send login links, process orders and provide access.</li>
-            <li>To generate plans, personalize content and remember customer preferences.</li>
-            <li>To provide customer support, handle refunds/cancellations and prevent fraud.</li>
-            <li>To improve the website, understand performance and maintain security.</li>
-          </ul>
-          <h3>Customer rights</h3>
-          <ul>
-            <li>Customers may request access, correction or deletion of their personal data where applicable.</li>
-            <li>Customers may object to certain processing or withdraw consent where processing is based on consent.</li>
-            <li>Privacy requests can be sent to support@fitbrand.fit.</li>
-          </ul>
-          <div class="policy-warning"><strong>Sensitive information</strong><p>Do not enter medical diagnoses, extremely private health information or emergency information into FitBrand forms. Use a qualified professional for medical needs.</p></div>
-        </section>
-        <section id="cookies" class="policy-section">
-          <h2>Cookie & Local Storage Policy</h2>
-          <p>FitBrand may use cookies and browser storage to make the website work, remember cart items, keep users signed in, store product access, protect checkout, measure performance and improve the customer experience.</p>
-          <ul>
-            <li>Necessary storage may be used for cart, login, account and checkout functionality.</li>
-            <li>Analytics/performance tools may be used to understand page views, speed and errors.</li>
-            <li>Marketing cookies should only be used when configured with proper consent.</li>
-            <li>Customers can control cookies through their browser settings, but blocking necessary storage may break cart, login or access features.</li>
-          </ul>
-        </section>
-        <section id="physical" class="policy-section">
-          <h2>Physical Products, Delivery & Warranty</h2>
-          <p>Where FitBrand offers physical products, product availability, delivery time, shipping options and return rules will be shown before purchase where possible.</p>
-          <ul>
-            <li>Customers must provide correct delivery information.</li>
-            <li>Delivery times are estimates and may be affected by suppliers, couriers, customs, holidays or incorrect address information.</li>
-            <li>If a product arrives damaged or defective, contact support with photos and order information as soon as possible.</li>
-            <li>Legal warranty and consumer complaint rights are not removed by these policies.</li>
-            <li>Products marked “coming soon” or “recommended” may not be available for direct purchase from FitBrand yet.</li>
-          </ul>
-        </section>
-        <section id="promotions" class="policy-section">
-          <h2>Offers, Discounts & Marketing</h2>
-          <ul>
-            <li>Launch offers, crossed-out prices, bundles and discounts may be time-limited and can end or change without notice before purchase.</li>
-            <li>Discount codes must be used before checkout and may not be stackable.</li>
-            <li>Marketing emails/SMS are only sent when allowed, and customers should be able to unsubscribe from marketing messages.</li>
-            <li>Affiliate or partner recommendations may be used. If FitBrand earns commission from a recommendation, this should be disclosed where required.</li>
-          </ul>
-        </section>
-        <section id="security" class="policy-section">
-          <h2>Security & Account Responsibility</h2>
-          <ul>
-            <li>Customers must keep login links, account emails and access links private.</li>
-            <li>Magic login links are private and may expire or become invalid after use.</li>
-            <li>FitBrand may use payment provider, authentication provider and hosting security systems to protect accounts and orders.</li>
-            <li>Report suspected unauthorised account use to support@fitbrand.fit.</li>
-          </ul>
-        </section>
-        <section id="ip" class="policy-section">
-          <h2>Intellectual Property</h2>
-          <p>FitBrand names, logos, website design, product names, programs, guides, AI prompts, templates, copy, graphics and layouts belong to FitBrand or the relevant rights holder.</p>
-          <ul>
-            <li>Customers may not copy, resell, repost, publish, scrape, upload or rebrand FitBrand content without written permission.</li>
-            <li>Purchased content is for personal use only unless a written business/commercial licence is granted.</li>
-            <li>FitBrand may remove access for copyright misuse or content theft.</li>
-          </ul>
-        </section>
-        <section id="liability" class="policy-section">
-          <h2>Availability, Liability & Disclaimers</h2>
-          <ul>
-            <li>FitBrand aims to keep the website and digital access available, but downtime, maintenance, third-party outages or technical issues can happen.</li>
-            <li>FitBrand is not responsible for injuries caused by unsafe training, ignoring medical advice, wrong customer inputs or misuse of content.</li>
-            <li>To the maximum extent allowed by law, FitBrand is not liable for indirect losses, lost profits, loss of data, loss of opportunity or results not achieved.</li>
-            <li>Nothing in these policies limits rights that cannot legally be limited.</li>
-          </ul>
-        </section>
-        <section id="complaints" class="policy-section">
-          <h2>Support, Complaints & Disputes</h2>
-          <p>If something goes wrong, contact FitBrand first so we can try to solve the issue quickly.</p>
-          <ul>
-            <li>Support email: support@fitbrand.fit</li>
-            <li>Include your name, account email, order email, order number/payment reference, screenshots and a clear description of the issue.</li>
-            <li>If you are a consumer in Denmark and a dispute cannot be resolved directly, you may be able to use the Danish consumer complaints system where applicable.</li>
-            <li>The EU ODR platform has been discontinued, so customers should use the relevant national/consumer redress channels instead.</li>
-          </ul>
-        </section>
-        <section id="changes" class="policy-section">
-          <h2>Changes to Policies</h2>
-          <p>FitBrand may update these policies when products, subscriptions, laws, providers or website features change. The version displayed at the time of purchase applies to that purchase unless mandatory law requires otherwise.</p>
-        </section>
-        <section id="agreement" class="policy-section">
-          <h2>Agreement</h2>
-          <p>By using FitBrand, creating an account, purchasing a product or subscribing to a monthly plan, you confirm that you have read and accepted these policies.</p>
-          <div class="policy-grid-two">
-            <div class="policy-mini-card"><strong>Contact</strong><span>support@fitbrand.fit</span></div>
-            <div class="policy-mini-card"><strong>Last updated</strong><span>April 2026</span></div>
-          </div>
-        </section>
-        <div class="policy-cta"><div><h2>Ready to continue?</h2><p>Return to the shop and choose the FitBrand subscription, program or product that fits your goal.</p></div><a href="recommended.html">Back to shop</a></div>
-      </div>
-    </div>
-  </div>
+<div class="policy-shell">
+<aside class="policy-sidebar"><h3>Policy navigation</h3>
+<a href="#terms">Terms <span>01</span></a>
+<a href="#subscriptions">Subscriptions <span>02</span></a>
+<a href="#refunds">Refunds <span>03</span></a>
+<a href="#age">Age rules <span>04</span></a>
+<a href="#health">Health safety <span>05</span></a>
+<a href="#ai">AI guidance <span>06</span></a>
+<a href="#digital">Digital access <span>07</span></a>
+<a href="#privacy">Privacy <span>08</span></a>
+<a href="#cookies">Cookies <span>09</span></a>
+<a href="#physical">Physical products <span>10</span></a>
+<a href="#complaints">Complaints <span>11</span></a>
+<a href="#agreement">Agreement <span>12</span></a></aside>
+<div class="policies-wrap">
+<div class="policy-top-card">
+<h1>Complete FitBrand Policies</h1>
+<p>These policies are written to make FitBrand clear, fair and professional. They include subscriptions, refunds, digital access, privacy, cookies, health disclaimers and customer rules.</p>
+<div class="policy-trust-row">
+<div class="policy-trust-item"><strong>Clear terms</strong><span>No confusing rules. Everything is listed in simple language.</span></div>
+<div class="policy-trust-item"><strong>Customer safety</strong><span>Fitness guidance must be used responsibly and safely.</span></div>
+<div class="policy-trust-item"><strong>Professional shop</strong><span>Policies are shown clearly before and after purchase.</span></div>
+</div>
+</div>
+<div class="policy-content">
+<section class="policy-section" id="terms">
+<h2>Terms &amp; Conditions</h2>
+<p>These terms apply when you visit FitBrand, create an account, use our tools or purchase products from us. By using FitBrand, you agree to these policies and any product-specific terms shown at checkout.</p>
+<ul>
+<li>FitBrand sells digital fitness programs, AI-based planning tools, meal planning guidance and selected physical fitness products.</li>
+<li>Customers must provide correct email, billing and delivery information.</li>
+<li>Prices, offers, bundles and product availability may change before purchase.</li>
+<li>We may refuse, cancel or limit orders in cases of fraud, misuse, technical error, payment failure or violation of these terms.</li>
+<li>Company details such as legal name, CVR/VAT number and business address should be inserted here before full commercial launch.</li>
+</ul>
+</section>
+<section class="policy-section" id="subscriptions">
+<h2>Monthly Subscriptions &amp; Recurring Billing</h2>
+<p>FitBrand programs and AI guide access may be sold as monthly subscriptions. A subscription gives access while it remains active and paid.</p>
+<ul>
+<li>Subscription prices are shown before checkout and are billed automatically every month until cancelled.</li>
+<li>By starting a subscription, the customer authorises recurring monthly payments through the payment provider.</li>
+<li>The customer can cancel future renewals before the next billing date. Cancellation stops future charges but does not automatically refund previous paid periods.</li>
+<li>If payment fails, access may be paused, limited or cancelled until payment is completed.</li>
+<li>Launch offers, discounts and promotional prices only apply as described on the product/checkout page.</li>
+<li>FitBrand may update subscription features over time, including adding, removing or changing AI tools, program content or product access.</li>
+</ul>
+</section>
+<section class="policy-section" id="refunds">
+<h2>Refunds, Returns &amp; Withdrawal</h2>
+<p>Refund and withdrawal rights depend on product type and mandatory consumer law. EU consumers generally have a 14-day withdrawal right for many distance purchases, but special rules apply to digital content and services.</p>
+<ul>
+<li>Digital content and subscriptions may be delivered immediately. If you request immediate access and acknowledge that the right of withdrawal may be lost, digital access is treated as final once access has started, unless mandatory law says otherwise.</li>
+<li>Subscription renewals are not normally refunded after a new billing period has started, unless required by law or caused by a FitBrand billing error.</li>
+<li>Physical products can be returned according to applicable consumer law and the return instructions shown at checkout.</li>
+<li>If digital access, login, payment confirmation or delivery fails, contact support so we can fix the issue.</li>
+<li>This policy never removes legal warranty rights, mandatory consumer rights or rights that cannot legally be limited.</li>
+</ul>
+<div class="policy-warning"><strong>Important</strong><p>Please read product pages carefully before purchase. Digital access can start instantly and may affect withdrawal/refund rights.</p></div>
+</section>
+<section class="policy-section" id="age">
+<h2>Age &amp; Parent/Guardian Permission</h2>
+<p>FitBrand is intended for responsible fitness use. Our content is not made for children under 13.</p>
+<ul>
+<li>You must be at least 13 years old to use FitBrand.</li>
+<li>If you are 13–17, you must have permission from a parent or legal guardian before creating an account, buying a product, starting a subscription or using FitBrand AI tools.</li>
+<li>Parents/guardians are responsible for checking whether FitBrand content is suitable for the minor using it.</li>
+<li>FitBrand may refuse access, cancel access or request guardian confirmation if age or permission is unclear.</li>
+</ul>
+</section>
+<section class="policy-section" id="health">
+<h2>Health, Training &amp; Nutrition Safety</h2>
+<p>FitBrand content is general fitness and nutrition guidance. It is not medical advice, diagnosis, treatment or a replacement for advice from a doctor, dietitian, physiotherapist or other qualified professional.</p>
+<ul>
+<li>Train safely, use proper technique and stop if you feel pain, dizziness, chest pain or unusual discomfort.</li>
+<li>Speak to a healthcare professional before using our programs if you have injuries, medical conditions, eating disorder history, pregnancy, medication use or other health concerns.</li>
+<li>Meal plans, calories and macro estimates are general estimates and may not be appropriate for every person.</li>
+<li>FitBrand does not guarantee specific fat loss, muscle gain, strength gain, health outcomes or body transformation results.</li>
+</ul>
+</section>
+<section class="policy-section" id="ai">
+<h2>AI Generator Policy</h2>
+<p>FitBrand AI tools generate suggestions from the information you enter. AI output should be treated as a helpful starting point, not as professional medical, nutrition or coaching advice.</p>
+<ul>
+<li>You are responsible for entering accurate age, height, weight, goal, equipment, allergies, limitations and activity information.</li>
+<li>Generated plans may need to be adjusted for recovery, injuries, schedule, equipment, experience and personal tolerance.</li>
+<li>Do not follow a generated meal plan if it conflicts with allergies, medical advice or dietary restrictions.</li>
+<li>AI tools may be updated, limited, changed or improved at any time.</li>
+</ul>
+</section>
+<section class="policy-section" id="digital">
+<h2>Digital Product Access &amp; Licence</h2>
+<p>Digital products and generated plans are for personal use only. Access is linked to the purchasing account/email.</p>
+<ul>
+<li>You may not resell, share, upload, copy, distribute, rebrand or publish FitBrand content without written permission.</li>
+<li>Unauthorised sharing, resale, chargebacks, abuse or fraud may lead to access being removed.</li>
+<li>Customers must keep login links and account access private.</li>
+<li>FitBrand may restore access if the customer can provide valid order/account information.</li>
+</ul>
+</section>
+<section class="policy-section" id="payment">
+<h2>Payment, Checkout &amp; Offers</h2>
+<p>Orders are only confirmed after successful payment. Digital access and physical fulfilment depend on payment status.</p>
+<ul>
+<li>FitBrand uses third-party payment providers such as Stripe for secure payment processing.</li>
+<li>Discount codes must be used before payment and cannot always be added later.</li>
+<li>Launch prices, sale prices and discounts must be shown clearly at checkout and may be time-limited.</li>
+<li>Fraud attempts, suspicious activity or chargeback abuse may lead to access restrictions.</li>
+</ul>
+</section>
+<section class="policy-section" id="privacy">
+<h2>Privacy &amp; Data Policy</h2>
+<p>We use customer information to create accounts, process orders, provide access, personalise generator tools, provide support and improve FitBrand. We do not sell customer information.</p>
+<ul>
+<li>Data may include name, email, phone, address, age, gender, height, weight, training level, goals, allergies, order details and product access status.</li>
+<li>Fitness and nutrition information is used only for personalisation and should only be entered if you are comfortable using it for that purpose.</li>
+<li>Customers may contact support to request help with access, correction or deletion of account/profile information.</li>
+<li>Marketing emails are only sent where allowed, and customers should be able to unsubscribe from marketing emails.</li>
+</ul>
+</section>
+<section class="policy-section" id="cookies">
+<h2>Cookies &amp; Local Storage</h2>
+<p>The website may use cookies and browser storage for cart items, login status, product access, analytics, performance measurement, preferences and security.</p>
+<ul>
+<li>Necessary cookies/local storage may be used to make the site function.</li>
+<li>Analytics and marketing cookies should only be used where properly configured and allowed.</li>
+<li>Clearing browser storage may remove saved cart items, demo access and profile details.</li>
+</ul>
+</section>
+<section class="policy-section" id="physical">
+<h2>Physical Products, Delivery &amp; Warranty</h2>
+<p>Physical products may be fulfilled manually or through suppliers. Delivery times, shipping price, stock status and availability may vary.</p>
+<ul>
+<li>Customers must provide correct delivery and contact information.</li>
+<li>FitBrand is not responsible for delays caused by wrong customer information.</li>
+<li>If a product arrives damaged, contact support with photos and order information.</li>
+<li>Consumer warranty/legal guarantee rights apply where required by law.</li>
+</ul>
+</section>
+<section class="policy-section" id="complaints">
+<h2>Support, Complaints &amp; Disputes</h2>
+<p>Please contact FitBrand first if you have a problem with access, billing, delivery or product quality.</p>
+<ul>
+<li>Support email: <a href="mailto:support@fitbrand.fit">support@fitbrand.fit</a></li>
+<li>Customers in Denmark may have access to the Danish consumer complaints system where applicable.</li>
+<li>The EU ODR platform has been discontinued and should not be used as a complaint link.</li>
+<li>We aim to handle support requests fairly and professionally.</li>
+</ul>
+</section>
+<section class="policy-section" id="agreement">
+<h2>Agreement &amp; Policy Changes</h2>
+<p>By purchasing from FitBrand, creating an account or using FitBrand tools, you agree to these terms, including subscription terms, digital access rules, age rules, health disclaimers and privacy rules.</p>
+<ul>
+<li>FitBrand may update these policies when the site, products or legal requirements change.</li>
+<li>The policy version shown at the time of purchase applies to that purchase unless mandatory law says otherwise.</li>
+<li>Before full commercial launch, FitBrand should add final legal company name, address, CVR/VAT and have policies reviewed by a qualified professional.</li>
+</ul>
+</section>
+<div class="policy-cta"><div><h2>Ready to continue?</h2><p>Go back to the shop and choose the FitBrand product that fits your goal.</p></div><a href="recommended.html">Back to shop</a></div>
+</div> </div>
+</div>
 </section>
 </main>
 <footer>
-  <div class="footer-grid">
-    <div><a class="brand" href="index.html"><img class="logo-img" src="assets/fitbrand-logo-real.png" alt="FitBrand logo"></a><p>Premium programs. Real results. No excuses.</p></div>
-    <div><h4>Support</h4><a href="policies.html">Our Policies</a><a href="policies.html#subscriptions">Subscription Terms</a><a href="policies.html#refunds">Refund Policy</a><a href="policies.html#privacy">Privacy Policy</a><a href="policies.html#terms">Terms & Conditions</a></div>
-    <div><h4>Connect</h4><a href="https://instagram.com/fitbrand.co" target="_blank" rel="noreferrer">Instagram</a><a href="https://tiktok.com/@fitbrand.co" target="_blank" rel="noreferrer">TikTok</a><a href="https://www.facebook.com/profile.php?id=61588721279095" target="_blank" rel="noreferrer">Facebook</a><a href="mailto:support@fitbrand.fit">support@fitbrand.fit</a></div>
-  </div>
-  <div class="copy"><span>© 2026 FitBrand. All rights reserved.</span><span>Built for your transformation.</span></div>
+<div class="footer-grid">
+<div><a class="brand" href="index.html"><img alt="FitBrand logo" class="logo-img" src="assets/fitbrand-logo-real.png"/></a><p>Premium programs. Real results. No excuses.</p></div>
+<div><h4>Support</h4><a href="policies.html">Our Policies</a><a href="policies.html#refunds">Refund Policy</a><a href="policies.html#privacy">Privacy Policy</a><a href="policies.html#terms">Terms &amp; Conditions</a></div>
+<div><h4>Connect</h4><a href="https://instagram.com/fitbrand.co" rel="noreferrer" target="_blank">Instagram</a><a href="https://tiktok.com/@fitbrand.co" rel="noreferrer" target="_blank">TikTok</a><a href="https://www.facebook.com/profile.php?id=61588721279095" rel="noreferrer" target="_blank">Facebook</a><a href="mailto:support@fitbrand.fit">Email</a></div>
+</div>
+<div class="copy"><span>© 2026 FitBrand. All rights reserved.</span><span>Built for your transformation.</span></div>
 </footer>
+<div class="cart-toast" id="cart-toast">Added to cart. <a href="cart.html" style="text-decoration:underline;color:white;">View cart</a></div>
+<div class="cart-drawer-overlay" id="drawer-overlay" onclick="closeCartDrawer()"></div>
+<aside class="cart-drawer" id="cart-drawer">
+<div class="drawer-head">
+<h2>Your cart</h2>
+<button class="drawer-close" onclick="closeCartDrawer()">×</button>
+</div>
+<div class="drawer-body">
+<div id="drawer-items"></div>
+<div class="upsell-section">
+<h3>Recommended add-ons</h3>
+<div class="upsell-card"><span>Meal Plan Guide AI</span><button class="remove-item-btn" onclick="addToCart('mealplan')">Add</button></div>
+<div class="upsell-card"><span>Lifting Straps</span><span class="coming-soon-small">Coming soon</span></div>
+</div>
+</div>
+<div class="drawer-footer">
+<div class="discount-box">
+<input id="drawer-discount" placeholder="Discount code"/>
+<button onclick="applyDrawerDiscount()">Apply</button>
+</div>
+<div class="discount-message" id="drawer-discount-message">Try code FIT10 for 10% off.</div>
+<div class="cart-total"><span>Total</span><span id="drawer-total">€0.00</span></div>
+<a class="btn-dark" href="checkout.html?cart=true" style="width:100%;">Continue to checkout</a>
+<a class="btn-outline" href="recommended.html" style="width:100%;margin-top:10px;">Continue shopping</a>
+</div>
+</aside>
+<div class="mini-cart-popup" id="mini-cart-popup">
+<h3>Added to cart</h3>
+<p>Your product has been added to your FitBrand cart.</p>
+<div class="mini-cart-actions">
+<a class="btn-outline" href="recommended.html">Keep shopping</a>
+<a class="btn-dark" href="cart.html">View cart</a>
+</div>
+</div>
+<div class="profile-modal-overlay" id="profileModalOverlay" onclick="closeProfileModal()">
+<div class="profile-modal" onclick="event.stopPropagation()">
+<button class="profile-modal-close" onclick="closeProfileModal()">×</button>
+<h2 id="profileModalTitle">Log in</h2>
+<div id="profileViewBox" style="display:none;">
+<div class="profile-menu-head">
+<div class="profile-avatar"><span id="profileViewInitial">?</span></div>
+<div><strong id="profileViewName">Guest</strong><br/><span id="profileViewEmail">Not logged in</span></div>
+</div>
+</div>
+<form class="profile-form" id="profileForm">
+<input id="profileNameInput" placeholder="Your name" type="text"/>
+<input id="profileEmailInput" placeholder="your@email.com" type="email"/>
+<button class="profile-main-btn" type="submit">Sign in/up</button>
+<button class="profile-google-btn" onclick="fakeGoogleLogin()" type="button">Continue with Google</button>
+</form>
+</div>
+</div>
+<script>
+const fitbrandProductData = {
+  aesthetic:{name:"Aesthetic Program",price:4.99},
+  shred:{name:"Shred Program",price:6.99},
+  strength:{name:"Strength Program",price:6.99},
+  bundle:{name:"Complete Bundle + Meal Plan AI",price:18.97},
+  mealplan:{name:"Meal Plan Guide AI",price:5.99},
+  belt:{name:"Lifting Belt",price:24.99},
+  straps:{name:"Lifting Straps",price:12.99}
+};
+
+let fitbrandDiscount = 0;
+
+function getCart(){return JSON.parse(localStorage.getItem("fitbrandCart") || "[]");}
+function saveCart(cart){localStorage.setItem("fitbrandCart", JSON.stringify(cart));}
+
+function updateCartCount(){
+  const cart = getCart();
+  document.querySelectorAll("#cart-count, #cart-count-btn").forEach(el=>{
+    el.textContent = cart.length;
+    el.style.display = cart.length > 0 ? "inline-flex" : "none";
+  });
+  renderCartDrawer();
+}
+
+function addToCart(product){
+  const cart = getCart();
+  cart.push(product);
+  saveCart(cart);
+  updateCartCount();
+  showMiniCartPopup();
+
+  const toast = document.getElementById("cart-toast");
+  if(toast){
+    toast.classList.add("show");
+    setTimeout(()=>toast.classList.remove("show"),2200);
+  }
+}
+
+function removeDrawerItem(index){
+  const cart = getCart();
+  cart.splice(index,1);
+  saveCart(cart);
+  updateCartCount();
+}
+
+function renderCartDrawer(){
+  const drawerItems = document.getElementById("drawer-items");
+  const totalEl = document.getElementById("drawer-total");
+  if(!drawerItems || !totalEl) return;
+
+  const cart = getCart();
+  if(cart.length === 0){
+    drawerItems.innerHTML = "<p>Your cart is empty.</p>";
+    totalEl.textContent = "€0.00";
+    return;
+  }
+
+  let total = 0;
+  drawerItems.innerHTML = cart.map((item,index)=>{
+    const p = fitbrandProductData[item] || fitbrandProductData.bundle;
+    total += p.price;
+    return `<div class="drawer-item"><div><strong>${p.name}</strong><span>FitBrand product</span></div><div><strong>€${p.price.toFixed(2)}</strong><br><button class="remove-item-btn" onclick="removeDrawerItem(${index})">Remove</button></div></div>`;
+  }).join("");
+
+  const discounted = total * (1 - fitbrandDiscount);
+  totalEl.textContent = "€" + discounted.toFixed(2);
+}
+
+function openCartDrawer(){
+  document.getElementById("cart-drawer")?.classList.add("show");
+  document.getElementById("drawer-overlay")?.classList.add("show");
+  renderCartDrawer();
+}
+
+function closeCartDrawer(){
+  document.getElementById("cart-drawer")?.classList.remove("show");
+  document.getElementById("drawer-overlay")?.classList.remove("show");
+}
+
+function applyDrawerDiscount(){
+  const code = (document.getElementById("drawer-discount")?.value || "").trim().toUpperCase();
+  const msg = document.getElementById("drawer-discount-message");
+
+  if(code === "FIT10"){
+    fitbrandDiscount = 0.10;
+    if(msg) msg.textContent = "Discount applied: 10% off.";
+  } else {
+    fitbrandDiscount = 0;
+    if(msg) msg.textContent = "Invalid code. Try FIT10.";
+  }
+
+  renderCartDrawer();
+}
+
+function showMiniCartPopup(){
+  const popup = document.getElementById("mini-cart-popup");
+  if(!popup) return;
+  popup.classList.add("show");
+  setTimeout(()=>popup.classList.remove("show"),3000);
+}
+
+/* ===== PROFILE SYSTEM ===== */
+function getFitBrandUser(){return JSON.parse(localStorage.getItem("fitbrandUser") || "null");}
+
+function updateFitBrandProfileUI(){
+  const user = getFitBrandUser();
+  const initial = user?.name ? user.name.trim().charAt(0).toUpperCase() : "?";
+
+  document.querySelectorAll("#profileInitial,#profileMenuInitial,#profileViewInitial").forEach(el=>{
+    if(el) el.textContent = initial;
+  });
+
+  document.querySelectorAll("#profileMenuName,#profileViewName").forEach(el=>{
+    if(el) el.textContent = user?.name || "Guest";
+  });
+
+  document.querySelectorAll("#profileMenuEmail,#profileViewEmail").forEach(el=>{
+    if(el) el.textContent = user?.email || "Not logged in";
+  });
+
+  const login = document.getElementById("profileLoginBtn");
+  const logout = document.getElementById("profileLogoutBtn");
+
+  if(login) login.style.display = user ? "none" : "block";
+  if(logout) logout.style.display = user ? "block" : "none";
+}
+
+function toggleProfileMenu(){document.getElementById("profileMenu")?.classList.toggle("show");}
+
+function openProfileModal(mode){
+  document.getElementById("profileMenu")?.classList.remove("show");
+
+  const modal = document.getElementById("profileModalOverlay");
+  const form = document.getElementById("profileForm");
+  const view = document.getElementById("profileViewBox");
+  const title = document.getElementById("profileModalTitle");
+  const user = getFitBrandUser();
+
+  if(!modal) return;
+
+  if(mode === "profile"){
+    title.textContent = "Your Profile";
+    form.style.display = "none";
+    view.style.display = "block";
+  } else {
+    title.textContent = mode === "edit" ? "Edit Profile" : "Log in";
+    form.style.display = "grid";
+    view.style.display = "none";
+    document.getElementById("profileNameInput").value = user?.name || "";
+    document.getElementById("profileEmailInput").value = user?.email || "";
+  }
+
+  updateFitBrandProfileUI();
+  modal.classList.add("show");
+}
+
+function closeProfileModal(){document.getElementById("profileModalOverlay")?.classList.remove("show");}
+
+function logoutFitBrandUser(){
+  localStorage.removeItem("fitbrandUser");
+  updateFitBrandProfileUI();
+  document.getElementById("profileMenu")?.classList.remove("show");
+}
+
+function fakeGoogleLogin(){
+  const email = prompt("Enter your Google email:");
+  if(!email) return;
+  const name = email.split("@")[0].replace(/[._-]/g," ");
+  localStorage.setItem("fitbrandUser", JSON.stringify({name:name.charAt(0).toUpperCase()+name.slice(1),email}));
+  updateFitBrandProfileUI();
+  closeProfileModal();
+}
+
+function setupPremiumEffects(){
+  document.querySelectorAll(".policy-sidebar,.policies-wrap,.policy-section,.policy-cta").forEach(el=>{
+    el.classList.add("reveal-on-scroll");
+  });
+
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting) entry.target.classList.add("visible");
+    });
+  },{threshold:0.10});
+
+  document.querySelectorAll(".reveal-on-scroll").forEach(el=>observer.observe(el));
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  updateCartCount();
+  updateFitBrandProfileUI();
+  setupPremiumEffects();
+
+  document.querySelectorAll(".cart-icon-btn").forEach(btn=>{
+    btn.addEventListener("click",function(e){
+      e.preventDefault();
+      openCartDrawer();
+    });
+  });
+
+  const profileForm = document.getElementById("profileForm");
+  if(profileForm){
+    profileForm.addEventListener("submit",function(e){
+      e.preventDefault();
+
+      const name = document.getElementById("profileNameInput").value.trim();
+      const email = document.getElementById("profileEmailInput").value.trim();
+
+      if(!name || !email){
+        alert("Enter name and email");
+        return;
+      }
+
+      localStorage.setItem("fitbrandUser",JSON.stringify({name,email}));
+      updateFitBrandProfileUI();
+      closeProfileModal();
+    });
+  }
+
+  document.addEventListener("click",function(e){
+    const menu = document.getElementById("profileMenu");
+    const btn = document.querySelector(".profile-icon-btn");
+
+    if(menu && btn && !menu.contains(e.target) && !btn.contains(e.target)){
+      menu.classList.remove("show");
+    }
+  });
+});
+</script>
 <script src="fitbrand.js"></script>
+<script src="fitbrand-config.js"></script>
+<script src="supabase-integration.js"></script>
+<!-- FITBRAND_VERSION_MARKER:v26-force-github-update-2026-05-04 -->
 </body>
 </html>

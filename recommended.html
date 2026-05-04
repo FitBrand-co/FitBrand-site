@@ -171,6 +171,14 @@
       .fitbrand-sticky-buy{grid-template-columns:1fr;}
     }
   </style>
+
+<!-- Vercel Speed Insights for static HTML -->
+<script>
+  window.si = window.si || function () {
+    (window.siq = window.siq || []).push(arguments);
+  };
+</script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
 </head>
 
 <body>
@@ -292,7 +300,7 @@
             </div>
 
             <div class="meal-buy-row">
-              <div class="meal-price">€5.99</div>
+              <div class="meal-price">€5.99/mo</div>
               <a class="meal-black-btn" href="checkout.html?product=mealplan">Buy now</a>
               <button class="meal-white-btn" onclick="addToCart('mealplan')">Add to cart</button>
               <a class="meal-white-btn" href="#meal-ai-preview">Read more</a>
@@ -420,7 +428,7 @@
     <strong>Meal Plan Guide AI</strong>
     <span>Unlock the generator and create a personal 7-day meal plan.</span>
   </div>
-  <a href="checkout.html?product=mealplan">Buy €5.99</a>
+  <a href="checkout.html?product=mealplan">Buy €5.99/mo</a>
   <button onclick="addToCart('mealplan')">Add to cart</button>
 </div>
 
@@ -751,7 +759,8 @@ function downloadMealPlanPDF(){
         <h1>Your 7-Day Meal Plan</h1>
         <pre>${latestMealPlanText.replace(/</g,"&lt;").replace(/>/g,"&gt;")}</pre>
         <script>window.print();<\/script>
-      </body>
+      <!-- FITBRAND_VERSION_MARKER:v26-force-github-update-2026-05-04 -->
+</body>
     </html>
   `);
   printWindow.document.close();
@@ -818,5 +827,8 @@ document.addEventListener("DOMContentLoaded",()=>{
 </script>
 
 <script src="fitbrand.js"></script>
+<script src="fitbrand-config.js"></script>
+<script src="supabase-integration.js"></script>
+<!-- FITBRAND_VERSION_MARKER:v26-force-github-update-2026-05-04 -->
 </body>
 </html>

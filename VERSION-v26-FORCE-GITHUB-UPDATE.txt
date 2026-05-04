@@ -1,0 +1,28 @@
+Version: v26-force-github-update-2026-05-04
+
+Changed key files include:
+- fitbrand.js
+- supabase-integration.js
+- style.css
+- policies.html
+- checkout.html
+- cart.html
+- programs.html
+- recommended.html
+- profile.html
+- orders.html
+- products-access.html
+- api/create-checkout-session.js
+- api/stripe-webhook.js
+
+Main fixes:
+- stable logout
+- auth-only menu gating
+- checkout requires login
+- expired magic link notice
+- 13+ with parent/guardian permission for 13–17
+- monthly subscription wording
+- subscription-ready Stripe API
+- complete policy page
+- support@fitbrand.fit footer email
+- responsive AI generator layout fixes

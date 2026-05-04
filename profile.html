@@ -6,6 +6,14 @@
 <title>Profile | FitBrand</title>
 <link rel="stylesheet" href="style.css">
 <meta name="description" content="Edit your FitBrand profile and saved fitness information.">
+
+<!-- Vercel Speed Insights for static HTML -->
+<script>
+  window.si = window.si || function () {
+    (window.siq = window.siq || []).push(arguments);
+  };
+</script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
 </head>
 <body>
 <button class="back-button-global" onclick="history.back()">← Back</button>
@@ -50,10 +58,13 @@
   <div class="copy"><span>© 2026 FitBrand. All rights reserved.</span><span>Built for your transformation.</span></div>
 </footer>
 <script src="fitbrand.js"></script>
+<script src="fitbrand-config.js"></script>
+<script src="supabase-integration.js"></script>
 <script>
 function updateCartCount(){const cart=JSON.parse(localStorage.getItem('fitbrandCart')||'[]');document.querySelectorAll('#cart-count-btn').forEach(el=>{el.textContent=cart.length;el.style.display=cart.length>0?'inline-flex':'none';});}
 function loadProfile(){const u=getFitBrandUser()||{};const map={pfName:u.name,pfEmail:u.email,pfPhone:u.phone,pfAddress:u.address,pfGender:u.gender,pfAge:u.age,pfWeight:u.weight,pfHeight:u.height,pfLevel:u.level,pfTrainingLocation:u.trainingLocation,pfTrainingDays:u.trainingDays,pfEquipment:u.equipment,pfAllergies:u.allergies,pfGoal:u.goal};Object.entries(map).forEach(([id,v])=>{const el=document.getElementById(id); if(el&&v) el.value=v;});}
 document.addEventListener('DOMContentLoaded',()=>{updateCartCount();loadProfile();document.getElementById('fullProfileForm').addEventListener('submit',e=>{e.preventDefault();const user={name:pfName.value.trim(),email:pfEmail.value.trim(),phone:pfPhone.value.trim(),address:pfAddress.value.trim(),gender:pfGender.value,age:pfAge.value,weight:pfWeight.value,height:pfHeight.value,level:pfLevel.value,trainingLocation:pfTrainingLocation.value,trainingDays:pfTrainingDays.value,equipment:pfEquipment.value.trim(),allergies:pfAllergies.value.trim(),goal:pfGoal.value};if(!user.name||!user.email){alert('Please add at least name and email.');return;}saveFitBrandUser(user, true); window.location.href='index.html';});});
 </script>
+<!-- FITBRAND_VERSION_MARKER:v26-force-github-update-2026-05-04 -->
 </body>
 </html>

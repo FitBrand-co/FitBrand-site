@@ -12,10 +12,10 @@
   const WELCOME_KEY = 'fitbrandWelcomeChoiceSeenV13';
 
   const PRODUCTS = {
-    aesthetic:{name:'Aesthetic Program',price:4.99,type:'digital',buy:'checkout.html?product=aesthetic',open:'index.html?purchased=aesthetic'},
+    aesthetic:{name:'Aesthetic Program',price:6.99,type:'digital',buy:'checkout.html?product=aesthetic',open:'index.html?purchased=aesthetic'},
     shred:{name:'Shred Program',price:6.99,type:'digital',buy:'checkout.html?product=shred',open:'index.html?purchased=shred'},
     strength:{name:'Strength Program',price:6.99,type:'digital',buy:'checkout.html?product=strength',open:'index.html?purchased=strength'},
-    bundle:{name:'Complete Bundle + Meal Plan AI',price:18.97,type:'digital',buy:'checkout.html?product=bundle',open:'index.html?purchased=bundle'},
+    bundle:{name:'Complete Bundle + Meal Plan AI',price:18.99,type:'digital',buy:'checkout.html?product=bundle',open:'index.html?purchased=bundle'},
     mealplan:{name:'Meal Plan Guide AI',price:5.99,type:'digital',buy:'checkout.html?product=mealplan',open:'recommended.html?purchased=mealplan#meal-plan-ai'},
     belt:{name:'Lifting Belt',price:24.99,type:'physical',buy:'checkout.html?product=belt',open:'product-belt.html'},
     straps:{name:'Lifting Straps',price:12.99,type:'physical',buy:'checkout.html?product=straps',open:'product-straps.html'}
@@ -608,9 +608,9 @@
   function ageFrom(ids){for(const id of ids){const v=Number($(id)?.value);if(v)return v}return 0}
   function showAgeError(ids){
     ids.forEach(id=>$(id)?.classList.add('fb-age-error'));
-    alert('You must be at least 16 years old to use FitBrand AI generators. If you are under 16, you need permission from a parent or guardian.');
+    alert('You must be at least 13 years old to use FitBrand AI generators. If you are under 13, you need permission from a parent or guardian.');
   }
-  function checkAge(ids){const age=ageFrom(ids); if(age && age<16){showAgeError(ids);return false} return true}
+  function checkAge(ids){const age=ageFrom(ids); if(age && age<13){showAgeError(ids);return false} return true}
   function patchAgeValidation(){
     const oldMeal=window.generateMealPlan;
     window.generateMealPlan=function(){if(!checkAge(['mealAge','wizAge']))return;return oldMeal&&oldMeal.apply(this,arguments)};
@@ -621,7 +621,7 @@
   function patchProfileForm(){
     const form=$('fullProfileForm'); if(!form||form.dataset.v15Patched)return; form.dataset.v15Patched='1';
     form.addEventListener('submit',function(e){
-      const age=Number($('pfAge')?.value||0); if(age&&age<16){e.preventDefault();alert('If the user is under 16, a parent or guardian must give permission. For AI generators, the minimum age is 16.');return false}
+      const age=Number($('pfAge')?.value||0); if(age&&age<13){e.preventDefault();alert('If the user is under 13, a parent or guardian must give permission. For AI generators, the minimum age is 13.');return false}
     },true);
   }
   function boot(){
@@ -630,5 +630,105 @@
     setInterval(updateAuthUI,1200);
   }
   Object.assign(window,{toggleProfileMenu,openProfileModal,closeProfileModal,loginFitBrandUser,logoutFitBrandUser,updateFitBrandProfileUI:updateAuthUI,updateProfileUI:updateAuthUI,getFitBrandUser:user,saveFitBrandUser:saveUser});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+})();
+
+/* FITBRAND_VERSION_MARKER:v26-force-github-update-2026-05-04 */
+
+
+/* ===== FITBRAND v26 FINAL CUSTOMER FLOW PATCH ===== */
+(function(){
+  'use strict';
+  const PROGRAMS = ['aesthetic','shred','strength','bundle','mealplan'];
+  const MONTHLY_PRICES = {aesthetic:6.99, shred:6.99, strength:6.99, bundle:18.99, mealplan:5.99};
+  const NAMES = {aesthetic:'Aesthetic Program', shred:'Shred Program', strength:'Strength Program', bundle:'Complete Bundle + Meal Plan AI', mealplan:'Meal Plan Guide AI'};
+
+  function user(){try{return JSON.parse(localStorage.getItem('fitbrandUser')||'null')}catch{return null}}
+  function realUser(){const u=user();return !!(u&&u.email&&u.supabaseId&&u.backend==='supabase')}
+  function notice(title,msg,type){
+    let n=document.getElementById('fb-v26-notice');
+    if(!n){n=document.createElement('div');n.id='fb-v26-notice';n.className='fb-v26-notice';n.innerHTML='<div class="fb-v26-card"><button type="button" class="fb-v26-close">×</button><strong></strong><p></p><button type="button" class="fb-v26-ok">Got it</button></div>';document.body.appendChild(n);n.addEventListener('click',e=>{if(e.target===n||e.target.closest('.fb-v26-close')||e.target.closest('.fb-v26-ok'))n.classList.remove('show')});}
+    n.querySelector('strong').textContent=title||'FitBrand';
+    n.querySelector('p').textContent=msg||'';
+    n.dataset.type=type||'info';
+    n.classList.add('show');
+  }
+  window.fitbrandNotice = notice;
+
+  async function stableLogout(){
+    try{
+      const sb=window.__fitbrandSupabaseClient || window.FitBrandSupabaseClient;
+      if(sb && sb.auth) await sb.auth.signOut();
+    }catch(e){console.warn('Supabase sign out skipped',e)}
+    ['fitbrandUser','fitbrandSessionUser','fitbrandPendingMealOpen'].forEach(k=>{localStorage.removeItem(k);sessionStorage.removeItem(k)});
+    document.body.classList.add('fb-is-logged-out');
+    document.body.classList.remove('fb-is-logged-in');
+    ['profileInitial','profileMenuInitial','profileModalInitial'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='?'});
+    ['profileMenuName','profileViewName'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='Guest'});
+    ['profileMenuEmail','profileViewEmail'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='Not logged in'});
+    const status=document.getElementById('profileViewStatus'); if(status) status.textContent='Not logged in';
+    document.querySelectorAll('.profile-menu').forEach(m=>m.classList.remove('show'));
+    document.querySelectorAll('.profile-modal-overlay').forEach(m=>m.classList.remove('show'));
+    document.querySelectorAll('[data-auth-only], #profileLogoutBtn, .profile-menu a[href="profile.html"], .profile-menu a[href="orders.html"], .profile-menu a[href="products-access.html"]').forEach(el=>el.style.setProperty('display','none','important'));
+    document.querySelectorAll('[data-guest-only], #profileLoginBtn').forEach(el=>el.style.setProperty('display','flex','important'));
+    notice('Logged out','You have been signed out of FitBrand.','success');
+  }
+  window.logoutFitBrandUser = stableLogout;
+
+  function applySubscriptionCopy(){
+    document.querySelectorAll('a[href*="checkout.html?product="],button,[onclick]').forEach(el=>{
+      const raw=(el.getAttribute('href')||'')+' '+(el.getAttribute('onclick')||'');
+      PROGRAMS.forEach(slug=>{
+        if(raw.includes(slug) && /buy|access|get|unlock|checkout|cart/i.test(el.textContent)){
+          if(!/Subscribe|Monthly|Checkout/i.test(el.textContent)) el.textContent='Subscribe monthly';
+        }
+      });
+    });
+    document.querySelectorAll('body *').forEach(el=>{
+      if(el.children.length) return;
+      let t=el.textContent;
+      if(!t) return;
+      const repl={
+        '€4.99':'€6.99/mo', '€6.99':'€6.99/mo', '€18.97':'€18.99/mo', '€5.99':'€5.99/mo',
+        'one-time':'monthly', 'one time':'monthly'
+      };
+      Object.entries(repl).forEach(([a,b])=>{if(t.includes(a)) t=t.split(a).join(b)});
+      if(t!==el.textContent) el.textContent=t;
+    });
+    document.querySelectorAll('.program-row,.card,.rec-card,.access-card').forEach(card=>{
+      const text=card.textContent.toLowerCase();
+      if(PROGRAMS.some(p=>text.includes(p)) && !card.querySelector('.fb-sub-badge')){
+        const b=document.createElement('div'); b.className='fb-sub-badge'; b.textContent='Monthly launch offer • cancel anytime';
+        (card.querySelector('.card-body,.program-text,.body')||card).prepend(b);
+      }
+    });
+  }
+
+  function gateCheckoutClicks(){
+    document.addEventListener('click',function(e){
+      const link=e.target.closest('a[href*="checkout.html"], #stripe-link, .drawer-checkout-btn, #checkout-link');
+      if(!link) return;
+      if(!realUser()){
+        e.preventDefault(); e.stopPropagation();
+        notice('Sign in required','Please sign in before continuing to checkout. This keeps your subscription, orders and product access connected to your account.','warning');
+        if(typeof window.openProfileModal==='function') setTimeout(()=>window.openProfileModal('login'),180);
+      }
+    },true);
+  }
+
+  function invalidLinkMessage(){
+    const hash=decodeURIComponent(location.hash||'');
+    const search=decodeURIComponent(location.search||'');
+    if(/error=access_denied|expired|invalid|otp_expired|link/i.test(hash+search)){
+      notice('Login link expired','This login link has already been used or has expired. Please request a new sign-in link from the profile menu.','warning');
+      history.replaceState({},document.title,location.pathname);
+    }
+  }
+
+  function hideEmojiNoise(){
+    document.querySelectorAll('.fb-mini-notice,#fb-mini-notice').forEach(el=>{el.textContent=(el.textContent||'').replace(/[✅✓🎉🔥💪⭐️⭐]/g,'').trim()});
+  }
+
+  function boot(){applySubscriptionCopy();gateCheckoutClicks();invalidLinkMessage();hideEmojiNoise();setTimeout(applySubscriptionCopy,300);setTimeout(applySubscriptionCopy,1200)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();

@@ -13,6 +13,14 @@
 <meta property="og:type" content="website">
 <meta property="og:image" content="assets/fitbrand-logo-real.png">
 <meta name="twitter:card" content="summary_large_image">
+
+<!-- Vercel Speed Insights for static HTML -->
+<script>
+  window.si = window.si || function () {
+    (window.siq = window.siq || []).push(arguments);
+  };
+</script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
 </head>
 
 <body>
@@ -245,20 +253,20 @@
 
 <script>
 const productData = {
-  aesthetic: {name:"Aesthetic Program", price:4.99, type:"digital"},
+  aesthetic: {name:"Aesthetic Program", price:6.99, type:"digital"},
   shred: {name:"Shred Program", price:6.99, type:"digital"},
   strength: {name:"Strength Program", price:6.99, type:"digital"},
-  bundle: {name:"Complete Bundle + Meal Plan AI", price:18.97, type:"digital"},
+  bundle: {name:"Complete Bundle + Meal Plan AI", price:18.99, type:"digital"},
   mealplan: {name:"Meal Plan Guide AI", price:5.99, type:"digital"},
   belt: {name:"Lifting Belt", price:24.99, type:"physical"},
   straps: {name:"Lifting Straps", price:12.99, type:"physical"}
 };
 
 const fitbrandProductData = {
-  aesthetic: {name:"Aesthetic Program", price:4.99},
+  aesthetic: {name:"Aesthetic Program", price:6.99},
   shred: {name:"Shred Program", price:6.99},
   strength: {name:"Strength Program", price:6.99},
-  bundle: {name:"Complete Bundle + Meal Plan AI", price:18.97},
+  bundle: {name:"Complete Bundle + Meal Plan AI", price:18.99},
   mealplan: {name:"Meal Plan Guide AI", price:5.99},
   belt: {name:"Lifting Belt", price:24.99},
   straps: {name:"Lifting Straps", price:12.99}
@@ -657,5 +665,8 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 <script src="fitbrand.js"></script>
+<script src="fitbrand-config.js"></script>
+<script src="supabase-integration.js"></script>
+<!-- FITBRAND_VERSION_MARKER:v26-force-github-update-2026-05-04 -->
 </body>
 </html>

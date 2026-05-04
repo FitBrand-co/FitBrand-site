@@ -13,6 +13,14 @@
 <meta property="og:type" content="website">
 <meta property="og:image" content="assets/fitbrand-logo-real.png">
 <meta name="twitter:card" content="summary_large_image">
+
+<!-- Vercel Speed Insights for static HTML -->
+<script>
+  window.si = window.si || function () {
+    (window.siq = window.siq || []).push(arguments);
+  };
+</script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
 </head>
 
 <body>
@@ -95,7 +103,7 @@
         <label>Shipping region</label>
         <select id="shipping-region">
           <option value="digital">Digital only / No shipping</option>
-          <option value="dk">Denmark - €4.99</option>
+          <option value="dk">Denmark - €6.99/mo</option>
           <option value="eu">Europe - €7.99</option>
         </select>
       </div>
@@ -112,7 +120,7 @@
 
       <label class="policy-check">
         <input type="checkbox" id="accept-policies">
-        <span>I have read and accept FitBrand's <a href="policies.html" target="_blank">policies</a>, including subscription terms, digital access rules, refund/withdrawal terms and privacy rules.</span>
+        <span>I have read and accept FitBrand's <a href="policies.html" target="_blank">policies</a>, including the subscription, cancellation, refund and digital access policies.</span>
       </label>
 
       <div class="checkout-methods">
@@ -124,7 +132,7 @@
 
       <div class="checkout-trust">
         <div class="checkout-benefit"><strong>Secure checkout</strong><span>Your order flow is prepared for secure Stripe/Card payment.</span></div>
-        <div class="checkout-benefit"><strong>Instant access</strong><span>Digital programs unlock on the confirmation page.</span></div>
+        <div class="checkout-benefit"><strong>Instant access</strong><span>Digital subscriptions unlock after successful checkout.</span></div>
         <div class="checkout-benefit"><strong>Protected order</strong><span>Clear policies and order details before purchase.</span></div>
 
         <div class="trust-payment-grid">
@@ -136,7 +144,7 @@
       </div>
 
       <div class="stripe-note">Stripe-ready: replace links in <strong>stripe-config.js</strong> with real Stripe Payment Links.</div>
-      <div class="order-note">Demo mode sends customers to the confirmation page and unlocks digital access on this browser.</div>
+      <div class="order-note">You must be signed in before checkout. Subscription access is connected to your FitBrand account after successful payment.</div>
     </div>
 
   </div>
@@ -245,20 +253,20 @@
 
 <script>
 const productData = {
-  aesthetic: {name:"Aesthetic Program", price:4.99, type:"digital"},
+  aesthetic: {name:"Aesthetic Program", price:6.99, type:"digital"},
   shred: {name:"Shred Program", price:6.99, type:"digital"},
   strength: {name:"Strength Program", price:6.99, type:"digital"},
-  bundle: {name:"Complete Bundle + Meal Plan AI", price:18.97, type:"digital"},
+  bundle: {name:"Complete Bundle + Meal Plan AI", price:18.99, type:"digital"},
   mealplan: {name:"Meal Plan Guide AI", price:5.99, type:"digital"},
   belt: {name:"Lifting Belt", price:24.99, type:"physical"},
   straps: {name:"Lifting Straps", price:12.99, type:"physical"}
 };
 
 const fitbrandProductData = {
-  aesthetic: {name:"Aesthetic Program", price:4.99},
+  aesthetic: {name:"Aesthetic Program", price:6.99},
   shred: {name:"Shred Program", price:6.99},
   strength: {name:"Strength Program", price:6.99},
-  bundle: {name:"Complete Bundle + Meal Plan AI", price:18.97},
+  bundle: {name:"Complete Bundle + Meal Plan AI", price:18.99},
   mealplan: {name:"Meal Plan Guide AI", price:5.99},
   belt: {name:"Lifting Belt", price:24.99},
   straps: {name:"Lifting Straps", price:12.99}
@@ -678,5 +686,8 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 <script src="fitbrand.js"></script>
+<script src="fitbrand-config.js"></script>
+<script src="supabase-integration.js"></script>
+<!-- FITBRAND_VERSION_MARKER:v26-force-github-update-2026-05-04 -->
 </body>
 </html>
