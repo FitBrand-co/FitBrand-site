@@ -1,0 +1,23 @@
+FitBrand policies updated.
+
+This build includes a more complete policies page covering:
+- Terms & Conditions
+- Monthly subscription terms
+- Cancellation and recurring billing
+- Refunds, returns and withdrawal
+- Digital product access and licence
+- Health, training and nutrition disclaimer
+- AI generator policy
+- Age rules: 13+ with parent/guardian permission for users aged 13-17
+- Privacy policy
+- Cookie/local storage policy
+- Physical product delivery/warranty rules
+- Offers/discounts/marketing policy
+- Account security
+- Intellectual property
+- Liability/disclaimer
+- Support, complaints and disputes
+
+Important before public launch:
+Add final company legal details, business address, CVR/VAT number and payment provider details.
+This text is a practical policy template and should be legally reviewed before serious paid scale.

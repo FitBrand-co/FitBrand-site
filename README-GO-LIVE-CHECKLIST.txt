@@ -7,7 +7,7 @@ Before taking real customers:
 2. In Stripe, set each success URL to your domain + /confirmation.html?product=PRODUCT_KEY.
    Example: https://yourdomain.com/confirmation.html?product=aesthetic
 3. Test every product checkout with Stripe test mode first.
-4. Add your real support email in the footer if support@fitbrand.co is not active.
+4. Add your real support email in the footer if support@fitbrand.fit is not active.
 5. Confirm your refund, privacy, shipping and terms are correct for your business.
 6. For a real login system across devices, connect a backend database/auth service later. This version saves login/access on the customer's browser using localStorage/sessionStorage.
 
