@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+  <script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -137,6 +141,14 @@
       .fb-modal-body{padding:24px 18px 22px}.fb-modal-header{padding:42px 18px 26px}
     }
   </style>
+
+<!-- Vercel Speed Insights for static HTML -->
+<script>
+  window.si = window.si || function () {
+    (window.siq = window.siq || []).push(arguments);
+  };
+</script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
 </head>
 
 <body>
@@ -292,8 +304,8 @@
         <div class="card-body">
           <h3>Aesthetic Program</h3>
           <p>Build a balanced and aesthetic physique with a clear weekly structure.</p>
-          <div class="price">€4.99</div>
-          <a class="btn-dark" href="checkout.html?product=aesthetic">Buy now</a>
+          <div class="price">€9.99 / month</div>
+          <a class="btn-dark" href="checkout.html?product=aesthetic">Start subscription</a>
           <button class="btn-outline" onclick="addToCart('aesthetic')">Add to cart</button>
         </div>
       </article>
@@ -306,8 +318,8 @@
         <div class="card-body">
           <h3>Shred Program</h3>
           <p>Lose fat, reveal definition and build discipline with a simple system.</p>
-          <div class="price">€6.99</div>
-          <a class="btn-dark" href="checkout.html?product=shred">Buy now</a>
+          <div class="price">€9.99 / month</div>
+          <a class="btn-dark" href="checkout.html?product=shred">Start subscription</a>
           <button class="btn-outline" onclick="addToCart('shred')">Add to cart</button>
         </div>
       </article>
@@ -319,8 +331,8 @@
         <div class="card-body">
           <h3>Strength Program</h3>
           <p>Build power, size and confidence with progressive training.</p>
-          <div class="price">€6.99</div>
-          <a class="btn-dark" href="checkout.html?product=strength">Buy now</a>
+          <div class="price">€9.99 / month</div>
+          <a class="btn-dark" href="checkout.html?product=strength">Start subscription</a>
           <button class="btn-outline" onclick="addToCart('strength')">Add to cart</button>
         </div>
       </article>
@@ -337,7 +349,7 @@
         <span>Strength Program</span>
         <span>Meal Plan AI</span>
       </div>
-      <a class="btn-silver" href="checkout.html?product=bundle">Buy Bundle €18.97</a>
+      <a class="btn-silver" href="checkout.html?product=bundle">Start Bundle — €24.99 / month</a>
       <button class="btn-outline" onclick="addToCart('bundle')" style="margin-left:10px;">Add to cart</button>
     </div>
   </section>
@@ -757,11 +769,11 @@
   }
 
   const fitbrandProductData = {
-    aesthetic:{name:"Aesthetic Program",price:4.99},
-    shred:{name:"Shred Program",price:6.99},
-    strength:{name:"Strength Program",price:6.99},
-    bundle:{name:"Complete Bundle + Meal Plan AI",price:18.97},
-    mealplan:{name:"Meal Plan Guide AI",price:5.99},
+    aesthetic:{name:"Aesthetic Program Monthly",price:9.99},
+    shred:{name:"Shred Program Monthly",price:9.99},
+    strength:{name:"Strength Program Monthly",price:9.99},
+    bundle:{name:"Complete Bundle + Meal Plan AI Monthly",price:24.99},
+    mealplan:{name:"Meal Plan Guide AI Monthly",price:7.99},
     belt:{name:"Lifting Belt",price:24.99},
     straps:{name:"Lifting Straps",price:12.99}
   };
@@ -922,5 +934,9 @@
 </script>
 
 <script src="fitbrand.js"></script>
+<script src="fitbrand-config.js"></script>
+<script src="supabase-integration.js"></script>
 </body>
 </html>
+
+<!-- FITBRAND_V27_CLEAN -->

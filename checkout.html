@@ -103,7 +103,7 @@
         <label>Shipping region</label>
         <select id="shipping-region">
           <option value="digital">Digital only / No shipping</option>
-          <option value="dk">Denmark - €6.99/mo</option>
+          <option value="dk">Denmark - €4.99</option>
           <option value="eu">Europe - €7.99</option>
         </select>
       </div>
@@ -116,11 +116,11 @@
       <div id="checkout-discount-message" class="discount-message">Try code FIT10 for 10% off.</div>
 
       <input id="checkout-email" type="email" placeholder="Email for order confirmation" required>
-      <div id="checkout-email-message" class="discount-message">Email is required before payment. We use it to create/save your FitBrand account on this device.</div>
+      <div id="checkout-email-message" class="discount-message">Email is required. You must log in before payment so your subscription and access attach to your account.</div>
 
       <label class="policy-check">
         <input type="checkbox" id="accept-policies">
-        <span>I have read and accept FitBrand's <a href="policies.html" target="_blank">policies</a>, including the subscription, cancellation, refund and digital access policies.</span>
+        <span>I have read and accept FitBrand's <a href="policies.html" target="_blank">policies</a>, including the no-refund policy for digital products.</span>
       </label>
 
       <div class="checkout-methods">
@@ -132,7 +132,7 @@
 
       <div class="checkout-trust">
         <div class="checkout-benefit"><strong>Secure checkout</strong><span>Your order flow is prepared for secure Stripe/Card payment.</span></div>
-        <div class="checkout-benefit"><strong>Instant access</strong><span>Digital subscriptions unlock after successful checkout.</span></div>
+        <div class="checkout-benefit"><strong>Instant access</strong><span>Digital programs unlock on the confirmation page.</span></div>
         <div class="checkout-benefit"><strong>Protected order</strong><span>Clear policies and order details before purchase.</span></div>
 
         <div class="trust-payment-grid">
@@ -144,7 +144,7 @@
       </div>
 
       <div class="stripe-note">Stripe-ready: replace links in <strong>stripe-config.js</strong> with real Stripe Payment Links.</div>
-      <div class="order-note">You must be signed in before checkout. Subscription access is connected to your FitBrand account after successful payment.</div>
+      <div class="order-note">Demo mode sends customers to the confirmation page and unlocks digital access on this browser.</div>
     </div>
 
   </div>
@@ -244,7 +244,7 @@
       <input id="loginProfileName" type="text" placeholder="Your name">
 
       <button class="btn-dark" onclick="loginFitBrandUser()">Log in</button>
-      <p class="profile-small-note">This is a simple local login for now. Real Google login needs Firebase or another login system.</p>
+      <p class="profile-small-note">We send a secure login link to your email. No password needed.</p>
     </div>
   </div>
 </div>
@@ -253,21 +253,21 @@
 
 <script>
 const productData = {
-  aesthetic: {name:"Aesthetic Program", price:6.99, type:"digital"},
-  shred: {name:"Shred Program", price:6.99, type:"digital"},
-  strength: {name:"Strength Program", price:6.99, type:"digital"},
-  bundle: {name:"Complete Bundle + Meal Plan AI", price:18.99, type:"digital"},
-  mealplan: {name:"Meal Plan Guide AI", price:5.99, type:"digital"},
+  aesthetic: {name:"Aesthetic Program Monthly", price:9.99, type:"digital"},
+  shred: {name:"Shred Program Monthly", price:9.99, type:"digital"},
+  strength: {name:"Strength Program Monthly", price:9.99, type:"digital"},
+  bundle: {name:"Complete Bundle + Meal Plan AI Monthly", price:24.99, type:"digital"},
+  mealplan: {name:"Meal Plan Guide AI Monthly", price:7.99, type:"digital"},
   belt: {name:"Lifting Belt", price:24.99, type:"physical"},
   straps: {name:"Lifting Straps", price:12.99, type:"physical"}
 };
 
 const fitbrandProductData = {
-  aesthetic: {name:"Aesthetic Program", price:6.99},
-  shred: {name:"Shred Program", price:6.99},
-  strength: {name:"Strength Program", price:6.99},
-  bundle: {name:"Complete Bundle + Meal Plan AI", price:18.99},
-  mealplan: {name:"Meal Plan Guide AI", price:5.99},
+  aesthetic: {name:"Aesthetic Program Monthly", price:9.99},
+  shred: {name:"Shred Program Monthly", price:9.99},
+  strength: {name:"Strength Program Monthly", price:9.99},
+  bundle: {name:"Complete Bundle + Meal Plan AI Monthly", price:24.99},
+  mealplan: {name:"Meal Plan Guide AI Monthly", price:7.99},
   belt: {name:"Lifting Belt", price:24.99},
   straps: {name:"Lifting Straps", price:12.99}
 };
@@ -408,7 +408,7 @@ function updatePaymentLink(){
   const msg = document.getElementById("checkout-email-message");
 
   if(msg){
-    msg.textContent = emailOk ? "Email ready. Your FitBrand account will be saved with this email." : "Email is required before payment. We use it to create/save your FitBrand account on this device.";
+    msg.textContent = emailOk ? "Email ready. You must be logged in before payment." : "Email is required. You must log in before payment so your subscription and access attach to your account.";
   }
 
   if(!acceptPolicies.checked || !emailOk){
@@ -563,7 +563,7 @@ function updateProfileUI(){
   if(profileMenuEmail) profileMenuEmail.textContent = email;
   if(profileViewName) profileViewName.textContent = name;
   if(profileViewEmail) profileViewEmail.textContent = email;
-  if(profileViewStatus) profileViewStatus.textContent = user ? "Logged in on this device" : "No active login";
+  if(profileViewStatus) profileViewStatus.textContent = user ? "Logged in with FitBrand" : "No active login";
 
   if(loginBtn) loginBtn.style.display = user ? "none" : "block";
   if(logoutBtn) logoutBtn.style.display = user ? "block" : "none";
@@ -688,6 +688,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <script src="fitbrand.js"></script>
 <script src="fitbrand-config.js"></script>
 <script src="supabase-integration.js"></script>
-<!-- FITBRAND_VERSION_MARKER:v26-force-github-update-2026-05-04 -->
 </body>
 </html>
+
+<!-- FITBRAND_V27_CLEAN -->

@@ -300,8 +300,8 @@
             </div>
 
             <div class="meal-buy-row">
-              <div class="meal-price">€5.99/mo</div>
-              <a class="meal-black-btn" href="checkout.html?product=mealplan">Buy now</a>
+              <div class="meal-price">€7.99 / month</div>
+              <a class="meal-black-btn" href="checkout.html?product=mealplan">Start subscription</a>
               <button class="meal-white-btn" onclick="addToCart('mealplan')">Add to cart</button>
               <a class="meal-white-btn" href="#meal-ai-preview">Read more</a>
             </div>
@@ -428,7 +428,7 @@
     <strong>Meal Plan Guide AI</strong>
     <span>Unlock the generator and create a personal 7-day meal plan.</span>
   </div>
-  <a href="checkout.html?product=mealplan">Buy €5.99/mo</a>
+  <a href="checkout.html?product=mealplan">Start monthly access — €7.99 / month</a>
   <button onclick="addToCart('mealplan')">Add to cart</button>
 </div>
 
@@ -472,11 +472,11 @@
 
 <script>
 const fitbrandProductData = {
-  aesthetic:{name:"Aesthetic Program",price:4.99},
-  shred:{name:"Shred Program",price:6.99},
-  strength:{name:"Strength Program",price:6.99},
-  bundle:{name:"Complete Bundle",price:18.97},
-  mealplan:{name:"Meal Plan Guide AI",price:5.99},
+  aesthetic:{name:"Aesthetic Program Monthly",price:9.99},
+  shred:{name:"Shred Program Monthly",price:9.99},
+  strength:{name:"Strength Program Monthly",price:9.99},
+  bundle:{name:"Complete Bundle Monthly",price:24.99},
+  mealplan:{name:"Meal Plan Guide AI Monthly",price:7.99},
   belt:{name:"Lifting Belt",price:24.99},
   straps:{name:"Lifting Straps",price:12.99}
 };
@@ -759,8 +759,7 @@ function downloadMealPlanPDF(){
         <h1>Your 7-Day Meal Plan</h1>
         <pre>${latestMealPlanText.replace(/</g,"&lt;").replace(/>/g,"&gt;")}</pre>
         <script>window.print();<\/script>
-      <!-- FITBRAND_VERSION_MARKER:v26-force-github-update-2026-05-04 -->
-</body>
+      </body>
     </html>
   `);
   printWindow.document.close();
@@ -829,6 +828,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 <script src="fitbrand.js"></script>
 <script src="fitbrand-config.js"></script>
 <script src="supabase-integration.js"></script>
-<!-- FITBRAND_VERSION_MARKER:v26-force-github-update-2026-05-04 -->
 </body>
 </html>
+
+<!-- FITBRAND_V27_CLEAN -->

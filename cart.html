@@ -246,28 +246,28 @@
       <input id="loginProfileName" type="text" placeholder="Your name">
 
       <button class="btn-dark" onclick="loginFitBrandUser()">Log in</button>
-      <p class="profile-small-note">This is a simple local login for now. Real Google login needs Firebase or another login system.</p>
+      <p class="profile-small-note">We send a secure login link to your email. No password needed.</p>
     </div>
   </div>
 </div>
 
 <script>
 const productData = {
-  aesthetic: {name:"Aesthetic Program", price:6.99, type:"digital"},
-  shred: {name:"Shred Program", price:6.99, type:"digital"},
-  strength: {name:"Strength Program", price:6.99, type:"digital"},
-  bundle: {name:"Complete Bundle + Meal Plan AI", price:18.99, type:"digital"},
-  mealplan: {name:"Meal Plan Guide AI", price:5.99, type:"digital"},
+  aesthetic: {name:"Aesthetic Program Monthly", price:9.99, type:"digital"},
+  shred: {name:"Shred Program Monthly", price:9.99, type:"digital"},
+  strength: {name:"Strength Program Monthly", price:9.99, type:"digital"},
+  bundle: {name:"Complete Bundle + Meal Plan AI Monthly", price:24.99, type:"digital"},
+  mealplan: {name:"Meal Plan Guide AI Monthly", price:7.99, type:"digital"},
   belt: {name:"Lifting Belt", price:24.99, type:"physical"},
   straps: {name:"Lifting Straps", price:12.99, type:"physical"}
 };
 
 const fitbrandProductData = {
-  aesthetic: {name:"Aesthetic Program", price:6.99},
-  shred: {name:"Shred Program", price:6.99},
-  strength: {name:"Strength Program", price:6.99},
-  bundle: {name:"Complete Bundle + Meal Plan AI", price:18.99},
-  mealplan: {name:"Meal Plan Guide AI", price:5.99},
+  aesthetic: {name:"Aesthetic Program Monthly", price:9.99},
+  shred: {name:"Shred Program Monthly", price:9.99},
+  strength: {name:"Strength Program Monthly", price:9.99},
+  bundle: {name:"Complete Bundle + Meal Plan AI Monthly", price:24.99},
+  mealplan: {name:"Meal Plan Guide AI Monthly", price:7.99},
   belt: {name:"Lifting Belt", price:24.99},
   straps: {name:"Lifting Straps", price:12.99}
 };
@@ -552,7 +552,7 @@ function updateProfileUI(){
   if(profileMenuEmail) profileMenuEmail.textContent = email;
   if(profileViewName) profileViewName.textContent = name;
   if(profileViewEmail) profileViewEmail.textContent = email;
-  if(profileViewStatus) profileViewStatus.textContent = user ? "Logged in on this device" : "No active login";
+  if(profileViewStatus) profileViewStatus.textContent = user ? "Logged in with FitBrand" : "No active login";
 
   if(loginBtn) loginBtn.style.display = user ? "none" : "block";
   if(logoutBtn) logoutBtn.style.display = user ? "block" : "none";
@@ -667,6 +667,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <script src="fitbrand.js"></script>
 <script src="fitbrand-config.js"></script>
 <script src="supabase-integration.js"></script>
-<!-- FITBRAND_VERSION_MARKER:v26-force-github-update-2026-05-04 -->
 </body>
 </html>
+
+<!-- FITBRAND_V27_CLEAN -->

@@ -13,6 +13,14 @@
 <meta property="og:type" content="website">
 <meta property="og:image" content="assets/fitbrand-logo-real.png">
 <meta name="twitter:card" content="summary_large_image">
+
+<!-- Vercel Speed Insights for static HTML -->
+<script>
+  window.si = window.si || function () {
+    (window.siq = window.siq || []).push(arguments);
+  };
+</script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
 </head>
 
 <body>
@@ -196,7 +204,7 @@
       <input id="loginProfileName" type="text" placeholder="Your name">
 
       <button class="btn-dark" onclick="loginFitBrandUser()">Log in</button>
-      <p class="profile-small-note">This is a simple local login for now. Real Google login needs Firebase or another login system.</p>
+      <p class="profile-small-note">We send a secure login link to your email. No password needed.</p>
     </div>
   </div>
 </div>
@@ -309,7 +317,7 @@ function updateProfileUI(){
   if(profileMenuEmail) profileMenuEmail.textContent = email;
   if(profileViewName) profileViewName.textContent = name;
   if(profileViewEmail) profileViewEmail.textContent = email;
-  if(profileViewStatus) profileViewStatus.textContent = user ? "Logged in on this device" : "No active login";
+  if(profileViewStatus) profileViewStatus.textContent = user ? "Logged in with FitBrand" : "No active login";
 
   if(loginBtn) loginBtn.style.display = user ? "none" : "block";
   if(logoutBtn) logoutBtn.style.display = user ? "block" : "none";
@@ -414,5 +422,9 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 <script src="fitbrand.js"></script>
+<script src="fitbrand-config.js"></script>
+<script src="supabase-integration.js"></script>
 </body>
 </html>
+
+<!-- FITBRAND_V27_CLEAN -->

@@ -1,0 +1,1 @@
+FitBrand v27 clean build. Upload the CONTENTS of this folder to GitHub root. This version fixes price text duplication, profile/logout, checkout auth gate, policies, footer email and AI layout responsiveness.

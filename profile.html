@@ -65,6 +65,7 @@ function updateCartCount(){const cart=JSON.parse(localStorage.getItem('fitbrandC
 function loadProfile(){const u=getFitBrandUser()||{};const map={pfName:u.name,pfEmail:u.email,pfPhone:u.phone,pfAddress:u.address,pfGender:u.gender,pfAge:u.age,pfWeight:u.weight,pfHeight:u.height,pfLevel:u.level,pfTrainingLocation:u.trainingLocation,pfTrainingDays:u.trainingDays,pfEquipment:u.equipment,pfAllergies:u.allergies,pfGoal:u.goal};Object.entries(map).forEach(([id,v])=>{const el=document.getElementById(id); if(el&&v) el.value=v;});}
 document.addEventListener('DOMContentLoaded',()=>{updateCartCount();loadProfile();document.getElementById('fullProfileForm').addEventListener('submit',e=>{e.preventDefault();const user={name:pfName.value.trim(),email:pfEmail.value.trim(),phone:pfPhone.value.trim(),address:pfAddress.value.trim(),gender:pfGender.value,age:pfAge.value,weight:pfWeight.value,height:pfHeight.value,level:pfLevel.value,trainingLocation:pfTrainingLocation.value,trainingDays:pfTrainingDays.value,equipment:pfEquipment.value.trim(),allergies:pfAllergies.value.trim(),goal:pfGoal.value};if(!user.name||!user.email){alert('Please add at least name and email.');return;}saveFitBrandUser(user, true); window.location.href='index.html';});});
 </script>
-<!-- FITBRAND_VERSION_MARKER:v26-force-github-update-2026-05-04 -->
 </body>
 </html>
+
+<!-- FITBRAND_V27_CLEAN -->

@@ -329,6 +329,11 @@
   </section>
 
   <section id="programs" class="section">
+    <div class="fb-subscription-intro">
+      <span>Monthly access</span>
+      <h2>Premium programs as a subscription</h2>
+      <p>Train with FitBrand every month. Current launch pricing is shown with clear monthly billing, so customers know exactly what they subscribe to.</p>
+    </div>
     <div class="programs-premium-strip">
       <div class="programs-premium-pill"><strong>Instant access</strong><span>Get your digital program immediately after checkout and start training with structure.</span></div>
       <div class="programs-premium-pill"><strong>Premium structure</strong><span>Every plan is designed to remove guessing and make training clear from day one.</span></div>
@@ -353,9 +358,9 @@
           <div class="benefit"><strong>Balanced physique</strong><span>Focused on proportions and symmetry.</span></div>
           <div class="benefit"><strong>Clear structure</strong><span>No guessing in the gym.</span></div>
         </div>
-        <div class="price">€6.99/mo</div>
+        <div class="price"><span class="fb-old-price">€14.99</span> €9.99 / month <small>Launch offer</small></div>
         <div class="program-cart-actions">
-          <a class="btn-dark" href="checkout.html?product=aesthetic">Buy program</a>
+          <a class="btn-dark" href="checkout.html?product=aesthetic">Start subscription</a>
           <button class="btn-outline" onclick="addToCart('aesthetic')">Add to cart</button>
         </div>
       </div>
@@ -379,9 +384,9 @@
           <div class="benefit"><strong>Fat loss</strong><span>Cut fat while keeping training intense.</span></div>
           <div class="benefit"><strong>Definition</strong><span>Reveal your hard work.</span></div>
         </div>
-        <div class="price">€6.99/mo</div>
+        <div class="price"><span class="fb-old-price">€14.99</span> €9.99 / month <small>Launch offer</small></div>
         <div class="program-cart-actions">
-          <a class="btn-dark" href="checkout.html?product=shred">Buy program</a>
+          <a class="btn-dark" href="checkout.html?product=shred">Start subscription</a>
           <button class="btn-outline" onclick="addToCart('shred')">Add to cart</button>
         </div>
       </div>
@@ -404,9 +409,9 @@
           <div class="benefit"><strong>Strength focus</strong><span>Built around key lifts.</span></div>
           <div class="benefit"><strong>Long-term progress</strong><span>Progression built into the plan.</span></div>
         </div>
-        <div class="price">€6.99/mo</div>
+        <div class="price"><span class="fb-old-price">€14.99</span> €9.99 / month <small>Launch offer</small></div>
         <div class="program-cart-actions">
-          <a class="btn-dark" href="checkout.html?product=strength">Buy program</a>
+          <a class="btn-dark" href="checkout.html?product=strength">Start subscription</a>
           <button class="btn-outline" onclick="addToCart('strength')">Add to cart</button>
         </div>
       </div>
@@ -440,9 +445,9 @@
           <div>Full transformation system</div>
         </div>
 
-        <div class="price">€18.99/mo</div>
+        <div class="price"><span class="fb-old-price">€34.99</span> €24.99 / month <small>Best value</small></div>
         <div class="bundle-actions">
-          <a href="checkout.html?cart=true">Buy bundle</a>
+          <a href="checkout.html?cart=true">Start bundle</a>
           <button onclick="addToCart('bundle')">Add to cart</button>
         </div>
       </div>
@@ -566,11 +571,11 @@
 
 <script>
 const fitbrandProductData = {
-  aesthetic:{name:"Aesthetic Program",price:4.99},
-  shred:{name:"Shred Program",price:6.99},
-  strength:{name:"Strength Program",price:6.99},
-  bundle:{name:"Complete Bundle + Meal Plan AI",price:18.97},
-  mealplan:{name:"Meal Plan Guide AI",price:5.99},
+  aesthetic:{name:"Aesthetic Program Monthly",price:9.99},
+  shred:{name:"Shred Program Monthly",price:9.99},
+  strength:{name:"Strength Program Monthly",price:9.99},
+  bundle:{name:"Complete Bundle + Meal Plan AI Monthly",price:24.99},
+  mealplan:{name:"Meal Plan Guide AI Monthly",price:7.99},
   belt:{name:"Lifting Belt",price:24.99},
   straps:{name:"Lifting Straps",price:12.99}
 };
@@ -807,6 +812,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 <script src="fitbrand.js"></script>
 <script src="fitbrand-config.js"></script>
 <script src="supabase-integration.js"></script>
-<!-- FITBRAND_VERSION_MARKER:v26-force-github-update-2026-05-04 -->
 </body>
 </html>
+
+<!-- FITBRAND_V27_CLEAN -->

@@ -932,49 +932,108 @@
   window.fitbrandForceMenuState = forceMenuState;
 })();
 
-/* FITBRAND_VERSION_MARKER:v26-force-github-update-2026-05-04 */
-
-
-/* ===== FITBRAND v26 SUPABASE AUTH STABILITY PATCH ===== */
+/* ===== FITBRAND FINAL AUTH, LOGOUT, MAGIC LINK AND CHECKOUT FIX ===== */
 (function(){
   'use strict';
-  function readUser(){try{return JSON.parse(localStorage.getItem('fitbrandUser')||'null')}catch{return null}}
-  function isReal(){const u=readUser();return !!(u&&u.email&&u.supabaseId&&u.backend==='supabase')}
-  function notice(t,m,type){ if(window.fitbrandNotice) window.fitbrandNotice(t,m,type); else alert((t?t+'\n':'')+(m||'')); }
-  function updateMenu(){
-    const logged=isReal();
+  const USER_KEY='fitbrandUser';
+  const SESSION_KEY='fitbrandSessionUser';
+  const getJson=(k)=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch{return null}};
+  const $=(id)=>document.getElementById(id);
+  const $$=(sel,root=document)=>Array.from(root.querySelectorAll(sel));
+  const cfg=window.FITBRAND_CONFIG||{};
+  function isConfigured(){return !!(cfg.supabaseUrl && cfg.supabaseAnonKey && !String(cfg.supabaseAnonKey).includes('PASTE_'))}
+  async function getClient(){
+    if(!isConfigured()) return null;
+    for(let i=0;i<60;i++){
+      if(window.__fitbrandSupabaseClient) return window.__fitbrandSupabaseClient;
+      if(window.supabase && window.supabase.createClient){
+        window.__fitbrandSupabaseClient=window.__fitbrandSupabaseClient||window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey);
+        return window.__fitbrandSupabaseClient;
+      }
+      await new Promise(r=>setTimeout(r,100));
+    }
+    return null;
+  }
+  function isRealUser(){const u=getJson(USER_KEY);return !!(u&&u.email&&u.supabaseId&&u.backend==='supabase')}
+  function showMessage(type,title,msg){
+    if(typeof window.FitBrandBackend?.showAuthMessage==='function') return window.FitBrandBackend.showAuthMessage(type,title,msg);
+    let box=$('fbAuthMessage');
+    if(!box){box=document.createElement('div');box.id='fbAuthMessage';box.className='fb-auth-message';box.innerHTML='<div class="fb-auth-message-card"><button type="button" class="fb-auth-message-close">×</button><div class="fb-auth-message-icon" id="fbAuthMessageIcon">✓</div><h3 id="fbAuthMessageTitle"></h3><p id="fbAuthMessageText"></p><button type="button" class="fb-auth-message-ok">Got it</button></div>';document.body.appendChild(box);box.addEventListener('click',e=>{if(e.target===box||e.target.closest('.fb-auth-message-close')||e.target.closest('.fb-auth-message-ok'))box.classList.remove('show')});}
+    box.classList.toggle('error',type==='error');box.classList.toggle('success',type!=='error');
+    $('fbAuthMessageIcon') && ($('fbAuthMessageIcon').textContent=type==='error'?'!':'✓');
+    $('fbAuthMessageTitle') && ($('fbAuthMessageTitle').textContent=title);
+    $('fbAuthMessageText') && ($('fbAuthMessageText').textContent=msg);
+    box.classList.add('show');
+  }
+  function setText(id,v){const el=$(id);if(el)el.textContent=v}
+  function initials(u){const base=(u?.name||u?.email||'?').split('@')[0].replace(/[._-]+/g,' ').trim();const parts=base.split(/\s+/).filter(Boolean);return parts.length>1?(parts[0][0]+parts[1][0]).toUpperCase():base.slice(0,2).toUpperCase()||'?'}
+  function applyMenu(){
+    const logged=isRealUser();const u=getJson(USER_KEY);
     document.body.classList.toggle('fb-is-logged-in',logged);document.body.classList.toggle('fb-is-logged-out',!logged);
-    document.querySelectorAll('[data-auth-only], #profileLogoutBtn, .profile-menu a[href="profile.html"], .profile-menu a[href="products-access.html"], .profile-menu a[href="orders.html"]').forEach(el=>el.style.setProperty('display',logged?'flex':'none','important'));
-    document.querySelectorAll('[data-guest-only], #profileLoginBtn').forEach(el=>el.style.setProperty('display',logged?'none':'flex','important'));
     if(!logged){
-      ['profileInitial','profileMenuInitial','profileModalInitial'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='?'});
-      ['profileMenuName','profileViewName'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='Guest'});
-      ['profileMenuEmail','profileViewEmail'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='Not logged in'});
-      const st=document.getElementById('profileViewStatus'); if(st) st.textContent='Not logged in';
+      const old=getJson(USER_KEY); if(old && old.backend!=='supabase') localStorage.removeItem(USER_KEY);
+      sessionStorage.removeItem(SESSION_KEY);
+      ['profileInitial','profileMenuInitial','profileModalInitial'].forEach(id=>setText(id,'?'));
+      ['profileMenuName','profileViewName'].forEach(id=>setText(id,'Guest'));
+      ['profileMenuEmail','profileViewEmail'].forEach(id=>setText(id,'Not logged in'));
+      setText('profileViewStatus','Not logged in');
+    } else {
+      ['profileInitial','profileMenuInitial','profileModalInitial'].forEach(id=>setText(id,initials(u)));
+      ['profileMenuName','profileViewName'].forEach(id=>setText(id,u.name||u.email.split('@')[0]));
+      ['profileMenuEmail','profileViewEmail'].forEach(id=>setText(id,u.email));
+      setText('profileViewStatus','Logged in with FitBrand');
+    }
+    $$('[data-auth-only], .profile-menu a[href="profile.html"], .profile-menu a[href="products-access.html"], .profile-menu a[href="orders.html"], #profileLogoutBtn').forEach(el=>{el.style.setProperty('display',logged?'flex':'none','important');el.style.setProperty('visibility',logged?'visible':'hidden','important')});
+    $$('#profileLoginBtn,[data-guest-only]').forEach(el=>{el.style.setProperty('display',logged?'none':'flex','important');el.style.setProperty('visibility',logged?'hidden':'visible','important')});
+  }
+  async function syncSession(){
+    const sb=await getClient(); if(!sb) {applyMenu();return}
+    const {data}=await sb.auth.getSession(); const session=data?.session;
+    if(session?.user?.email){
+      const email=session.user.email; const name=(session.user.user_metadata?.full_name||session.user.user_metadata?.name||email.split('@')[0].replace(/[._-]+/g,' ').replace(/\b\w/g,c=>c.toUpperCase()));
+      localStorage.setItem(USER_KEY,JSON.stringify({email,name,supabaseId:session.user.id,backend:'supabase'}));
+    }
+    applyMenu();
+  }
+  async function realLogout(){
+    try{const sb=await getClient(); if(sb) await sb.auth.signOut({scope:'local'});}catch(e){console.warn(e)}
+    localStorage.removeItem(USER_KEY);sessionStorage.removeItem(SESSION_KEY);
+    ['fitbrandPendingCheckout','fitbrandConfirmationNormalized'].forEach(k=>sessionStorage.removeItem(k));
+    const menu=$('profileMenu'); if(menu) menu.classList.remove('show');
+    const modal=$('profileModal'); if(modal) modal.classList.remove('show');
+    applyMenu();showMessage('success','Logged out','You have been signed out of your FitBrand account.');
+  }
+  window.logoutFitBrandUser=realLogout;
+  function handleUsedOrExpiredLink(){
+    const raw=decodeURIComponent(location.hash||location.search||'');
+    if(/otp_expired|access_denied|invalid|expired/i.test(raw)){
+      showMessage('error','Login link expired','That login link has already been used or has expired. Please request a new FitBrand access link.');
+      history.replaceState({},document.title,location.origin+location.pathname);
     }
   }
-  const oldLogout=window.logoutFitBrandUser;
-  window.logoutFitBrandUser=async function(){
-    try{const sb=window.__fitbrandSupabaseClient||window.FitBrandSupabaseClient;if(sb&&sb.auth)await sb.auth.signOut();}catch(e){}
-    localStorage.removeItem('fitbrandUser'); sessionStorage.removeItem('fitbrandSessionUser');
-    updateMenu(); document.querySelectorAll('.profile-menu,.profile-modal-overlay').forEach(x=>x.classList.remove('show'));
-    notice('Logged out','You have been signed out successfully.','success');
-  };
-  const oldLogin=window.loginFitBrandUser;
-  window.loginFitBrandUser=async function(){
-    try{return await oldLogin.apply(this,arguments)}catch(e){
-      const msg=String(e&&e.message||e||'');
-      if(/rate|limit/i.test(msg)) notice('Please wait','Too many login links were requested. Wait a few minutes, then request a new link.','warning');
-      else notice('Login issue','We could not send the login link. Please try again or contact support@fitbrand.fit.','warning');
-    }
-  };
-  function checkExpired(){
-    const raw=decodeURIComponent((location.hash||'')+(location.search||''));
-    if(/error=access_denied|expired|invalid|otp_expired|link/i.test(raw)){
-      notice('Login link expired','This sign-in link is invalid, already used or expired. Please request a new link.','warning');
-      history.replaceState({},document.title,location.pathname);
-    }
+  function checkoutGate(e){
+    const el=e.target.closest('a[href*="checkout.html"], #checkout-link, #stripe-link, .drawer-checkout-btn, .cart-checkout'); if(!el)return;
+    if(isRealUser())return;
+    e.preventDefault(); e.stopPropagation();
+    showCheckoutGate();
   }
-  document.addEventListener('DOMContentLoaded',()=>{updateMenu();checkExpired();setTimeout(updateMenu,300);setTimeout(updateMenu,1200)});
-  document.addEventListener('click',()=>setTimeout(updateMenu,50));
+  function showCheckoutGate(){
+    let box=$('fbCheckoutLoginRequired');
+    if(!box){box=document.createElement('div');box.id='fbCheckoutLoginRequired';box.className='fb-checkout-login-required';box.innerHTML='<div class="fb-checkout-login-card"><h3>Login required</h3><p>Please sign in before checkout so your subscription, orders and product access are saved to your FitBrand account.</p><button type="button" class="btn-dark" id="fbCheckoutLoginNow">Sign in/up</button><button type="button" class="btn-outline" id="fbCheckoutLoginClose">Continue browsing</button></div>';document.body.appendChild(box);box.addEventListener('click',e=>{if(e.target===box||e.target.id==='fbCheckoutLoginClose')box.classList.remove('show')});$('fbCheckoutLoginNow').addEventListener('click',()=>{box.classList.remove('show'); if(typeof window.openProfileModal==='function') window.openProfileModal('login');});}
+    box.classList.add('show');
+  }
+  function patchProfilePageSave(){
+    const form=$('fullProfileForm'); if(!form||form.dataset.realAuthGate)return; form.dataset.realAuthGate='1';
+    form.addEventListener('submit',e=>{if(!isRealUser()){e.preventDefault();showMessage('error','Please sign in first','You need to log in before saving profile information. This keeps customer data connected to the correct account.'); if(typeof window.openProfileModal==='function') window.openProfileModal('login');}},true);
+  }
+  function patchAgeCopy(){
+    document.querySelectorAll('[id*="Age"], input[type="number"]').forEach(()=>{});
+  }
+  function boot(){
+    handleUsedOrExpiredLink(); syncSession(); patchProfilePageSave(); patchAgeCopy();
+    document.addEventListener('click',checkoutGate,true);
+    setTimeout(syncSession,500); setTimeout(syncSession,1600); setInterval(applyMenu,1500);
+    getClient().then(sb=>{if(sb)sb.auth.onAuthStateChange(()=>setTimeout(syncSession,50));});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
