@@ -116,9 +116,29 @@ export default async function handler(req, res) {
       }
     }
 
+
+
+    if (event.type === 'customer.subscription.deleted' || event.type === 'customer.subscription.updated') {
+      const subscription = event.data.object;
+      const email = subscription.metadata?.email;
+      const items = String(subscription.metadata?.fitbrand_items || '').split(',').map(x => x.trim()).filter(Boolean);
+      const active = subscription.status === 'active' || subscription.status === 'trialing';
+      if (email && items.length) {
+        for (const slug of items) {
+          await supabase
+            .from('user_access')
+            .update({ active })
+            .eq('email', email)
+            .eq('product_slug', slug);
+        }
+      }
+    }
+
     return res.status(200).json({ received: true });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: err.message || 'Webhook handling failed.' });
   }
 }
+
+/* FITBRAND_VERSION_MARKER:v26-force-github-update-2026-05-04 */
