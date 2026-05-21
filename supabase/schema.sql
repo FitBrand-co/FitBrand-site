@@ -110,3 +110,21 @@ on conflict (slug) do update set
   price_amount=excluded.price_amount,
   currency=excluded.currency,
   active=true;
+
+
+-- FitBrand early access leads
+create table if not exists public.early_access_leads (
+  id uuid primary key default gen_random_uuid(),
+  email text not null,
+  name text,
+  product text,
+  goal text,
+  price_intent text,
+  start_timing text,
+  note text,
+  source text default 'website',
+  created_at timestamptz default now()
+);
+alter table public.early_access_leads enable row level security;
+drop policy if exists "Anyone can join early access" on public.early_access_leads;
+create policy "Anyone can join early access" on public.early_access_leads for insert with check (true);
