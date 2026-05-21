@@ -12,11 +12,11 @@
   const WELCOME_KEY = 'fitbrandWelcomeChoiceSeenV13';
 
   const PRODUCTS = {
-    aesthetic:{name:'Aesthetic Program Monthly',price:9.99,type:'digital',buy:'checkout.html?product=aesthetic',open:'index.html?purchased=aesthetic'},
-    shred:{name:'Shred Program Monthly',price:9.99,type:'digital',buy:'checkout.html?product=shred',open:'index.html?purchased=shred'},
-    strength:{name:'Strength Program Monthly',price:9.99,type:'digital',buy:'checkout.html?product=strength',open:'index.html?purchased=strength'},
-    bundle:{name:'Complete Bundle + Meal Plan AI Monthly',price:24.99,type:'digital',buy:'checkout.html?product=bundle',open:'index.html?purchased=bundle'},
-    mealplan:{name:'Meal Plan Guide AI Monthly',price:7.99,type:'digital',buy:'checkout.html?product=mealplan',open:'recommended.html?purchased=mealplan#meal-plan-ai'},
+    aesthetic:{name:'Aesthetic Program',price:9.99,type:'digital',buy:'early-access.html?product=aesthetic',open:'index.html?purchased=aesthetic'},
+    shred:{name:'Shred Program',price:9.99,type:'digital',buy:'early-access.html?product=shred',open:'index.html?purchased=shred'},
+    strength:{name:'Strength Program',price:9.99,type:'digital',buy:'early-access.html?product=strength',open:'index.html?purchased=strength'},
+    bundle:{name:'Complete Bundle + Meal Plan AI',price:24.99,type:'digital',buy:'early-access.html?product=bundle',open:'index.html?purchased=bundle'},
+    mealplan:{name:'Meal Plan Guide AI',price:7.99,type:'digital',buy:'early-access.html?product=mealplan',open:'recommended.html?purchased=mealplan#meal-plan-ai'},
     belt:{name:'Lifting Belt',price:24.99,type:'physical',buy:'checkout.html?product=belt',open:'product-belt.html'},
     straps:{name:'Lifting Straps',price:12.99,type:'physical',buy:'checkout.html?product=straps',open:'product-straps.html'}
   };
@@ -295,7 +295,7 @@
       const owned = getPurchases();
       $('accessGrid').innerHTML = ['aesthetic','shred','strength','bundle','mealplan','belt','straps'].map(key => {
         const p = PRODUCTS[key], has = owned.includes(key);
-        return `<article class="access-card ${has?'owned':''}"><div><span>${has?'Unlocked':'Locked'}</span><h3>${escapeHtml(p.name)}</h3><p>${has?'You have access on this device.':'Buy to unlock this product.'}</p></div><a class="${has?'btn-dark':'btn-outline'}" href="${has?p.open:p.buy}">${has?'Open':'Buy access'}</a></article>`;
+        return `<article class="access-card ${has?'owned':''}"><div><span>${has?'Unlocked':'Locked'}</span><h3>${escapeHtml(p.name)}</h3><p>${has?'You have access on this device.':'Join early access to be notified when this opens.'}</p></div><a class="${has?'btn-dark':'btn-outline'}" href="${has?p.open:p.buy}">${has?'Open':'Join waitlist'}</a></article>`;
       }).join('');
     }
     if($('ordersList')){
@@ -312,8 +312,7 @@
     if(hasMealAccess()){
       $('meal-plan-ai')?.classList.add('unlocked'); $('mealGenerator')?.classList.add('show'); setupMealWizard(); $('meal-plan-ai')?.scrollIntoView({behavior:'smooth',block:'start'});
     } else {
-      const buy = document.querySelector('a[href="checkout.html?product=mealplan"]');
-      buy?.scrollIntoView({behavior:'smooth',block:'center'}); if(buy){ buy.classList.add('fb-pulse'); setTimeout(()=>buy.classList.remove('fb-pulse'),1500); }
+      openEarlyAccessModal('mealplan');
     }
   }
   function syncMealHidden(vals){ Object.entries(vals).forEach(([id,v]) => { if($(id)) $(id).value = v ?? ''; }); }
@@ -501,10 +500,10 @@
   function openCartDrawer(){$('cart-drawer')?.classList.add('show');$('drawer-overlay')?.classList.add('show');renderDrawer()}
   function closeCartDrawer(){$('cart-drawer')?.classList.remove('show');$('drawer-overlay')?.classList.remove('show')}
   function prefillGenerators(){let u=user()||{};[['modalAge','age'],['modalGender','gender'],['modalWeight','weight'],['modalHeight','height'],['modalPlace','trainingLocation'],['modalDays','trainingDays'],['modalLevel','level']].forEach(([id,k])=>{if($(id)&&u[k]&&!$(id).value)$(id).value=u[k]})}
-  function handleMealPreviewClick(){if(!user()){sessionStorage.setItem('fitbrandPendingMealOpen','1');openProfileModal('login');return}if(!(purchases().includes('mealplan')||purchases().includes('bundle'))){let b=document.querySelector('a[href="checkout.html?product=mealplan"]');b?.scrollIntoView({behavior:'smooth',block:'center'});notice('Buy Meal Plan AI to unlock');return}let box=$('meal-plan-ai');if(box){box.classList.add('unlocked');buildMealWizard();box.scrollIntoView({behavior:'smooth',block:'start'})}}
+  function handleMealPreviewClick(){if(!user()){sessionStorage.setItem('fitbrandPendingMealOpen','1');openProfileModal('login');return}if(!(purchases().includes('mealplan')||purchases().includes('bundle'))){openEarlyAccessModal('mealplan');return}let box=$('meal-plan-ai');if(box){box.classList.add('unlocked');buildMealWizard();box.scrollIntoView({behavior:'smooth',block:'start'})}}
   function buildMealWizard(){let gen=$('mealGenerator');if(!gen)return;gen.querySelector('.meal-grid')?.classList.add('fb-hidden-original');gen.querySelector('.meal-generate-btn')?.classList.add('fb-hidden-original');$('fitbrandMealWizard')?.remove();let u=user()||{},wiz=document.createElement('div');wiz.id='fitbrandMealWizard';wiz.className='fb-meal-wizard fb-premium-ai-wizard';wiz.innerHTML='<div class="fb-ai-top"><div><span>FitBrand AI</span><h3>Personal Meal Plan Builder</h3><p>Answer step by step. Your saved profile can fill the boring information automatically.</p></div><strong id="mealStepPill">1 / 6</strong></div><div class="fb-ai-progress"><i id="mealProgressFill"></i></div><div class="fb-ai-profile-card"><div><strong>'+esc(u.name||'Profile info')+'</strong><span>'+(u.weight||'No weight')+' kg • '+(u.height||'No height')+' cm • '+(u.gender||'No gender selected')+'</span></div><button type="button" id="mealUseProfile">Use profile info</button><a href="profile.html">Change information</a></div><section class="fb-ai-step active" data-step="1"><h4>What is your goal?</h4><div class="fb-choice-grid"><button data-field="goal" data-value="fatloss"><b>Lose fat</b><small>Controlled calories and high protein.</small></button><button data-field="goal" data-value="muscle"><b>Build muscle</b><small>More fuel for growth and strength.</small></button><button data-field="goal" data-value="maintenance"><b>Maintain</b><small>Balanced clean eating.</small></button></div></section><section class="fb-ai-step" data-step="2"><h4>Your body details</h4><div class="fb-ai-form-grid"><input id="wizAge" type="number" placeholder="Age"><select id="wizGender"><option value="">Gender</option><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option></select><input id="wizWeight" type="number" placeholder="Weight kg"><input id="wizHeight" type="number" placeholder="Height cm"></div></section><section class="fb-ai-step" data-step="3"><h4>How active are you?</h4><div class="fb-choice-grid"><button data-field="trainingDays" data-value="0"><b>0-1 days</b><small>Light activity.</small></button><button data-field="trainingDays" data-value="3"><b>2-3 days</b><small>Moderate routine.</small></button><button data-field="trainingDays" data-value="5"><b>4-5 days</b><small>Consistent training.</small></button><button data-field="trainingDays" data-value="6"><b>6+ days</b><small>Very active.</small></button></div></section><section class="fb-ai-step" data-step="4"><h4>Choose food style</h4><div class="fb-choice-grid"><button data-field="diet" data-value="normal"><b>Balanced</b><small>Flexible meals.</small></button><button data-field="diet" data-value="highprotein"><b>High protein</b><small>More protein focused.</small></button><button data-field="diet" data-value="budget"><b>Budget</b><small>Simple cheaper foods.</small></button><button data-field="diet" data-value="easy"><b>Fast meals</b><small>Low cooking time.</small></button><button data-field="diet" data-value="vegetarian"><b>Vegetarian</b><small>No meat.</small></button></div></section><section class="fb-ai-step" data-step="5"><h4>Meals per day</h4><div class="fb-choice-grid"><button data-field="meals" data-value="3"><b>3 meals</b><small>Simple plan.</small></button><button data-field="meals" data-value="4"><b>4 meals</b><small>Balanced plan.</small></button><button data-field="meals" data-value="5"><b>5 meals</b><small>Structured plan.</small></button></div></section><section class="fb-ai-step" data-step="6"><h4>Final preferences</h4><div class="fb-ai-form-grid"><select id="wizStyle"><option value="balanced">Balanced</option><option value="lowcalorie">Low calorie</option><option value="bulking">Bulking</option><option value="simple">Very simple</option></select><select id="wizTime"><option value="normal">Normal cooking</option><option value="fast">Under 15 min</option><option value="prep">Meal prep friendly</option></select><input id="wizAvoid" class="wide" placeholder="Foods to avoid / allergies"></div><button class="fb-ai-generate" id="mealFinalGenerate" type="button">Generate 7-day meal plan</button></section><div class="fb-ai-actions"><button id="mealBackBtn" type="button">Back</button><button id="mealNextBtn" type="button">Next</button></div>';gen.prepend(wiz);let state={goal:u.goal||'',trainingDays:u.trainingDays||'',diet:'normal',meals:'4'},step=1;function set(f,v){state[f]=String(v);$$('#fitbrandMealWizard [data-field="'+f+'"]').forEach(b=>b.classList.toggle('selected',b.dataset.value===String(v)))}function fill(){[['wizAge','age'],['wizGender','gender'],['wizWeight','weight'],['wizHeight','height'],['wizAvoid','allergies']].forEach(([id,k])=>{if($(id)&&u[k])$(id).value=u[k]})}function sync(){let vals={mealGoal:state.goal,mealTrainingDays:state.trainingDays,mealDiet:state.diet,mealMeals:state.meals,mealAge:$('wizAge')?.value,mealGender:$('wizGender')?.value,mealWeight:$('wizWeight')?.value,mealHeight:$('wizHeight')?.value,mealAvoid:$('wizAvoid')?.value,mealStyle:$('wizStyle')?.value||'balanced',mealTime:$('wizTime')?.value||'normal'};Object.entries(vals).forEach(([id,v])=>{if($(id))$(id).value=v||''})}function render(){$$('#fitbrandMealWizard .fb-ai-step').forEach(s=>s.classList.toggle('active',Number(s.dataset.step)===step));$('mealStepPill').textContent=step+' / 6';$('mealProgressFill').style.width=(step/6*100)+'%';$('mealBackBtn').style.visibility=step===1?'hidden':'visible';$('mealNextBtn').style.display=step===6?'none':'inline-flex';sync()}wiz.addEventListener('click',e=>{let b=e.target.closest('button');if(!b)return;if(b.id==='mealUseProfile'){fill();sync();notice('Profile info added');return}if(b.dataset.field){set(b.dataset.field,b.dataset.value);sync()}if(b.id==='mealBackBtn'&&step>1){step--;render()}if(b.id==='mealNextBtn'&&step<6){step++;render()}if(b.id==='mealFinalGenerate'){sync();window.generateMealPlan&&window.generateMealPlan()}});fill();if(state.goal)set('goal',state.goal);if(state.trainingDays)set('trainingDays',state.trainingDays);set('diet','normal');set('meals','4');render()}
   function makeComingSoon(){if(!/product-(belt|straps)\.html$/.test(location.pathname))return;$$('a[href*="checkout.html?product=belt"],a[href*="checkout.html?product=straps"],button[onclick*="belt"],button[onclick*="straps"]').forEach(el=>{let d=document.createElement('div');d.className='coming-soon-pill';d.textContent='Coming soon';el.replaceWith(d)});$$('.stock-box span').forEach(s=>{if(/Available/i.test(s.textContent))s.textContent='Coming soon';if(/Ships/i.test(s.textContent))s.textContent='Launching soon'})}
-  function renderAccess(){if(!$('accessGrid'))return;let own=purchases();$('accessGrid').innerHTML=['aesthetic','shred','strength','bundle','mealplan'].map(k=>{let p=PRODUCTS[k],has=own.includes(k);return '<article class="access-card '+(has?'owned':'')+'"><div><span>'+(has?'Unlocked':'Locked')+'</span><h3>'+esc(p[0])+'</h3><p>'+(has?'You have access on this device.':'Buy to unlock this product.')+'</p></div><a class="'+(has?'btn-dark':'btn-outline')+'" href="'+(has?p[2]:'checkout.html?product='+k)+'">'+(has?'Open':'Buy access')+'</a></article>'}).join('')}
+  function renderAccess(){if(!$('accessGrid'))return;let own=purchases();$('accessGrid').innerHTML=['aesthetic','shred','strength','bundle','mealplan'].map(k=>{let p=PRODUCTS[k],has=own.includes(k);return '<article class="access-card '+(has?'owned':'')+'"><div><span>'+(has?'Unlocked':'Locked')+'</span><h3>'+esc(p[0])+'</h3><p>'+(has?'You have access on this device.':'Join early access to be notified when this opens.')+'</p></div><a class="'+(has?'btn-dark':'btn-outline')+'" href="'+(has?p[2]:'early-access.html?product='+k)+'">'+(has?'Open':'Join waitlist')+'</a></article>'}).join('')}
   function boot(){normalizeProfile();updateProfileUI();updateCartCount();makeComingSoon();renderAccess();gateAccess();prefillGenerators();if(user()&&(purchases().includes('mealplan')||purchases().includes('bundle'))&&$('meal-plan-ai'))buildMealWizard();$$('.cart-icon-btn').forEach(b=>b.onclick=e=>{e.preventDefault();openCartDrawer()});document.addEventListener('click',e=>{let m=$('profileMenu'),b=document.querySelector('.profile-icon-btn');if(m&&b&&!m.contains(e.target)&&!b.contains(e.target))m.classList.remove('show')});setTimeout(()=>{updateProfileUI();renderAccess();makeComingSoon()},250)}
   Object.assign(window,{toggleProfileMenu,openProfileModal,closeProfileModal,loginFitBrandUser,logoutFitBrandUser,updateFitBrandProfileUI:updateProfileUI,updateProfileUI,addToCart,removeDrawerItem,updateCartCount,openCartDrawer,closeCartDrawer,handleMealPreviewClick});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
@@ -603,7 +602,7 @@
     const logged=!!user(); document.body.classList.toggle('fb-access-logged-out',!logged);
     const productMap={aesthetic:['Aesthetic Program','index.html?purchased=aesthetic'],shred:['Shred Program','index.html?purchased=shred'],strength:['Strength Program','index.html?purchased=strength'],bundle:['Complete Bundle + Meal Plan AI','index.html?purchased=bundle'],mealplan:['Meal Plan Guide AI','recommended.html?purchased=mealplan#meal-plan-ai']};
     const own=purchases();
-    grid.innerHTML=Object.keys(productMap).map(k=>{const has=own.includes(k);const p=productMap[k];return '<article class="access-card '+(has?'owned':'')+'"><div><span>'+(has?'Unlocked':'Locked')+'</span><h3>'+p[0]+'</h3><p>'+(has?'You have access on this logged-in profile/device.':(logged?'Buy to unlock this product.':'Log in to view saved access.'))+'</p></div><a class="'+(has?'btn-dark':'btn-outline')+'" href="'+(has?p[1]:(logged?'checkout.html?product='+k:'#'))+'">'+(has?'Open':(logged?'Buy access':'Log in required'))+'</a></article>'}).join('');
+    grid.innerHTML=Object.keys(productMap).map(k=>{const has=own.includes(k);const p=productMap[k];return '<article class="access-card '+(has?'owned':'')+'"><div><span>'+(has?'Unlocked':'Locked')+'</span><h3>'+p[0]+'</h3><p>'+(has?'You have access on this logged-in profile/device.':(logged?'Join early access to be notified when this opens.':'Log in to view saved access.'))+'</p></div><a class="'+(has?'btn-dark':'btn-outline')+'" href="'+(has?p[1]:(logged?'early-access.html?product='+k:'#'))+'">'+(has?'Open':(logged?'Join waitlist':'Log in required'))+'</a></article>'}).join('');
   }
   function ageFrom(ids){for(const id of ids){const v=Number($(id)?.value);if(v)return v}return 0}
   function showAgeError(ids){
@@ -744,3 +743,260 @@
 })();
 
 /* FITBRAND_V27_CLEAN */
+
+/* ===== FITBRAND V29 EARLY ACCESS + MOBILE + AUTH STABILITY PATCH ===== */
+(function(){
+  'use strict';
+  const USER_KEY='fitbrandUser';
+  const SESSION_KEY='fitbrandSessionUser';
+  const LEADS_KEY='fitbrandEarlyAccessLeads';
+  const DIGITAL_PRODUCTS=['aesthetic','shred','strength','bundle','mealplan'];
+  const PRODUCT_LABELS={
+    aesthetic:'Aesthetic Program',
+    shred:'Shred Program',
+    strength:'Strength Program',
+    bundle:'Complete Bundle',
+    mealplan:'Meal Plan Guide AI',
+    belt:'Lifting Belt',
+    straps:'Lifting Straps'
+  };
+  const $=id=>document.getElementById(id);
+  const $$=(sel,root=document)=>Array.from(root.querySelectorAll(sel));
+  const safeJSON=(v,f)=>{try{return v?JSON.parse(v):f}catch{return f}};
+  const validEmail=email=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email||'').trim());
+
+  function getStoredUser(){ return safeJSON(localStorage.getItem(USER_KEY),null) || safeJSON(sessionStorage.getItem(SESSION_KEY),null); }
+  function isRealUser(){ const u=getStoredUser(); return !!(u && u.email && (u.supabaseId || u.backend==='supabase')); }
+  function displayNameFromEmail(email){return String(email||'').split('@')[0].replace(/[._-]+/g,' ').replace(/\b\w/g,c=>c.toUpperCase());}
+  function initials(u){
+    const base=(u?.name||u?.email||'').trim();
+    if(!base) return '?';
+    const p=base.replace(/[._-]+/g,' ').split(/\s+/).filter(Boolean);
+    if(p.length>1) return (p[0][0]+p[p.length-1][0]).toUpperCase();
+    return base.slice(0,2).toUpperCase();
+  }
+  function showMessage(title,text,type='success'){
+    let box=$('fbAuthMessage');
+    if(!box){
+      box=document.createElement('div');
+      box.id='fbAuthMessage';
+      box.className='fb-auth-message';
+      box.innerHTML='<div class="fb-auth-message-card"><button class="fb-auth-message-close" type="button">×</button><div class="fb-auth-message-icon">✓</div><h3></h3><p></p><button class="fb-auth-message-ok" type="button">Got it</button></div>';
+      document.body.appendChild(box);
+      box.querySelector('.fb-auth-message-close').onclick=()=>box.classList.remove('show');
+      box.querySelector('.fb-auth-message-ok').onclick=()=>box.classList.remove('show');
+      box.addEventListener('click',e=>{if(e.target===box) box.classList.remove('show');});
+    }
+    box.className='fb-auth-message show '+(type==='error'?'error':'');
+    box.querySelector('.fb-auth-message-icon').textContent=type==='error'?'!':'✓';
+    box.querySelector('h3').textContent=title;
+    box.querySelector('p').textContent=text;
+  }
+  window.fitbrandShowMessage=showMessage;
+
+  async function loadSupabase(){
+    const cfg=window.FITBRAND_CONFIG||{};
+    if(!cfg.supabaseUrl||!cfg.supabaseAnonKey||String(cfg.supabaseAnonKey).includes('PASTE_')) return null;
+    if(window.__fitbrandSupabaseClient) return window.__fitbrandSupabaseClient;
+    if(window.supabase?.createClient){
+      window.__fitbrandSupabaseClient=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey);
+      return window.__fitbrandSupabaseClient;
+    }
+    await new Promise(resolve=>{
+      const s=document.createElement('script');
+      s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+      s.onload=resolve; s.onerror=resolve; document.head.appendChild(s);
+    });
+    if(window.supabase?.createClient){
+      window.__fitbrandSupabaseClient=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey);
+      return window.__fitbrandSupabaseClient;
+    }
+    return null;
+  }
+  function syncUser(session){
+    const su=session?.user;
+    if(!su?.email) return;
+    const profile={
+      email:su.email,
+      name:su.user_metadata?.full_name || su.user_metadata?.name || displayNameFromEmail(su.email),
+      supabaseId:su.id,
+      backend:'supabase'
+    };
+    localStorage.setItem(USER_KEY,JSON.stringify(profile));
+    sessionStorage.removeItem(SESSION_KEY);
+    updateAuthUI();
+  }
+  async function handleAuthRedirect(){
+    const hash=new URLSearchParams((location.hash||'').replace(/^#/,''));
+    if(hash.get('error')){
+      history.replaceState({},document.title,location.pathname+location.search);
+      showMessage('Login link expired','That login link is invalid, expired, or already used. Please request a new login link from the profile menu.','error');
+      return;
+    }
+    const sb=await loadSupabase();
+    if(!sb) return;
+    const url=new URL(location.href);
+    const code=url.searchParams.get('code');
+    if(code){
+      try{
+        const {data,error}=await sb.auth.exchangeCodeForSession(code);
+        if(error) throw error;
+        if(data?.session) syncUser(data.session);
+        url.searchParams.delete('code');
+        history.replaceState({},document.title,url.pathname+url.search+url.hash);
+        showMessage('You are signed in','Your FitBrand profile is now connected on this device.');
+      }catch(e){
+        console.warn('Magic link exchange failed',e);
+        showMessage('Login link expired','That login link is invalid, expired, or already used. Please request a new login link.','error');
+      }
+    }
+    try{const {data}=await sb.auth.getSession(); if(data?.session) syncUser(data.session);}catch(e){}
+    try{sb.auth.onAuthStateChange((_event,session)=>{ if(session) syncUser(session); });}catch(e){}
+  }
+
+  function buildProfileMenu(){
+    const nav=document.querySelector('.nav'); if(!nav) return;
+    let actions=nav.querySelector('.nav-actions');
+    if(!actions){ actions=document.createElement('div'); actions.className='nav-actions'; nav.appendChild(actions); }
+    const cart=nav.querySelector('.cart-icon-btn');
+    if(cart && cart.parentElement!==actions) actions.insertBefore(cart, actions.firstChild);
+    let profile=actions.querySelector('.profile-icon-btn');
+    if(!profile){ profile=document.createElement('button'); profile.className='profile-icon-btn'; profile.type='button'; profile.setAttribute('aria-label','Profile'); profile.innerHTML='<span id="profileInitial">?</span>'; actions.appendChild(profile); }
+    profile.onclick=e=>{ e.preventDefault(); updateAuthUI(); $('profileMenu')?.classList.toggle('show'); };
+    let menu=$('profileMenu');
+    if(!menu){ menu=document.createElement('div'); menu.id='profileMenu'; menu.className='profile-menu'; actions.appendChild(menu); }
+    menu.innerHTML='<div class="profile-menu-head"><div class="profile-avatar"><span id="profileMenuInitial">?</span></div><div class="profile-menu-id"><strong id="profileMenuName">Guest</strong><br><span id="profileMenuEmail">Not logged in</span></div></div><button type="button" data-auth-only="1" onclick="openProfileModal(\'profile\')">View profile</button><a class="profile-menu-link" href="profile.html" data-auth-only="1">Edit profile information</a><a class="profile-menu-link" href="products-access.html" data-auth-only="1">My products / access</a><a class="profile-menu-link" href="orders.html" data-auth-only="1">My orders</a><button type="button" id="profileLoginBtn" data-guest-only="1" onclick="openProfileModal(\'login\')">Sign in/up</button><button type="button" id="profileLogoutBtn" data-auth-only="1" onclick="logoutFitBrandUser()">Log out</button>';
+    ensureProfileModal();
+  }
+  function ensureProfileModal(){
+    if($('profileModal')) return;
+    document.body.insertAdjacentHTML('beforeend','<div id="profileModal" class="profile-modal-overlay" onclick="closeProfileModal()"><div class="profile-modal" onclick="event.stopPropagation()"><button class="profile-modal-close" type="button" onclick="closeProfileModal()">×</button><div class="profile-modal-head"><div class="profile-avatar large"><span id="profileModalInitial">?</span></div><h2 id="profileModalTitle">Sign in/up</h2><p id="profileModalSubtitle">Use your email to receive a secure login link.</p></div><div id="profileView" class="profile-modal-content" style="display:none"><div class="profile-info-box"><strong>Name</strong><span id="profileViewName">Guest</span></div><div class="profile-info-box"><strong>Email</strong><span id="profileViewEmail">Not logged in</span></div><div class="profile-info-box"><strong>Status</strong><span id="profileViewStatus">Not logged in</span></div></div><div id="profileLogin" class="profile-modal-content"><label>Email</label><input id="loginProfileEmail" type="email" placeholder="you@email.com" autocomplete="email"><label>Name</label><input id="loginProfileName" type="text" placeholder="Your name" autocomplete="name"><button class="btn-dark" type="button" onclick="loginFitBrandUser()">Send login link</button><p class="profile-small-note">We send a secure one-time login link. No password needed.</p></div></div></div>');
+  }
+  function updateAuthUI(){
+    buildProfileMenu();
+    const u=isRealUser()?getStoredUser():null;
+    if(getStoredUser()&&!u){ localStorage.removeItem(USER_KEY); sessionStorage.removeItem(SESSION_KEY); }
+    document.body.classList.toggle('fb-is-logged-in',!!u);
+    document.body.classList.toggle('fb-is-logged-out',!u);
+    ['profileInitial','profileMenuInitial','profileModalInitial'].forEach(id=>{ if($(id)) $(id).textContent=initials(u); });
+    ['profileMenuName','profileViewName'].forEach(id=>{ if($(id)) $(id).textContent=u?.name||'Guest'; });
+    ['profileMenuEmail','profileViewEmail'].forEach(id=>{ if($(id)) $(id).textContent=u?.email||'Not logged in'; });
+    if($('profileViewStatus')) $('profileViewStatus').textContent=u?'Logged in with FitBrand':'Not logged in';
+    $$('[data-auth-only]').forEach(el=>{ el.style.setProperty('display',u?'flex':'none','important'); });
+    $$('[data-guest-only],#profileLoginBtn').forEach(el=>{ el.style.setProperty('display',u?'none':'flex','important'); });
+  }
+  window.updateFitBrandProfileUI=updateAuthUI;
+  window.openProfileModal=function(mode){
+    buildProfileMenu(); updateAuthUI(); $('profileMenu')?.classList.remove('show');
+    const u=isRealUser()?getStoredUser():null;
+    const modal=$('profileModal'), view=$('profileView'), login=$('profileLogin'); if(!modal) return;
+    if(mode==='profile'&&u){
+      $('profileModalTitle').textContent='Your profile'; $('profileModalSubtitle').textContent='Your FitBrand account is connected.'; view.style.display='block'; login.style.display='none';
+    }else{
+      $('profileModalTitle').textContent='Sign in/up'; $('profileModalSubtitle').textContent='Use your email to receive a secure login link.'; view.style.display='none'; login.style.display='block';
+      if(u?.email && $('loginProfileEmail')) $('loginProfileEmail').value=u.email;
+      if(u?.name && $('loginProfileName')) $('loginProfileName').value=u.name;
+    }
+    modal.classList.add('show');
+  };
+  window.closeProfileModal=function(){ $('profileModal')?.classList.remove('show'); };
+  window.loginFitBrandUser=async function(){
+    const email=($('loginProfileEmail')?.value||'').trim();
+    const name=($('loginProfileName')?.value||'').trim();
+    if(!validEmail(email)){ showMessage('Check your email','Please enter a valid email address.','error'); return; }
+    const sb=await loadSupabase();
+    if(!sb){ showMessage('Backend not ready','Supabase is not fully configured yet.'); return; }
+    try{
+      localStorage.setItem('fitbrandPendingName',name);
+      const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.origin+'/index.html',data:{name,full_name:name}}});
+      if(error) throw error;
+      showMessage('Check your email','We sent you a secure FitBrand login link. Open the newest email and click the button once.');
+    }catch(e){
+      const msg=String(e?.message||'').toLowerCase().includes('rate')?'Too many login emails were sent. Please wait a few minutes and try again.':(e.message||'We could not send the login link right now.');
+      showMessage('Login link could not be sent',msg,'error');
+    }
+  };
+  window.logoutFitBrandUser=async function(){
+    try{ const sb=await loadSupabase(); if(sb) await sb.auth.signOut(); }catch(e){}
+    localStorage.removeItem(USER_KEY); sessionStorage.removeItem(SESSION_KEY);
+    $('profileMenu')?.classList.remove('show'); window.closeProfileModal?.(); updateAuthUI();
+    showMessage('Logged out','You have been signed out on this device.');
+  };
+
+  function buildMobileMenu(){
+    const nav=document.querySelector('.nav'); if(!nav) return;
+    const actions=nav.querySelector('.nav-actions')||nav;
+    if($('fbMobileMenuButton')) return;
+    const btn=document.createElement('button');
+    btn.id='fbMobileMenuButton'; btn.className='fb-mobile-menu-button'; btn.type='button'; btn.setAttribute('aria-label','Open menu');
+    btn.innerHTML='<span></span><span></span><span></span>';
+    const cart=actions.querySelector('.cart-icon-btn');
+    actions.insertBefore(btn,cart||actions.firstChild);
+    const overlay=document.createElement('div'); overlay.id='fbMobileNav'; overlay.className='fb-mobile-nav';
+    overlay.innerHTML='<div class="fb-mobile-panel"><div class="fb-mobile-top"><strong>FITBRAND</strong><button type="button" aria-label="Close menu">×</button></div><a href="index.html">Home</a><a href="programs.html">Programs</a><a href="early-access.html">Early Access</a><a href="recommended.html">Recommended Products</a><a href="about.html">About us</a><a href="policies.html">Policies</a></div>';
+    document.body.appendChild(overlay);
+    btn.onclick=()=>overlay.classList.add('show');
+    overlay.querySelector('button').onclick=()=>overlay.classList.remove('show');
+    overlay.addEventListener('click',e=>{ if(e.target===overlay) overlay.classList.remove('show'); });
+    overlay.querySelectorAll('a').forEach(a=>a.onclick=()=>overlay.classList.remove('show'));
+  }
+
+  function normalizeEarlyAccessUI(){
+    // Remove bad repeated monthly text and replace digital CTAs with waitlist CTAs without rebuilding the DOM.
+    const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+    let node;
+    while((node=walker.nextNode())){
+      node.nodeValue=node.nodeValue.replace(/(\/\s*mo){2,}/gi,'/mo').replace(/(\/\s*month)(\s*\/\s*month)+/gi,' / month');
+    }
+    $$('a[href*="checkout.html?product=aesthetic"],a[href*="checkout.html?product=shred"],a[href*="checkout.html?product=strength"],a[href*="checkout.html?product=bundle"],a[href*="checkout.html?product=mealplan"],a[href="checkout.html?cart=true"]').forEach(a=>{
+      const href=a.getAttribute('href')||'';
+      const product=(href.match(/product=([^&]+)/)||[])[1] || 'bundle';
+      a.href='early-access.html?product='+encodeURIComponent(product);
+      a.textContent=/bundle/i.test(a.textContent)?'Join bundle waitlist':'Join waitlist';
+    });
+    $$('button[onclick*="addToCart(\'aesthetic\')"],button[onclick*="addToCart(\'shred\')"],button[onclick*="addToCart(\'strength\')"],button[onclick*="addToCart(\'bundle\')"],button[onclick*="addToCart(\'mealplan\')"]').forEach(btn=>{
+      const m=(btn.getAttribute('onclick')||'').match(/addToCart\('([^']+)'\)/); const p=m?m[1]:'bundle';
+      btn.setAttribute('onclick',`openEarlyAccessModal('${p}')`); btn.textContent='I want this';
+    });
+  }
+
+  window.openEarlyAccessModal=function(product='aesthetic'){
+    ensureEarlyAccessModal();
+    const select=$('earlyModalProduct'); if(select) select.value=PRODUCT_LABELS[product]?product:'aesthetic';
+    const u=isRealUser()?getStoredUser():null;
+    if(u?.email && $('earlyModalEmail')) $('earlyModalEmail').value=u.email;
+    if(u?.name && $('earlyModalName')) $('earlyModalName').value=u.name;
+    $('earlyAccessModal')?.classList.add('show');
+  };
+  window.closeEarlyAccessModal=function(){ $('earlyAccessModal')?.classList.remove('show'); };
+  function ensureEarlyAccessModal(){
+    if($('earlyAccessModal')) return;
+    document.body.insertAdjacentHTML('beforeend',`<div id="earlyAccessModal" class="fb-early-modal" onclick="closeEarlyAccessModal()"><div class="fb-early-modal-card" onclick="event.stopPropagation()"><button class="fb-early-close" onclick="closeEarlyAccessModal()">×</button><p class="eyebrow">Early access</p><h2>Join the FitBrand waitlist</h2><p>No payment today. Tell us what you want and we will contact you when launch access opens.</p><form id="earlyModalForm" class="fb-early-form mini"><label>Name<input id="earlyModalName" placeholder="Your name"></label><label>Email<input id="earlyModalEmail" type="email" placeholder="you@email.com" required></label><label>Product<select id="earlyModalProduct"><option value="aesthetic">Aesthetic Program</option><option value="shred">Shred Program</option><option value="strength">Strength Program</option><option value="bundle">Complete Bundle</option><option value="mealplan">Meal Plan Guide AI</option></select></label><label>Would you pay monthly?<select id="earlyModalPrice"><option>Yes, around €9.99/month</option><option>Maybe, I need to see more first</option><option>No, I only want free access</option></select></label><button class="btn-dark" type="submit">Join waitlist</button></form></div></div>`);
+    $('earlyModalForm').addEventListener('submit',e=>{ e.preventDefault(); saveEarlyAccessLead({name:$('earlyModalName').value,email:$('earlyModalEmail').value,product:$('earlyModalProduct').value,price_intent:$('earlyModalPrice').value,source:'modal'}); });
+  }
+  async function saveEarlyAccessLead(data){
+    const email=String(data.email||'').trim(); if(!validEmail(email)){ showMessage('Check your email','Please enter a valid email address.','error'); return; }
+    const lead={name:String(data.name||'').trim(),email,product:data.product||'aesthetic',goal:data.goal||'',price_intent:data.price_intent||'',start_timing:data.start_timing||'',note:data.note||'',created_at:new Date().toISOString(),source:data.source||'website'};
+    const leads=safeJSON(localStorage.getItem(LEADS_KEY),[]); leads.unshift(lead); localStorage.setItem(LEADS_KEY,JSON.stringify(leads.slice(0,100)));
+    try{ const sb=await loadSupabase(); if(sb) await sb.from('early_access_leads').insert(lead); }catch(e){ console.warn('Early lead cloud save skipped',e); }
+    window.closeEarlyAccessModal?.();
+    showMessage('You are on the list','Thanks. We saved your early access interest and will contact you before launch.');
+    const form=$('earlyAccessForm'); if(form) form.reset();
+  }
+  function wireEarlyAccessPage(){
+    const form=$('earlyAccessForm'); if(!form||form.dataset.v29Bound) return; form.dataset.v29Bound='1';
+    const params=new URLSearchParams(location.search); const product=params.get('product'); if(product && $('earlyProduct')) $('earlyProduct').value=PRODUCT_LABELS[product]?product:'aesthetic';
+    const u=isRealUser()?getStoredUser():null; if(u?.email && $('earlyEmail')) $('earlyEmail').value=u.email; if(u?.name && $('earlyName')) $('earlyName').value=u.name;
+    form.addEventListener('submit',e=>{ e.preventDefault(); saveEarlyAccessLead({name:$('earlyName').value,email:$('earlyEmail').value,product:$('earlyProduct').value,goal:$('earlyGoal').value,price_intent:$('earlyPrice').value,start_timing:$('earlyStart').value,note:$('earlyNote').value,source:'early-access-page'}); });
+  }
+  const oldAdd=window.addToCart;
+  window.addToCart=function(product){ if(DIGITAL_PRODUCTS.includes(product)) return window.openEarlyAccessModal(product); if(typeof oldAdd==='function') return oldAdd.apply(this,arguments); };
+
+  function boot(){
+    buildProfileMenu(); buildMobileMenu(); updateAuthUI(); normalizeEarlyAccessUI(); wireEarlyAccessPage(); handleAuthRedirect();
+    setTimeout(()=>{updateAuthUI(); normalizeEarlyAccessUI();},300);
+    setTimeout(()=>{updateAuthUI();},1200);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
+  document.addEventListener('click',e=>{ if(!e.target.closest('.profile-menu,.profile-icon-btn')) $('profileMenu')?.classList.remove('show'); });
+})();

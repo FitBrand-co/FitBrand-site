@@ -303,7 +303,7 @@
       const slugs = ['aesthetic','shred','strength','bundle','mealplan','shaker','belt','straps'];
       grid.innerHTML = slugs.map(slug => {
         const has = owned.has(slug);
-        return `<article class="access-card ${has ? 'owned' : ''}"><div><span>${has ? 'Unlocked' : 'Locked'}</span><h3>${esc(PRODUCTS[slug] || slug)}</h3><p>${has ? 'Saved in your FitBrand cloud account.' : 'Buy to unlock this product.'}</p></div><a class="${has ? 'btn-dark' : 'btn-outline'}" href="${has ? (slug === 'mealplan' ? 'recommended.html#meal-plan-ai' : slug === 'shaker' ? 'product-shaker.html' : slug === 'belt' ? 'product-belt.html' : slug === 'straps' ? 'product-straps.html' : 'index.html?purchased=' + slug) : 'checkout.html?product=' + slug}">${has ? 'Open' : 'Buy access'}</a></article>`;
+        return `<article class="access-card ${has ? 'owned' : ''}"><div><span>${has ? 'Unlocked' : 'Locked'}</span><h3>${esc(PRODUCTS[slug] || slug)}</h3><p>${has ? 'Saved in your FitBrand cloud account.' : 'Join early access to be notified when this opens.'}</p></div><a class="${has ? 'btn-dark' : 'btn-outline'}" href="${has ? (slug === 'mealplan' ? 'recommended.html#meal-plan-ai' : slug === 'shaker' ? 'product-shaker.html' : slug === 'belt' ? 'product-belt.html' : slug === 'straps' ? 'product-straps.html' : 'index.html?purchased=' + slug) : 'early-access.html?product=' + slug}">${has ? 'Open' : 'Join waitlist'}</a></article>`;
       }).join('');
     }
 
@@ -1019,7 +1019,7 @@
   }
   function showCheckoutGate(){
     let box=$('fbCheckoutLoginRequired');
-    if(!box){box=document.createElement('div');box.id='fbCheckoutLoginRequired';box.className='fb-checkout-login-required';box.innerHTML='<div class="fb-checkout-login-card"><h3>Login required</h3><p>Please sign in before checkout so your subscription, orders and product access are saved to your FitBrand account.</p><button type="button" class="btn-dark" id="fbCheckoutLoginNow">Sign in/up</button><button type="button" class="btn-outline" id="fbCheckoutLoginClose">Continue browsing</button></div>';document.body.appendChild(box);box.addEventListener('click',e=>{if(e.target===box||e.target.id==='fbCheckoutLoginClose')box.classList.remove('show')});$('fbCheckoutLoginNow').addEventListener('click',()=>{box.classList.remove('show'); if(typeof window.openProfileModal==='function') window.openProfileModal('login');});}
+    if(!box){box=document.createElement('div');box.id='fbCheckoutLoginRequired';box.className='fb-checkout-login-required';box.innerHTML='<div class="fb-checkout-login-card"><h3>Login required</h3><p>Please sign in before future checkout. For now, use early access to tell us what you want.</p><button type="button" class="btn-dark" id="fbCheckoutLoginNow">Sign in/up</button><button type="button" class="btn-outline" id="fbCheckoutLoginClose">Continue browsing</button></div>';document.body.appendChild(box);box.addEventListener('click',e=>{if(e.target===box||e.target.id==='fbCheckoutLoginClose')box.classList.remove('show')});$('fbCheckoutLoginNow').addEventListener('click',()=>{box.classList.remove('show'); if(typeof window.openProfileModal==='function') window.openProfileModal('login');});}
     box.classList.add('show');
   }
   function patchProfilePageSave(){

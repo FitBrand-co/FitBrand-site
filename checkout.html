@@ -35,7 +35,7 @@
 
   <nav>
     <a href="index.html">Home</a>
-    <a href="programs.html">Programs</a>
+    <a href="programs.html">Programs</a><a href="early-access.html">Early Access</a>
     <a href="recommended.html">Recommended Products</a>
     <a href="about.html">About us</a>
     <a href="policies.html">Policies</a>
@@ -83,8 +83,8 @@
 
     <div class="checkout-left">
       <p class="eyebrow">Checkout</p>
-      <h1>Complete your FitBrand order.</h1>
-      <p>Review your order, accept the policies and continue to payment. After confirmation, digital products unlock automatically on this device.</p>
+      <h1>FitBrand checkout is not open yet.</h1>
+      <p>We are currently testing demand through early access. Join the waitlist now and we will notify you before payments open.</p>
     </div>
 
     <div class="checkout-right">
@@ -116,7 +116,7 @@
       <div id="checkout-discount-message" class="discount-message">Try code FIT10 for 10% off.</div>
 
       <input id="checkout-email" type="email" placeholder="Email for order confirmation" required>
-      <div id="checkout-email-message" class="discount-message">Email is required. You must log in before payment so your subscription and access attach to your account.</div>
+      <div id="checkout-email-message" class="discount-message">Email is required if you want to join early access.</div>
 
       <label class="policy-check">
         <input type="checkbox" id="accept-policies">
@@ -124,14 +124,14 @@
       </label>
 
       <div class="checkout-methods">
-        <div class="payment-pill"><span>Accepted payment methods</span><strong>Stripe / Card</strong></div>
-        <div class="payment-pill"><span>Secure checkout</span><strong>Ready to connect</strong></div>
+        <div class="payment-pill"><span>Accepted payment methods</span><strong>Coming later</strong></div>
+        <div class="payment-pill"><span>Early access</span><strong>Ready to connect</strong></div>
       </div>
 
-      <a id="stripe-link" style="margin-top:10px;" class="btn-dark btn-disabled" href="#">Continue to payment</a>
+      <a id="stripe-link" style="margin-top:10px;" class="btn-dark btn-disabled" href="#">Join early access</a>
 
       <div class="checkout-trust">
-        <div class="checkout-benefit"><strong>Secure checkout</strong><span>Your order flow is prepared for secure Stripe/Card payment.</span></div>
+        <div class="checkout-benefit"><strong>Early access</strong><span>Your order flow is prepared for secure Stripe/Card payment.</span></div>
         <div class="checkout-benefit"><strong>Instant access</strong><span>Digital programs unlock on the confirmation page.</span></div>
         <div class="checkout-benefit"><strong>Protected order</strong><span>Clear policies and order details before purchase.</span></div>
 
@@ -143,8 +143,8 @@
         </div>
       </div>
 
-      <div class="stripe-note">Stripe-ready: replace links in <strong>stripe-config.js</strong> with real Stripe Payment Links.</div>
-      <div class="order-note">Demo mode sends customers to the confirmation page and unlocks digital access on this browser.</div>
+      <div class="stripe-note">Payment is currently paused while FitBrand validates demand through early access.</div>
+      <div class="order-note">No payment is taken during the early-access validation phase.</div>
     </div>
 
   </div>
@@ -408,7 +408,7 @@ function updatePaymentLink(){
   const msg = document.getElementById("checkout-email-message");
 
   if(msg){
-    msg.textContent = emailOk ? "Email ready. You must be logged in before payment." : "Email is required. You must log in before payment so your subscription and access attach to your account.";
+    msg.textContent = emailOk ? "Email ready. No payment will be taken today." : "Email is required if you want to join early access.";
   }
 
   if(!acceptPolicies.checked || !emailOk){
@@ -423,7 +423,7 @@ function updatePaymentLink(){
   const stripeLinks = typeof FITBRAND_STRIPE_LINKS !== "undefined" ? FITBRAND_STRIPE_LINKS : {};
   const stripeUrl = cartMode ? stripeLinks.cart : stripeLinks[product];
   payButton.classList.remove("btn-disabled");
-  payButton.href = (stripeUrl && !stripeUrl.startsWith("#")) ? stripeUrl : getConfirmationLink();
+  payButton.href = "early-access.html" + (location.search || "");
 }
 
 function updateCartCount(){

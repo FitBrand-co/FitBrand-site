@@ -193,6 +193,7 @@
   <nav>
     <a href="index.html">Home</a>
     <a href="programs.html">Programs</a>
+    <a href="early-access.html">Early Access</a>
     <a href="recommended.html">Recommended Products</a>
     <a href="about.html">About us</a>
     <a href="policies.html">Policies</a>
@@ -286,8 +287,7 @@
             <p class="meal-subtitle">Eat smart. Train hard. Get results.</p>
             <p class="meal-copy">
               The ultimate nutrition system to match your goals, lifestyle and preferences.
-              Includes our complete Meal Plan Guide plus an exclusive AI Generator that creates
-              custom meal plans in seconds.
+              Join early access for our Meal Plan Guide AI and help us test whether customers want this product before payments open.
             </p>
 
             <div class="meal-benefit-grid">
@@ -300,9 +300,9 @@
             </div>
 
             <div class="meal-buy-row">
-              <div class="meal-price">€7.99 / month</div>
-              <a class="meal-black-btn" href="checkout.html?product=mealplan">Start subscription</a>
-              <button class="meal-white-btn" onclick="addToCart('mealplan')">Add to cart</button>
+              <div class="meal-price fb-early-meal-price">Target launch: €7.99/month</div>
+              <a class="meal-black-btn" href="early-access.html?product=mealplan">Join waitlist</a>
+              <button class="meal-white-btn" onclick="openEarlyAccessModal('mealplan')">I want this</button>
               <a class="meal-white-btn" href="#meal-ai-preview">Read more</a>
             </div>
           </div>
@@ -426,10 +426,10 @@
 <div id="fitbrandStickyBuy" class="fitbrand-sticky-buy">
   <div>
     <strong>Meal Plan Guide AI</strong>
-    <span>Unlock the generator and create a personal 7-day meal plan.</span>
+    <span>Join the early access list and get notified when Meal Plan Guide AI opens.</span>
   </div>
-  <a href="checkout.html?product=mealplan">Start monthly access — €7.99 / month</a>
-  <button onclick="addToCart('mealplan')">Add to cart</button>
+  <a href="early-access.html?product=mealplan">Join early access — no payment today</a>
+  <button onclick="openEarlyAccessModal('mealplan')">I want this</button>
 </div>
 
 <div id="drawer-overlay" class="cart-drawer-overlay" onclick="closeCartDrawer()"></div>
@@ -472,11 +472,11 @@
 
 <script>
 const fitbrandProductData = {
-  aesthetic:{name:"Aesthetic Program Monthly",price:9.99},
-  shred:{name:"Shred Program Monthly",price:9.99},
-  strength:{name:"Strength Program Monthly",price:9.99},
-  bundle:{name:"Complete Bundle Monthly",price:24.99},
-  mealplan:{name:"Meal Plan Guide AI Monthly",price:7.99},
+  aesthetic:{name:"Aesthetic Program",price:9.99},
+  shred:{name:"Shred Program",price:9.99},
+  strength:{name:"Strength Program",price:9.99},
+  bundle:{name:"Complete Bundle",price:24.99},
+  mealplan:{name:"Meal Plan Guide AI",price:7.99},
   belt:{name:"Lifting Belt",price:24.99},
   straps:{name:"Lifting Straps",price:12.99}
 };

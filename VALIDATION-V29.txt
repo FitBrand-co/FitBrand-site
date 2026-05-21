@@ -1,0 +1,26 @@
+FitBrand V29 validation summary
+
+Changes included:
+- Early Access / waitlist flow added and made the primary CTA for digital programs and Meal Plan Guide AI.
+- New early-access.html page with a professional waitlist form.
+- Digital product buttons no longer lead customers into payment checkout.
+- Target launch pricing is shown cleanly without repeated /mo text.
+- Mobile-only hamburger menu added beside cart/profile.
+- Mobile menu includes Home, Programs, Early Access, Recommended Products, About us, Policies.
+- Profile/login/logout UI stabilized through final auth override.
+- Expired/used magic link message handled with clean modal messaging.
+- Footer support email standardized to support@fitbrand.fit.
+- Policies updated for early-access validation phase with no payment currently taken.
+- AI/generator layout has additional responsive rules for mobile and desktop.
+
+Checks run:
+- node -c fitbrand.js: OK
+- node -c supabase-integration.js: OK
+- node -c api/create-checkout-session.js: OK
+- node -c api/stripe-webhook.js: OK
+- Internal HTML href/src/link/script reference scan: 0 broken internal refs, ignoring Vercel's /_vercel analytics scripts.
+- Checked all HTML pages for Early Access nav link.
+- Checked for bad visible text patterns like mo/mo, month / month, Start subscription, Buy access, Buy to unlock.
+
+Note:
+- Browser-based live preview could not be executed in this sandbox because Chromium navigation is blocked by the environment. The deployed site should still be tested on fitbrand.fit after upload with hard refresh.
