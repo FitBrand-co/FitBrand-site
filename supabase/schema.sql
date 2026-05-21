@@ -155,3 +155,8 @@ create policy "Allow public early access insert" on public.early_access_leads fo
 -- v30 admin dashboard note:
 -- The admin dashboard reads this table through /api/admin-leads using the server-side
 -- SUPABASE_SERVICE_ROLE_KEY in Vercel. No public select policy is required.
+
+-- v32 note: The public waitlist form now saves through /api/early-access-leads using
+-- SUPABASE_SERVICE_ROLE_KEY on Vercel. The insert policy below is kept as an extra fallback.
+drop policy if exists "Allow public early access insert v32" on public.early_access_leads;
+create policy "Allow public early access insert v32" on public.early_access_leads for insert to anon, authenticated with check (true);
