@@ -116,18 +116,41 @@ on conflict (slug) do update set
 create table if not exists public.early_access_leads (
   id uuid primary key default gen_random_uuid(),
   email text not null,
+  full_name text,
+  product_interest text,
+  goal text,
+  monthly_price_interest text,
+  start_timeline text,
+  notes text,
+  source_page text,
   name text,
   product text,
-  goal text,
   price_intent text,
   start_timing text,
   note text,
   source text default 'website',
   created_at timestamptz default now()
 );
+
+-- Make existing tables compatible with both the new waitlist form and older admin/dashboard builds.
+alter table public.early_access_leads add column if not exists full_name text;
+alter table public.early_access_leads add column if not exists product_interest text;
+alter table public.early_access_leads add column if not exists monthly_price_interest text;
+alter table public.early_access_leads add column if not exists start_timeline text;
+alter table public.early_access_leads add column if not exists notes text;
+alter table public.early_access_leads add column if not exists source_page text;
+alter table public.early_access_leads add column if not exists name text;
+alter table public.early_access_leads add column if not exists product text;
+alter table public.early_access_leads add column if not exists price_intent text;
+alter table public.early_access_leads add column if not exists start_timing text;
+alter table public.early_access_leads add column if not exists note text;
+alter table public.early_access_leads add column if not exists source text default 'website';
+
 alter table public.early_access_leads enable row level security;
 drop policy if exists "Anyone can join early access" on public.early_access_leads;
-create policy "Anyone can join early access" on public.early_access_leads for insert with check (true);
+drop policy if exists "Anyone can insert early access leads" on public.early_access_leads;
+drop policy if exists "Allow public early access insert" on public.early_access_leads;
+create policy "Allow public early access insert" on public.early_access_leads for insert to anon, authenticated with check (true);
 
 -- v30 admin dashboard note:
 -- The admin dashboard reads this table through /api/admin-leads using the server-side
