@@ -974,14 +974,57 @@
     document.body.insertAdjacentHTML('beforeend',`<div id="earlyAccessModal" class="fb-early-modal" onclick="closeEarlyAccessModal()"><div class="fb-early-modal-card" onclick="event.stopPropagation()"><button class="fb-early-close" onclick="closeEarlyAccessModal()">×</button><p class="eyebrow">Early access</p><h2>Join the FitBrand waitlist</h2><p>No payment today. Tell us what you want and we will contact you when launch access opens.</p><form id="earlyModalForm" class="fb-early-form mini"><label>Name<input id="earlyModalName" placeholder="Your name"></label><label>Email<input id="earlyModalEmail" type="email" placeholder="you@email.com" required></label><label>Product<select id="earlyModalProduct"><option value="aesthetic">Aesthetic Program</option><option value="shred">Shred Program</option><option value="strength">Strength Program</option><option value="bundle">Complete Bundle</option><option value="mealplan">Meal Plan Guide AI</option></select></label><label>Would you pay monthly?<select id="earlyModalPrice"><option>Yes, around €9.99/month</option><option>Maybe, I need to see more first</option><option>No, I only want free access</option></select></label><button class="btn-dark" type="submit">Join waitlist</button></form></div></div>`);
     $('earlyModalForm').addEventListener('submit',e=>{ e.preventDefault(); saveEarlyAccessLead({name:$('earlyModalName').value,email:$('earlyModalEmail').value,product:$('earlyModalProduct').value,price_intent:$('earlyModalPrice').value,source:'modal'}); });
   }
+  function setEarlyAccessLoading(isLoading){
+    $$('form#earlyAccessForm button[type=submit], form#earlyModalForm button[type=submit]').forEach(btn=>{
+      if(!btn.dataset.originalText) btn.dataset.originalText=btn.textContent;
+      btn.disabled=!!isLoading;
+      btn.textContent=isLoading?'Saving...':btn.dataset.originalText;
+      btn.classList.toggle('loading',!!isLoading);
+    });
+  }
   async function saveEarlyAccessLead(data){
-    const email=String(data.email||'').trim(); if(!validEmail(email)){ showMessage('Check your email','Please enter a valid email address.','error'); return; }
-    const lead={name:String(data.name||'').trim(),email,product:data.product||'aesthetic',goal:data.goal||'',price_intent:data.price_intent||'',start_timing:data.start_timing||'',note:data.note||'',created_at:new Date().toISOString(),source:data.source||'website'};
-    const leads=safeJSON(localStorage.getItem(LEADS_KEY),[]); leads.unshift(lead); localStorage.setItem(LEADS_KEY,JSON.stringify(leads.slice(0,100)));
-    try{ const sb=await loadSupabase(); if(sb) await sb.from('early_access_leads').insert(lead); }catch(e){ console.warn('Early lead cloud save skipped',e); }
-    window.closeEarlyAccessModal?.();
-    showMessage('You are on the list','Thanks. We saved your early access interest and will contact you before launch.');
-    const form=$('earlyAccessForm'); if(form) form.reset();
+    const email=String(data.email||'').trim().toLowerCase();
+    if(!validEmail(email)){ showMessage('Check your email','Please enter a valid email address.','error'); return; }
+    const name=String(data.name||'').trim();
+    const product=data.product||'aesthetic';
+    const goal=data.goal||'';
+    const price=data.price_intent||'';
+    const start=data.start_timing||'';
+    const note=data.note||'';
+    const source=data.source||'website';
+    const localLead={name,email,product,goal,price_intent:price,start_timing:start,note,created_at:new Date().toISOString(),source};
+    setEarlyAccessLoading(true);
+    try{
+      const sb=await loadSupabase();
+      if(!sb) throw new Error('Supabase is not loaded on this page.');
+      const cloudLead={
+        email,
+        full_name:name,
+        product_interest:product,
+        goal,
+        monthly_price_interest:price,
+        start_timeline:start,
+        notes:note,
+        source_page:source
+      };
+      let result=await sb.from('early_access_leads').insert(cloudLead).select('id').single();
+      if(result.error){
+        // Older FitBrand schemas used shorter column names. Fallback keeps the form working either way.
+        const legacyLead={email,name,product,goal,price_intent:price,start_timing:start,note,source};
+        result=await sb.from('early_access_leads').insert(legacyLead).select('id').single();
+      }
+      if(result.error) throw result.error;
+      const leads=safeJSON(localStorage.getItem(LEADS_KEY),[]); leads.unshift(localLead); localStorage.setItem(LEADS_KEY,JSON.stringify(leads.slice(0,100)));
+      window.closeEarlyAccessModal?.();
+      const form=$('earlyAccessForm'); if(form) form.reset();
+      showMessage('You are on the list','Thanks. Your early access signup has been saved. You will now be sent back to the homepage.');
+      setTimeout(()=>{ window.location.href='index.html?joined=early-access'; }, 1500);
+    }catch(e){
+      console.error('Early access save failed',e);
+      showMessage('Signup was not saved','Something blocked the signup. Please check Supabase table columns/policies or try again in a moment.','error');
+    }finally{
+      setEarlyAccessLoading(false);
+    }
   }
   function wireEarlyAccessPage(){
     const form=$('earlyAccessForm'); if(!form||form.dataset.v29Bound) return; form.dataset.v29Bound='1';
@@ -993,7 +1036,9 @@
   window.addToCart=function(product){ if(DIGITAL_PRODUCTS.includes(product)) return window.openEarlyAccessModal(product); if(typeof oldAdd==='function') return oldAdd.apply(this,arguments); };
 
   function boot(){
-    buildProfileMenu(); buildMobileMenu(); updateAuthUI(); normalizeEarlyAccessUI(); wireEarlyAccessPage(); handleAuthRedirect();
+    buildProfileMenu(); buildMobileMenu(); updateAuthUI(); normalizeEarlyAccessUI(); wireEarlyAccessPage();
+    try{ if(new URLSearchParams(location.search).get('joined')==='early-access') showMessage('Early access saved','Thanks for joining the FitBrand waitlist. We will contact you before launch.'); }catch(e){}
+    handleAuthRedirect();
     setTimeout(()=>{updateAuthUI(); normalizeEarlyAccessUI();},300);
     setTimeout(()=>{updateAuthUI();},1200);
   }
