@@ -744,7 +744,7 @@
 
 /* FITBRAND_V27_CLEAN */
 
-/* ===== FITBRAND V29 EARLY ACCESS + MOBILE + AUTH STABILITY PATCH ===== */
+/* ===== FITBRAND V32 EARLY ACCESS SERVER SAVE + MOBILE + AUTH STABILITY PATCH ===== */
 (function(){
   'use strict';
   const USER_KEY='fitbrandUser';
@@ -995,25 +995,18 @@
     const localLead={name,email,product,goal,price_intent:price,start_timing:start,note,created_at:new Date().toISOString(),source};
     setEarlyAccessLoading(true);
     try{
-      const sb=await loadSupabase();
-      if(!sb) throw new Error('Supabase is not loaded on this page.');
-      const cloudLead={
-        email,
-        full_name:name,
-        product_interest:product,
-        goal,
-        monthly_price_interest:price,
-        start_timeline:start,
-        notes:note,
-        source_page:source
-      };
-      let result=await sb.from('early_access_leads').insert(cloudLead).select('id').single();
-      if(result.error){
-        // Older FitBrand schemas used shorter column names. Fallback keeps the form working either way.
-        const legacyLead={email,name,product,goal,price_intent:price,start_timing:start,note,source};
-        result=await sb.from('early_access_leads').insert(legacyLead).select('id').single();
+      // v32: Save through Vercel serverless API first. This avoids public RLS/policy issues,
+      // because the API uses the secure SUPABASE_SERVICE_ROLE_KEY already used by the admin dashboard.
+      const apiRes=await fetch('/api/early-access-leads',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({email,name,product,goal,price_intent:price,start_timing:start,note,source})
+      });
+      let apiData={};
+      try{ apiData=await apiRes.json(); }catch(_e){}
+      if(!apiRes.ok || !apiData.ok){
+        throw new Error(apiData.error || 'The server could not save this signup.');
       }
-      if(result.error) throw result.error;
       const leads=safeJSON(localStorage.getItem(LEADS_KEY),[]); leads.unshift(localLead); localStorage.setItem(LEADS_KEY,JSON.stringify(leads.slice(0,100)));
       window.closeEarlyAccessModal?.();
       const form=$('earlyAccessForm'); if(form) form.reset();
@@ -1021,7 +1014,7 @@
       setTimeout(()=>{ window.location.href='index.html?joined=early-access'; }, 1500);
     }catch(e){
       console.error('Early access save failed',e);
-      showMessage('Signup was not saved','Something blocked the signup. Please check Supabase table columns/policies or try again in a moment.','error');
+      showMessage('Signup was not saved','The server could not save your signup. Please try again in a moment.','error');
     }finally{
       setEarlyAccessLoading(false);
     }

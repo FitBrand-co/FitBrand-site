@@ -1,0 +1,5 @@
+FitBrand v32 - Waitlist server save fix
+- Early Access signup now posts to /api/early-access-leads
+- API uses SUPABASE_SERVICE_ROLE_KEY server-side, same as admin dashboard
+- Avoids browser/public RLS failures
+- Success message + homepage redirect remain active
