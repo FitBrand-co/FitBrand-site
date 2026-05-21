@@ -1,0 +1,2 @@
+FitBrand v30 - Admin leads dashboard added.
+Includes password-protected Vercel API and responsive admin page for early access signups.
