@@ -128,3 +128,7 @@ create table if not exists public.early_access_leads (
 alter table public.early_access_leads enable row level security;
 drop policy if exists "Anyone can join early access" on public.early_access_leads;
 create policy "Anyone can join early access" on public.early_access_leads for insert with check (true);
+
+-- v30 admin dashboard note:
+-- The admin dashboard reads this table through /api/admin-leads using the server-side
+-- SUPABASE_SERVICE_ROLE_KEY in Vercel. No public select policy is required.
