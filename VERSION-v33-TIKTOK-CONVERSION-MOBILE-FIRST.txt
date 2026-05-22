@@ -1,0 +1,34 @@
+FitBrand v33 TikTok Conversion + Mobile First
+================================================
+
+Main goal:
+- Convert TikTok visitors on mobile into early-access signups.
+- Remove payment friction while testing market demand.
+- Keep checkout/payment out of the digital program flow until business/payment setup is ready.
+
+Updated:
+- Mobile-first Early Access landing page.
+- Digital product CTA buttons now route to early-access.html.
+- Mobile-only hamburger menu added by fitbrand-conversion.js.
+- Early Access form saves through /api/early-access-leads.
+- Success message appears, then redirects customer to homepage.
+- Footer email uses support@fitbrand.fit.
+- Policies include early access/waitlist note.
+- Supabase schema includes early_access_leads table.
+
+Validation performed:
+- node -c fitbrand.js: OK
+- node -c supabase-integration.js: OK
+- node -c fitbrand-conversion.js: OK
+- node -c api/early-access-leads.js: OK
+- node -c api/create-checkout-session.js: OK
+- node -c api/stripe-webhook.js: OK
+- Internal HTML links/assets scan: 0 broken refs
+- Checked no visible bad strings: Start subscription, /mo/mo, checkout digital links in HTML.
+
+After upload:
+1. Commit changed files to GitHub.
+2. Wait for Vercel deploy.
+3. Make sure SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY exist in Vercel.
+4. Run supabase/schema.sql if early_access_leads table does not exist.
+5. Test https://fitbrand.fit/early-access.html on phone.

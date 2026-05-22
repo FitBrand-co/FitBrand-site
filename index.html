@@ -159,7 +159,8 @@
   </a>
   <nav>
     <a href="index.html">Home</a>
-    <a href="programs.html">Programs</a><a href="early-access.html">Early Access</a>
+    <a href="programs.html">Programs</a>
+    <a href="early-access.html">Early Access</a>
     <a href="recommended.html">Recommended Products</a>
     <a href="about.html">About us</a>
     <a href="policies.html">Policies</a>
@@ -282,7 +283,7 @@
             <div class="benefit-box"><strong>No code needed</strong><span>The Product Finder is open before purchase.</span></div>
             <div class="benefit-box"><strong>Better conversion</strong><span>Customers get a clear recommendation instead of guessing.</span></div>
             <div class="benefit-box"><strong>Premium brand feeling</strong><span>The site feels more like a real fitness platform.</span></div>
-            <div class="benefit-box"><strong>Early access signal</strong><span>Customers can show interest before payment opens.</span></div>
+            <div class="benefit-box"><strong>After-purchase generator</strong><span>Customers can generate a plan after buying.</span></div>
           </div>
         </div>
       </div>
@@ -304,9 +305,9 @@
         <div class="card-body">
           <h3>Aesthetic Program</h3>
           <p>Build a balanced and aesthetic physique with a clear weekly structure.</p>
-          <div class="price fb-early-price"><span>Early access</span><strong>Target launch: €9.99/month</strong><small>No payment today</small></div>
-          <a class="btn-dark" href="early-access.html?product=aesthetic">Join waitlist</a>
-          <button class="btn-outline" onclick="openEarlyAccessModal('aesthetic')">I want this</button>
+          <div class="price">Target launch price: €9.99 / month</div>
+          <a class="btn-dark" href="early-access.html?interest=aesthetic">Join Early Access</a>
+          <button class="btn-outline" onclick="addToCart('aesthetic')">Notify me</button>
         </div>
       </article>
 
@@ -318,9 +319,9 @@
         <div class="card-body">
           <h3>Shred Program</h3>
           <p>Lose fat, reveal definition and build discipline with a simple system.</p>
-          <div class="price fb-early-price"><span>Early access</span><strong>Target launch: €9.99/month</strong><small>No payment today</small></div>
-          <a class="btn-dark" href="early-access.html?product=shred">Join waitlist</a>
-          <button class="btn-outline" onclick="openEarlyAccessModal('shred')">I want this</button>
+          <div class="price">Target launch price: €9.99 / month</div>
+          <a class="btn-dark" href="early-access.html?interest=shred">Join Early Access</a>
+          <button class="btn-outline" onclick="addToCart('shred')">Notify me</button>
         </div>
       </article>
 
@@ -331,9 +332,9 @@
         <div class="card-body">
           <h3>Strength Program</h3>
           <p>Build power, size and confidence with progressive training.</p>
-          <div class="price fb-early-price"><span>Early access</span><strong>Target launch: €9.99/month</strong><small>No payment today</small></div>
-          <a class="btn-dark" href="early-access.html?product=strength">Join waitlist</a>
-          <button class="btn-outline" onclick="openEarlyAccessModal('strength')">I want this</button>
+          <div class="price">Target launch price: €9.99 / month</div>
+          <a class="btn-dark" href="early-access.html?interest=strength">Join Early Access</a>
+          <button class="btn-outline" onclick="addToCart('strength')">Notify me</button>
         </div>
       </article>
     </div>
@@ -342,15 +343,15 @@
       <p>Best value</p>
       <h2>Complete FitBrand Bundle</h2>
       <div class="bundle-save-pill">Best value bundle</div>
-      <p>Join early access for Aesthetic, Shred, Strength and Meal Plan Guide AI. Help us validate demand before checkout opens.</p>
+      <p>Get Aesthetic, Shred, Strength and Meal Plan Guide AI in one premium package. Best value for customers who want both training and nutrition structure.</p>
       <div class="bundle-includes">
         <span>Aesthetic Program</span>
         <span>Shred Program</span>
         <span>Strength Program</span>
         <span>Meal Plan AI</span>
       </div>
-      <a class="btn-silver" href="early-access.html?product=bundle">Join Bundle Waitlist</a>
-      <button class="btn-outline" onclick="openEarlyAccessModal('bundle')" style="margin-left:10px;">I want this</button>
+      <a class="btn-silver" href="early-access.html?interest=bundle">Join Bundle Waitlist</a>
+      <button class="btn-outline" onclick="addToCart('bundle')" style="margin-left:10px;">Notify me</button>
     </div>
   </section>
 
@@ -365,9 +366,9 @@
   </section>
 
   <section class="cta">
-    <h2>Ready to join?</h2>
-    <p>Join early access and help us decide what to launch first.</p>
-    <a class="btn-silver" href="programs.html">View programs</a>
+    <h2>Want early access?</h2>
+    <p>Join the list in under 20 seconds. No payment required.</p>
+    <a class="btn-silver" href="early-access.html">Join Early Access</a>
   </section>
 
   <section class="section">
@@ -936,6 +937,7 @@
 <script src="fitbrand.js"></script>
 <script src="fitbrand-config.js"></script>
 <script src="supabase-integration.js"></script>
+<script src="fitbrand-conversion.js"></script>
 </body>
 </html>
 

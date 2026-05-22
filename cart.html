@@ -36,6 +36,7 @@
   <nav>
     <a href="index.html">Home</a>
     <a href="programs.html">Programs</a>
+    <a href="early-access.html">Early Access</a>
     <a href="recommended.html">Recommended Products</a>
     <a href="about.html">About us</a>
     <a href="policies.html">Policies</a>
@@ -108,7 +109,7 @@
 
       <div class="cart-actions">
         <a class="btn-outline" href="programs.html">Continue shopping</a>
-        <a class="btn-dark" id="checkout-link" href="early-access.html">Join early access</a>
+        <a class="btn-dark" id="checkout-link" href="early-access.html">Join Early Access</a>
       </div>
 
     </div>
@@ -185,7 +186,7 @@
       <span id="drawer-total">€0.00</span>
     </div>
 
-    <a class="btn-dark" style="width:100%;" href="early-access.html">Join early access</a>
+    <a class="btn-dark" style="width:100%;" href="early-access.html">Join Early Access</a>
     <a class="btn-outline" style="width:100%;margin-top:10px;" href="programs.html">Continue shopping</a>
   </div>
 </aside>
@@ -387,8 +388,8 @@ function renderCart(){
   const total = subtotal * (1 - cartDiscount);
 
   totalEl.textContent = "€" + total.toFixed(2);
-  checkoutLink.href = "checkout.html?cart=true";
-  checkoutLink.textContent = "Join early access";
+  checkoutLink.href = "early-access.html";
+  checkoutLink.textContent = "Join Early Access";
 
   updateCartCount();
 }
@@ -667,6 +668,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <script src="fitbrand.js"></script>
 <script src="fitbrand-config.js"></script>
 <script src="supabase-integration.js"></script>
+<script src="fitbrand-conversion.js"></script>
 </body>
 </html>
 

@@ -1,51 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Early Access | FitBrand</title>
-<link rel="stylesheet" href="style.css">
-<meta name="description" content="Join the FitBrand early access waitlist and help us decide which fitness programs to launch first.">
-<script>window.si=window.si||function(){(window.siq=window.siq||[]).push(arguments);};</script><script defer src="/_vercel/speed-insights/script.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Join Early Access | FitBrand</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="description" content="Join FitBrand early access for AI fitness plans, meal guidance and progress tools. Free to join. No payment required.">
+  <meta property="og:title" content="Join FitBrand Early Access">
+  <meta property="og:description" content="Get early access to FitBrand AI fitness plans and meal guidance. Free to join.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/fitbrand-logo-real.png">
 </head>
-<body>
+<body class="early-access-page">
+
 <header class="nav">
-  <a href="index.html" class="brand"><img class="logo-img" src="assets/fitbrand-logo-real.png" alt="FitBrand logo"><span class="brand-word">FITBRAND</span></a>
-  <nav><a href="index.html">Home</a><a href="programs.html">Programs</a><a href="early-access.html">Early Access</a><a href="recommended.html">Recommended Products</a><a href="about.html">About us</a><a href="policies.html">Policies</a></nav>
-  <div class="nav-actions"><a href="cart.html" class="cart-icon-btn"><span class="cart-svg">🛒</span><span class="cart-count" id="cart-count-btn">0</span></a><button class="profile-icon-btn" onclick="toggleProfileMenu()" aria-label="Profile"><span id="profileInitial">?</span></button><div id="profileMenu" class="profile-menu"></div></div>
-</header>
-<main class="fb-early-page">
-  <section class="fb-early-hero">
-    <p class="eyebrow">FitBrand beta launch</p>
-    <h1>Join early access before payments open.</h1>
-    <p>We are testing demand for FitBrand programs and Meal Plan Guide AI. Tell us what you want, and we will notify you when launch access opens.</p>
-    <div class="fb-early-hero-actions"><a class="btn-dark" href="#earlyForm">Join waitlist</a><a class="btn-outline" href="programs.html">View programs</a></div>
-  </section>
-  <section class="fb-early-grid">
-    <article><strong>No payment today</strong><span>We are validating interest before switching on checkout.</span></article>
-    <article><strong>Launch priority</strong><span>Early members get notified first when access opens.</span></article>
-    <article><strong>Help shape FitBrand</strong><span>Your answers show us which programs people want most.</span></article>
-  </section>
-  <section class="fb-early-form-card" id="earlyForm">
-    <div>
-      <p class="eyebrow">Waitlist form</p>
-      <h2>Reserve your spot</h2>
-      <p>Fill this out once. We use it only to understand demand and contact you about launch access.</p>
+  <a href="index.html" class="brand">
+    <img class="logo-img" src="assets/fitbrand-logo-real.png" alt="FitBrand logo">
+    <span class="brand-word">FITBRAND</span>
+  </a>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="programs.html">Programs</a>
+    <a href="early-access.html" class="active">Early Access</a>
+    <a href="recommended.html">Recommended Products</a>
+    <a href="about.html">About us</a>
+    <a href="policies.html">Policies</a>
+  </nav>
+
+  <div class="nav-actions">
+    <a href="cart.html" class="cart-icon-btn">
+      <span class="cart-svg">🛒</span>
+      <span class="cart-count" id="cart-count-btn">0</span>
+    </a>
+
+    <button class="profile-icon-btn" onclick="toggleProfileMenu()">
+      <span id="profileInitial">?</span>
+    </button>
+
+    <div id="profileMenu" class="profile-menu">
+      <div class="profile-menu-head">
+        <div class="profile-avatar"><span id="profileMenuInitial">?</span></div>
+        <div>
+          <strong id="profileMenuName">Guest</strong><br>
+          <span id="profileMenuEmail">Not logged in</span>
+        </div>
+      </div>
+      <button onclick="openProfileModal('profile')">View profile</button>
+      <a class="profile-menu-link" href="profile.html">Edit profile</a>
+      <a class="profile-menu-link" href="products-access.html">My products / access</a>
+      <a class="profile-menu-link" href="orders.html">My orders</a>
+      <button id="profileLoginBtn" onclick="openProfileModal('login')">Sign in/up</button>
+      <button id="profileLogoutBtn" onclick="logoutFitBrandUser()" style="display:none;">Log out</button>
     </div>
-    <form id="earlyAccessForm" class="fb-early-form">
-      <label>Name<input id="earlyName" name="name" placeholder="Your name" autocomplete="name"></label>
-      <label>Email<input id="earlyEmail" name="email" type="email" placeholder="you@email.com" autocomplete="email" required></label>
-      <label>What do you want most?<select id="earlyProduct" name="product"><option value="aesthetic">Aesthetic Program</option><option value="shred">Shred Program</option><option value="strength">Strength Program</option><option value="bundle">Complete Bundle</option><option value="mealplan">Meal Plan Guide AI</option></select></label>
-      <label>Your main goal<select id="earlyGoal" name="goal"><option>Build muscle/aesthetic physique</option><option>Lose fat / get shredded</option><option>Get stronger</option><option>Meal plan / nutrition help</option><option>Not sure yet</option></select></label>
-      <label>Would you pay monthly?<select id="earlyPrice" name="price"><option>Yes, around €9.99/month</option><option>Yes, around €14.99/month if it is good</option><option>Maybe, I need to see more first</option><option>No, I only want free access</option></select></label>
-      <label>When would you start?<select id="earlyStart" name="start"><option>Immediately</option><option>This week</option><option>This month</option><option>Later</option></select></label>
-      <label class="wide">Anything we should know?<textarea id="earlyNote" name="note" placeholder="Tell us what would make you buy or what you want FitBrand to include."></textarea></label>
-      <button class="btn-dark wide" type="submit">Join early access</button>
-      <p class="fb-early-disclaimer wide">No payment is taken. By joining, you agree that FitBrand may contact you about early access and launch updates.</p>
-    </form>
+  </div>
+</header>
+
+<main>
+  <section class="ea-hero">
+    <div class="ea-hero-bg"></div>
+    <div class="ea-hero-content">
+      <div class="ea-pill">Free to join • No payment required</div>
+      <h1>Get early access to FitBrand AI fitness plans.</h1>
+      <p>Join the list and help us choose what to launch first. We are testing training plans, meal guidance and progress tools for people who want a simpler way to build their physique.</p>
+
+      <div class="ea-mobile-trust">
+        <span>No card needed</span>
+        <span>Launch discount</span>
+        <span>First access</span>
+      </div>
+
+      <a class="ea-scroll-cta" href="#join">Join Early Access</a>
+      <p class="ea-mini-note">Takes under 20 seconds.</p>
+    </div>
+  </section>
+
+  <section id="join" class="ea-form-section">
+    <div class="ea-form-card">
+      <div class="ea-form-copy">
+        <span class="ea-kicker">Join the waitlist</span>
+        <h2>Reserve your spot</h2>
+        <p>Tell us what you want most. We use this to decide which FitBrand product gets launched first.</p>
+
+        <div class="ea-benefits">
+          <div><strong>01</strong><span>Get notified at launch</span></div>
+          <div><strong>02</strong><span>Help shape the product</span></div>
+          <div><strong>03</strong><span>Possible early launch discount</span></div>
+        </div>
+      </div>
+
+      <form id="fbEarlyAccessForm" class="ea-form">
+        <label for="eaEmail">Email</label>
+        <input id="eaEmail" type="email" autocomplete="email" placeholder="your@email.com" required>
+
+        <label for="eaName">Name</label>
+        <input id="eaName" type="text" autocomplete="name" placeholder="Your name">
+
+        <label for="eaProduct">What do you want most?</label>
+        <select id="eaProduct" required>
+          <option value="aesthetic">Aesthetic Program</option>
+          <option value="shred">Shred Program</option>
+          <option value="strength">Strength Program</option>
+          <option value="mealplan">Meal Plan Guide AI</option>
+          <option value="bundle">Complete Bundle</option>
+        </select>
+
+        <label for="eaGoal">Main goal</label>
+        <select id="eaGoal" required>
+          <option value="">Choose your goal</option>
+          <option value="Build muscle">Build muscle</option>
+          <option value="Lose fat">Lose fat</option>
+          <option value="Get stronger">Get stronger</option>
+          <option value="Eat better">Eat better</option>
+          <option value="Stay consistent">Stay consistent</option>
+        </select>
+
+        <label for="eaPrice">Would you consider paying monthly if it is good?</label>
+        <select id="eaPrice">
+          <option value="Yes">Yes</option>
+          <option value="Maybe">Maybe</option>
+          <option value="No">No</option>
+        </select>
+
+        <label for="eaNotes">Anything you want us to know? <span>Optional</span></label>
+        <textarea id="eaNotes" rows="3" placeholder="Example: I want a simple 4-day plan for muscle gain."></textarea>
+
+        <button id="eaSubmit" type="submit">Join Early Access</button>
+        <div id="eaFormMessage" class="ea-form-message">Free to join. No payment. No spam.</div>
+      </form>
+    </div>
+  </section>
+
+  <section class="ea-proof">
+    <div class="ea-proof-grid">
+      <div><strong>AI plans</strong><span>Training structure based on your goal.</span></div>
+      <div><strong>Meal guidance</strong><span>Simple food ideas and planning tools.</span></div>
+      <div><strong>Mobile-first</strong><span>Built for people coming from TikTok.</span></div>
+    </div>
   </section>
 </main>
-<footer><div class="footer-grid"><div><a class="brand" href="index.html"><img class="logo-img" src="assets/fitbrand-logo-real.png" alt="FitBrand logo"></a><p>Premium programs. Real results. No excuses.</p></div><div><h4>Support</h4><a href="policies.html">Our Policies</a><a href="policies.html#privacy">Privacy Policy</a><a href="policies.html#terms">Terms & Conditions</a></div><div><h4>Connect</h4><a href="mailto:support@fitbrand.fit">support@fitbrand.fit</a></div></div><div class="copy"><span>© 2026 FitBrand. All rights reserved.</span><span>Built for your transformation.</span></div></footer>
-<script src="fitbrand.js"></script><script src="fitbrand-config.js"></script><script src="supabase-integration.js"></script>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <a class="brand" href="index.html">
+        <img class="logo-img" src="assets/fitbrand-logo-real.png" alt="FitBrand logo">
+      </a>
+      <p>Premium programs. Real results. No excuses.</p>
+    </div>
+    <div>
+      <h4>Support</h4>
+      <a href="policies.html">Our Policies</a>
+      <a href="policies.html#refunds">Refund Policy</a>
+      <a href="policies.html#privacy">Privacy Policy</a>
+      <a href="policies.html#terms">Terms & Conditions</a>
+    </div>
+    <div>
+      <h4>Connect</h4>
+      <a href="https://instagram.com/fitbrand.co" target="_blank" rel="noreferrer">Instagram</a>
+      <a href="https://tiktok.com/@fitbrand.co" target="_blank" rel="noreferrer">TikTok</a>
+      <a href="mailto:support@fitbrand.fit">Email</a>
+    </div>
+  </div>
+  <div class="copy">
+    <span>© 2026 FitBrand. All rights reserved.</span>
+    <span>Built for your transformation.</span>
+  </div>
+</footer>
+
+<div id="profileModal" class="profile-modal-overlay">
+  <div class="profile-modal">
+    <button class="profile-modal-close" onclick="closeProfileModal()">×</button>
+    <div class="profile-modal-head">
+      <div class="profile-avatar large"><span id="profileModalInitial">?</span></div>
+      <h2 id="profileModalTitle">FitBrand Profile</h2>
+      <p id="profileModalSubtitle">Log in to save your FitBrand experience on this device.</p>
+    </div>
+    <div id="profileView" class="profile-modal-content">
+      <div class="profile-info-box"><strong>Name</strong><span id="profileViewName">Guest</span></div>
+      <div class="profile-info-box"><strong>Email</strong><span id="profileViewEmail">Not logged in</span></div>
+      <div class="profile-info-box"><strong>Status</strong><span id="profileViewStatus">No active login</span></div>
+    </div>
+    <div id="profileEdit" class="profile-modal-content" style="display:none;">
+      <label>Name</label><input id="editProfileName" type="text" placeholder="Your name">
+      <label>Email</label><input id="editProfileEmail" type="email" placeholder="your@email.com">
+      <button class="btn-dark" onclick="saveFitBrandProfile()">Save profile</button>
+    </div>
+    <div id="profileLogin" class="profile-modal-content" style="display:none;">
+      <label>Email</label><input id="loginProfileEmail" type="email" placeholder="your@email.com">
+      <label>Name</label><input id="loginProfileName" type="text" placeholder="Your name">
+      <button class="btn-dark" onclick="loginFitBrandUser()">Send login link</button>
+      <p class="profile-small-note">We will send a secure login link to your email.</p>
+    </div>
+  </div>
+</div>
+
+<script src="fitbrand-config.js"></script>
+<script src="fitbrand.js"></script>
+<script src="supabase-integration.js"></script>
+<script src="fitbrand-conversion.js"></script>
 </body>
 </html>
