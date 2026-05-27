@@ -136,3 +136,33 @@ on public.early_access_leads
 for insert
 to anon, authenticated
 with check (true);
+
+
+-- FitBrand manual purchase/access request table (v36)
+create table if not exists public.manual_purchase_requests (
+  id uuid primary key default gen_random_uuid(),
+  email text not null,
+  full_name text,
+  product_slug text not null,
+  product_name text,
+  price_amount integer,
+  currency text default 'eur',
+  status text not null default 'pending_payment',
+  payment_method text default 'manual',
+  payment_reference text,
+  notes text,
+  source_page text,
+  granted_user_id uuid,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+alter table public.manual_purchase_requests enable row level security;
+
+drop policy if exists "Anyone can insert manual purchase requests" on public.manual_purchase_requests;
+
+create policy "Anyone can insert manual purchase requests"
+on public.manual_purchase_requests
+for insert
+to anon, authenticated
+with check (true);
