@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitBrand Manual Purchases</title>
+<link rel="stylesheet" href="style.css">
+<meta name="robots" content="noindex,nofollow">
+</head>
+<body class="fb-admin-body">
+<main class="fb-admin-page">
+  <section class="fb-admin-login" id="adminLoginBox">
+    <div class="premium-badge">FitBrand Admin</div>
+    <h1>Manual purchase requests</h1>
+    <p>Use this only after checking that payment has actually been received.</p>
+    <input id="adminPasswordInput" type="password" placeholder="Admin password" autocomplete="current-password">
+    <button id="adminLoadBtn" class="btn-dark">Open dashboard</button>
+    <p id="adminLoginMessage" class="fb-admin-message"></p>
+    <a href="admin-leads.html" class="btn-outline">Open waitlist dashboard</a>
+  </section>
+
+  <section class="fb-admin-dashboard" id="adminDashboard" style="display:none">
+    <div class="fb-admin-top">
+      <div>
+        <div class="premium-badge">FitBrand Admin</div>
+        <h1>Purchase requests</h1>
+        <p>Mark access only after manual payment is verified.</p>
+      </div>
+      <button id="adminRefreshBtn" class="btn-outline">Refresh</button>
+    </div>
+    <div class="fb-admin-stats" id="adminPurchaseStats"></div>
+    <div class="fb-admin-table-wrap">
+      <table class="fb-admin-table">
+        <thead><tr><th>Date</th><th>Email</th><th>Product</th><th>Status</th><th>Reference</th><th>Action</th></tr></thead>
+        <tbody id="adminPurchaseRows"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  let password = sessionStorage.getItem('fitbrandAdminPassword') || '';
+  if(password) $('adminPasswordInput').value = password;
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function money(cents, currency='eur'){return cents ? (Number(cents)/100).toFixed(2)+' '+String(currency||'eur').toUpperCase() : ''}
+  function setMsg(msg, error=false){const el=$('adminLoginMessage'); if(el){el.textContent=msg; el.classList.toggle('error', error)}}
+  async function api(body){
+    const options = { headers:{'x-fitbrand-admin-password':password} };
+    if(body){ options.method='POST'; options.headers['Content-Type']='application/json'; options.body=JSON.stringify(body); }
+    const res = await fetch('/api/admin-purchases', options);
+    const data = await res.json().catch(()=>({}));
+    if(!res.ok || data.error) throw new Error(data.error || 'Request failed');
+    return data;
+  }
+  function render(data){
+    const rows = data.requests || [];
+    $('adminLoginBox').style.display='none'; $('adminDashboard').style.display='block';
+    const pending = rows.filter(r=>r.status==='pending_payment').length;
+    const granted = rows.filter(r=>r.status==='paid_access_granted').length;
+    const waiting = rows.filter(r=>r.status==='paid_waiting_for_login').length;
+    $('adminPurchaseStats').innerHTML = `<article><strong>${rows.length}</strong><span>Total requests</span></article><article><strong>${pending}</strong><span>Pending payment</span></article><article><strong>${waiting}</strong><span>Paid, waiting login</span></article><article><strong>${granted}</strong><span>Access granted</span></article>`;
+    $('adminPurchaseRows').innerHTML = rows.map(r=>{
+      const canGrant = r.status !== 'paid_access_granted' && r.status !== 'cancelled';
+      return `<tr><td>${esc(new Date(r.created_at).toLocaleString())}</td><td>${esc(r.email)}<br><small>${esc(r.full_name||'')}</small></td><td><strong>${esc(r.product_name||r.product_slug)}</strong><br><small>${esc(money(r.price_amount,r.currency))}</small></td><td><span class="fb-admin-status ${esc(r.status)}">${esc(r.status)}</span></td><td>${esc(r.payment_reference||'')}<br><small>${esc(r.notes||'')}</small></td><td>${canGrant?`<button class="btn-dark fb-grant-btn" data-id="${esc(r.id)}">Mark paid + grant</button><button class="btn-outline fb-cancel-btn" data-id="${esc(r.id)}">Cancel</button>`:'Done'}</td></tr>`;
+    }).join('') || '<tr><td colspan="6">No purchase requests yet.</td></tr>';
+  }
+  async function load(){
+    password = $('adminPasswordInput').value.trim();
+    if(!password){setMsg('Enter admin password.', true); return;}
+    sessionStorage.setItem('fitbrandAdminPassword', password);
+    setMsg('Loading...');
+    try{ render(await api()); }catch(e){setMsg(e.message, true);}
+  }
+  async function action(id, action){
+    try{ const res = await api({id, action}); alert(res.message || res.status || 'Done'); await load(); }catch(e){alert(e.message);}
+  }
+  document.addEventListener('click', e=>{
+    const grant = e.target.closest('.fb-grant-btn'); if(grant) action(grant.dataset.id,'grant');
+    const cancel = e.target.closest('.fb-cancel-btn'); if(cancel && confirm('Cancel this request?')) action(cancel.dataset.id,'cancel');
+  });
+  $('adminLoadBtn').addEventListener('click', load);
+  $('adminRefreshBtn').addEventListener('click', load);
+})();
+</script>
+</body>
+</html>
